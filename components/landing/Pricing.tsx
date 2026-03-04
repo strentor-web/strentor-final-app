@@ -90,58 +90,58 @@ const pricingData = {
       12: { original: 300000, discounted: 210000 }
     }
   },
-  PSYCHOLOGY: {
-    name: "The Emotional Clarity Blueprint",
-    description: "Mental peace, emotional regulation, and personal resilience",
-    features: [
-      "12 Weeks Intensive + Follow-Up Support",
-      "Weekly Live Coaching Call with Certified Psychologist",
-      "Monthly 1:1 Strategy & Evaluation (3 total)",
-      "Daily Accountability Submissions",
-      "Unlimited WhatsApp/Text Support",
-      "Results Guarantee"
-    ],
-    pricing: {
-      3: { original: 75000, discounted: 67500 },
-      6: { original: 150000, discounted: 120000 },
-      12: { original: 300000, discounted: 210000 }
-    }
-  },
-  MANIFESTATION: {
-    name: "The Manifestation Mastery Blueprint",
-    description: "Break through limitations and live in alignment with purpose",
-    features: [
-      "12 Weeks Intensive + Follow-Up Support",
-      "Weekly Live Coaching Call with Manifestation Coach",
-      "Monthly 1:1 Strategy & Evaluation (3 total)",
-      "Weekly Accountability Submissions",
-      "Unlimited WhatsApp/Text Support",
-      "Results Guarantee"
-    ],
-    pricing: {
-      3: { original: 75000, discounted: 67500 },
-      6: { original: 150000, discounted: 120000 },
-      12: { original: 300000, discounted: 210000 }
-    }
-  },
-  ALL_IN_ONE: {
-    name: "Complete Transformation Blueprint",
-    description: "Everything in Fitness + Psychology + Manifestation",
-    features: [
-      "Everything in Fitness + Psychology + Manifestation",
-      "12 Weeks Intensive + Follow-Up Support",
-      "Weekly Live Coaching Calls (All 3 Coaches)",
-      "Monthly 1:1 Strategy & Evaluation (3 total)",
-      "Daily Accountability Submissions",
-      "Unlimited WhatsApp/Text Support",
-      "Results Guarantee"
-    ],
-    pricing: {
-      3: { original: 225000, discounted: 202500 },
-      6: { original: 450000, discounted: 360000 },
-      12: { original: 900000, discounted: 630000 }
-    }
-  }
+  // PSYCHOLOGY: {
+  //   name: "The Emotional Clarity Blueprint",
+  //   description: "Mental peace, emotional regulation, and personal resilience",
+  //   features: [
+  //     "12 Weeks Intensive + Follow-Up Support",
+  //     "Weekly Live Coaching Call with Certified Psychologist",
+  //     "Monthly 1:1 Strategy & Evaluation (3 total)",
+  //     "Daily Accountability Submissions",
+  //     "Unlimited WhatsApp/Text Support",
+  //     "Results Guarantee"
+  //   ],
+  //   pricing: {
+  //     3: { original: 75000, discounted: 67500 },
+  //     6: { original: 150000, discounted: 120000 },
+  //     12: { original: 300000, discounted: 210000 }
+  //   }
+  // },
+  // MANIFESTATION: {
+  //   name: "The Manifestation Mastery Blueprint",
+  //   description: "Break through limitations and live in alignment with purpose",
+  //   features: [
+  //     "12 Weeks Intensive + Follow-Up Support",
+  //     "Weekly Live Coaching Call with Manifestation Coach",
+  //     "Monthly 1:1 Strategy & Evaluation (3 total)",
+  //     "Weekly Accountability Submissions",
+  //     "Unlimited WhatsApp/Text Support",
+  //     "Results Guarantee"
+  //   ],
+  //   pricing: {
+  //     3: { original: 75000, discounted: 67500 },
+  //     6: { original: 150000, discounted: 120000 },
+  //     12: { original: 300000, discounted: 210000 }
+  //   }
+  // },
+  // ALL_IN_ONE: {
+  //   name: "Complete Transformation Blueprint",
+  //   description: "Everything in Fitness + Psychology + Manifestation",
+  //   features: [
+  //     "Everything in Fitness + Psychology + Manifestation",
+  //     "12 Weeks Intensive + Follow-Up Support",
+  //     "Weekly Live Coaching Calls (All 3 Coaches)",
+  //     "Monthly 1:1 Strategy & Evaluation (3 total)",
+  //     "Daily Accountability Submissions",
+  //     "Unlimited WhatsApp/Text Support",
+  //     "Results Guarantee"
+  //   ],
+  //   pricing: {
+  //     3: { original: 225000, discounted: 202500 },
+  //     6: { original: 450000, discounted: 360000 },
+  //     12: { original: 900000, discounted: 630000 }
+  //   }
+  // }
 };
 
 export default function Pricing() {
