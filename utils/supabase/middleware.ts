@@ -139,7 +139,7 @@ export const updateSession = async (request: NextRequest) => {
       const claims = decodeJWT(session.access_token);
       console.log("check claims")
       if (claims) {
-        console.log("claaims work well:", claims)
+        // console.log("claaims work well:", claims)
         
         // Redirect authenticated users away from auth pages
         const authPages = ['/sign-in', '/sign-up', '/forgot-password'];

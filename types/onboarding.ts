@@ -4,6 +4,7 @@ import { isValidAlpha3Code } from '@/utils/country-mapping'
 import { ONBOARDING_FORM_KEYS } from '@/components/onboarding/constants/onboarding-constants'
 
 // Generate form field keys type from constants
+//not used - can be removed
 export type OnboardingFormKeysType = 
   (typeof ONBOARDING_FORM_KEYS)[keyof typeof ONBOARDING_FORM_KEYS][number];
 

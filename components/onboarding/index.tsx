@@ -89,6 +89,7 @@ export default function OnboardingWizard({ userEmail, userName }: OnboardingWiza
   // Enhanced step validation following StepperForm.md pattern
   const handleNext = async () => {
     const fieldsToValidate = ONBOARDING_FORM_KEYS[activeStep as keyof typeof ONBOARDING_FORM_KEYS]
+
     const isStepValid = await trigger(fieldsToValidate as any, { shouldFocus: true })
     
     if (isStepValid) {
