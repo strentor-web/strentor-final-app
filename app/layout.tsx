@@ -11,8 +11,29 @@ const defaultUrl = process.env.VERCEL_URL
   : "http://localhost:3000";
 
   export const metadata: Metadata = {
+    metadataBase: new URL(defaultUrl),
     title: "Strentor",
     description: "Your Personal Transformation Journey",
+    openGraph: {
+      title: "Strentor",
+      description: "Your Personal Transformation Journey",
+      type: "website",
+      url: defaultUrl,
+      images: [
+        {
+          url: "/strentor_white_bg.jpg",
+          width: 800,
+          height: 800,
+          alt: "Strentor logo",
+        },
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: "Strentor",
+      description: "Your Personal Transformation Journey",
+      images: ["/strentor_white_bg.jpg"],
+    },
     icons: {
       icon: '/favicon.ico',
     },
