@@ -6,22 +6,22 @@ import { GoogleAnalytics } from '@next/third-parties/google'
 import Script from "next/script";
 import { Metadata } from "next";
 
-const defaultUrl = process.env.VERCEL_URL
-  ? `https://${process.env.VERCEL_URL}`
-  : "http://localhost:3000";
- //test comment
+const siteUrl = "https://www.strentor.com/";
+
+const previewImageUrl = new URL("/strentor_white_bg.jpg", siteUrl).toString();
+
   export const metadata: Metadata = {
-    metadataBase: new URL(defaultUrl),
+    metadataBase: new URL(siteUrl),
     title: "Strentor",
     description: "Your Personal Transformation Journey",
     openGraph: {
       title: "Strentor",
       description: "Your Personal Transformation Journey",
       type: "website",
-      url: defaultUrl,
+      url: siteUrl,
       images: [
         {
-          url: "/strentor_white_bg.jpg",
+          url: previewImageUrl,
           width: 800,
           height: 800,
           alt: "Strentor logo",
@@ -32,7 +32,7 @@ const defaultUrl = process.env.VERCEL_URL
       card: "summary_large_image",
       title: "Strentor",
       description: "Your Personal Transformation Journey",
-      images: ["/strentor_white_bg.jpg"],
+      images: [previewImageUrl],
     },
     icons: {
       icon: '/favicon.ico',
