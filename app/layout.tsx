@@ -9,7 +9,7 @@ import { Metadata } from "next";
 const defaultUrl = process.env.VERCEL_URL
   ? `https://${process.env.VERCEL_URL}`
   : "http://localhost:3000";
-
+ //test comment
   export const metadata: Metadata = {
     metadataBase: new URL(defaultUrl),
     title: "Strentor",
