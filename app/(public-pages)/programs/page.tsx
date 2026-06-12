@@ -22,6 +22,7 @@ export default function TeamPage() {
         "Holistic Transformation: Integrating physical, mental, and emotional well-being",
         "Inclusive Approach: Accessible and empowering fitness for everyone",
       ],
+      link: "/programs/fitness-training",
     },
     {
       name: "Ashmita Dani",
@@ -36,6 +37,7 @@ export default function TeamPage() {
         "Mindset and Energy Work: Address blockages to unlock transformation",
         "Practical and Personalized: Data-backed strategies with spiritual insights",
       ],
+      link: "/programs/manifestation-guidance",
     },
     {
 
@@ -52,6 +54,7 @@ export default function TeamPage() {
         "Safe and Confidential Space: Non-judgmental environment for client support",
         "Empowerment and Growth: Focus on self-discovery and resilience building",
       ],
+      link: "/programs/psychological-support",
     },
     
     
@@ -128,7 +131,7 @@ export default function TeamPage() {
                       <div className="mt-8">
                         <Button
                           className="bg-[#F31818] hover:bg-[#F31818]/90 text-lg font-bold text-white rounded-full px-8 py-6 group"
-                          onClick={() => window.location.href = '/programs/fitness'}
+                          onClick={() => member.link ? window.location.href = member.link : null}
                         >
                           Find Out More <span className="group-hover:translate-x-1 transition-transform inline-block ml-1">→</span>
                         </Button>

@@ -73,7 +73,7 @@ const PsychologicalTrainerProfile = () => {
         {/* Right Image */}
         <div className="relative h-[600px] w-full">
           <Image
-            src="/Anisha.jpeg"
+            src="/anisha.jpeg"
             alt="Anisha Jhunjhunwala - Emotional Wellness and Therapy"
             fill
             className="object-cover rounded-lg"
