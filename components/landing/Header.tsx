@@ -30,8 +30,7 @@ export default function Header() {
   return (
     <>
       <header className="container mx-auto px-4 border-b border-border shadow-sm bg-background">
-        <div className="flex items-center justify-between py-3 md:py-3">
-          
+        <div className="relative flex items-center justify-between py-3 md:py-3">
           <div>
             <Link href="/" className="flex items-center">
               <Image
@@ -44,37 +43,37 @@ export default function Header() {
             </Link>
           </div>
 
-          {/* Mobile Menu Button */}
-          <button
-            className="md:hidden"
-            onClick={() => setIsMenuOpen(!isMenuOpen)}
-          >
-            <Menu size={24} />
-          </button>
-
-          {/* Desktop Navigation */}
-          <div className="hidden md:flex space-x-5 items-center font-semibold">
+          {/* Desktop Navigation — centered in header */}
+          <nav className="hidden md:flex absolute left-1/2 -translate-x-1/2 space-x-5 items-center font-semibold">
             <a href="/" className="text-foreground hover:text-primary transition-colors">Home</a>
             <a href="/aboutus" className="text-foreground hover:text-primary transition-colors">About Us</a>
             <div className="relative group">
               <button className="text-foreground hover:text-primary focus:outline-none flex items-center gap-1 transition-colors">
                 Programs
-{/* <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" /></svg> */}
               </button>
-              <div className="absolute left-0 mt-2 w-56 bg-card border border-border rounded-lg shadow-lg opacity-0 group-hover:opacity-100 group-hover:visible invisible transition-all z-50">
+              <div className="absolute left-1/2 -translate-x-1/2 mt-2 w-56 bg-card border border-border rounded-lg shadow-lg opacity-0 group-hover:opacity-100 group-hover:visible invisible transition-all z-50">
                 <a href="/programs/fitness-training" className="block px-6 py-3 text-card-foreground hover:bg-muted hover:text-primary transition-colors">Fitness Training</a>
                 <a href="/programs/psychological-support" className="block px-6 py-3 text-card-foreground hover:bg-muted hover:text-primary transition-colors">Psychological Support</a>
                 <a href="/programs/manifestation-guidance" className="block px-6 py-3 text-card-foreground hover:bg-muted hover:text-primary transition-colors rounded-b-lg">Manifestation Guidance</a>
               </div>
             </div>
-            <a href="/community" className="block text-foreground hover:text-primary py-2 transition-colors">Community</a>
-            <a href="https://empowerment-hub.strentor.com/"  className="block text-foreground hover:text-primary py-2 transition-colors">Empowerment Hub</a>     
-            <Button 
-              className="shadow-2xl h-10 rounded-full bg-strentor-red hover:bg-strentor-red/80 text-primary-foreground"
+            <a href="/community" className="text-foreground hover:text-primary transition-colors">Community</a>
+            <a href="https://empowerment-hub.strentor.com/" className="text-foreground hover:text-primary transition-colors">Empowerment Hub</a>
+          </nav>
+
+          <div className="flex items-center">
+            <button
+              className="md:hidden"
+              onClick={() => setIsMenuOpen(!isMenuOpen)}
+            >
+              <Menu size={24} />
+            </button>
+            <Button
+              className="hidden md:inline-flex shadow-2xl h-10 rounded-full bg-strentor-red hover:bg-strentor-red/80 text-primary-foreground"
               onClick={handleBookingClick}
             >
               <span className="whitespace-pre-wrap text-center text-sm font-bold leading-none tracking-tight lg:text-lg">
-               Sign Up
+                Sign Up
               </span>
             </Button>
           </div>

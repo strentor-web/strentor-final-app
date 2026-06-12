@@ -43,7 +43,7 @@ export default function TeamPage() {
 
       name: "Anisha Jhunjhunwala",
       role: "Emotional Wellness and Therapy",
-      image: "/Anisha.jpeg",
+      image: "/anisha.jpeg",
       qualifications: [
         "Master's in Psychology and specialized training from NIMHANS, Bangalore",
         "Over 2,000 hours of therapy with 450 individuals",
