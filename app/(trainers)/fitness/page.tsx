@@ -266,17 +266,17 @@ export default async function TrainerDashboard() {
             <div className="overflow-x-auto">
               <table className="w-full">
                 <thead>
-                  <tr className="border-b border-gray-200">
-                    <th className="py-3 px-4 text-left font-semibold text-gray-700">
+                  <tr className="border-b border-border">
+                    <th className="py-3 px-4 text-left font-semibold text-muted-foreground">
                       Client
                     </th>
-                    <th className="py-3 px-4 text-left font-semibold text-gray-700">
+                    <th className="py-3 px-4 text-left font-semibold text-muted-foreground">
                       Exercise
                     </th>
-                    <th className="py-3 px-4 text-center font-semibold text-gray-700">
+                    <th className="py-3 px-4 text-center font-semibold text-muted-foreground">
                       1RM
                     </th>
-                    <th className="py-3 px-4 text-right font-semibold text-gray-700">
+                    <th className="py-3 px-4 text-right font-semibold text-muted-foreground">
                       Date
                     </th>
                   </tr>
@@ -285,32 +285,32 @@ export default async function TrainerDashboard() {
                   {dashboardData.clientPRs.map((pr, index) => (
                     <tr
                       key={pr.id}
-                      className={`border-b border-gray-100 hover:bg-gray-50 transition-colors ${
-                        index % 2 === 0 ? "bg-gray-50/50" : ""
+                      className={`border-b border-border hover:bg-muted transition-colors ${
+                        index % 2 === 0 ? "bg-muted/50" : ""
                       }`}
                     >
                       <td className="py-4 px-4">
                         <div className="flex items-center gap-2">
                           <User className="h-4 w-4 text-blue-500" />
-                          <span className="font-medium text-gray-900">{pr.clientName}</span>
+                          <span className="font-medium text-foreground">{pr.clientName}</span>
                         </div>
                       </td>
-                      <td className="py-4 px-4 font-medium text-gray-900">
+                      <td className="py-4 px-4 font-medium text-foreground">
                         {pr.exerciseName}
                       </td>
                       <td className="py-4 px-4 text-center">
                         {pr.oneRepMax ? (
                           <>
-                            <span className="font-semibold text-gray-900">
+                            <span className="font-semibold text-foreground">
                               {pr.oneRepMax}
                             </span>
-                            <span className="text-gray-500 ml-1">kg</span>
+                            <span className="text-muted-foreground ml-1">kg</span>
                           </>
                         ) : (
                           <span className="text-gray-400">-</span>
                         )}
                       </td>
-                      <td className="py-4 px-4 text-right text-gray-500">
+                      <td className="py-4 px-4 text-right text-muted-foreground">
                         {new Date(pr.date).toLocaleDateString()}
                       </td>
                     </tr>
@@ -319,12 +319,12 @@ export default async function TrainerDashboard() {
               </table>
             </div>
           ) : (
-            <div className="text-center py-16 text-muted-foreground bg-gray-50/50 rounded-lg">
+            <div className="text-center py-16 text-muted-foreground bg-muted/50 rounded-lg">
               <Weight className="h-12 w-12 mx-auto mb-4 opacity-30" />
-              <p className="text-lg font-medium text-gray-600">
+              <p className="text-lg font-medium text-muted-foreground">
                 No personal records found yet.
               </p>
-              <p className="text-sm mt-2 text-gray-500">
+              <p className="text-sm mt-2 text-muted-foreground">
                 Your clients haven't achieved any PRs yet!
               </p>
             </div>

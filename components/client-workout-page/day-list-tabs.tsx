@@ -42,9 +42,9 @@ export default function DayListTabs({ days, selectedDay, onDaySelect }: DayListT
               "h-16 px-3 py-2 flex flex-col items-center justify-center gap-1 rounded-lg border-2 transition-all duration-200",
               {
                 "bg-strentor-orange text-black border-strentor-orange hover:bg-strentor-orange/90 hover:text-black shadow-md": isSelected && hasExercises,
-                "bg-white border-strentor-orange/30 text-gray-600 hover:bg-strentor-orange/10 hover:text-gray-800 hover:border-strentor-orange/50": !isSelected && hasExercises,
+                "bg-card border-strentor-orange/30 text-muted-foreground hover:bg-strentor-orange/10 hover:text-foreground hover:border-strentor-orange/50": !isSelected && hasExercises,
                 "bg-muted text-muted-foreground cursor-not-allowed border-muted": isDisabled,
-                "border-dashed border-gray-300 text-gray-400 hover:text-gray-500": !hasExercises && dayData,
+                "border-dashed border-border text-muted-foreground hover:text-muted-foreground": !hasExercises && dayData,
               }
             )}
             disabled={isDisabled}

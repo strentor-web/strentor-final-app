@@ -77,11 +77,11 @@ export function PasswordResetClient({ searchParams }: PasswordResetClientProps) 
   // Show loading state while checking auth
   if (isLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center p-4 bg-gradient-to-br from-[#F31818]/5 via-[#00D115]/5 to-[#0D97FF]/5">
-        <div className="bg-white/90 backdrop-blur-sm rounded-2xl shadow-xl p-8 max-w-md w-full">
+      <div className="min-h-screen flex items-center justify-center p-4 bg-gradient-to-br from-[#D4AF37]/5 via-[#2FA366]/5 to-[#B7BAC0]/5">
+        <div className="bg-card/90 backdrop-blur-sm rounded-2xl shadow-xl p-8 max-w-md w-full">
           <div className="text-center">
-            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#F31818] mx-auto mb-4"></div>
-            <p className="text-gray-600">Verifying your password reset request...</p>
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#D4AF37] mx-auto mb-4"></div>
+            <p className="text-muted-foreground">Verifying your password reset request...</p>
           </div>
         </div>
       </div>
@@ -91,21 +91,21 @@ export function PasswordResetClient({ searchParams }: PasswordResetClientProps) 
   // For direct access, we only need a valid session
   if (!session && !isLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center p-4 bg-gradient-to-br from-[#F31818]/5 via-[#00D115]/5 to-[#0D97FF]/5">
-        <div className="bg-white/90 backdrop-blur-sm rounded-2xl shadow-xl p-8 max-w-md w-full">
+      <div className="min-h-screen flex items-center justify-center p-4 bg-gradient-to-br from-[#D4AF37]/5 via-[#2FA366]/5 to-[#B7BAC0]/5">
+        <div className="bg-card/90 backdrop-blur-sm rounded-2xl shadow-xl p-8 max-w-md w-full">
           <div className="text-center">
             <div className="text-red-500 mb-4">
               <svg className="w-16 h-16 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z" />
               </svg>
             </div>
-            <h1 className="text-2xl font-bold mb-2 text-gray-800">Authentication Required</h1>
-            <p className="text-gray-600 mb-6">
+            <h1 className="text-2xl font-bold mb-2 text-foreground">Authentication Required</h1>
+            <p className="text-muted-foreground mb-6">
               You must be signed in to reset your password.
             </p>
             <button
               onClick={() => router.push('/sign-in')}
-              className="bg-[#F31818] hover:bg-[#F31818]/90 text-white font-bold py-2 px-4 rounded-lg transition-all"
+              className="bg-[#D4AF37] hover:bg-[#D4AF37]/90 text-white font-bold py-2 px-4 rounded-lg transition-all"
             >
               Go to Sign In
             </button>
@@ -117,7 +117,7 @@ export function PasswordResetClient({ searchParams }: PasswordResetClientProps) 
 
   // Show password reset form
   return (
-    <div className="min-h-screen flex items-center justify-center p-4 bg-gradient-to-br from-[#F31818]/5 via-[#00D115]/5 to-[#0D97FF]/5">
+    <div className="min-h-screen flex items-center justify-center p-4 bg-gradient-to-br from-[#D4AF37]/5 via-[#2FA366]/5 to-[#B7BAC0]/5">
       <div className="absolute top-4 left-4">
         <button
           onClick={() => router.push('/')}
@@ -126,7 +126,7 @@ export function PasswordResetClient({ searchParams }: PasswordResetClientProps) 
           ← Back To Home
         </button>
       </div>
-      <div className="bg-white/90 backdrop-blur-sm rounded-2xl shadow-xl p-8 max-w-md w-full">
+      <div className="bg-card/90 backdrop-blur-sm rounded-2xl shadow-xl p-8 max-w-md w-full">
         <div className="text-center mb-6">
           <div className="text-blue-500 mb-4">
             <svg className="w-16 h-16 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -134,7 +134,7 @@ export function PasswordResetClient({ searchParams }: PasswordResetClientProps) 
             </svg>
           </div>
           <h1 className="text-3xl font-bold mb-2">Change Password</h1>
-          <p className="text-gray-600">
+          <p className="text-muted-foreground">
             Enter your new password below to update your account.
           </p>
         </div>
@@ -174,7 +174,7 @@ export function PasswordResetClient({ searchParams }: PasswordResetClientProps) 
           
           <SubmitButton 
             formAction={resetPasswordAction}
-            className="w-full bg-[#F31818] hover:bg-[#F31818]/90 text-white font-bold py-3 rounded-lg text-lg transform hover:scale-105 transition-all"
+            className="w-full bg-[#D4AF37] hover:bg-[#D4AF37]/90 text-white font-bold py-3 rounded-lg text-lg transform hover:scale-105 transition-all"
           >
             Change Password
           </SubmitButton>
@@ -182,8 +182,8 @@ export function PasswordResetClient({ searchParams }: PasswordResetClientProps) 
           <FormMessage message={searchParams} />
         </form>
         
-        <div className="mt-6 pt-6 border-t border-gray-200">
-          <p className="text-xs text-gray-500 text-center">
+        <div className="mt-6 pt-6 border-t border-border">
+          <p className="text-xs text-muted-foreground text-center">
             After changing your password, you'll be redirected to your settings page.
           </p>
         </div>

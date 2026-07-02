@@ -180,34 +180,34 @@ export function MacroCalculator({
           <CardContent className="space-y-6">
             {/* Profile Data Display */}
             <div className="grid grid-cols-2 gap-4">
-              <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+              <div className="flex items-center justify-between p-3 bg-muted rounded-lg">
                 <div className="flex items-center gap-2">
-                  <User className="w-4 h-4 text-gray-600" />
-                  <span className="text-sm text-gray-600">Height</span>
+                  <User className="w-4 h-4 text-muted-foreground" />
+                  <span className="text-sm text-muted-foreground">Height</span>
                 </div>
                 <span className="font-semibold">{height} cm</span>
               </div>
               
-              <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+              <div className="flex items-center justify-between p-3 bg-muted rounded-lg">
                 <div className="flex items-center gap-2">
-                  <Scale className="w-4 h-4 text-gray-600" />
-                  <span className="text-sm text-gray-600">Weight</span>
+                  <Scale className="w-4 h-4 text-muted-foreground" />
+                  <span className="text-sm text-muted-foreground">Weight</span>
                 </div>
                 <span className="font-semibold">{weight} kg</span>
               </div>
               
-              <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+              <div className="flex items-center justify-between p-3 bg-muted rounded-lg">
                 <div className="flex items-center gap-2">
-                  <User className="w-4 h-4 text-gray-600" />
-                  <span className="text-sm text-gray-600">Age</span>
+                  <User className="w-4 h-4 text-muted-foreground" />
+                  <span className="text-sm text-muted-foreground">Age</span>
                 </div>
                 <span className="font-semibold">{age} years</span>
               </div>
               
-              <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+              <div className="flex items-center justify-between p-3 bg-muted rounded-lg">
                 <div className="flex items-center gap-2">
-                  <Activity className="w-4 h-4 text-gray-600" />
-                  <span className="text-sm text-gray-600">Activity</span>
+                  <Activity className="w-4 h-4 text-muted-foreground" />
+                  <span className="text-sm text-muted-foreground">Activity</span>
                 </div>
                 <Badge variant="secondary" className="text-xs">
                   {getActivityLevelName(activityLevel)}
@@ -217,7 +217,7 @@ export function MacroCalculator({
 
             {/* Fitness Goal Selection */}
             <div className="space-y-3">
-              <div className="text-sm font-medium text-gray-700">Select Your Goal:</div>
+              <div className="text-sm font-medium text-muted-foreground">Select Your Goal:</div>
               <div className="flex flex-wrap gap-3">
                 {(["weight_loss", "maintenance", "weight_gain"] as FitnessGoal[]).map((goal) => (
                   <Button
@@ -229,7 +229,7 @@ export function MacroCalculator({
                       "flex items-center gap-2 px-4 py-3 rounded-full transition-all hover:scale-105",
                       fitnessGoal === goal 
                         ? "bg-strentor-red hover:bg-strentor-red/80 text-white shadow-md" 
-                        : "bg-white text-strentor-red hover:bg-strentor-red/10 border-strentor-red border-2"
+                        : "bg-card text-strentor-red hover:bg-strentor-red/10 border-strentor-red border-2"
                     )}
                   >
                     {getGoalIcon(goal)}
@@ -251,7 +251,7 @@ export function MacroCalculator({
 
             {/* Macro Breakdown */}
             <div className="space-y-4">
-              <div className="text-center font-semibold text-gray-700">
+              <div className="text-center font-semibold text-muted-foreground">
                 Daily Macro Targets
               </div>
               
@@ -293,15 +293,15 @@ export function MacroCalculator({
 
             {/* BMR and TDEE Info */}
             <div className="grid grid-cols-2 gap-4 text-center">
-              <div className="p-3 bg-gray-50 rounded-lg">
-                <div className="text-sm font-semibold text-gray-600">BMR</div>
-                <div className="text-lg font-bold text-gray-800">
+              <div className="p-3 bg-muted rounded-lg">
+                <div className="text-sm font-semibold text-muted-foreground">BMR</div>
+                <div className="text-lg font-bold text-foreground">
                   {bmr.toFixed(0)} cal
                 </div>
               </div>
-              <div className="p-3 bg-gray-50 rounded-lg">
-                <div className="text-sm font-semibold text-gray-600">TDEE</div>
-                <div className="text-lg font-bold text-gray-800">
+              <div className="p-3 bg-muted rounded-lg">
+                <div className="text-sm font-semibold text-muted-foreground">TDEE</div>
+                <div className="text-lg font-bold text-foreground">
                   {tdee.toFixed(0)} cal
                 </div>
               </div>
@@ -330,7 +330,7 @@ export function MacroCalculator({
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
-            <div className="text-sm text-gray-600">
+            <div className="text-sm text-muted-foreground">
               Your macros are calculated using the Mifflin-St Jeor equation for BMR and activity multipliers.
             </div>
 
@@ -351,7 +351,7 @@ export function MacroCalculator({
               </div>
             </div>
 
-            <div className="text-xs text-gray-500">
+            <div className="text-xs text-muted-foreground">
               * Weight in kg, Height in cm, Age in years
             </div>
           </CardContent>
@@ -361,7 +361,7 @@ export function MacroCalculator({
           <CardHeader>
             <CardTitle>Macro Distribution by Goal</CardTitle>
           </CardHeader>
-          <CardContent className="space-y-3 text-sm text-gray-600">
+          <CardContent className="space-y-3 text-sm text-muted-foreground">
             <div className="space-y-2">
               <div className="flex items-center gap-2">
                 <TrendingDown className="w-4 h-4 text-red-500" />
@@ -383,7 +383,7 @@ export function MacroCalculator({
           <CardHeader>
             <CardTitle>Macronutrient Guide</CardTitle>
           </CardHeader>
-          <CardContent className="space-y-3 text-sm text-gray-600">
+          <CardContent className="space-y-3 text-sm text-muted-foreground">
             <div className="space-y-2">
               <div className="flex items-center gap-2">
                 <div className="w-3 h-3 bg-red-500 rounded-full"></div>
@@ -398,7 +398,7 @@ export function MacroCalculator({
                 <span><strong>Fats:</strong> 9 calories per gram - Hormone production and nutrient absorption</span>
               </div>
             </div>
-            <p className="text-xs text-gray-500 mt-3">
+            <p className="text-xs text-muted-foreground mt-3">
               These ratios are optimized for your specific fitness goal and activity level.
             </p>
           </CardContent>

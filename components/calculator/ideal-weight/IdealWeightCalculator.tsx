@@ -48,19 +48,19 @@ export function IdealWeightCalculator({
           </CardHeader>
           <CardContent className="space-y-6">
             {/* Height Display */}
-            <div className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+            <div className="flex items-center justify-between p-4 bg-muted rounded-lg">
               <div className="flex items-center gap-2">
-                <User className="w-4 h-4 text-gray-600" />
-                <span className="text-sm text-gray-600">Height</span>
+                <User className="w-4 h-4 text-muted-foreground" />
+                <span className="text-sm text-muted-foreground">Height</span>
               </div>
               <span className="font-semibold">{height} cm</span>
             </div>
 
             {/* Gender Display */}
-            <div className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+            <div className="flex items-center justify-between p-4 bg-muted rounded-lg">
               <div className="flex items-center gap-2">
-                <User className="w-4 h-4 text-gray-600" />
-                <span className="text-sm text-gray-600">Gender</span>
+                <User className="w-4 h-4 text-muted-foreground" />
+                <span className="text-sm text-muted-foreground">Gender</span>
               </div>
               <Badge variant="secondary">
                 {gender === Gender.MALE ? "Male" : "Female"}
@@ -80,10 +80,10 @@ export function IdealWeightCalculator({
             {/* Current Weight Comparison */}
             {currentWeight && (
               <div className="space-y-4">
-                <div className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+                <div className="flex items-center justify-between p-4 bg-muted rounded-lg">
                   <div className="flex items-center gap-2">
-                    <Scale className="w-4 h-4 text-gray-600" />
-                    <span className="text-sm text-gray-600">Current Weight</span>
+                    <Scale className="w-4 h-4 text-muted-foreground" />
+                    <span className="text-sm text-muted-foreground">Current Weight</span>
                   </div>
                   <span className="font-semibold">{currentWeight} kg</span>
                 </div>
@@ -146,7 +146,7 @@ export function IdealWeightCalculator({
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
-            <div className="text-sm text-gray-600">
+            <div className="text-sm text-muted-foreground">
               The Miller formula (1983) is one of the most accurate methods for calculating ideal weight.
             </div>
 
@@ -166,7 +166,7 @@ export function IdealWeightCalculator({
               </div>
             </div>
 
-            <div className="text-xs text-gray-500">
+            <div className="text-xs text-muted-foreground">
               * Height is measured in centimeters
             </div>
           </CardContent>
@@ -176,7 +176,7 @@ export function IdealWeightCalculator({
           <CardHeader>
             <CardTitle>About Ideal Weight</CardTitle>
           </CardHeader>
-          <CardContent className="space-y-3 text-sm text-gray-600">
+          <CardContent className="space-y-3 text-sm text-muted-foreground">
             <p>
               Ideal weight is a reference point for maintaining good health. It's calculated based on your height and gender.
             </p>

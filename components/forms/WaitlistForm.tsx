@@ -138,7 +138,7 @@ export const WaitlistForm: React.FC<ContactFormProps> = ({ open, onOpenChange })
               <Button 
                 type="submit"
                 disabled={isSubmitting}
-                className="min-w-[100px] bg-[#F31818]"
+                className="min-w-[100px] bg-[#D4AF37]"
               >
                 {isSubmitting ? (
                   <>
@@ -162,7 +162,7 @@ export const WaitlistForm: React.FC<ContactFormProps> = ({ open, onOpenChange })
           </DialogHeader>
           <p className="text-center py-4">We Will Reach Out To You Soon!</p>
           <div className="flex justify-end">
-            <Button className="bg-[#F31818]" onClick={() => setShowSuccessDialog(false)}>
+            <Button className="bg-[#D4AF37]" onClick={() => setShowSuccessDialog(false)}>
               Close
             </Button>
           </div>

@@ -214,7 +214,7 @@ export default function OverallAnalytics({ planId }: OverallAnalyticsProps) {
     LEGS: "bg-green-100 text-green-800",
     CORE: "bg-orange-100 text-orange-800",
     CARDIO: "bg-indigo-100 text-indigo-800",
-    FULL_BODY: "bg-gray-100 text-gray-800",
+    FULL_BODY: "bg-muted text-muted-foreground",
   };
 
   return (
@@ -246,7 +246,7 @@ export default function OverallAnalytics({ planId }: OverallAnalyticsProps) {
                   <div
                     key={bodyPart}
                     className={`p-3 rounded-lg text-center ${
-                      bodyPartColors[bodyPart] || "bg-gray-100 text-gray-800"
+                      bodyPartColors[bodyPart] || "bg-muted text-muted-foreground"
                     }`}
                   >
                     <p className="text-lg font-bold">{prs.length}</p>

@@ -470,7 +470,7 @@ export function ProfileForm({ user, initialData, onDataUpdate }: ProfileFormProp
               id="email"
               value={formData.email}
               disabled
-              className="bg-muted/50 text-gray-600"
+              className="bg-muted/50 text-muted-foreground"
             />
             <p className="text-xs text-muted-foreground">
               Your email cannot be changed
@@ -485,7 +485,7 @@ export function ProfileForm({ user, initialData, onDataUpdate }: ProfileFormProp
               placeholder="Your full name"
               required
               disabled={!isEditing}
-              className={!isEditing ? "bg-muted/50 text-gray-600" : ""}
+              className={!isEditing ? "bg-muted/50 text-muted-foreground" : ""}
             />
           </div>
         </div>
@@ -533,7 +533,7 @@ export function ProfileForm({ user, initialData, onDataUpdate }: ProfileFormProp
               }}
               placeholder="Enter your phone number"
               disabled={!isEditing}
-              className={`${!isEditing ? "bg-muted/50 text-gray-600" : ""} ${
+              className={`${!isEditing ? "bg-muted/50 text-muted-foreground" : ""} ${
                 phoneValidation.type === 'error' ? 'border-red-500' : 
                 phoneValidation.type === 'success' ? 'border-green-500' : ''
               }`}
@@ -569,7 +569,7 @@ export function ProfileForm({ user, initialData, onDataUpdate }: ProfileFormProp
               value={formData.date_of_birth}
               onChange={(e) => handleInputChange("date_of_birth", e.target.value)}
               disabled={!isEditing}
-              className={`${!isEditing ? "bg-muted/50 text-gray-600" : ""} [&::-webkit-calendar-picker-indicator]:order-first [&::-webkit-calendar-picker-indicator]:mr-2`}
+              className={`${!isEditing ? "bg-muted/50 text-muted-foreground" : ""} [&::-webkit-calendar-picker-indicator]:order-first [&::-webkit-calendar-picker-indicator]:mr-2`}
             />
           </div>
           <div className="space-y-2">
@@ -579,7 +579,7 @@ export function ProfileForm({ user, initialData, onDataUpdate }: ProfileFormProp
               onValueChange={(value) => handleInputChange("gender", value)}
               disabled={!isEditing}
             >
-              <SelectTrigger className={!isEditing ? "bg-muted/50 text-gray-600" : ""}>
+              <SelectTrigger className={!isEditing ? "bg-muted/50 text-muted-foreground" : ""}>
                 <SelectValue placeholder="Select gender" />
               </SelectTrigger>
               <SelectContent>
@@ -595,7 +595,7 @@ export function ProfileForm({ user, initialData, onDataUpdate }: ProfileFormProp
               onValueChange={(value) => handleInputChange("activity_level", value)}
               disabled={!isEditing}
             >
-              <SelectTrigger className={!isEditing ? "bg-muted/50 text-gray-600" : ""}>
+              <SelectTrigger className={!isEditing ? "bg-muted/50 text-muted-foreground" : ""}>
                 <SelectValue placeholder="Select activity level" />
               </SelectTrigger>
               <SelectContent>
@@ -621,9 +621,9 @@ export function ProfileForm({ user, initialData, onDataUpdate }: ProfileFormProp
               onChange={(e) => handleInputChange("weight", e.target.value)}
               placeholder="Enter weight in kilograms"
               disabled={!isEditing}
-              className={!isEditing ? "bg-muted/50 text-gray-600" : ""}
+              className={!isEditing ? "bg-muted/50 text-muted-foreground" : ""}
             />
-            <p className="text-xs text-gray-500">
+            <p className="text-xs text-muted-foreground">
               Enter your weight in kilograms
             </p>
           </div>
@@ -637,9 +637,9 @@ export function ProfileForm({ user, initialData, onDataUpdate }: ProfileFormProp
               onChange={(e) => handleInputChange("height", e.target.value)}
               placeholder="Enter height in centimeters"
               disabled={!isEditing}
-              className={!isEditing ? "bg-muted/50 text-gray-600" : ""}
+              className={!isEditing ? "bg-muted/50 text-muted-foreground" : ""}
             />
-            <p className="text-xs text-gray-500">
+            <p className="text-xs text-muted-foreground">
               Enter your height in centimeters
             </p>
           </div>
@@ -657,7 +657,7 @@ export function ProfileForm({ user, initialData, onDataUpdate }: ProfileFormProp
               onChange={(e) => handleInputChange("neck", e.target.value)}
               placeholder="Enter neck measurement"
               disabled={!isEditing}
-              className={`${!isEditing ? "bg-muted/50 text-gray-600" : ""} ${
+              className={`${!isEditing ? "bg-muted/50 text-muted-foreground" : ""} ${
                 validationMessages.neck?.type === 'error' ? 'border-red-500' : 
                 validationMessages.neck?.type === 'warning' ? 'border-yellow-500' : 
                 validationMessages.neck?.type === 'success' ? 'border-green-500' : ''
@@ -686,7 +686,7 @@ export function ProfileForm({ user, initialData, onDataUpdate }: ProfileFormProp
               onChange={(e) => handleInputChange("waist", e.target.value)}
               placeholder="Enter waist measurement"
               disabled={!isEditing}
-              className={`${!isEditing ? "bg-muted/50 text-gray-600" : ""} ${
+              className={`${!isEditing ? "bg-muted/50 text-muted-foreground" : ""} ${
                 validationMessages.waist?.type === 'error' ? 'border-red-500' : 
                 validationMessages.waist?.type === 'warning' ? 'border-yellow-500' : 
                 validationMessages.waist?.type === 'success' ? 'border-green-500' : ''
@@ -715,7 +715,7 @@ export function ProfileForm({ user, initialData, onDataUpdate }: ProfileFormProp
               onChange={(e) => handleInputChange("hips", e.target.value)}
               placeholder="Enter hip measurement"
               disabled={!isEditing}
-              className={`${!isEditing ? "bg-muted/50 text-gray-600" : ""} ${
+              className={`${!isEditing ? "bg-muted/50 text-muted-foreground" : ""} ${
                 validationMessages.hips?.type === 'error' ? 'border-red-500' : 
                 validationMessages.hips?.type === 'warning' ? 'border-yellow-500' : 
                 validationMessages.hips?.type === 'success' ? 'border-green-500' : ''

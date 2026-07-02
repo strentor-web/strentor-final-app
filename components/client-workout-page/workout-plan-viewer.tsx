@@ -49,7 +49,7 @@ export default function WorkoutPlanViewer({ plan }: WorkoutPlanViewerProps) {
       <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
         <div className="flex-1">
           <h1 className="text-2xl font-bold">{plan.title}</h1>
-          <p className="text-sm text-gray-600">{plan.description}</p>
+          <p className="text-sm text-muted-foreground">{plan.description}</p>
         </div>
         <div className="flex-shrink-0">
           <Link href={`/workout/${plan.id}?weekNumber=${selectedWeek}`}>

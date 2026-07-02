@@ -27,7 +27,7 @@ export default function StepperIndicator({
               "w-[40px] h-[40px] flex justify-center items-center m-[5px] border-[2px] rounded-full transition-all duration-200",
               step < activeStep && "bg-primary text-white border-primary",
               step === activeStep && "border-primary text-primary bg-primary/10",
-              step > activeStep && "border-gray-300 text-gray-400"
+              step > activeStep && "border-border text-muted-foreground"
             )}
           >
             {step >= activeStep ? step : <Check className="h-5 w-5" />}
@@ -38,7 +38,7 @@ export default function StepperIndicator({
               className={cn(
                 "w-[100px] h-[2px] transition-all duration-200",
                 step <= activeStep - 1 && "bg-primary",
-                step > activeStep - 1 && "bg-gray-300"
+                step > activeStep - 1 && "bg-muted"
               )}
             />
           )}

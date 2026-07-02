@@ -37,7 +37,7 @@ export function BodyFatAreaChart({ data }: { data: { date: string, bodyFatPercen
   const CustomTooltip = ({ active, payload, label }: any) => {
     if (active && payload && payload.length) {
       return (
-        <div className="bg-white p-3 border rounded-lg shadow-lg">
+        <div className="bg-card p-3 border rounded-lg shadow-lg">
           <p className="font-medium">{formatDate(label)}</p>
           <p className="text-blue-600">
             Body Fat: <span className="font-bold">{payload[0].value}%</span>
@@ -56,7 +56,7 @@ export function BodyFatAreaChart({ data }: { data: { date: string, bodyFatPercen
           <CardDescription>Track your body fat percentage over time</CardDescription>
         </CardHeader>
         <CardContent>
-          <div className="h-[300px] flex items-center justify-center text-gray-500">
+          <div className="h-[300px] flex items-center justify-center text-muted-foreground">
             No data available
           </div>
         </CardContent>
@@ -77,7 +77,7 @@ export function BodyFatAreaChart({ data }: { data: { date: string, bodyFatPercen
               <div className="text-4xl font-bold text-blue-600 mb-2">
                 {chartData[0].bodyFatPercentage}%
               </div>
-              <div className="text-sm text-gray-500">
+              <div className="text-sm text-muted-foreground">
                 {formatDate(chartData[0].date)}
               </div>
               <p className="text-xs text-gray-400 mt-2">Add more entries to see trends</p>
@@ -102,7 +102,7 @@ export function BodyFatAreaChart({ data }: { data: { date: string, bodyFatPercen
             ) : trend < 0 ? (
               <TrendingDown className="h-4 w-4 text-green-500" />
             ) : null}
-            <span className={`text-sm font-medium ${trend > 0 ? 'text-red-500' : trend < 0 ? 'text-green-500' : 'text-gray-500'}`}>
+            <span className={`text-sm font-medium ${trend > 0 ? 'text-red-500' : trend < 0 ? 'text-green-500' : 'text-muted-foreground'}`}>
               {trend > 0 ? '+' : ''}{trend.toFixed(1)}%
             </span>
           </div>
@@ -144,7 +144,7 @@ export function BodyFatAreaChart({ data }: { data: { date: string, bodyFatPercen
           </AreaChart>
         </ResponsiveContainer>
       </CardContent>
-      <CardFooter className="text-xs text-gray-500">
+      <CardFooter className="text-xs text-muted-foreground">
         Last updated: {formatDate(chartData[chartData.length - 1].date)}
       </CardFooter>
     </Card>

@@ -264,7 +264,7 @@ export function WorkoutLoggerClient({
   if (!optimisticData) {
     return (
       <div className="text-center py-12">
-        <p className="text-gray-600">No workout data found</p>
+        <p className="text-muted-foreground">No workout data found</p>
       </div>
     );
   }
@@ -290,22 +290,22 @@ export function WorkoutLoggerClient({
         <h1 className="text-3xl font-bold">{optimisticData.planTitle}</h1>
         <div className="flex items-center gap-2">
           <Badge variant="outline">Week {optimisticData.weekNumber}</Badge>
-          <span className="text-sm text-gray-600">
+          <span className="text-sm text-muted-foreground">
             {weekStartFormatted} - {weekEndFormatted}
           </span>
         </div>
       </div>
 
       {/* Week Progress */}
-      <div className="bg-white rounded-lg border p-4">
+      <div className="bg-card rounded-lg border p-4">
         <div className="flex items-center justify-between mb-2">
           <h3 className="font-semibold">Week Progress</h3>
-          <span className="text-sm text-gray-600">
+          <span className="text-sm text-muted-foreground">
             {optimisticData.totalCompletedSets} / {optimisticData.totalSets} sets
           </span>
         </div>
         <Progress value={optimisticData.weekProgressPercentage} className="h-2" />
-        <p className="text-sm text-gray-600 mt-1">
+        <p className="text-sm text-muted-foreground mt-1">
           {optimisticData.weekProgressPercentage}% complete
         </p>
       </div>
@@ -355,7 +355,7 @@ export function WorkoutLoggerClient({
       {/* Empty state for days with no exercises */}
       {optimisticData.days.length === 0 && (
         <div className="text-center py-12">
-          <p className="text-gray-600">No workouts scheduled for this week</p>
+          <p className="text-muted-foreground">No workouts scheduled for this week</p>
         </div>
       )}
     </div>
@@ -367,32 +367,32 @@ function WorkoutLoggerSkeleton() {
     <div className="space-y-6">
       {/* Header skeleton */}
       <div className="space-y-2">
-        <div className="h-8 w-64 bg-gray-200 rounded animate-pulse" />
-        <div className="h-4 w-48 bg-gray-200 rounded animate-pulse" />
+        <div className="h-8 w-64 bg-muted rounded animate-pulse" />
+        <div className="h-4 w-48 bg-muted rounded animate-pulse" />
       </div>
 
       {/* Progress skeleton */}
-      <div className="bg-white rounded-lg border p-4">
-        <div className="h-4 w-32 bg-gray-200 rounded animate-pulse mb-2" />
-        <div className="h-2 bg-gray-200 rounded animate-pulse" />
+      <div className="bg-card rounded-lg border p-4">
+        <div className="h-4 w-32 bg-muted rounded animate-pulse mb-2" />
+        <div className="h-2 bg-muted rounded animate-pulse" />
       </div>
 
       {/* Navigation skeleton */}
       <div className="flex items-center justify-between">
-        <div className="h-10 w-32 bg-gray-200 rounded animate-pulse" />
-        <div className="h-6 w-40 bg-gray-200 rounded animate-pulse" />
-        <div className="h-10 w-32 bg-gray-200 rounded animate-pulse" />
+        <div className="h-10 w-32 bg-muted rounded animate-pulse" />
+        <div className="h-6 w-40 bg-muted rounded animate-pulse" />
+        <div className="h-10 w-32 bg-muted rounded animate-pulse" />
       </div>
 
       {/* Days skeleton */}
       <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
         {Array.from({ length: 5 }).map((_, i) => (
-          <div key={i} className="bg-white border rounded-lg p-4 space-y-4">
-            <div className="h-6 w-24 bg-gray-200 rounded animate-pulse" />
-            <div className="h-2 bg-gray-200 rounded animate-pulse" />
+          <div key={i} className="bg-card border rounded-lg p-4 space-y-4">
+            <div className="h-6 w-24 bg-muted rounded animate-pulse" />
+            <div className="h-2 bg-muted rounded animate-pulse" />
             <div className="space-y-3">
               {Array.from({ length: 3 }).map((_, j) => (
-                <div key={j} className="h-16 bg-gray-100 rounded animate-pulse" />
+                <div key={j} className="h-16 bg-muted rounded animate-pulse" />
               ))}
             </div>
           </div>

@@ -86,34 +86,34 @@ export function BMRCalculator({
           <CardContent className="space-y-6">
             {/* Profile Data Display */}
             <div className="grid grid-cols-2 gap-4">
-              <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+              <div className="flex items-center justify-between p-3 bg-muted rounded-lg">
                 <div className="flex items-center gap-2">
-                  <User className="w-4 h-4 text-gray-600" />
-                  <span className="text-sm text-gray-600">Height</span>
+                  <User className="w-4 h-4 text-muted-foreground" />
+                  <span className="text-sm text-muted-foreground">Height</span>
                 </div>
                 <span className="font-semibold">{height} cm</span>
               </div>
               
-              <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+              <div className="flex items-center justify-between p-3 bg-muted rounded-lg">
                 <div className="flex items-center gap-2">
-                  <Scale className="w-4 h-4 text-gray-600" />
-                  <span className="text-sm text-gray-600">Weight</span>
+                  <Scale className="w-4 h-4 text-muted-foreground" />
+                  <span className="text-sm text-muted-foreground">Weight</span>
                 </div>
                 <span className="font-semibold">{weight} kg</span>
               </div>
               
-              <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+              <div className="flex items-center justify-between p-3 bg-muted rounded-lg">
                 <div className="flex items-center gap-2">
-                  <User className="w-4 h-4 text-gray-600" />
-                  <span className="text-sm text-gray-600">Age</span>
+                  <User className="w-4 h-4 text-muted-foreground" />
+                  <span className="text-sm text-muted-foreground">Age</span>
                 </div>
                 <span className="font-semibold">{age} years</span>
               </div>
               
-              <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+              <div className="flex items-center justify-between p-3 bg-muted rounded-lg">
                 <div className="flex items-center gap-2">
-                  <Activity className="w-4 h-4 text-gray-600" />
-                  <span className="text-sm text-gray-600">Activity</span>
+                  <Activity className="w-4 h-4 text-muted-foreground" />
+                  <span className="text-sm text-muted-foreground">Activity</span>
                 </div>
                 <Badge variant="secondary" className="text-xs">
                   {getActivityLevelName(activityLevel)}
@@ -149,20 +149,20 @@ export function BMRCalculator({
 
             {/* Activity Level Breakdown */}
             <div className="space-y-4">
-              <div className="text-center font-semibold text-gray-700">
+              <div className="text-center font-semibold text-muted-foreground">
                 Activity Level Breakdown
               </div>
               
-              <div className="p-4 bg-gray-50 rounded-lg">
+              <div className="p-4 bg-muted rounded-lg">
                 <div className="flex items-center justify-between mb-2">
-                  <span className="font-semibold text-gray-800">
+                  <span className="font-semibold text-foreground">
                     {getActivityLevelName(activityLevel)}
                   </span>
-                  <span className="text-sm text-gray-600">
+                  <span className="text-sm text-muted-foreground">
                     ×{activityMultipliers[activityLevel]}
                   </span>
                 </div>
-                <div className="text-sm text-gray-600">
+                <div className="text-sm text-muted-foreground">
                   {getActivityDescription(activityLevel)}
                 </div>
               </div>
@@ -170,7 +170,7 @@ export function BMRCalculator({
 
             {/* Calorie Needs for Different Goals */}
             <div className="space-y-3">
-              <div className="text-center font-semibold text-gray-700">
+              <div className="text-center font-semibold text-muted-foreground">
                 Calorie Needs for Different Goals
               </div>
               
@@ -224,7 +224,7 @@ export function BMRCalculator({
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
-            <div className="text-sm text-gray-600">
+            <div className="text-sm text-muted-foreground">
               The Mifflin-St Jeor equation is considered the most accurate BMR formula for healthy adults.
             </div>
 
@@ -244,7 +244,7 @@ export function BMRCalculator({
               </div>
             </div>
 
-            <div className="text-xs text-gray-500">
+            <div className="text-xs text-muted-foreground">
               * Weight in kg, Height in cm, Age in years
             </div>
           </CardContent>
@@ -254,7 +254,7 @@ export function BMRCalculator({
           <CardHeader>
             <CardTitle>About BMR</CardTitle>
           </CardHeader>
-          <CardContent className="space-y-3 text-sm text-gray-600">
+          <CardContent className="space-y-3 text-sm text-muted-foreground">
             <p>
               Basal Metabolic Rate (BMR) is the number of calories your body burns at rest to maintain basic functions like breathing, circulation, and cell production.
             </p>
@@ -271,7 +271,7 @@ export function BMRCalculator({
           <CardHeader>
             <CardTitle>Activity Level Guide</CardTitle>
           </CardHeader>
-          <CardContent className="space-y-3 text-sm text-gray-600">
+          <CardContent className="space-y-3 text-sm text-muted-foreground">
             <div className="space-y-2">
               <div className="flex items-center gap-2">
                 <div className="w-3 h-3 bg-gray-500 rounded-full"></div>

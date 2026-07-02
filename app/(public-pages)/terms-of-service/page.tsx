@@ -297,7 +297,7 @@ export default function TermsOfService() {
               <section>
                 <h2 className="text-2xl font-bold text-foreground mb-4">27. Contact Us</h2>
                 <div className="text-muted-foreground">
-                  <p>Please send your feedback, comments, requests for technical support by email: <a href="mailto:adityamandan@strentor.com" className="text-[#F31818] hover:underline">adityamandan@strentor.com</a>.</p>
+                  <p>Please send your feedback, comments, requests for technical support by email: <a href="mailto:adityamandan@strentor.com" className="text-[#D4AF37] hover:underline">adityamandan@strentor.com</a>.</p>
                 </div>
               </section>
 

@@ -80,7 +80,7 @@ export default function Pricing() {
   const getCategoryBorderClass = (category: string) => {
     switch (category) {
       case 'FITNESS': return 'border-blue-200';
-      default: return 'border-gray-200';
+      default: return 'border-border';
     }
   };
 

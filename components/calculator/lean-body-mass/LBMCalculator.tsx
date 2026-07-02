@@ -46,28 +46,28 @@ export function LBMCalculator({
           </CardHeader>
           <CardContent className="space-y-6">
             {/* Height Display */}
-            <div className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+            <div className="flex items-center justify-between p-4 bg-muted rounded-lg">
               <div className="flex items-center gap-2">
-                <User className="w-4 h-4 text-gray-600" />
-                <span className="text-sm text-gray-600">Height</span>
+                <User className="w-4 h-4 text-muted-foreground" />
+                <span className="text-sm text-muted-foreground">Height</span>
               </div>
               <span className="font-semibold">{height} cm</span>
             </div>
 
             {/* Weight Display */}
-            <div className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+            <div className="flex items-center justify-between p-4 bg-muted rounded-lg">
               <div className="flex items-center gap-2">
-                <Scale className="w-4 h-4 text-gray-600" />
-                <span className="text-sm text-gray-600">Weight</span>
+                <Scale className="w-4 h-4 text-muted-foreground" />
+                <span className="text-sm text-muted-foreground">Weight</span>
               </div>
               <span className="font-semibold">{weight} kg</span>
             </div>
 
             {/* Gender Display */}
-            <div className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+            <div className="flex items-center justify-between p-4 bg-muted rounded-lg">
               <div className="flex items-center gap-2">
-                <User className="w-4 h-4 text-gray-600" />
-                <span className="text-sm text-gray-600">Gender</span>
+                <User className="w-4 h-4 text-muted-foreground" />
+                <span className="text-sm text-muted-foreground">Gender</span>
               </div>
               <Badge variant="secondary">
                 {gender === Gender.MALE ? "Male" : "Female"}
@@ -86,7 +86,7 @@ export function LBMCalculator({
 
             {/* Body Composition Breakdown */}
             <div className="space-y-4">
-              <div className="text-center font-semibold text-gray-700">
+              <div className="text-center font-semibold text-muted-foreground">
                 Body Composition Breakdown
               </div>
               
@@ -136,7 +136,7 @@ export function LBMCalculator({
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
-            <div className="text-sm text-gray-600">
+            <div className="text-sm text-muted-foreground">
               The Boer formula (1984) is the most widely used method for calculating lean body mass in medical settings.
             </div>
 
@@ -156,7 +156,7 @@ export function LBMCalculator({
               </div>
             </div>
 
-            <div className="text-xs text-gray-500">
+            <div className="text-xs text-muted-foreground">
               * Weight in kg, Height in cm
             </div>
           </CardContent>
@@ -166,7 +166,7 @@ export function LBMCalculator({
           <CardHeader>
             <CardTitle>About Lean Body Mass</CardTitle>
           </CardHeader>
-          <CardContent className="space-y-3 text-sm text-gray-600">
+          <CardContent className="space-y-3 text-sm text-muted-foreground">
             <p>
               Lean Body Mass (LBM) includes all body components except fat: muscles, bones, organs, and water.
             </p>
@@ -186,7 +186,7 @@ export function LBMCalculator({
           <CardHeader>
             <CardTitle>Body Composition Insights</CardTitle>
           </CardHeader>
-          <CardContent className="space-y-3 text-sm text-gray-600">
+          <CardContent className="space-y-3 text-sm text-muted-foreground">
             <div className="space-y-2">
               <div className="flex items-center gap-2">
                 <div className="w-3 h-3 bg-green-500 rounded-full"></div>
@@ -197,7 +197,7 @@ export function LBMCalculator({
                 <span><strong>Fat Mass:</strong> Essential and storage fat</span>
               </div>
             </div>
-            <p className="text-xs text-gray-500 mt-3">
+            <p className="text-xs text-muted-foreground mt-3">
               Higher lean body mass generally indicates better muscle development and metabolic health.
             </p>
           </CardContent>

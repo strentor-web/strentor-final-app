@@ -244,10 +244,10 @@ export const CalendlyEmbedModal: React.FC<CalendlyEmbedModalProps> = ({
   return (
     <Dialog open={open} onOpenChange={handleClose}>
       <DialogContent className="w-[95vw] max-w-5xl h-[95vh] max-h-[900px] sm:h-[90vh] sm:max-h-[800px] p-0 overflow-hidden flex flex-col">
-        <DialogHeader className="px-4 sm:px-6 py-3 sm:py-4 border-b bg-white sticky top-0 z-10 shrink-0">
+        <DialogHeader className="px-4 sm:px-6 py-3 sm:py-4 border-b bg-card sticky top-0 z-10 shrink-0">
           <div className="flex items-center justify-between">
             <DialogTitle className="flex items-center gap-2 text-lg sm:text-xl">
-              <Calendar className="h-5 w-5 sm:h-6 sm:w-6 text-[#F31818]" />
+              <Calendar className="h-5 w-5 sm:h-6 sm:w-6 text-[#D4AF37]" />
               Select Your Preferred Time
             </DialogTitle>
             <button
@@ -263,10 +263,10 @@ export const CalendlyEmbedModal: React.FC<CalendlyEmbedModalProps> = ({
         <div className="flex-1 overflow-hidden min-h-0 relative">
           {/* Loading State */}
           {isLoading && (
-            <div className="absolute inset-0 bg-white bg-opacity-90 flex items-center justify-center z-10">
+            <div className="absolute inset-0 bg-card bg-opacity-90 flex items-center justify-center z-10">
               <div className="flex flex-col items-center gap-3">
-                <Loader2 className="h-8 w-8 animate-spin text-[#F31818]" />
-                <p className="text-gray-600 font-medium">Loading Calendar...</p>
+                <Loader2 className="h-8 w-8 animate-spin text-[#D4AF37]" />
+                <p className="text-muted-foreground font-medium">Loading Calendar...</p>
               </div>
             </div>
           )}
@@ -286,15 +286,15 @@ export const CalendlyEmbedModal: React.FC<CalendlyEmbedModalProps> = ({
           
           {/* Error State - Only show if there's actually an error */}
           {!isLoading && !isInitialized && (hasError || (!isLoading && open)) && (
-            <div className="absolute inset-0 bg-white flex items-center justify-center">
+            <div className="absolute inset-0 bg-card flex items-center justify-center">
               <div className="text-center">
                 <Calendar className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-                <p className="text-gray-600 mb-4">
+                <p className="text-muted-foreground mb-4">
                   {hasError ? "Failed to load calendar. Let's try again!" : "Ready to book your appointment?"}
                 </p>
                 <button
                   onClick={handleRetry}
-                  className="px-4 py-2 bg-[#F31818] text-white rounded-lg hover:bg-[#F31818]/90 transition-colors"
+                  className="px-4 py-2 bg-[#D4AF37] text-white rounded-lg hover:bg-[#D4AF37]/90 transition-colors"
                 >
                   {hasError ? "Retry" : "Let's Go"}
                 </button>

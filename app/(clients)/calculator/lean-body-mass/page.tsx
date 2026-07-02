@@ -50,10 +50,10 @@ export default async function LeanBodyMassPage() {
     <div className="container mx-auto px-4 py-8">
       <div className="max-w-4xl mx-auto">
         <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">
+          <h1 className="text-3xl font-bold text-foreground mb-2">
             Lean Body Mass Calculator
           </h1>
-          <p className="text-gray-600">
+          <p className="text-muted-foreground">
             Calculate your lean body mass using the Boer formula
           </p>
         </div>

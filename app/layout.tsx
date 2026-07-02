@@ -8,7 +8,7 @@ import { Metadata } from "next";
 
 const siteUrl = "https://www.strentor.com/";
 
-const previewImageUrl = new URL("/strentor_white_bg.jpg", siteUrl).toString();
+const previewImageUrl = new URL("/strentor-social-preview.jpg", siteUrl).toString();
 
   export const metadata: Metadata = {
     metadataBase: new URL(siteUrl),
@@ -22,8 +22,8 @@ const previewImageUrl = new URL("/strentor_white_bg.jpg", siteUrl).toString();
       images: [
         {
           url: previewImageUrl,
-          width: 800,
-          height: 800,
+          width: 1200,
+          height: 1200,
           alt: "Strentor logo",
         },
       ],

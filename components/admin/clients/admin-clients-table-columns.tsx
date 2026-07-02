@@ -48,7 +48,7 @@ export const useAdminClientColumns = ({
             {plans.map((plan) => (
               <Badge 
                 key={plan.id} 
-                className={categoryColors[plan.category] || "bg-gray-100 text-gray-800"}
+                className={categoryColors[plan.category] || "bg-muted text-foreground"}
                 variant="secondary"
               >
                 {plan.name}

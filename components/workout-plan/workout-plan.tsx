@@ -18,14 +18,14 @@ const WorkoutPlanCard = ({ plan }: { plan: any }) => {
 
   return (
     <Link href={`/training/plans/${plan.id}`}>
-      <div className="group hover:shadow-lg transition-all duration-300 bg-white rounded-lg border hover:border-red-200 overflow-hidden flex flex-col h-full">
+      <div className="group hover:shadow-lg transition-all duration-300 bg-card rounded-lg border hover:border-red-200 overflow-hidden flex flex-col h-full">
         <div className="p-6 flex-1">
           {/* Header with status badge */}
           <div className="flex items-start justify-between mb-2">
             <h2 className="text-xl font-bold group-hover:text-red-600 transition-colors line-clamp-1">
               {plan.name}
             </h2>
-            <Badge className={isActive ? "bg-green-100 text-green-800" : "bg-gray-100 text-gray-800"}>
+            <Badge className={isActive ? "bg-green-100 text-green-800" : "bg-muted text-muted-foreground"}>
               {isActive ? "Active" : "Previous"}
             </Badge>
           </div>

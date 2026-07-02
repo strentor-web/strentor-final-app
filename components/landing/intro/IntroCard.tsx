@@ -15,10 +15,10 @@ const iconPaths: Record<IntroCardProps['icon'], string> = {
 };
 
 const colorMap: Record<IntroCardProps['icon'], string> = {
-  holistic: '#F31818',    // Strentor Red
-  inclusivity: '#00D115', // Strentor Green
-  empowerment: '#FFBD22', // Strentor Orange
-  community: '#0D97FF',   // Strentor Blue
+  holistic: '#D4AF37',    // Strentor Gold
+  inclusivity: '#2FA366', // Strentor Green
+  empowerment: '#C9972B', // Strentor Antique Gold
+  community: '#B7BAC0',   // Strentor Silver
 };
 
 export function IntroCard({ icon, title, description }: IntroCardProps) {

@@ -22,12 +22,15 @@ const config = {
   			'satoshi': ['var(--font-satoshi)', 'system-ui', 'sans-serif'],
   		},
   		colors: {
-			// Strentor Brand Colors
-			'strentor-yellow': '#FFDE21',
-			'strentor-red': '#F31818',
-			'strentor-green': '#00D115',
-			'strentor-orange': '#FFBD22',
-			'strentor-blue': '#0D97FF',
+			// Strentor Brand Colors (black + gold + silver)
+			'strentor-yellow': '#E8C766',
+			'strentor-red': '#D4AF37',
+			'strentor-green': '#2FA366',
+			'strentor-orange': '#C9972B',
+			'strentor-blue': '#B7BAC0',
+			'strentor-gold': '#D4AF37',
+			'strentor-silver': '#B7BAC0',
+			'strentor-black': '#0A0A0A',
 			// Default shadcn colors
   			border: 'hsl(var(--border))',
   			input: 'hsl(var(--input))',

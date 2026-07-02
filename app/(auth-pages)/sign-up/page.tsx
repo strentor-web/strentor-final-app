@@ -13,14 +13,14 @@ export default async function Signup(props: {
   const searchParams = await props.searchParams;
 
   return (
-    <div className="relative min-h-screen flex items-center justify-center p-4 bg-gradient-to-br from-[#F31818]/5 via-[#00D115]/5 to-[#0D97FF]/5">
+    <div className="relative min-h-screen flex items-center justify-center p-4 bg-gradient-to-br from-[#D4AF37]/5 via-[#2FA366]/5 to-[#B7BAC0]/5">
       
       <div className="relative w-full max-w-6xl grid md:grid-cols-2 gap-8 items-start">
         {/* Left Section - Brand & Benefits (Mobile Second) */}
         <div className="p-8 space-y-8 order-2 md:order-1">
           <div className="text-center md:text-left space-y-6">
             <div className="flex justify-center md:justify-start">
-              <Image src="/strentor.png" alt="Strentor Logo" width={150} height={120} className="w-32 h-24" />
+              <Image src="/strentor-logo.png" alt="Strentor Logo" width={150} height={136} className="w-32 h-auto" />
             </div>
             <h1 className="text-4xl md:text-6xl font-bold text-foreground">
               <span className="text-strentor-red">BREAK.</span> <span className="text-strentor-orange">BUILD.</span> <span className="text-strentor-green">INSPIRE.</span>
@@ -38,7 +38,7 @@ export default async function Signup(props: {
               "Instant Access to Our Community"
             ].map((benefit, index) => (
               <div key={index} className="flex items-center gap-3">
-                <div className="flex-shrink-0 w-8 h-8 rounded-full bg-[#00D115] flex items-center justify-center">
+                <div className="flex-shrink-0 w-8 h-8 rounded-full bg-[#2FA366] flex items-center justify-center">
                   <Check className="w-5 h-5 text-white" />
                 </div>
                 <span className="text-base font-bold text-foreground">{benefit}</span>
@@ -53,7 +53,7 @@ export default async function Signup(props: {
             <h2 className="text-3xl font-bold text-card-foreground">Create an account</h2>
             <p className="text-muted-foreground">
               Already have an account?{" "}
-              <Link href="/sign-in" className="text-[#F31818] hover:underline font-semibold">
+              <Link href="/sign-in" className="text-[#D4AF37] hover:underline font-semibold">
                 Sign in
               </Link>
             </p>
@@ -80,11 +80,11 @@ export default async function Signup(props: {
 
           <p className="text-xs text-muted-foreground text-center leading-relaxed">
             By signing up, you agree to our{" "}
-            <Link href="/terms-of-service" className="text-[#F31818] hover:underline">
+            <Link href="/terms-of-service" className="text-[#D4AF37] hover:underline">
               Terms of Service
             </Link>{" "}
             and{" "}
-            <Link href="/privacy-policy" className="text-[#F31818] hover:underline">
+            <Link href="/privacy-policy" className="text-[#D4AF37] hover:underline">
               Privacy Policy
             </Link>
           </p>

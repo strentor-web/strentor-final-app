@@ -8,7 +8,7 @@ import { format } from "date-fns";
 import { useMemo } from "react";
 
 export const statusColors: Record<string, string> = {
-  DRAFT: "bg-gray-100 text-gray-800",
+  DRAFT: "bg-muted text-muted-foreground",
   PUBLISHED: "bg-green-100 text-green-800",
   CURRENT: "bg-blue-100 text-blue-800",
   EXPIRED: "bg-red-100 text-red-800",
@@ -66,7 +66,7 @@ export const useWorkoutPlanColumns = (): ColumnDef<WorkoutPlan>[] => {
       cell: ({ row }) => {
         const status = row.getValue("status") as string;
         return (
-          <Badge className={statusColors[status] || "bg-gray-100 text-gray-800"}>
+          <Badge className={statusColors[status] || "bg-muted text-muted-foreground"}>
             {status.charAt(0).toUpperCase() + status.slice(1).toLowerCase()}
           </Badge>
         );
@@ -78,7 +78,7 @@ export const useWorkoutPlanColumns = (): ColumnDef<WorkoutPlan>[] => {
       cell: ({ row }) => {
         const dateStatus = row.getValue("dateStatus") as string;
         return (
-          <Badge className={statusColors[dateStatus] || "bg-gray-100 text-gray-800"}>
+          <Badge className={statusColors[dateStatus] || "bg-muted text-muted-foreground"}>
             {dateStatus.charAt(0).toUpperCase() + dateStatus.slice(1).toLowerCase()}
           </Badge>
         );

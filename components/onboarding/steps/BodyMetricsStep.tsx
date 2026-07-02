@@ -19,17 +19,17 @@ export default function BodyMetricsStep() {
     <div className="space-y-6">
       {/* Header */}
       <div className="text-center">
-        <h2 className="text-2xl font-semibold text-gray-900 mb-2">
+        <h2 className="text-2xl font-semibold text-foreground mb-2">
           Body Metrics
         </h2>
-        <p className="text-gray-600">
+        <p className="text-muted-foreground">
           This helps us personalize your fitness calculations
         </p>
       </div>
 
       {/* Weight */}
       <div className="space-y-2">
-        <Label htmlFor="weight" className="text-sm font-medium text-gray-700">
+        <Label htmlFor="weight" className="text-sm font-medium text-muted-foreground">
           Current Weight (kg) *
         </Label>
         <Input
@@ -40,7 +40,7 @@ export default function BodyMetricsStep() {
           placeholder="Enter your weight in kilograms (For eg: 70 kg)"
           className="w-full"
         />
-        <p className="text-xs text-gray-500">
+        <p className="text-xs text-muted-foreground">
           Enter your weight in kilograms
         </p>
         {errors.weight && (
@@ -52,7 +52,7 @@ export default function BodyMetricsStep() {
 
       {/* Height */}
       <div className="space-y-2">
-        <Label htmlFor="height" className="text-sm font-medium text-gray-700">
+        <Label htmlFor="height" className="text-sm font-medium text-muted-foreground">
           Height (cm) *
         </Label>
         <Input
@@ -63,7 +63,7 @@ export default function BodyMetricsStep() {
           placeholder="Enter your height in centimeters (For eg: 175 cm)"
           className="w-full"
         />
-        <p className="text-xs text-gray-500">
+        <p className="text-xs text-muted-foreground">
           Enter your height in centimeters
         </p>
         {errors.height && (
@@ -93,7 +93,7 @@ export default function BodyMetricsStep() {
 
       {/* Gender */}
       <div className="space-y-3">
-        <Label className="text-sm font-medium text-gray-700">
+        <Label className="text-sm font-medium text-muted-foreground">
           Gender *
         </Label>
         <RadioGroup
@@ -119,7 +119,7 @@ export default function BodyMetricsStep() {
 
       {/* Activity Level */}
       <div className="space-y-2">
-        <Label className="text-sm font-medium text-gray-700">
+        <Label className="text-sm font-medium text-muted-foreground">
           Activity Level
         </Label>
         <Controller
@@ -137,38 +137,38 @@ export default function BodyMetricsStep() {
             <SelectItem value="SEDENTARY">
               <div>
                 <div className="font-medium">Sedentary</div>
-                <div className="text-sm text-gray-500">Little to no exercise</div>
+                <div className="text-sm text-muted-foreground">Little to no exercise</div>
               </div>
             </SelectItem>
             <SelectItem value="LIGHTLY_ACTIVE">
               <div>
                 <div className="font-medium">Lightly Active</div>
-                <div className="text-sm text-gray-500">Light exercise 1-3 days/week</div>
+                <div className="text-sm text-muted-foreground">Light exercise 1-3 days/week</div>
               </div>
             </SelectItem>
             <SelectItem value="MODERATELY_ACTIVE">
               <div>
                 <div className="font-medium">Moderately Active</div>
-                <div className="text-sm text-gray-500">Moderate exercise 3-5 days/week</div>
+                <div className="text-sm text-muted-foreground">Moderate exercise 3-5 days/week</div>
               </div>
             </SelectItem>
             <SelectItem value="VERY_ACTIVE">
               <div>
                 <div className="font-medium">Very Active</div>
-                <div className="text-sm text-gray-500">Hard exercise 6-7 days/week</div>
+                <div className="text-sm text-muted-foreground">Hard exercise 6-7 days/week</div>
               </div>
             </SelectItem>
             <SelectItem value="EXTRA_ACTIVE">
               <div>
                 <div className="font-medium">Extra Active</div>
-                <div className="text-sm text-gray-500">Very hard exercise, 2x/day</div>
+                <div className="text-sm text-muted-foreground">Very hard exercise, 2x/day</div>
               </div>
             </SelectItem>
           </SelectContent>
             </Select>
           )}
         />
-        <p className="text-xs text-gray-500">
+        <p className="text-xs text-muted-foreground">
           This helps us calculate your calorie needs accurately
         </p>
       </div>

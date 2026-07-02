@@ -23,17 +23,17 @@ export default function BasicInfoStep() {
     <div className="space-y-6">
       {/* Header */}
       <div className="text-center">
-        <h2 className="text-2xl font-semibold text-gray-900 mb-2">
+        <h2 className="text-2xl font-semibold text-foreground mb-2">
           Welcome to <span className="text-strentor-red">Strentor</span>!
         </h2>
-        <p className="text-gray-600">
+        <p className="text-muted-foreground">
           Let's start with some basic details about you
         </p>
       </div>
 
       {/* Name Field */}
       <div className="space-y-2">
-        <Label htmlFor="name" className="text-sm font-medium text-gray-700">
+        <Label htmlFor="name" className="text-sm font-medium text-muted-foreground">
           Full Name *
         </Label>
         <Input
@@ -51,22 +51,22 @@ export default function BasicInfoStep() {
 
       {/* Email Display (Read-only) */}
       <div className="space-y-2">
-        <Label className="text-sm font-medium text-gray-700">
+        <Label className="text-sm font-medium text-muted-foreground">
           Email Address
         </Label>
         <Input
           value={watch('email') || 'Loading...'}
           disabled
-          className="bg-gray-50 text-gray-600"
+          className="bg-muted text-muted-foreground"
         />
-        <p className="text-xs text-gray-500">
+        <p className="text-xs text-muted-foreground">
           This is the email you used to sign up
         </p>
       </div>
 
       {/* Country Selection */}
       <div className="space-y-2">
-        <Label className="text-sm font-medium text-gray-700">
+        <Label className="text-sm font-medium text-muted-foreground">
           Country *
         </Label>
         <Controller
@@ -111,8 +111,8 @@ export default function BasicInfoStep() {
 
       {/* Phone Number */}
       <div className="space-y-2">
-        <Label className="text-sm font-medium text-gray-700">
-          Phone Number <span className="text-gray-400">(Optional)</span>
+        <Label className="text-sm font-medium text-muted-foreground">
+          Phone Number <span className="text-muted-foreground">(Optional)</span>
         </Label>
         <Controller
           name="phone"
@@ -139,7 +139,7 @@ export default function BasicInfoStep() {
             {errors.phone.message}
           </p>
         )}
-        <p className="text-xs text-gray-500">
+        <p className="text-xs text-muted-foreground">
           International format recommended (e.g., +1234567890)
         </p>
       </div>

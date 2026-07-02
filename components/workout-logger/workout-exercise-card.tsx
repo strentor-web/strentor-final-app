@@ -259,7 +259,7 @@ export function WorkoutExerciseCard({ exercise, onSaveSet, isSaving, isPastDeadl
             </Button>
           )}
         </div>
-        <span className="text-sm text-gray-600">
+        <span className="text-sm text-muted-foreground">
           {exercise.completedSets} / {exercise.totalSets} sets
         </span>
       </div>
@@ -267,7 +267,7 @@ export function WorkoutExerciseCard({ exercise, onSaveSet, isSaving, isPastDeadl
       {/* Instructions */}
       {exercise.instructions && (
         <Collapsible open={showInstructions} onOpenChange={setShowInstructions}>
-          <CollapsibleContent className="bg-gray-50 rounded-lg p-3 text-sm">
+          <CollapsibleContent className="bg-muted rounded-lg p-3 text-sm">
             {exercise.instructions}
           </CollapsibleContent>
         </Collapsible>
@@ -275,18 +275,18 @@ export function WorkoutExerciseCard({ exercise, onSaveSet, isSaving, isPastDeadl
 
       {/* Sets Table */}
       <div className="space-y-2">
-        <div className={`grid gap-2 text-xs font-medium text-gray-600 px-2 ${exercise.isRepsBased ? 'grid-cols-5' : 'grid-cols-6'}`}>
+        <div className={`grid gap-2 text-xs font-medium text-muted-foreground px-2 ${exercise.isRepsBased ? 'grid-cols-5' : 'grid-cols-6'}`}>
           <span>Set</span>
           {!exercise.isRepsBased && <span>Weight (kg)</span>}
           <span>Reps</span>
           {/* Add info icon and Tooltip content */}
           <span className="inline-flex items-center gap-1">RPE <Tooltip>
                   <TooltipTrigger asChild>
-                    <Info className="h-3 w-3 text-gray-500" />
+                    <Info className="h-3 w-3 text-muted-foreground" />
                   </TooltipTrigger>
                   <TooltipContent>
                     <p>The Rate of Perceived Exertion (RPE) scale is a 1–10 rating system that helps measure how hard exercise feels based on effort</p>
-                    <div className="text-sm text-gray-600">
+                    <div className="text-sm text-muted-foreground">
                       <p className="text-blue-400">1-3: Warm-up, no burn &#40;Very Easy&#41;</p>
                       <p className="text-cyan-400">4-6: Light pump, could go much further &#40;Easy&#41;</p>
                       <p className="text-strentor-green">7-8: Strong pump, muscles working hard, can push another 2-3 reps &#40;Moderate&#41;</p>
@@ -315,7 +315,7 @@ export function WorkoutExerciseCard({ exercise, onSaveSet, isSaving, isPastDeadl
                   ? 'bg-green-50 border-green-200' 
                   : hasInputs || isEditing
                     ? 'bg-blue-50 border-blue-200' 
-                    : 'bg-gray-50 border-gray-200'
+                    : 'bg-muted border-border'
               }`}
             >
               {/* Set Number */}
@@ -362,7 +362,7 @@ export function WorkoutExerciseCard({ exercise, onSaveSet, isSaving, isPastDeadl
                 />
                 {/* Inline error */}
                 {validationErrors[`${set.setNumber}-rpe`] && (
-                   <div className="absolute top-9 left-0 text-xs text-red-500 bg-white px-1 rounded shadow-sm border border-red-200">
+                   <div className="absolute top-9 left-0 text-xs text-red-500 bg-card px-1 rounded shadow-sm border border-red-200">
                      {validationErrors[`${set.setNumber}-rpe`]}
                    </div>
                  )}
@@ -376,7 +376,7 @@ export function WorkoutExerciseCard({ exercise, onSaveSet, isSaving, isPastDeadl
               </div>
 
               {/* Target Display */}
-              <div className="text-xs text-gray-600">
+              <div className="text-xs text-muted-foreground">
                 <div>
                   {exercise.isRepsBased 
                     ? `${set.targetReps} reps` 
@@ -436,7 +436,7 @@ export function WorkoutExerciseCard({ exercise, onSaveSet, isSaving, isPastDeadl
 
       {/* Rest Time Info */}
       {exercise.sets.length > 0 && exercise.sets[0].restTime > 0 && (
-        <div className="text-xs text-gray-600 px-2">
+        <div className="text-xs text-muted-foreground px-2">
           Rest: {exercise.sets[0].restTime}s between sets
         </div>
       )}
@@ -477,7 +477,7 @@ export function WorkoutExerciseCard({ exercise, onSaveSet, isSaving, isPastDeadl
                 <div className="font-medium text-sm mb-2">
                   You entered: {pendingSave.weightKg}kg × {pendingSave.reps} reps
                 </div>
-                <div className="text-sm text-gray-600">
+                <div className="text-sm text-muted-foreground">
                   Prescribed: {exercise.sets.find(s => s.setNumber === pendingSave.setNumber)?.targetWeight}kg × {exercise.sets.find(s => s.setNumber === pendingSave.setNumber)?.targetReps} reps
                 </div>
               </div>

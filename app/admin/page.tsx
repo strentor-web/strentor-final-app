@@ -27,8 +27,8 @@ export default async function AdminPage() {
     return (
       <div className="flex items-center justify-center min-h-screen">
         <div className="text-center">
-          <h2 className="text-2xl font-bold text-gray-900 mb-2">Error Loading Dashboard</h2>
-          <p className="text-gray-600">Unable to load admin dashboard data. Please try again later.</p>
+          <h2 className="text-2xl font-bold text-foreground mb-2">Error Loading Dashboard</h2>
+          <p className="text-muted-foreground">Unable to load admin dashboard data. Please try again later.</p>
         </div>
       </div>
     );

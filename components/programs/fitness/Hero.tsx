@@ -8,17 +8,17 @@ const features = [
   {
     text: "Expert Para-Athlete Coach",
     icon: Award,
-    color: "#F31818"
+    color: "#D4AF37"
   },
   {
     text: "Customized Programs",
     icon: Target,
-    color: "#00D115"
+    color: "#2FA366"
   },
   {
     text: "Proven Results",
     icon: TrendingUp,
-    color: "#0D97FF"
+    color: "#B7BAC0"
   }
 ]
 
@@ -43,7 +43,7 @@ export default function FitnessHero() {
           <div className="max-w-[800px] text-center px-4 py-8 md:py-0">
             <h1 className="text-4xl sm:text-5xl md:text-7xl font-bold text-white mb-6 leading-tight">
               Transform Your Limits Into 
-              <span className="text-[#F31818]"> Strength</span>
+              <span className="text-[#D4AF37]"> Strength</span>
             </h1>
             <p className="text-lg sm:text-xl md:text-2xl text-gray-200 mb-8 max-w-[600px] mx-auto">
               Personalized fitness programs crafted for individuals with chronic conditions and physical challenges.
@@ -54,7 +54,7 @@ export default function FitnessHero() {
               {features.map((feature, index) => (
                 <div
                   key={index}
-                  className="flex items-center gap-3 bg-white/90 backdrop-blur-sm rounded-lg px-4 sm:px-6 py-3 shadow-lg transform hover:scale-105 transition-all w-full"
+                  className="flex items-center gap-3 bg-card/90 backdrop-blur-sm rounded-lg px-4 sm:px-6 py-3 shadow-lg transform hover:scale-105 transition-all w-full"
                 >
                   <div 
                     className="flex-shrink-0 w-8 sm:w-10 h-8 sm:h-10 rounded-full flex items-center justify-center"
@@ -62,14 +62,14 @@ export default function FitnessHero() {
                   >
                     <feature.icon className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
                   </div>
-                  <span className="text-sm sm:text-base font-bold text-gray-800 flex-1 text-left">{feature.text}</span>
+                  <span className="text-sm sm:text-base font-bold text-card-foreground flex-1 text-left">{feature.text}</span>
                 </div>
               ))}
             </div>
             
             {/* CTA Button */}
             <Button 
-              className="bg-[#F31818] hover:bg-[#F31818]/90 text-white font-bold rounded-full px-6 sm:px-8 py-4 sm:py-6 text-base sm:text-lg"
+              className="bg-[#D4AF37] hover:bg-[#D4AF37]/90 text-white font-bold rounded-full px-6 sm:px-8 py-4 sm:py-6 text-base sm:text-lg"
               onClick={() => window.open("https://calendly.com/strentor/strentor-services", "_blank")}
             >
               Start Your Fitness Journey

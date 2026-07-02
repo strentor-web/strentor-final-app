@@ -5,22 +5,22 @@ const successStories = [
     condition: "Type-2 Diabetes",
     description: "Supported clients in managing their sugar levels and regaining strength - one even returned to running marathons.",
     number: "01",
-    color: "from-[#F31818]/10 to-[#F31818]/5",
-    numberBg: "#F31818"
+    color: "from-[#D4AF37]/10 to-[#D4AF37]/5",
+    numberBg: "#D4AF37"
   },
   {
     condition: "Cerebral Palsy",
     description: "Ensured consistent fitness routines and improved overall well-being for clients",
     number: "02",
-    color: "from-[#00D115]/10 to-[#00D115]/5",
-    numberBg: "#00D115"
+    color: "from-[#2FA366]/10 to-[#2FA366]/5",
+    numberBg: "#2FA366"
   },
   {
     condition: "Thyroid Issues",
     description: "Helped clients reverse weight management and significantly reduced joint pain.",
     number: "03",
-    color: "from-[#0D97FF]/10 to-[#0D97FF]/5",
-    numberBg: "#0D97FF"
+    color: "from-[#B7BAC0]/10 to-[#B7BAC0]/5",
+    numberBg: "#B7BAC0"
   },
   {
     condition: "Down's Syndrome",
@@ -33,8 +33,8 @@ const successStories = [
     condition: "Spina Bifida",
     description: "Helped clients play sports like critical pain-free with customised fitness plans.",
     number: "05",
-    color: "from-[#ffde21]/10 to-[#ffde21]/5",
-    numberBg: "#ffde21"
+    color: "from-[#E8C766]/10 to-[#E8C766]/5",
+    numberBg: "#E8C766"
   }
 ]
 
@@ -44,9 +44,9 @@ export default function SuccessStories() {
       <div className="container mx-auto px-4">
         <div className="text-center mb-16">
           <h2 className="text-4xl md:text-5xl font-bold mb-4">
-            Real <span className="text-[#F31818]">Transformations</span>, Real Results
+            Real <span className="text-[#D4AF37]">Transformations</span>, Real Results
           </h2>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+          <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
             At STRENTOR, we&apos;ve already helped people achieve life-changing results. We don&apos;t promise magic - we deliver proven strategies that empower you to break through your limitations.
           </p>
         </div>
@@ -57,7 +57,7 @@ export default function SuccessStories() {
             {successStories.slice(0, 3).map((story, index) => (
               <div
                 key={index}
-                className={`rounded-xl p-6 bg-gradient-to-br ${story.color} border border-gray-200 transition-all duration-300 hover:shadow-lg`}
+                className={`rounded-xl p-6 bg-gradient-to-br ${story.color} border border-border transition-all duration-300 hover:shadow-lg`}
               >
                 <div className="flex items-start gap-4">
                   <div 
@@ -67,8 +67,8 @@ export default function SuccessStories() {
                     <span className="text-xl font-bold text-white">{story.number}</span>
                   </div>
                   <div className="flex-1">
-                    <h3 className="text-xl font-semibold text-gray-800 mb-2">{story.condition}</h3>
-                    <p className="text-gray-600">{story.description}</p>
+                    <h3 className="text-xl font-semibold text-foreground mb-2">{story.condition}</h3>
+                    <p className="text-muted-foreground">{story.description}</p>
                   </div>
                 </div>
               </div>
@@ -80,7 +80,7 @@ export default function SuccessStories() {
             {successStories.slice(3).map((story, index) => (
               <div
                 key={index}
-                className={`rounded-xl p-6 bg-gradient-to-br ${story.color} border border-gray-200 transition-all duration-300 hover:shadow-lg`}
+                className={`rounded-xl p-6 bg-gradient-to-br ${story.color} border border-border transition-all duration-300 hover:shadow-lg`}
               >
                 <div className="flex items-start gap-4">
                   <div 
@@ -90,8 +90,8 @@ export default function SuccessStories() {
                     <span className="text-xl font-bold text-white">{story.number}</span>
                   </div>
                   <div className="flex-1">
-                    <h3 className="text-xl font-semibold text-gray-800 mb-2">{story.condition}</h3>
-                    <p className="text-gray-600">{story.description}</p>
+                    <h3 className="text-xl font-semibold text-foreground mb-2">{story.condition}</h3>
+                    <p className="text-muted-foreground">{story.description}</p>
                   </div>
                 </div>
               </div>
