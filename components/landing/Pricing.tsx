@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import { Card, CardContent, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Crown, BadgeCheck } from "lucide-react";
+import { BadgeCheck } from "lucide-react";
 import Image from "next/image";
 import { PricingHeader } from "@/components/subscription/PricingHeader";
 import { useRouter } from "next/navigation";
@@ -17,9 +17,6 @@ const billingOptions = [
 
 const categoryGradients = {
   FITNESS: "from-blue-500 to-purple-500",
-  PSYCHOLOGY: "from-orange-500 to-red-500",
-  MANIFESTATION: "from-purple-500 to-pink-500",
-  ALL_IN_ONE: "from-green-500 to-emerald-500"
 };
 
 const categoryIcons = {
@@ -37,39 +34,6 @@ const categoryIcons = {
       </div>
     </div>
   ),
-  PSYCHOLOGY: (
-    <div className={`rounded-full bg-gradient-to-r ${categoryGradients.PSYCHOLOGY} w-10 h-10 flex items-center justify-center flex-shrink-0`}>
-      <div className="relative w-6 h-6">
-        <Image
-          src="/brains.svg"
-          alt="Psychological Support"
-          fill
-          sizes="24px"
-          className="object-contain"
-          priority
-        />
-      </div>
-    </div>
-  ),
-  MANIFESTATION: (
-    <div className={`rounded-full bg-gradient-to-r ${categoryGradients.MANIFESTATION} w-10 h-10 flex items-center justify-center flex-shrink-0`}>
-      <div className="relative w-6 h-6">
-        <Image
-          src="/manifestation.png"
-          alt="Manifestation Guidance"
-          fill
-          sizes="24px"
-          className="object-contain"
-          priority
-        />
-      </div>
-    </div>
-  ),
-  ALL_IN_ONE: (
-    <div className={`rounded-full bg-gradient-to-r ${categoryGradients.ALL_IN_ONE} w-10 h-10 flex items-center justify-center flex-shrink-0`}>
-      <Crown className="h-6 w-6 text-white" />
-    </div>
-  )
 };
 
 const pricingData = {
@@ -90,58 +54,6 @@ const pricingData = {
       12: { original: 300000, discounted: 210000 }
     }
   },
-  // PSYCHOLOGY: {
-  //   name: "The Emotional Clarity Blueprint",
-  //   description: "Mental peace, emotional regulation, and personal resilience",
-  //   features: [
-  //     "12 Weeks Intensive + Follow-Up Support",
-  //     "Weekly Live Coaching Call with Certified Psychologist",
-  //     "Monthly 1:1 Strategy & Evaluation (3 total)",
-  //     "Daily Accountability Submissions",
-  //     "Unlimited WhatsApp/Text Support",
-  //     "Results Guarantee"
-  //   ],
-  //   pricing: {
-  //     3: { original: 75000, discounted: 67500 },
-  //     6: { original: 150000, discounted: 120000 },
-  //     12: { original: 300000, discounted: 210000 }
-  //   }
-  // },
-  // MANIFESTATION: {
-  //   name: "The Manifestation Mastery Blueprint",
-  //   description: "Break through limitations and live in alignment with purpose",
-  //   features: [
-  //     "12 Weeks Intensive + Follow-Up Support",
-  //     "Weekly Live Coaching Call with Manifestation Coach",
-  //     "Monthly 1:1 Strategy & Evaluation (3 total)",
-  //     "Weekly Accountability Submissions",
-  //     "Unlimited WhatsApp/Text Support",
-  //     "Results Guarantee"
-  //   ],
-  //   pricing: {
-  //     3: { original: 75000, discounted: 67500 },
-  //     6: { original: 150000, discounted: 120000 },
-  //     12: { original: 300000, discounted: 210000 }
-  //   }
-  // },
-  // ALL_IN_ONE: {
-  //   name: "Complete Transformation Blueprint",
-  //   description: "Everything in Fitness + Psychology + Manifestation",
-  //   features: [
-  //     "Everything in Fitness + Psychology + Manifestation",
-  //     "12 Weeks Intensive + Follow-Up Support",
-  //     "Weekly Live Coaching Calls (All 3 Coaches)",
-  //     "Monthly 1:1 Strategy & Evaluation (3 total)",
-  //     "Daily Accountability Submissions",
-  //     "Unlimited WhatsApp/Text Support",
-  //     "Results Guarantee"
-  //   ],
-  //   pricing: {
-  //     3: { original: 225000, discounted: 202500 },
-  //     6: { original: 450000, discounted: 360000 },
-  //     12: { original: 900000, discounted: 630000 }
-  //   }
-  // }
 };
 
 export default function Pricing() {
@@ -168,9 +80,6 @@ export default function Pricing() {
   const getCategoryBorderClass = (category: string) => {
     switch (category) {
       case 'FITNESS': return 'border-blue-200';
-      case 'PSYCHOLOGY': return 'border-purple-200';
-      case 'MANIFESTATION': return 'border-orange-200';
-      case 'ALL_IN_ONE': return 'border-green-200';
       default: return 'border-gray-200';
     }
   };

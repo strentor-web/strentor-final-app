@@ -128,7 +128,7 @@ const handler = async (data: InputType): Promise<ActionState<InputType, ReturnTy
         return availableCategories;
       }
       
-      // Case 2: Three individual categories available (Manifestation enabled) - show all
+      // Case 2: Three individual categories available - show all
       if (hasThreeIndividualCategories) {
         return availableCategories;
       }

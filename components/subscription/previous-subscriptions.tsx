@@ -49,10 +49,6 @@ export function PreviousSubscriptions({ subscriptions, onRefresh, userId }: Prev
     switch (category) {
       case 'FITNESS':
         return '💪';
-      case 'PSYCHOLOGY':
-        return '🧠';
-      case 'MANIFESTATION':
-        return '✨';
       case 'ALL_IN_ONE':
         return '🎯';
       default:

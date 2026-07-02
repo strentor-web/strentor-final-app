@@ -13,21 +13,6 @@ const ProgramsCard = () => {
         "Personalized workout plans and nutrition guidance to help you achieve your fitness goals",
       gradient: "from-blue-500 to-purple-500",
     },
-    {
-      icon: "/manifestation.png",
-      title: "Manifestation Guidance",
-      description:
-        "Discover your purpose and create a powerful personal manifestation for success",
-      gradient: "from-purple-500 to-pink-500",
-    },
-    {
-      icon: "/brains.svg",
-      title: "Psychological Support",
-      description:
-        "Professional mental health support to enhance your emotional well-being",
-      gradient: "from-orange-500 to-red-500",
-    },
-   
   ];
 
   return (
@@ -39,14 +24,13 @@ const ProgramsCard = () => {
             Our Programs
           </h2>
           <p className="max-w-[900px] text-muted-foreground font-semibold md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
-            Empower your journey with a range of tailored programs combining fitness training, manifestation mentoring and psychological support to ensure your success and transformation.
+            Empower your journey with a tailored fitness training program to ensure your success and transformation.
           </p>
         </div>
 
         {/* Programs Cards */}
         <div className="mx-auto mt-12">
-          {/* make md to 2 and lg to 4 later on */}
-          <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-6 px-6">
+          <div className="grid grid-cols-1 max-w-sm mx-auto gap-6 px-6">
             {programs.map((program, index) => (
               <Card
                 key={index}
@@ -56,18 +40,14 @@ const ProgramsCard = () => {
                   <div
                     className={`mb-6 rounded-full bg-gradient-to-r ${program.gradient} transform group-hover:scale-110 transition-transform duration-300 w-16 h-16 flex items-center justify-center`}
                   >
-                      <div
-                      className={`relative ${
-                        program.icon === "/manifestation.png" ? "w-11 h-14 " : "w-10 h-10"
-                      }`}
-                    >
+                    <div className="relative w-10 h-10">
                       <Image
                         src={program.icon}
                         alt={program.title}
                         fill
-                        sizes={program.icon === "/manifestation.png" ? "56px" : "32px"}
+                        sizes="32px"
                         className="object-contain"
-                        priority={index < 2}
+                        priority
                       />
                     </div>
                   </div>

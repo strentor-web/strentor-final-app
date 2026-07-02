@@ -205,12 +205,6 @@ export const resetPasswordAction = async (formData: FormData) => {
         case 'TRAINER': // Legacy
           redirectPath = "/fitness/settings";
           break;
-        case 'PSYCHOLOGY_TRAINER':
-          redirectPath = "/psychological/settings";
-          break;
-        case 'MANIFESTATION_TRAINER':
-          redirectPath = "/manifestation/settings";
-          break;
         case 'ADMIN':
           redirectPath = "/admin";
           break;
@@ -258,14 +252,6 @@ export const requestPasswordResetAction = async (redirectPath?: string) => {
 // Role-specific password reset actions
 export const requestPasswordResetForFitnessTrainer = async () => {
   return requestPasswordResetAction("/fitness/settings");
-};
-
-export const requestPasswordResetForPsychologyTrainer = async () => {
-  return requestPasswordResetAction("/psychological/settings");
-};
-
-export const requestPasswordResetForManifestationTrainer = async () => {
-  return requestPasswordResetAction("/manifestation/settings");
 };
 
 export const requestPasswordResetForClient = async () => {

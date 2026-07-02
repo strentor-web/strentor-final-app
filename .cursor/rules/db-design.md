@@ -33,7 +33,7 @@ Stores available subscription options.
 |--------------------|---------------|-------------|-------------------------------------------------|
 | `id`               | UUID          | PRIMARY KEY | Unique identifier for each plan                 |
 | `name`             | VARCHAR(255)  | NOT NULL    | Subscription plan name (e.g., Gold, Platinum)  |
-| `category`         | USER-DEFINED  | NOT NULL    | Subscription type (fitness, psychology, etc.) |
+| `category`         | USER-DEFINED  | NOT NULL    | Subscription type (fitness, all-in-one) |
 | `plan_type`        | USER-DEFINED  | NULL        | Type of the plan, further categorization. |
 | `price`            | NUMERIC       | NOT NULL    | Monthly subscription cost                       |
 | `duration_months`  | INTEGER       | NOT NULL    | Duration of the plan in months                  |
@@ -74,12 +74,10 @@ Stores user-specific data based on their subscription.
 | `user_id`               | UUID             | FOREIGN KEY → users(id)| Associated user                                                                |
 | `weight`                | DOUBLE PRECISION | NULL                  | User's weight (for fitness tracking)                                           |
 | `body_fat_percentage`   | DOUBLE PRECISION | NULL                  | Body fat percentage (for fitness tracking)                                     |
-| `psychological_tracker` | TEXT             | NULL                  | Placeholder for emotional tracking (Future Scope)                              |
-| `manifestation_goals`   | TEXT             | NULL                  | Placeholder for manifestation goals (Future Scope)                               |
 
 **Relationships:**
 
-- A user profile links to their user ID and stores fitness/psychology/manifestation details.
+- A user profile links to their user ID and stores fitness details.
 
 ### 5. Workout Plans Table
 

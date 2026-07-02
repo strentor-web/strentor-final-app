@@ -74,12 +74,6 @@ export function NavUser() {
       case 'FITNESS_TRAINER':
         router.push("/fitness/settings");
         break;
-      case 'PSYCHOLOGY_TRAINER':
-        router.push("/psychological/settings");
-        break;
-      case 'MANIFESTATION_TRAINER':
-        router.push("/manifestation/settings");
-        break;
       case 'ADMIN':
         router.push("/admin/settings");
         break;

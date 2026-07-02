@@ -26,8 +26,6 @@ export const config = {
     "/onboarding/:path*",
     // Trainer routes
     "/fitness/:path*",
-    "/psychological/:path*",
-    "/manifestation/:path*",
     // Client routes
     "/calculator/:path*",
     "/plans/:path*",

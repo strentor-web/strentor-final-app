@@ -46,8 +46,6 @@ const TrainerSchema = z.object({
 
 const AllInOneTrainerAssignmentSchema = z.object({
   fitnessTrainerId: z.string().optional(),
-  psychologyTrainerId: z.string().optional(),
-  manifestationTrainerId: z.string().optional(),
 });
 
 // Type for user signups chart data
@@ -104,22 +102,6 @@ function getInitials(name: string): string {
     .slice(0, 2);
 }
 
-// Helper function to get trainer role based on plan category
-function getTrainerRoleForCategory(planCategory: string): ('FITNESS_TRAINER' | 'FITNESS_TRAINER_ADMIN' | 'PSYCHOLOGY_TRAINER' | 'MANIFESTATION_TRAINER')[] {
-  switch (planCategory) {
-    case 'FITNESS':
-      return ['FITNESS_TRAINER', 'FITNESS_TRAINER_ADMIN'];
-    case 'PSYCHOLOGY':
-      return ['PSYCHOLOGY_TRAINER'];
-    case 'MANIFESTATION':
-      return ['MANIFESTATION_TRAINER'];
-    case 'ALL_IN_ONE':
-      return ['FITNESS_TRAINER', 'PSYCHOLOGY_TRAINER', 'MANIFESTATION_TRAINER'];
-    default:
-      return ['FITNESS_TRAINER', 'PSYCHOLOGY_TRAINER', 'MANIFESTATION_TRAINER'];
-  }
-}
-
 // Import admin utility from centralized user utils
 import { getAdminUser } from "@/utils/user";
 
@@ -128,7 +110,7 @@ export async function getAvailableTrainers(planCategory: string): Promise<Traine
   const adminUser = await getAdminUser();
   if (!adminUser) throw new Error("Admin access required");
 
-  const trainerRoles = getTrainerRoleForCategory(planCategory);
+  const trainerRoles: ('FITNESS_TRAINER' | 'FITNESS_TRAINER_ADMIN')[] = ['FITNESS_TRAINER', 'FITNESS_TRAINER_ADMIN'];
 
   const trainers = await prisma.users_profile.findMany({
     where: {
@@ -150,9 +132,9 @@ export async function getAvailableTrainers(planCategory: string): Promise<Traine
 
 // Assign trainer to client for a specific category
 export async function assignTrainerToClient(
-  clientId: string, 
-  trainerId: string, 
-  category?: 'FITNESS' | 'PSYCHOLOGY' | 'MANIFESTATION'
+  clientId: string,
+  trainerId: string,
+  category?: 'FITNESS'
 ): Promise<{ success: boolean; message: string }> {
   try {
     const adminUser = await getAdminUser();
@@ -198,61 +180,23 @@ export async function assignAllInOneTrainers(
     const adminUser = await getAdminUser();
     if (!adminUser) throw new Error("Admin access required");
 
-    // Validate that all required trainers are provided
-    if (!assignments.fitnessTrainerId || !assignments.psychologyTrainerId || !assignments.manifestationTrainerId) {
-      return { success: false, message: "All three trainers must be assigned for ALL_IN_ONE plan" };
+    // Validate that the required trainer is provided
+    const fitnessTrainerId = assignments.fitnessTrainerId;
+    if (!fitnessTrainerId) {
+      return { success: false, message: "A fitness trainer must be assigned for ALL_IN_ONE plan" };
     }
 
-    // Use transaction to ensure all assignments succeed or none do
-    const result = await prisma.$transaction(async (tx) => {
-      const createdAssignments: string[] = [];
-
-      // Assign Fitness Trainer
-      if (assignments.fitnessTrainerId) {
-        const fitnessAssignment = await tx.trainer_clients.create({
-          data: {
-            // id: randomUUID(),
-            client_id: clientId,
-            trainer_id: assignments.fitnessTrainerId,
-            category: 'FITNESS',
-            assigned_at: new Date(),
-          },
-        });
-        createdAssignments.push(fitnessAssignment.id);
-      }
-
-      // Assign Psychology Trainer
-      if (assignments.psychologyTrainerId) {
-        const psychologyAssignment = await tx.trainer_clients.create({
-          data: {
-            // id: randomUUID(),
-            client_id: clientId,
-            trainer_id: assignments.psychologyTrainerId,
-            category: 'PSYCHOLOGY',
-            assigned_at: new Date(),
-          },
-        });
-        createdAssignments.push(psychologyAssignment.id);
-      }
-
-      // Assign Manifestation Trainer
-      if (assignments.manifestationTrainerId) {
-        const manifestationAssignment = await tx.trainer_clients.create({
-          data: {
-            // id: randomUUID(),
-            client_id: clientId,
-            trainer_id: assignments.manifestationTrainerId,
-            category: 'MANIFESTATION',
-            assigned_at: new Date(),
-          },
-        });
-        createdAssignments.push(manifestationAssignment.id);
-      }
-
-      return createdAssignments;
+    await prisma.trainer_clients.create({
+      data: {
+        // id: randomUUID(),
+        client_id: clientId,
+        trainer_id: fitnessTrainerId,
+        category: 'FITNESS',
+        assigned_at: new Date(),
+      },
     });
 
-    return { success: true, message: "All trainers assigned successfully" };
+    return { success: true, message: "Trainer assigned successfully" };
   } catch (error) {
     console.error("Error assigning ALL_IN_ONE trainers:", error);
     return { success: false, message: "Failed to assign trainers. Please try again." };
@@ -478,12 +422,6 @@ export async function getAdminDashboardData(): Promise<AdminDashboardData> {
             switch (assignment.trainer.role) {
               case 'FITNESS_TRAINER':
                 category = 'FITNESS';
-                break;
-              case 'PSYCHOLOGY_TRAINER':
-                category = 'PSYCHOLOGY';
-                break;
-              case 'MANIFESTATION_TRAINER':
-                category = 'MANIFESTATION';
                 break;
               default:
                 category = 'UNKNOWN';

@@ -13,8 +13,6 @@ interface AdminClientsFiltersProps {
 const CATEGORY_OPTIONS = [
   { label: "All Categories", value: "ALL" },
   { label: "Fitness", value: "FITNESS" },
-  { label: "Psychology", value: "PSYCHOLOGY" },
-  { label: "Manifestation", value: "MANIFESTATION" },
   { label: "All-in-One", value: "ALL_IN_ONE" },
 ] as const;
 

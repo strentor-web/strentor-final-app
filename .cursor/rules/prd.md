@@ -2,18 +2,18 @@
 # **STRENTOR Product Requirements Document (PRD)**
 
 ## **1. Introduction**
-STRENTOR is a holistic fitness and well-being platform designed to provide structured **Fitness Coaching, Psychological Support, and Manifestation Guidance**. The platform enables users to subscribe to different wellness plans, track progress, and interact with trainers. The primary goal is to offer a **seamless, structured, and engaging experience** for users who seek personal transformation.
+STRENTOR is a holistic fitness and well-being platform designed to provide structured **Fitness Coaching**. The platform enables users to subscribe to different wellness plans, track progress, and interact with trainers. The primary goal is to offer a **seamless, structured, and engaging experience** for users who seek personal transformation.
 
 ### **Problem Statement**
-Many individuals struggle with consistency and accountability in their fitness, mental well-being, and manifestation journeys. STRENTOR aims to bridge this gap by offering expert guidance, structured plans, and a **personalized tracking system** to ensure tangible progress.
+Many individuals struggle with consistency and accountability in their fitness journeys. STRENTOR aims to bridge this gap by offering expert guidance, structured plans, and a **personalized tracking system** to ensure tangible progress.
 
 ### **Vision**
-To create an **all-in-one** wellness ecosystem where users can achieve **physical, mental, and mindset transformation** through structured programs, interactive coaching, and measurable progress tracking.
+To create an **all-in-one** fitness ecosystem where users can achieve **physical transformation** through structured programs, interactive coaching, and measurable progress tracking.
 
 ---
 ## **2. Objectives & Goals**
 ### **Objectives**
-- Provide a **unified platform** for fitness, mental well-being, and manifestation coaching.
+- Provide a **unified platform** for fitness coaching.
 - Offer **structured, trackable programs** for each subscription category.
 - Integrate a **seamless payment system** for subscription management.
 - Enable **data-driven progress tracking** for users and trainers.
@@ -26,7 +26,7 @@ To create an **all-in-one** wellness ecosystem where users can achieve **physica
 ---
 ## **3. Target Users & Roles**
 ### **User Roles**
-- **Clients:** Users who subscribe to fitness, psychological, or manifestation services.
+- **Clients:** Users who subscribe to fitness services.
 - **Trainers:** Experts assigned to clients based on their chosen plan.
 - **Admins:** Manage platform operations, user roles, and content.
 
@@ -43,14 +43,13 @@ To create an **all-in-one** wellness ecosystem where users can achieve **physica
 - Trainer/Admin invitations & role assignment
 
 ### **Subscription System**
-- Users can subscribe to multiple plans (Fitness, Psychological Support, Manifestation)
+- Users can subscribe to fitness plans (Fitness, All-in-One)
 - Unified profile with tabs/dropdowns for different subscriptions
 - Integrated payment gateway for seamless transactions
 
 ### **Workout & Coaching Assignments**
 - Trainers manually assign workout plans (fitness)
 - No pre-set fitness plans; fully customized approach
-- Future scope: Psychological & Manifestation trainers assign tasks (journaling, mindset exercises, habit tracking)
 
 ### **User Profiles & Progress Tracking**
 - General information section
@@ -65,8 +64,6 @@ To create an **all-in-one** wellness ecosystem where users can achieve **physica
 
 ---
 ## **5. Future Scope**
-- Psychological & Manifestation users will have their own structured worksheets.
-- Trainers (non-fitness) will be able to assign structured tasks to users.
 - More advanced progress tracking with **AI-driven insights**.
 - Community features (e.g., forums, group challenges, social accountability).
 

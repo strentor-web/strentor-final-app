@@ -52,9 +52,7 @@ export default function Header() {
                 Programs
               </button>
               <div className="absolute left-1/2 -translate-x-1/2 mt-2 w-56 bg-card border border-border rounded-lg shadow-lg opacity-0 group-hover:opacity-100 group-hover:visible invisible transition-all z-50">
-                <a href="/programs/fitness-training" className="block px-6 py-3 text-card-foreground hover:bg-muted hover:text-primary transition-colors">Fitness Training</a>
-                <a href="/programs/psychological-support" className="block px-6 py-3 text-card-foreground hover:bg-muted hover:text-primary transition-colors">Psychological Support</a>
-                <a href="/programs/manifestation-guidance" className="block px-6 py-3 text-card-foreground hover:bg-muted hover:text-primary transition-colors rounded-b-lg">Manifestation Guidance</a>
+                <a href="/programs/fitness-training" className="block px-6 py-3 text-card-foreground hover:bg-muted hover:text-primary transition-colors rounded-b-lg">Fitness Training</a>
               </div>
             </div>
             <a href="/community" className="text-foreground hover:text-primary transition-colors">Community</a>

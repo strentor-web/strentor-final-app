@@ -103,10 +103,6 @@ export function InviteTrainerModal({
         return "Fitness Trainer";
       case "FITNESS_TRAINER_ADMIN":
         return "Fitness Trainer Admin";
-      case "PSYCHOLOGY_TRAINER":
-        return "Psychology Trainer";
-      case "MANIFESTATION_TRAINER":
-        return "Manifestation Trainer";
       default:
         return role;
     }
@@ -198,12 +194,6 @@ export function InviteTrainerModal({
                 </SelectItem>
                 <SelectItem value="FITNESS_TRAINER_ADMIN">
                   {getRoleDisplayName("FITNESS_TRAINER_ADMIN")}
-                </SelectItem>
-                <SelectItem value="PSYCHOLOGY_TRAINER">
-                  {getRoleDisplayName("PSYCHOLOGY_TRAINER")}
-                </SelectItem>
-                <SelectItem value="MANIFESTATION_TRAINER">
-                  {getRoleDisplayName("MANIFESTATION_TRAINER")}
                 </SelectItem>
               </SelectContent>
             </Select>

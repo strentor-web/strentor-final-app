@@ -1,4 +1,4 @@
-import { Dumbbell, Brain, Sparkles, Crown, Settings } from "lucide-react";
+import { Dumbbell, Crown, Settings } from "lucide-react";
 import { ActiveSubscriptionWithPlan } from "@/actions/subscriptions/get-active-subscriptions.action";
 import Link from "next/link";
 import Image from "next/image";
@@ -18,8 +18,6 @@ export function ActiveSubscriptionCard({ subscriptions }: ActiveSubscriptionCard
 
   const categoryGradients = {
     FITNESS: "from-blue-500 to-purple-500",
-    PSYCHOLOGY: "from-orange-500 to-red-500",
-    MANIFESTATION: "from-purple-500 to-pink-500",
     ALL_IN_ONE: "from-green-500 to-emerald-500"
   };
 
@@ -30,34 +28,6 @@ export function ActiveSubscriptionCard({ subscriptions }: ActiveSubscriptionCard
           <Image
             src="/fitness.svg"
             alt="Fitness Training"
-            fill
-            sizes="24px"
-            className="object-contain"
-            priority
-          />
-        </div>
-      </div>
-    ),
-    PSYCHOLOGY: (
-      <div className={`rounded-full bg-gradient-to-r ${categoryGradients.PSYCHOLOGY} w-10 h-10 flex items-center justify-center flex-shrink-0`}>
-        <div className="relative w-6 h-6">
-          <Image
-            src="/brains.svg"
-            alt="Psychological Support"
-            fill
-            sizes="24px"
-            className="object-contain"
-            priority
-          />
-        </div>
-      </div>
-    ),
-    MANIFESTATION: (
-      <div className={`rounded-full bg-gradient-to-r ${categoryGradients.MANIFESTATION} w-10 h-10 flex items-center justify-center flex-shrink-0`}>
-        <div className="relative w-6 h-6">
-          <Image
-            src="/manifestation.png"
-            alt="Manifestation Guidance"
             fill
             sizes="24px"
             className="object-contain"

@@ -20,9 +20,9 @@ export function FounderStory() {
           </h2>
           <div className="space-y-4 text-lg font-semibold text-muted-foreground leading-relaxed">
             <p>
-              As a para powerlifter, I intimately understand the multifaceted battles our 
-              community endures—transcending mere physical barriers to confront mental, 
-              emotional, psychological, and financial hurdles.
+              As a para powerlifter, I intimately understand the multifaceted battles our
+              community endures—transcending mere physical barriers to confront mental,
+              emotional, and financial hurdles.
             </p>
             <p>
               This deep comprehension ignited an unwavering passion within me, compelling 

@@ -11,7 +11,7 @@ const GetAdminClientsSchema = z.object({
   page: z.number().optional().transform((v) => v ?? 0),
   pageSize: z.number().optional().transform((v) => v ?? 10),
   search: z.string().optional().transform((v) => v ?? ""),
-  category: z.enum(["ALL", "FITNESS", "PSYCHOLOGY", "MANIFESTATION", "ALL_IN_ONE"]).optional().transform((v) => v ?? "ALL"),
+  category: z.enum(["ALL", "FITNESS", "ALL_IN_ONE"]).optional().transform((v) => v ?? "ALL"),
 });
 
 export const getAdminClients = createSafeAction(
@@ -130,8 +130,6 @@ export const getAdminClients = createSafeAction(
 
       // Group trainers by category (use category field only)
       const fitnessTrainer = trainerAssignments.find(t => t.category === 'FITNESS');
-      const psychologyTrainer = trainerAssignments.find(t => t.category === 'PSYCHOLOGY');
-      const manifestationTrainer = trainerAssignments.find(t => t.category === 'MANIFESTATION');
 
       return {
         id: client.id,
@@ -141,8 +139,6 @@ export const getAdminClients = createSafeAction(
         activePlans,
         trainerAssignments: {
           fitness: fitnessTrainer || null,
-          psychology: psychologyTrainer || null,
-          manifestation: manifestationTrainer || null,
         },
         hasAllInOnePlan: activePlans.some(plan => plan.category === 'ALL_IN_ONE'),
       };
@@ -198,7 +194,7 @@ export const getTrainersByRole = createSafeAction(
 const AssignTrainerSchema = z.object({
   clientId: z.string(),
   trainerId: z.string(),
-  category: z.enum(["FITNESS", "PSYCHOLOGY", "MANIFESTATION"]),
+  category: z.enum(["FITNESS"]),
 });
 
 export const assignTrainerToClient = createSafeAction(
@@ -256,7 +252,7 @@ export const assignTrainerToClient = createSafeAction(
 const UpdateTrainerAssignmentsSchema = z.object({
   clientId: z.string(),
   updates: z.array(z.object({
-    category: z.enum(["FITNESS", "PSYCHOLOGY", "MANIFESTATION"]),
+    category: z.enum(["FITNESS"]),
     oldTrainerId: z.string().optional(),
     newTrainerId: z.string().optional(),
   })),

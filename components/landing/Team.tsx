@@ -24,23 +24,6 @@ export default function Team() {
         instagram: "https://www.instagram.com/strentor/"
       }
     },
-    {
-      name: "Ashmita Dani",
-      role: "Dreams to Reality Mentor",
-      image: "/Ashmita.jpg",
-      social: {
-        instagram: "https://www.instagram.com/manifestd_?igsh=MTFzazI3NmlscThpcw=="
-      }
-    },
-    {
-      name: "Anisha Jhunjhunwala",
-      role: "Mind & Emotions Specialist",
-      image: "/anisha.jpeg",
-      social: {
-        instagram: "https://www.instagram.com/healingwithanisha?igsh=ejZ5dnprNzJ6bXd3"
-      }
-    },
-
   ]
 
   const handleSocialClick = (e: React.MouseEvent, link: string) => {
@@ -55,12 +38,11 @@ export default function Team() {
         <div className="flex flex-col items-center justify-center space-y-4 text-center">
           <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl text-[#F31818]">Meet Our Team</h2>
           <p className="max-w-[900px] text-muted-foreground font-semibold md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
-            Our Expert Team is comprised of fitness specialists, psychological experts, and manifestation mentors. Together, they bring a holistic blend of knowledge and passion to empower your journey toward wellness and transformation.
+            Our Expert Team is comprised of dedicated fitness specialists who bring a holistic blend of knowledge and passion to empower your journey toward wellness and transformation.
           </p>
         </div>
         <div className="mx-auto mt-12">
-          {/* make md 2 and lg 4 when there are 4 cards */}
-          <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-6 px-4"> 
+          <div className="grid grid-cols-1 max-w-sm mx-auto gap-6 px-4">
             {team.map((member) => (
               <Link
                 key={member.name}

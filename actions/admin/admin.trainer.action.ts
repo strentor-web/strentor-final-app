@@ -10,7 +10,7 @@ const GetAdminTrainersSchema = z.object({
   page: z.number().optional().transform((v) => v ?? 0),
   pageSize: z.number().optional().transform((v) => v ?? 10),
   search: z.string().optional().transform((v) => v ?? ""),
-  category: z.enum(["ALL", "FITNESS", "PSYCHOLOGY", "MANIFESTATION"]).optional().transform((v) => v ?? "ALL"),
+  category: z.enum(["ALL", "FITNESS"]).optional().transform((v) => v ?? "ALL"),
 });
 
 export const getAdminTrainers = createSafeAction(
@@ -19,7 +19,7 @@ export const getAdminTrainers = createSafeAction(
     const adminUser = await getAdminUser();
     if (!adminUser) return { error: "Admin access required" };
 
-    const { page, pageSize, search, category } = input;
+    const { page, pageSize, search } = input;
     const skip = (page || 0) * (pageSize || 10);
 
     // Build where conditions
@@ -30,22 +30,8 @@ export const getAdminTrainers = createSafeAction(
       ],
     } : {};
 
-    // Map category to trainer roles
-    const getRolesByCategory = (category: string): Role[] => {
-      switch (category) {
-        case "FITNESS":
-          return [Role.FITNESS_TRAINER, Role.FITNESS_TRAINER_ADMIN];
-        case "PSYCHOLOGY":
-          return [Role.PSYCHOLOGY_TRAINER];
-        case "MANIFESTATION":
-          return [Role.MANIFESTATION_TRAINER];
-        default:
-          return [Role.FITNESS_TRAINER, Role.FITNESS_TRAINER_ADMIN, Role.PSYCHOLOGY_TRAINER, Role.MANIFESTATION_TRAINER];
-      }
-    };
-
     const roleConditions = {
-      role: { in: getRolesByCategory(category || "ALL") }
+      role: { in: [Role.FITNESS_TRAINER, Role.FITNESS_TRAINER_ADMIN] }
     };
 
     // Get total count
@@ -103,10 +89,6 @@ export const getAdminTrainers = createSafeAction(
           case "FITNESS_TRAINER":
           case "FITNESS_TRAINER_ADMIN":
             return "FITNESS";
-          case "PSYCHOLOGY_TRAINER":
-            return "PSYCHOLOGY";
-          case "MANIFESTATION_TRAINER":
-            return "MANIFESTATION";
           default:
             return "UNKNOWN";
         }

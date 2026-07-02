@@ -1,4 +1,4 @@
-export type TrainerCategory = "FITNESS" | "PSYCHOLOGY" | "MANIFESTATION";
+export type TrainerCategory = "FITNESS";
 
 export interface TrainerClientAssignment {
   id: string;

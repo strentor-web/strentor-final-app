@@ -14,7 +14,7 @@ const FAQSection = () => {
       answer: (
         <div className="space-y-4">
           <p>
-            STRENTOR is a holistic empowerment brand dedicated to helping individuals discover their inner strength and achieve their full potential. Our name symbolizes strength and resilience, embodying our mission to break barriers and promote personal growth through fitness training, psychological support and manifestation guidance.
+            STRENTOR is a holistic empowerment brand dedicated to helping individuals discover their inner strength and achieve their full potential. Our name symbolizes strength and resilience, embodying our mission to break barriers and promote personal growth through fitness training.
           </p>
           <div>
             <p>Our brand is built on four key values:</p>
@@ -35,16 +35,14 @@ const FAQSection = () => {
           <p>We provide a comprehensive suite of services, including:</p>
           <ul className="list-disc pl-6 space-y-1">
             <li><b>Fitness Training:</b> Tailored programs to enhance physical health and fitness</li>
-            <li><b>Psychological Support:</b> Access to mental health professionals and resources for emotional well-being</li>
-            <li><b>Manifestation Guidance:</b> Techniques and practices to help manifest desired outcomes and enhance mindset</li>
           </ul>
-          <p>Our holistic approach ensures that your physical, mental, and emotional well-being are addressed collectively.</p>
+          <p>Our holistic approach ensures that your physical well-being is addressed collectively.</p>
         </div>
       )
     },
     {
       question: "Who can benefit from STRENTOR's services?",
-      answer: "STRENTOR is designed for anyone seeking empowerment and personal growth. Whether you're looking to enhance your fitness, improve mental health, achieve life goals, or manifest positive outcomes, we provide premium, inclusive solutions tailored to your unique challenges and aspirations."
+      answer: "STRENTOR is designed for anyone seeking empowerment and personal growth. Whether you're looking to enhance your fitness or achieve life goals, we provide premium, inclusive solutions tailored to your unique challenges and aspirations."
     },
     {
       question: "How does STRENTOR ensure inclusivity in its services?",
@@ -52,7 +50,7 @@ const FAQSection = () => {
     },
     {
       question: "What makes STRENTOR different from other wellness or coaching brands?",
-      answer: "STRENTOR takes a holistic and integrated approach to empowerment, combining fitness, mental health support and manifestation guidance under one roof. Our emphasis on inclusivity, affordability, and personalized support sets us apart, creating a one-stop solution for overall well-being."
+      answer: "STRENTOR takes a holistic and integrated approach to empowerment, centered on fitness training. Our emphasis on inclusivity, affordability, and personalized support sets us apart, creating a one-stop solution for overall well-being."
     },
     {
       question: "How can I get started with STRENTOR?",
@@ -65,8 +63,6 @@ const FAQSection = () => {
           <p>Yes, all our services are available virtually, including:</p>
           <ul className="list-disc pl-6 space-y-1">
             <li><b>Fitness training</b></li>
-            <li><b>Manifestation Guidance</b></li>
-            <li><b>Psychological Support</b></li>
           </ul>
           <p>The results depend on your commitment, but we&apos;re here to support you every step of the way!</p>
         </div>

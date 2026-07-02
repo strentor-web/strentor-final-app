@@ -40,10 +40,6 @@ function getTrainerRole(category: SubscriptionCategory): string[] {
   switch (category) {
     case "FITNESS":
       return ["FITNESS_TRAINER", "FITNESS_TRAINER_ADMIN"];
-    case "PSYCHOLOGY":
-      return ["PSYCHOLOGY_TRAINER"];
-    case "MANIFESTATION":
-      return ["MANIFESTATION_TRAINER"];
     default:
       return [];
   }
@@ -54,10 +50,6 @@ function getCategoryDisplayName(category: SubscriptionCategory): string {
   switch (category) {
     case "FITNESS":
       return "Fitness";
-    case "PSYCHOLOGY":
-      return "Psychology";
-    case "MANIFESTATION":
-      return "Manifestation";
     default:
       return category;
   }
@@ -122,7 +114,7 @@ export function AssignCategoryTrainerModal({
       const result = await assignTrainerToClient({
         clientId,
         trainerId: selectedTrainerId,
-        category: category as "FITNESS" | "PSYCHOLOGY" | "MANIFESTATION",
+        category: category as "FITNESS",
       });
 
       console.log('Assignment result:', result);

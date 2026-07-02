@@ -266,10 +266,6 @@ export function UserSubscriptions({ subscriptions, onRefresh, userId, userData }
     switch (category) {
       case 'FITNESS':
         return '💪';
-      case 'PSYCHOLOGY':
-        return '🧠';
-      case 'MANIFESTATION':
-        return '✨';
       case 'ALL_IN_ONE':
         return '🎯';
       default:

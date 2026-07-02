@@ -16,9 +16,9 @@ export function BrandStory() {
               by how much you can carry but by how much you can overcome.
             </p>
             <p>
-              Through our Empowerment Mosaic, we&apos;ve redefined what it means to grow 
-              stronger. By blending fitness training, psychological support  
-              and manifestation guidance, we create a holistic approach to personal development.
+              Through our Empowerment Mosaic, we&apos;ve redefined what it means to grow
+              stronger. By focusing on dedicated fitness training, we create a holistic
+              approach to personal development.
             </p>
           </div>
         </div>

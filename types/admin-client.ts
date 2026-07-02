@@ -1,4 +1,4 @@
-export type SubscriptionCategory = "FITNESS" | "PSYCHOLOGY" | "MANIFESTATION" | "ALL_IN_ONE";
+export type SubscriptionCategory = "FITNESS" | "ALL_IN_ONE";
 
 export interface AdminClientPlan {
   id: string;
@@ -23,8 +23,6 @@ export interface AdminClient {
   activePlans: AdminClientPlan[];
   trainerAssignments: {
     fitness: AdminClientTrainer | null;
-    psychology: AdminClientTrainer | null;
-    manifestation: AdminClientTrainer | null;
   };
   hasAllInOnePlan: boolean;
 }
