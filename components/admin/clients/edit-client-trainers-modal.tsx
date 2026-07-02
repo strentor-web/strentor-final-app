@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { User, X } from "lucide-react";
-import { AdminClient, SubscriptionCategory } from "@/types/admin-client";
+import { AdminClient } from "@/types/admin-client";
 
 interface Trainer {
   id: string;
@@ -23,7 +23,7 @@ interface EditClientTrainersModalProps {
 }
 
 // Add specific type for trainer categories
-type TrainerCategory = "FITNESS" | "PSYCHOLOGY" | "MANIFESTATION";
+type TrainerCategory = "FITNESS";
 
 // Helper function to get initials from name
 function getInitials(name: string): string {
@@ -36,21 +36,12 @@ function getInitials(name: string): string {
 }
 
 // Helper function to get trainer role based on category
-function getTrainerRole(category: SubscriptionCategory): string[] {
-  switch (category) {
-    case "FITNESS":
-      return ["FITNESS_TRAINER", "FITNESS_TRAINER_ADMIN"];
-    case "PSYCHOLOGY":
-      return ["PSYCHOLOGY_TRAINER"];
-    case "MANIFESTATION":
-      return ["MANIFESTATION_TRAINER"];
-    default:
-      return [];
-  }
+function getTrainerRole(category: TrainerCategory): string[] {
+  return ["FITNESS_TRAINER", "FITNESS_TRAINER_ADMIN"];
 }
 
 // Helper function to check if client needs trainer for category
-function clientNeedsCategory(client: AdminClient, category: SubscriptionCategory): boolean {
+function clientNeedsCategory(client: AdminClient, category: TrainerCategory): boolean {
   return client.activePlans.some(plan => 
     plan.category === category || plan.category === 'ALL_IN_ONE'
   );
@@ -62,20 +53,14 @@ export function EditClientTrainersModal({
   client,
   onTrainersUpdated,
 }: EditClientTrainersModalProps) {
-  const [trainers, setTrainers] = useState<Record<SubscriptionCategory, Trainer[]>>({
+  const [trainers, setTrainers] = useState<Record<TrainerCategory, Trainer[]>>({
     FITNESS: [],
-    PSYCHOLOGY: [],
-    MANIFESTATION: [],
-    ALL_IN_ONE: [],
   });
-  
-  const [selectedTrainers, setSelectedTrainers] = useState<Record<SubscriptionCategory, string>>({
+
+  const [selectedTrainers, setSelectedTrainers] = useState<Record<TrainerCategory, string>>({
     FITNESS: "",
-    PSYCHOLOGY: "",
-    MANIFESTATION: "",
-    ALL_IN_ONE: "",
   });
-  
+
   const [isLoading, setIsLoading] = useState(false);
   const [isFetching, setIsFetching] = useState(false);
 
@@ -84,9 +69,6 @@ export function EditClientTrainersModal({
     if (client) {
       setSelectedTrainers({
         FITNESS: client.trainerAssignments.fitness?.trainerId || "",
-        PSYCHOLOGY: client.trainerAssignments.psychology?.trainerId || "",
-        MANIFESTATION: client.trainerAssignments.manifestation?.trainerId || "",
-        ALL_IN_ONE: "",
       });
     }
   }, [client]);
@@ -101,12 +83,9 @@ export function EditClientTrainersModal({
   const fetchAllTrainers = async () => {
     setIsFetching(true);
     try {
-      const categories: TrainerCategory[] = ['FITNESS', 'PSYCHOLOGY', 'MANIFESTATION'];
-      const trainerData: Record<SubscriptionCategory, Trainer[]> = {
+      const categories: TrainerCategory[] = ['FITNESS'];
+      const trainerData: Record<TrainerCategory, Trainer[]> = {
         FITNESS: [],
-        PSYCHOLOGY: [],
-        MANIFESTATION: [],
-        ALL_IN_ONE: [],
       };
 
       for (const category of categories) {
@@ -128,7 +107,7 @@ export function EditClientTrainersModal({
     }
   };
 
-  const handleTrainerChange = (category: SubscriptionCategory, trainerId: string) => {
+  const handleTrainerChange = (category: TrainerCategory, trainerId: string) => {
     // Convert "no-trainer" to empty string
     const actualTrainerId = trainerId === "no-trainer" ? "" : trainerId;
     setSelectedTrainers(prev => ({
@@ -137,7 +116,7 @@ export function EditClientTrainersModal({
     }));
   };
 
-  const handleRemoveTrainer = (category: SubscriptionCategory) => {
+  const handleRemoveTrainer = (category: TrainerCategory) => {
     setSelectedTrainers(prev => ({
       ...prev,
       [category]: "",
@@ -152,8 +131,8 @@ export function EditClientTrainersModal({
       // This would be a server action to update trainer assignments
       const updates = [];
       
-      const categories: TrainerCategory[] = ['FITNESS', 'PSYCHOLOGY', 'MANIFESTATION'];
-      
+      const categories: TrainerCategory[] = ['FITNESS'];
+
       for (const category of categories) {
         if (clientNeedsCategory(client, category)) {
           const currentTrainerId = getCurrentTrainerId(category);
@@ -193,20 +172,11 @@ export function EditClientTrainersModal({
     }
   };
 
-  const getCurrentTrainerId = (category: SubscriptionCategory): string => {
-    switch (category) {
-      case 'FITNESS':
-        return client?.trainerAssignments.fitness?.trainerId || "";
-      case 'PSYCHOLOGY':
-        return client?.trainerAssignments.psychology?.trainerId || "";
-      case 'MANIFESTATION':
-        return client?.trainerAssignments.manifestation?.trainerId || "";
-      default:
-        return "";
-    }
+  const getCurrentTrainerId = (category: TrainerCategory): string => {
+    return client?.trainerAssignments.fitness?.trainerId || "";
   };
 
-  const renderTrainerSelection = (category: SubscriptionCategory, label: string) => {
+  const renderTrainerSelection = (category: TrainerCategory, label: string) => {
     if (!client || !clientNeedsCategory(client, category)) {
       return null;
     }
@@ -305,8 +275,6 @@ export function EditClientTrainersModal({
           {/* Trainer Assignments */}
           <div className="space-y-4">
             {renderTrainerSelection('FITNESS', 'Fitness')}
-            {renderTrainerSelection('PSYCHOLOGY', 'Psychology')}
-            {renderTrainerSelection('MANIFESTATION', 'Manifestation')}
           </div>
 
           {/* Actions */}

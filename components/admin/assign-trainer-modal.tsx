@@ -60,7 +60,7 @@ export function AssignTrainerModal({
 
     setIsAssigning(true);
     try {
-      const result = await assignTrainerToClient(clientId, selectedTrainerId, planCategory as 'FITNESS' | 'PSYCHOLOGY' | 'MANIFESTATION');
+      const result = await assignTrainerToClient(clientId, selectedTrainerId, planCategory as 'FITNESS');
       
       if (result.success) {
         toast.success(result.message);
@@ -82,10 +82,6 @@ export function AssignTrainerModal({
     switch (category) {
       case 'FITNESS':
         return 'Fitness';
-      case 'PSYCHOLOGY':
-        return 'Psychology';
-      case 'MANIFESTATION':
-        return 'Manifestation';
       case 'ALL_IN_ONE':
         return 'All-in-One';
       default:
@@ -97,10 +93,6 @@ export function AssignTrainerModal({
     switch (role) {
       case 'FITNESS_TRAINER':
         return 'Fitness Trainer';
-      case 'PSYCHOLOGY_TRAINER':
-        return 'Psychology Trainer';
-      case 'MANIFESTATION_TRAINER':
-        return 'Manifestation Trainer';
       default:
         return role;
     }

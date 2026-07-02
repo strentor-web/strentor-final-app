@@ -60,12 +60,10 @@ export const updateSession = async (request: NextRequest) => {
 
      // Protected routes that require authentication
      const protectedRoutes = [
-       '/protected', 
-       '/training', 
-       '/fitness', 
-       '/psychological', 
-       '/manifestation', 
-       '/profile', 
+       '/protected',
+       '/training',
+       '/fitness',
+       '/profile',
        '/workouts', 
        '/admin',
        // Client routes

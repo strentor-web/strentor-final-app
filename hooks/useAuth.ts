@@ -65,8 +65,6 @@ export function useAuth() {
     isClient: authUser?.role === 'CLIENT',
     isTrainer: authUser ? isTrainerRole(authUser.role) : false,
     isFitnessTrainer: authUser?.role === 'FITNESS_TRAINER' || authUser?.role === 'FITNESS_TRAINER_ADMIN' || authUser?.role === 'TRAINER',
-    isPsychologyTrainer: authUser?.role === 'PSYCHOLOGY_TRAINER',
-    isManifestationTrainer: authUser?.role === 'MANIFESTATION_TRAINER',
     isAdmin: authUser?.role === 'ADMIN',
     hasAdminAccess: authUser ? hasAdminAccess(authUser.role) : false,
     trainerCategory: authUser?.trainerCategory,

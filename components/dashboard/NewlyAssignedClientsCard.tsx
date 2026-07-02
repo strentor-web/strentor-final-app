@@ -17,10 +17,6 @@ export function NewlyAssignedClientsCard({ clients }: NewlyAssignedClientsCardPr
     switch (category) {
       case "FITNESS":
         return "bg-blue-100 text-blue-800 border-blue-200";
-      case "PSYCHOLOGY":
-        return "bg-purple-100 text-purple-800 border-purple-200";
-      case "MANIFESTATION":
-        return "bg-green-100 text-green-800 border-green-200";
       case "ALL_IN_ONE":
         return "bg-orange-100 text-orange-800 border-orange-200";
       default:

@@ -69,14 +69,8 @@ INSERT INTO "SubscriptionPlan" (
   "billingPeriod",
   "billingCycle"
 ) VALUES 
-('0479838746', 'Resilience', 'PSYCHOLOGY', 'ONLINE', 18000, '{"name": "plan_QDC"}', NULL, 'monthly', 1),
 ('24f715831c', 'Diamond Level', 'FITNESS', 'IN_PERSON', 50000, '{"name": "plan_QDC"}', NULL, 'monthly', 1),
-('3598f70e4b', 'Abundance', 'MANIFESTATION', 'ONLINE', 14000, '{"name": "plan_QDC"}', NULL, 'monthly', 1),
-('4e23be2e0c', 'Quantum Level', 'MANIFESTATION', 'ONLINE', 20000, '{"name": "plan_QDC"}', NULL, 'monthly', 1),
-('60cbf6651f', 'Growth Mindset', 'PSYCHOLOGY', 'ONLINE', 12000, '{"name": "plan_QDC"}', NULL, 'monthly', 1),
-('6f24408fba', 'Basic Clarity', 'PSYCHOLOGY', 'ONLINE', 6000, '{"name": "plan_QDC"}', NULL, 'monthly', 1),
 ('7fe5d6cc1c', 'Silver Plan', 'FITNESS', 'ONLINE', 18000, '{"name": "plan_QDC"}', NULL, 'monthly', 1),
-('acf37fe040', 'Vision Star', 'MANIFESTATION', 'ONLINE', 7000, '{"name": "plan_QDC"}', NULL, 'monthly', 1),
 ('d41dd8d1d4', 'Gold Plan', 'FITNESS', 'ONLINE', 30000, '{"name": "plan_QDC"}', NULL, 'monthly', 1),
 ('d62e470357', 'Self-Paced', 'FITNESS', 'SELF_PACED', 2000, '{"name": "plan_QDC"}', NULL, 'monthly', 1),
 ('efc30547b9', 'Platinum Level', 'FITNESS', 'IN_PERSON', 40000, '{"name": "plan_QDC"}', NULL, 'monthly', 1);
@@ -92,11 +86,11 @@ const prisma = new PrismaClient()
 async function restoreSubscriptionPlans() {
   const plans = [
     {
-      id: '0479838746',
-      name: 'Resilience',
-      category: 'PSYCHOLOGY',
-      planType: 'ONLINE',
-      price: 18000,
+      id: '24f715831c',
+      name: 'Diamond Level',
+      category: 'FITNESS',
+      planType: 'IN_PERSON',
+      price: 50000,
       features: { name: 'plan_QDC' },
       billingPeriod: 'monthly',
       billingCycle: 1

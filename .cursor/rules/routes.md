@@ -8,7 +8,7 @@ This document outlines the routes for the STRENTOR website.
 |--------|-----------|-------------|
 | `/` | Home | Landing page with an overview of STRENTOR's services. |
 | `/about` | About Us | Details about STRENTOR's mission and vision. |
-| `/programs` | Programs | Overview of all fitness, psychological, and manifestation plans. |
+| `/programs` | Programs | Overview of all fitness plans. |
 | `/pricing` | Pricing | Displays all subscription plans. |
 | `/resources` | Resource Center | Access to blogs, articles, and free content. |
 | `/contact` | Contact & Support | Users can reach out via a contact form or live chat. |
@@ -42,8 +42,6 @@ This document outlines the routes for the STRENTOR website.
 | `/workouts` | My Workout Plans | View assigned fitness programs. |
 | `/workouts/:planId` | Workout Plan Details | Log workouts and track progress for a specific plan. |
 | `/workouts/logs` | Workout Logs | View/edit logs for previous sessions. |
-| `/psychology` | My Psychological Plans | View assigned psychological programs (Future Scope). |
-| `/manifestation` | My Manifestation Plans | View assigned manifestation programs (Future Scope). |
 
 ### **Trainer & Admin Panel**
 | Route | Page Name | Description |

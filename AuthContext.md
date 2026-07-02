@@ -24,25 +24,21 @@ export type UserRole =
   | 'CLIENT' 
   | 'TRAINER' // Legacy - will be removed
   | 'FITNESS_TRAINER'
-  | 'PSYCHOLOGY_TRAINER' 
-  | 'MANIFESTATION_TRAINER'
   | 'FITNESS_TRAINER_ADMIN'
   | 'ADMIN';
 
 // Categories for trainers (useful for UI organization)
-export type TrainerCategory = 'FITNESS' | 'PSYCHOLOGY' | 'MANIFESTATION';
+export type TrainerCategory = 'FITNESS';
 
 // Platform access levels
 export type PlatformAccess = 
   | 'fitness_trainer'
-  | 'psychology_trainer'
-  | 'manifestation_trainer'
   | 'fitness_trainer_admin'
   | 'admin'
   | 'none';
 
 // Subscription categories (for client access control)
-export type SubscriptionCategory = 'FITNESS' | 'PSYCHOLOGY' | 'MANIFESTATION' | 'ALL_IN_ONE';
+export type SubscriptionCategory = 'FITNESS' | 'ALL_IN_ONE';
 export type PlanType = 'ONLINE' | 'IN_PERSON' | 'SELF_PACED';
 ```
 
@@ -63,8 +59,6 @@ export interface UserSubscription {
 // User's subscription portfolio
 export interface UserSubscriptions {
   FITNESS?: UserSubscription;
-  PSYCHOLOGY?: UserSubscription;
-  MANIFESTATION?: UserSubscription;
   ALL_IN_ONE?: UserSubscription;
 }
 
@@ -115,8 +109,6 @@ export const PERMISSIONS = {
   
   // Role-specific permissions
   FITNESS_CLIENTS_MANAGE: 'fitness.clients.manage',
-  PSYCHOLOGY_CLIENTS_MANAGE: 'psychology.clients.manage',
-  MANIFESTATION_CLIENTS_MANAGE: 'manifestation.clients.manage',
   
   // Admin permissions
   ADMIN_USER_MANAGEMENT: 'admin.user_management',
@@ -205,10 +197,6 @@ export function getTrainerCategory(userRole: UserRole): TrainerCategory | undefi
     case 'FITNESS_TRAINER':
     case 'FITNESS_TRAINER_ADMIN':
       return 'FITNESS';
-    case 'PSYCHOLOGY_TRAINER':
-      return 'PSYCHOLOGY';
-    case 'MANIFESTATION_TRAINER':
-      return 'MANIFESTATION';
     default:
       return undefined;
   }
@@ -222,8 +210,6 @@ export function isTrainerRole(userRole: UserRole): boolean {
   return [
     'TRAINER',
     'FITNESS_TRAINER', 
-    'PSYCHOLOGY_TRAINER', 
-    'MANIFESTATION_TRAINER',
     'FITNESS_TRAINER_ADMIN'
   ].includes(userRole);
 }
@@ -238,9 +224,8 @@ export function canAccessRoute(
 ): boolean {
   const routeRules = {
     '/fitness': ['FITNESS_TRAINER', 'FITNESS_TRAINER_ADMIN'],
-    '/psychological': ['PSYCHOLOGY_TRAINER'],
     '/admin': ['ADMIN', 'FITNESS_TRAINER_ADMIN'],
-    '/profile': ['CLIENT', 'FITNESS_TRAINER', 'PSYCHOLOGY_TRAINER', 'ADMIN'],
+    '/profile': ['CLIENT', 'FITNESS_TRAINER', 'ADMIN'],
   };
 
   for (const [route, allowedRoles] of Object.entries(routeRules)) {

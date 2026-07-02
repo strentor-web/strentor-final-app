@@ -13,7 +13,7 @@
 ## **2️⃣ Subscription Purchase & Management**
 ### **Flow:**
 1. User logs in and goes to `/pricing`.
-2. User selects a **subscription plan** (Fitness, Psychological, Manifestation) and is redirected to `/profile/subscriptions`.
+2. User selects a **subscription plan** (Fitness, All-in-One) and is redirected to `/profile/subscriptions`.
 3. Payment is processed via **Razorpay/Stripe**.
 4. Upon successful payment:
    - **User Subscriptions Table** updates with **active plan**.
@@ -72,19 +72,8 @@
 
 ---
 
-## **8️⃣ Future Scope: Psychological & Manifestation Plans**
-### **Flow:**
-1. Users with active psychological/manifestation plans can access `/psychology` or `/manifestation`.
-2. In the future, users will log progress via:
-   - **Journaling**
-   - **Mindset exercises**
-   - **Visualization tools**
-
----
-
 ### **✅ Summary**
 - **Users register, purchase subscriptions, and access their assigned plans.**
 - **Trainers assign workouts and monitor progress.**
 - **Admins oversee user management, subscriptions, and reports.**
 - **Workout logs and progress tracking ensure accountability.**
-- **Future features for psychological & manifestation tracking are planned.**

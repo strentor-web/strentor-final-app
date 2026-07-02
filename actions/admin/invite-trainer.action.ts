@@ -9,7 +9,7 @@ import { headers } from "next/headers";
 const InviteTrainerSchema = z.object({
   email: z.string().email("Please enter a valid email address"),
   name: z.string().min(2, "Name must be at least 2 characters"),
-  role: z.enum(["FITNESS_TRAINER", "FITNESS_TRAINER_ADMIN", "PSYCHOLOGY_TRAINER", "MANIFESTATION_TRAINER"]),
+  role: z.enum(["FITNESS_TRAINER", "FITNESS_TRAINER_ADMIN"]),
 });
 
 export const inviteTrainer = createSafeAction(

@@ -182,7 +182,7 @@ SELECT public.custom_access_token_hook(
 ```typescript
 // types/auth.ts
 export type UserRole = 'CLIENT' | 'TRAINER' | 'ADMIN';
-export type SubscriptionCategory = 'FITNESS' | 'PSYCHOLOGY' | 'MANIFESTATION';
+export type SubscriptionCategory = 'FITNESS' | 'ALL_IN_ONE';
 export type PlanType = 'ONLINE' | 'IN_PERSON' | 'SELF_PACED';
 
 export interface UserSubscription {
@@ -196,8 +196,7 @@ export interface UserSubscription {
 
 export interface UserSubscriptions {
   FITNESS?: UserSubscription;
-  PSYCHOLOGY?: UserSubscription;
-  MANIFESTATION?: UserSubscription;
+  ALL_IN_ONE?: UserSubscription;
   platform_access?: 'full'; // For TRAINER/ADMIN
 }
 
@@ -312,7 +311,7 @@ export function hasActiveSubscription(
 }
 
 export function hasAnyActiveSubscription(subscriptions: UserSubscriptions): boolean {
-  return !!(subscriptions.FITNESS || subscriptions.PSYCHOLOGY || subscriptions.MANIFESTATION);
+  return !!(subscriptions.FITNESS || subscriptions.ALL_IN_ONE);
 }
 
 export function hasPlatformAccess(subscriptions: UserSubscriptions): boolean {
@@ -322,8 +321,7 @@ export function hasPlatformAccess(subscriptions: UserSubscriptions): boolean {
 export function getActiveSubscriptionCategories(subscriptions: UserSubscriptions): SubscriptionCategory[] {
   const categories: SubscriptionCategory[] = [];
   if (subscriptions.FITNESS) categories.push('FITNESS');
-  if (subscriptions.PSYCHOLOGY) categories.push('PSYCHOLOGY');
-  if (subscriptions.MANIFESTATION) categories.push('MANIFESTATION');
+  if (subscriptions.ALL_IN_ONE) categories.push('ALL_IN_ONE');
   return categories;
 }
 
@@ -1345,10 +1343,9 @@ export function useAuth() {
     isTrainer: authUser?.role === 'TRAINER', 
     isAdmin: authUser?.role === 'ADMIN',
     // ✅ NEW: Subscription helpers
-    hasAnySubscription: () => authUser ? !!(authUser.subscriptions.FITNESS || authUser.subscriptions.PSYCHOLOGY || authUser.subscriptions.MANIFESTATION) : false,
+    hasAnySubscription: () => authUser ? !!(authUser.subscriptions.FITNESS || authUser.subscriptions.ALL_IN_ONE) : false,
     hasFitnessSubscription: () => !!authUser?.subscriptions.FITNESS,
-    hasPsychologySubscription: () => !!authUser?.subscriptions.PSYCHOLOGY,
-    hasManifestationSubscription: () => !!authUser?.subscriptions.MANIFESTATION,
+    hasAllInOneSubscription: () => !!authUser?.subscriptions.ALL_IN_ONE,
     hasPlatformAccess: () => authUser?.subscriptions.platform_access === 'full',
   };
 }
@@ -1381,8 +1378,7 @@ export function canAccessContent(
 export function getSubscriptionLimits(subscriptions: UserSubscriptions) {
   return {
     fitnessAccess: !!subscriptions.FITNESS,
-    psychologyAccess: !!subscriptions.PSYCHOLOGY,
-    manifestationAccess: !!subscriptions.MANIFESTATION,
+    allInOneAccess: !!subscriptions.ALL_IN_ONE,
     totalActiveSubscriptions: getActiveSubscriptionCategories(subscriptions).length,
   };
 }
@@ -1410,8 +1406,7 @@ function UserDashboard() {
   return (
     <div>
       {user?.subscriptions.FITNESS && <FitnessSection />}
-      {user?.subscriptions.PSYCHOLOGY && <PsychologySection />}
-      {user?.subscriptions.MANIFESTATION && <ManifestationSection />}
+      {user?.subscriptions.ALL_IN_ONE && <AllInOneSection />}
     </div>
   );
 }
@@ -1457,14 +1452,14 @@ export default async function ClientLayoutServer({
 
 ## ✅ **Summary of Changes for Your Use Case:**
 
-1. **✅ Multiple Subscriptions**: Users can now have FITNESS + PSYCHOLOGY + MANIFESTATION simultaneously
+1. **✅ Multiple Subscriptions**: Users can now have FITNESS + ALL_IN_ONE simultaneously
 2. **✅ Role-Based Logic**: TRAINERS and ADMINS don't need client subscriptions - they have platform access
 3. **✅ Proper Next.js Patterns**: Server Components for initial state, client components separated
 4. **✅ Enhanced Types**: TypeScript properly reflects your subscription model
 5. **✅ Granular Permissions**: Check access per content category
 
 This implementation now correctly handles your business model where:
-- A CLIENT can have 1 subscription from each of the 3 categories
+- A CLIENT can have 1 subscription from each of the 2 categories
 - TRAINERs and ADMINs have full platform access without subscriptions
 - Content access is properly gated by subscription category
 
@@ -1474,7 +1469,7 @@ This implementation now correctly handles your business model where:
 
 Your RBAC system is **100% ready** for Razorpay webhook handling! Here's why:
 
-1. **✅ Multi-Category Subscriptions**: Auth hook correctly handles FITNESS + PSYCHOLOGY + MANIFESTATION
+1. **✅ Multi-Category Subscriptions**: Auth hook correctly handles FITNESS + ALL_IN_ONE
 2. **✅ Real-time Updates**: JWT tokens automatically refresh when webhooks update the database
 3. **✅ Role-Based Logic**: TRAINERS/ADMINS get platform access, CLIENTs get subscription-based access
 4. **✅ Zero Manual Work**: Everything updates automatically when Razorpay sends webhooks
@@ -1542,7 +1537,7 @@ touch components/providers/Providers.tsx
 ### ⚡ **Key Benefits for Your Use Case**
 
 1. **🔄 Automatic Subscription Sync**: Razorpay webhooks → instant UI updates
-2. **🎯 Category-Based Access**: Fitness/Psychology/Manifestation content properly gated
+2. **🎯 Category-Based Access**: Fitness/All-in-one content properly gated
 3. **👨‍💼 Role Hierarchy**: CLIENT → TRAINER → ADMIN permissions work perfectly
 4. **🛡️ Secure**: All checks use server-verified JWT tokens
 5. **📱 Real-time**: Works across all browser tabs and devices

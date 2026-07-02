@@ -342,8 +342,6 @@ enum Role {
   CLIENT
   TRAINER
   FITNESS_TRAINER
-  PSYCHOLOGY_TRAINER
-  MANIFESTATION_TRAINER
   FITNESS_TRAINER_ADMIN
   ADMIN
 
@@ -382,8 +380,6 @@ enum PlanType {
 
 enum SubscriptionCategory {
   FITNESS
-  PSYCHOLOGY
-  MANIFESTATION
   ALL_IN_ONE
 
   @@schema("public")

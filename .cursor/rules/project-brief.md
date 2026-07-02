@@ -2,7 +2,7 @@
 # **STRENTOR Project Brief**
 
 ## **Project Overview**
-STRENTOR is a holistic fitness and well-being platform that offers **Fitness Coaching, Psychological Support, and Manifestation Guidance**. Users can subscribe to plans, track their progress, and interact with trainers via structured worksheets and reports.
+STRENTOR is a holistic fitness and well-being platform that offers **Fitness Coaching**. Users can subscribe to plans, track their progress, and interact with trainers via structured worksheets and reports.
 
 ---
 ## **Core Features & Requirements**
@@ -14,7 +14,7 @@ STRENTOR is a holistic fitness and well-being platform that offers **Fitness Coa
 - **Role-Based Access:** Trainers/Admins have access to assigned clients only.
 
 ### **2. Subscription Management**
-- Users can subscribe to multiple plans (**Fitness, Psychological Support, Manifestation**).
+- Users can subscribe to plans (**Fitness, All-in-One**).
 - A **merged profile** will display all active subscriptions with tabs/dropdowns for easy navigation.
 - Subscription purchases and renewals will be handled via an **integrated payment gateway**.
 
@@ -24,12 +24,7 @@ STRENTOR is a holistic fitness and well-being platform that offers **Fitness Coa
 - Users can log workouts and track progress.
 - Data visualization via tables and optional graphs for trends (e.g., weight progression).
 
-### **4. Psychological & Manifestation Services**
-- **Separate Profile Sections** but part of a unified profile.
-- No fitness worksheets access for Psychological/Manifestation users (future scope for dedicated worksheets).
-- **Future Scope:** Psychological & Manifestation trainers will be able to assign tasks (journaling, mindset exercises, progress tracking).
-
-### **5. User Profiles**
+### **4. User Profiles**
 Each user profile consists of:
 - **General Information**
 - **Service-Specific Information** (weight, body fat % for fitness users)
@@ -37,11 +32,9 @@ Each user profile consists of:
 - **Analysis Charts** (growth tracking, progress visualization)
 - **Before & After Photos** (with date/time stamps)
 
-### **6. Payment Gateway Integration**
+### **5. Payment Gateway Integration**
 - Users will subscribe and make payments directly through the website.
 - Payment plans and renewals will be automated.
 
-### **7. Future Enhancements**
-- **Psychological & Manifestation users will have their own worksheets & trackers.**
-- **Trainers for Psychological & Manifestation services will assign structured tasks.**
+### **6. Future Enhancements**
 - **Advanced progress tracking and insights dashboards.**

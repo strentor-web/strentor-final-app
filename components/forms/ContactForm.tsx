@@ -36,7 +36,7 @@ interface ContactFormProps {
   onOpenChange: (open: boolean) => void;
 }
 
-const serviceOptions = ["Fitness Training", "Manifestation Guidance", "Psychological Support"];
+const serviceOptions = ["Fitness Training"];
 
 const initialFormData: FormData = {
   name: "",

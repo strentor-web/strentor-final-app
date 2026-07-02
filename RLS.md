@@ -33,8 +33,7 @@ The RLS policies rely on JWT claims provided by our custom auth hook. The expect
       "start_date": "2024-01-01",
       "end_date": "2024-12-31"
     },
-    "PSYCHOLOGY": { /* ... */ },
-    "MANIFESTATION": { /* ... */ },
+    "ALL_IN_ONE": { /* ... */ },
     "platform_access": "full" // For TRAINER/ADMIN roles
   },
   "user_internal_id": "internal-user-table-id",
@@ -752,7 +751,7 @@ BEGIN
   
   -- Check if CLIENT has any active subscription
   subscriptions := auth.jwt() -> 'subscriptions';
-  RETURN (subscriptions ? 'FITNESS') OR (subscriptions ? 'PSYCHOLOGY') OR (subscriptions ? 'MANIFESTATION');
+  RETURN (subscriptions ? 'FITNESS') OR (subscriptions ? 'ALL_IN_ONE');
 END;
 $$;
 
@@ -800,22 +799,13 @@ CREATE POLICY "Fitness content requires subscription" ON public."WorkoutPlan"
         AND has_subscription_access('FITNESS'))
   );
 
--- Example: Psychology content gate (if you have psychology-specific tables)
--- CREATE POLICY "Psychology content requires subscription" ON public."PsychologyContent"
+-- Example: All-in-one content gate (if you have all-in-one-specific tables)
+-- CREATE POLICY "All-in-one content requires subscription" ON public."AllInOneContent"
 --   FOR SELECT 
 --   TO authenticated 
 --   USING (
 --     get_user_role() IN ('TRAINER', 'ADMIN')
---     OR (get_user_role() = 'CLIENT' AND has_subscription_access('PSYCHOLOGY'))
---   );
-
--- Example: Manifestation content gate (if you have manifestation-specific tables)
--- CREATE POLICY "Manifestation content requires subscription" ON public."ManifestationContent"
---   FOR SELECT 
---   TO authenticated 
---   USING (
---     get_user_role() IN ('TRAINER', 'ADMIN')
---     OR (get_user_role() = 'CLIENT' AND has_subscription_access('MANIFESTATION'))
+--     OR (get_user_role() = 'CLIENT' AND has_subscription_access('ALL_IN_ONE'))
 --   );
 ```
 
@@ -925,7 +915,7 @@ SET LOCAL "request.jwt.claims" = '{
   "user_role": "CLIENT", 
   "subscriptions": {
     "FITNESS": {"status": "ACTIVE", "plan_id": "123"},
-    "PSYCHOLOGY": {"status": "ACTIVE", "plan_id": "456"}
+    "ALL_IN_ONE": {"status": "ACTIVE", "plan_id": "456"}
   },
   "user_internal_id": "user-123",
   "profile_completed": true
@@ -964,7 +954,7 @@ SELECT * FROM public."User"; -- Should see all users
 
 -- Test subscription-specific access
 SELECT has_subscription_access('FITNESS'); -- Should return based on current role and subscriptions
-SELECT has_subscription_access('PSYCHOLOGY'); -- Test category-specific access
+SELECT has_subscription_access('ALL_IN_ONE'); -- Test category-specific access
 SELECT has_any_subscription_access(); -- Test any subscription access
 ```
 
@@ -1064,7 +1054,7 @@ CREATE POLICY "Advanced calculators require subscription" ON public."CalculatorS
     -- Basic calculators available to all
     ("calculatorType" = 'BASIC')
     -- Advanced calculators require subscription
-    OR ("calculatorType" IN ('FITNESS', 'PSYCHOLOGY', 'MANIFESTATION') 
+    OR ("calculatorType" IN ('FITNESS', 'ALL_IN_ONE') 
         AND has_subscription_access("calculatorType"::text))
     -- Own sessions always accessible
     OR "userId" = get_current_user_id()
@@ -1077,7 +1067,7 @@ CREATE POLICY "Advanced calculators require subscription" ON public."CalculatorS
     -- Can create basic sessions without subscription
     ("calculatorType" = 'BASIC' AND "userId" = get_current_user_id())
     -- Advanced sessions require subscription
-    OR ("calculatorType" IN ('FITNESS', 'PSYCHOLOGY', 'MANIFESTATION') 
+    OR ("calculatorType" IN ('FITNESS', 'ALL_IN_ONE') 
         AND "userId" = get_current_user_id()
         AND has_subscription_access("calculatorType"::text))
     -- Admin can create any

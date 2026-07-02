@@ -14,8 +14,6 @@ interface UseAdminClientColumnsProps {
 
 export const categoryColors: Record<string, string> = {
   FITNESS: "bg-blue-100 text-blue-800",
-  PSYCHOLOGY: "bg-purple-100 text-purple-800",
-  MANIFESTATION: "bg-green-100 text-green-800",
   ALL_IN_ONE: "bg-orange-100 text-orange-800",
 };
 
@@ -89,78 +87,6 @@ export const useAdminClientColumns = ({
             size="sm"
             className="h-8 px-3 text-xs bg-blue-600 text-white hover:bg-blue-700 border-blue-600"
             onClick={() => onAssignTrainer(client, 'FITNESS')}
-          >
-            <Plus className="h-3 w-3 mr-1" />
-            Assign
-          </Button>
-        );
-      },
-    },
-    {
-      id: "psychologyTrainer",
-      header: "Psychology Trainer",
-      cell: ({ row }) => {
-        const client = row.original;
-        const psychologyTrainer = client.trainerAssignments.psychology;
-        const hasPsychologyOrAllInOne = client.activePlans.some(plan => 
-          plan.category === 'PSYCHOLOGY' || plan.category === 'ALL_IN_ONE'
-        );
-
-        if (!hasPsychologyOrAllInOne) {
-          return <span className="text-muted-foreground">-</span>;
-        }
-
-        if (psychologyTrainer) {
-          return (
-            <div className="text-sm">
-              <div className="font-medium">{psychologyTrainer.trainerName}</div>
-              <div className="text-muted-foreground">{psychologyTrainer.trainerEmail}</div>
-            </div>
-          );
-        }
-
-        return (
-          <Button
-            variant="outline"
-            size="sm"
-            className="h-8 px-3 text-xs bg-blue-600 text-white hover:bg-blue-700 border-blue-600"
-            onClick={() => onAssignTrainer(client, 'PSYCHOLOGY')}
-          >
-            <Plus className="h-3 w-3 mr-1" />
-            Assign
-          </Button>
-        );
-      },
-    },
-    {
-      id: "manifestationTrainer",
-      header: "Manifestation Trainer",
-      cell: ({ row }) => {
-        const client = row.original;
-        const manifestationTrainer = client.trainerAssignments.manifestation;
-        const hasManifestationOrAllInOne = client.activePlans.some(plan => 
-          plan.category === 'MANIFESTATION' || plan.category === 'ALL_IN_ONE'
-        );
-
-        if (!hasManifestationOrAllInOne) {
-          return <span className="text-muted-foreground">-</span>;
-        }
-
-        if (manifestationTrainer) {
-          return (
-            <div className="text-sm">
-              <div className="font-medium">{manifestationTrainer.trainerName}</div>
-              <div className="text-muted-foreground">{manifestationTrainer.trainerEmail}</div>
-            </div>
-          );
-        }
-
-        return (
-          <Button
-            variant="outline"
-            size="sm"
-            className="h-8 px-3 text-xs bg-blue-600 text-white hover:bg-blue-700 border-blue-600"
-            onClick={() => onAssignTrainer(client, 'MANIFESTATION')}
           >
             <Plus className="h-3 w-3 mr-1" />
             Assign

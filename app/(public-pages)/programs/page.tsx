@@ -24,41 +24,6 @@ export default function TeamPage() {
       ],
       link: "/programs/fitness-training",
     },
-    {
-      name: "Ashmita Dani",
-      role: "Manifestation and Energy Coaching",
-      image: "/Ashmita.jpg",
-      qualifications: [
-        "In-depth research into energy science and quantum physics",
-        "Expertise in merging spirituality with scientific methods",
-      ],
-      offerings: [
-        "Manifesting Mojo Sessions: 1:1 coaching to shift energy and align with goals",
-        "Mindset and Energy Work: Address blockages to unlock transformation",
-        "Practical and Personalized: Data-backed strategies with spiritual insights",
-      ],
-      link: "/programs/manifestation-guidance",
-    },
-    {
-
-      name: "Anisha Jhunjhunwala",
-      role: "Emotional Wellness and Therapy",
-      image: "/anisha.jpeg",
-      qualifications: [
-        "Master's in Psychology and specialized training from NIMHANS, Bangalore",
-        "Over 2,000 hours of therapy with 450 individuals",
-        "Skilled in CBT, REBT, SFBT, and Person-Centered Therapy",
-      ],
-      offerings: [
-        "Personalized Therapy: Tailored sessions for depression, anxiety, self-esteem, and relationship challenges",
-        "Safe and Confidential Space: Non-judgmental environment for client support",
-        "Empowerment and Growth: Focus on self-discovery and resilience building",
-      ],
-      link: "/programs/psychological-support",
-    },
-    
-    
-    
   ]
 
   return (

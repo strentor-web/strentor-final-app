@@ -22,23 +22,6 @@ const communityGroups = [
     buttonColor: "bg-[#F31818]/70 hover:bg-[#F31818]/90",
     whatsappLink: "https://chat.whatsapp.com/EYr2NBxdcPoFKoj3TFmKQr"
   },
-  {
-    title: "Manifestation Guidance Group",
-    description: "Explore techniques, tools, and stories to help you manifest your dreams and cultivate positivity.",
-    icon: "/manifestation.png",
-    color: "from-[#FFA500]/10 to-[#FFA500]/5",
-    buttonColor: "bg-[#FFA500] hover:bg-[#FFA500]/90",
-    
-    whatsappLink: "https://chat.whatsapp.com/ExgtHr6bvmD3Ktq7ILuXQd"
-  },
-  {
-    title: "Psychological Support Group",
-    description: "A safe space to discuss mental health, share resources, and build emotional well-being.",
-    icon: "/brains.svg",
-    color: "from-[#0D97FF]/10 to-[#0D97FF]/5",
-    buttonColor: "bg-[#0D97FF]/65 hover:bg-[#0D97FF]/90",
-    whatsappLink: "https://chat.whatsapp.com/Lwxyq6gXujrL0ICb2shVkW"
-  },
   // {
   //   title: "Life Coaching Group",
   //   description: "Focused on personal growth, goal-setting, and achieving your full potential.",

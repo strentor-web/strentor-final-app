@@ -4,7 +4,7 @@ import { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Trainer Management - Admin - Strentor",
-  description: "Manage fitness trainers, psychology trainers, and manifestation trainers. Monitor trainer performance, client assignments, and platform activity.",
+  description: "Manage fitness trainers. Monitor trainer performance, client assignments, and platform activity.",
   keywords: ["trainer management", "fitness trainer admin", "trainer analytics", "trainer performance", "admin tools", "platform administration"],
 };
 

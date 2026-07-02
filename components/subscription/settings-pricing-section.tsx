@@ -40,8 +40,6 @@ const billingOptions = [
 
 const categoryGradients = {
   FITNESS: "from-blue-500 to-purple-500",
-  PSYCHOLOGY: "from-orange-500 to-red-500",
-  MANIFESTATION: "from-purple-500 to-pink-500",
   ALL_IN_ONE: "from-green-500 to-emerald-500"
 };
 
@@ -52,34 +50,6 @@ const categoryIcons = {
         <Image
           src="/fitness.svg"
           alt="Fitness Training"
-          fill
-          sizes="24px"
-          className="object-contain"
-          priority
-        />
-      </div>
-    </div>
-  ),
-  PSYCHOLOGY: (
-    <div className={`rounded-full bg-gradient-to-r ${categoryGradients.PSYCHOLOGY} w-10 h-10 flex items-center justify-center flex-shrink-0`}>
-      <div className="relative w-6 h-6">
-        <Image
-          src="/brains.svg"
-          alt="Psychological Support"
-          fill
-          sizes="24px"
-          className="object-contain"
-          priority
-        />
-      </div>
-    </div>
-  ),
-  MANIFESTATION: (
-    <div className={`rounded-full bg-gradient-to-r ${categoryGradients.MANIFESTATION} w-10 h-10 flex items-center justify-center flex-shrink-0`}>
-      <div className="relative w-6 h-6">
-        <Image
-          src="/manifestation.png"
-          alt="Manifestation Guidance"
           fill
           sizes="24px"
           className="object-contain"
@@ -270,22 +240,6 @@ export function SettingsPricingSection({
   };
 
   const getConfirmationMessage = (currentPlan: PlanMatrixItem | null, newPlan: PlanMatrixItem) => {
-    // Check if this is an All-In-One downgrade
-    if (currentPlan?.category === 'ALL_IN_ONE' && newPlan.category !== 'ALL_IN_ONE') {
-      const lostCategories = ['FITNESS', 'PSYCHOLOGY', 'MANIFESTATION']
-        .filter(cat => cat !== newPlan.category)
-        .map(cat => cat.toLowerCase())
-        .join(' and ');
-      
-      return `You are downgrading from All-In-One to ${newPlan.name}.
-      
-You'll lose access to ${lostCategories} features.
-
-Your subscription will be updated immediately and charges will be prorated accordingly.
-
-Are you sure you want to proceed with this downgrade?`;
-    }
-    
     // Default upgrade/downgrade messages
     if (newPlan.action.type === 'upgrade') {
       return `You are about to upgrade your subscription to ${newPlan.name}.
@@ -410,8 +364,6 @@ Are you sure you want to proceed with this downgrade?`;
   const getCategoryBorderClass = (category: string) => {
     switch (category) {
       case 'FITNESS': return 'border-blue-200';
-      case 'PSYCHOLOGY': return 'border-purple-200';
-      case 'MANIFESTATION': return 'border-orange-200';
       case 'ALL_IN_ONE': return 'border-green-200';
       default: return 'border-gray-200';
     }
@@ -466,7 +418,7 @@ Are you sure you want to proceed with this downgrade?`;
         {filteredPlans
           .sort((a, b) => {
             // Sort by category only since all plans have the same billing cycle now
-            const categoryOrder = ['FITNESS', 'PSYCHOLOGY', 'MANIFESTATION', 'ALL_IN_ONE'];
+            const categoryOrder = ['FITNESS', 'ALL_IN_ONE'];
             return categoryOrder.indexOf(a.category) - categoryOrder.indexOf(b.category);
           })
           .map((plan) => (

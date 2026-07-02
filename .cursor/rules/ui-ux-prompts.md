@@ -13,14 +13,12 @@
   - Dashboard (Home)  
   - My Subscriptions  
   - My Workouts  
-  - My Psychological Plans  
-  - My Manifestation Plans  
   - Profile & Settings  
   - Support  
 
 - **Main Content (Dashboard Overview)**  
   - **Welcome Message:** Personalized greeting with the user's name and motivation quote.  
-  - **Active Subscriptions:** Display active plans (Fitness, Psychological, Manifestation).  
+  - **Active Subscriptions:** Display active plans (Fitness, All-in-One).  
   - **Current Plan Progress:** Progress bars showing completion percentage of assigned plans.  
   - **Upcoming Workouts/Tasks:** List of next scheduled sessions.  
   - **Progress Overview:** Graphs (Weight tracking, workout logs, improvement stats).  
@@ -28,7 +26,7 @@
 
 ### **🔸 Visual Style:**
 - **Minimalist, card-based design** for easy readability.  
-- **Color scheme:** Soft blues and greens for fitness, warm tones for psychology/manifestation.  
+- **Color scheme:** Soft blues and greens for fitness.  
 - **Icons & Progress Indicators** for easy tracking of workouts, subscriptions, and progress.  
 - **Hover effects & subtle animations** for smooth user experience.  
 
@@ -37,7 +35,7 @@
 ## **2️⃣ User Profile (`/profile`)**
 
 ### **🔹 Prompt for UI Design:**
-"Create a structured **User Profile Page** for a multi-service subscription platform. The design should allow users to view and manage personal data with clear sections and a professional layout. It should provide access to profile settings, subscription status, and fitness/psychological/manifestation progress."
+"Create a structured **User Profile Page** for a fitness subscription platform. The design should allow users to view and manage personal data with clear sections and a professional layout. It should provide access to profile settings, subscription status, and fitness progress."
 
 ### **🔸 Layout & Sections:**
 - **Header Section:**  
@@ -51,8 +49,6 @@
   - **Subscription Details:** Active plans with renewal dates.  
   - **Service-Specific Data:**  
     - **Fitness Users:** Weight, Body Fat %, Workout Level.  
-    - **Psychological Users:** Emotional Progress Tracker (Future Scope).  
-    - **Manifestation Users:** Goal Mapping & Energy Tracking (Future Scope).  
   - **Before & After Photos:** Grid layout for progress tracking.  
   - **Privacy & Security:** Change password, enable 2FA.  
 
@@ -215,66 +211,10 @@
 
 ---
 
-## **4️⃣ Psychological Plans (`/psychology`) (Future Scope)**
-
-### **🔹 Prompt for UI Design:**
-"Create a **Psychological Plans Page** where users can access their stress management and emotional well-being exercises. Keep the design simple for now, with placeholders for future enhancements."
-
-### **🔸 Layout & Sections:**
-- **Header Section**  
-  - Page Title: **"My Psychological Plans"**  
-  - Short description: **"Improve your mindset, manage stress, and track emotional well-being."**  
-
-- **Active Psychological Plans (Card-Based UI)**  
-  - Plan Name (e.g., Growth Mindset Program)  
-  - Assigned Mentor  
-  - Duration (Start & End Date)  
-  - **CTA: "View Plan" Button**  
-
-- **Future Enhancements (Placeholder Section)**  
-  - Journaling & Reflection Tools  
-  - Emotional Well-Being Progress Tracker  
-
-### **🔸 Visual Style:**
-- **Minimalist, calming theme with soft colors**
-- **Simple card layout with structured plan details**
-- **Dropdown navigation for multiple plans**
-
----
-
-## **5️⃣ Manifestation Plans (`/manifestation`) (Future Scope)**
-
-### **🔹 Prompt for UI Design:**
-"Create a structured **Manifestation Plans Page** where users can access their goal-setting and energy alignment exercises. Keep the design simple for now, with placeholders for future enhancements."
-
-### **🔸 Layout & Sections:**
-- **Header Section**  
-  - Page Title: **"My Manifestation Plans"**  
-  - Short description: **"Visualize, align, and manifest your goals."**  
-
-- **Active Manifestation Plans (Card-Based UI)**  
-  - Plan Name (e.g., Quantum Manifestation Program)  
-  - Assigned Mentor  
-  - Duration (Start & End Date)  
-  - **CTA: "View Plan" Button**  
-
-- **Future Enhancements (Placeholder Section)**  
-  - Visualization & goal-mapping tools  
-  - Energy alignment trackers  
-
-### **🔸 Visual Style:**
-- **Spiritual & motivational theme with gradient backgrounds.**
-- **Minimalist layout keeping only essential information.**
-- **Dropdown navigation for multiple plans.**
-
----
-
 ### **✅ Summary**
 - **Workout Plans:** View all assigned training programs.
 - **Workout Plan Details:** Log workouts and track progress.
 - **Workout Logs:** View/edit past workouts and analyze performance trends.
-- **Psychological Plans (Future Scope):** Structured stress management programs.
-- **Manifestation Plans (Future Scope):** Goal-setting and energy alignment plans.
 
 
 
@@ -323,7 +263,7 @@
 ### **🔸 Layout & Sections:**
 - **Client List Table (Paginated View)**  
   - **Columns:** Name, Subscription Type, Last Workout Logged, Progress Status  
-  - **Search & Filters:** Filter by Plan Type (Fitness, Psychological, Manifestation)  
+  - **Search & Filters:** Filter by Plan Type (Fitness, All-in-One)  
   - **Action Buttons:**  
     - **View Progress Logs** → Redirects to `/trainer/progress-logs/:clientId`  
     - **Assign Workout Plan** → Redirects to `/trainer/workouts`  

@@ -46,8 +46,6 @@ export function AdminTrainersFilters({ filters, onFiltersChange }: AdminTrainers
           <SelectContent>
             <SelectItem value="ALL">All Categories</SelectItem>
             <SelectItem value="FITNESS">Fitness</SelectItem>
-            <SelectItem value="PSYCHOLOGY">Psychology</SelectItem>
-            <SelectItem value="MANIFESTATION">Manifestation</SelectItem>
           </SelectContent>
         </Select>
       </div>
