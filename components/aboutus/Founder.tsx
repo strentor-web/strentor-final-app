@@ -14,9 +14,9 @@ export function FounderStory() {
           />
         </div>
         <div className="space-y-6">
-          <span className="text-[#0D97FF] text-5xl font-semibold">Founder&apos;s Story</span>
+          <span className="text-[#B7BAC0] text-5xl font-semibold">Founder&apos;s Story</span>
           <h2 className="text-3xl font-bold text-foreground">
-            A Journey of <span className="text-[#F31818]">Purpose</span>
+            A Journey of <span className="text-[#D4AF37]">Purpose</span>
           </h2>
           <div className="space-y-4 text-lg font-semibold text-muted-foreground leading-relaxed">
             <p>
@@ -30,7 +30,7 @@ export function FounderStory() {
               relentless commitment to empowering individuals to surmount obstacles 
               and flourish.
             </p>
-            <p className="text-xl font-semibold text-[#00D115] mt-6">
+            <p className="text-xl font-semibold text-[#2FA366] mt-6">
             &quot;The only impossible journey is the one you never begin.&quot;
             </p>
           </div>

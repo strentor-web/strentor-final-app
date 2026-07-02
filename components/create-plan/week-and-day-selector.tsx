@@ -83,7 +83,7 @@ export function WeekAndDaySelector({ isMobile = false, onDaySelect }: WeekAndDay
 
   return (
     <aside className={cn(
-      "bg-gray-50 overflow-y-auto z-10",
+      "bg-muted overflow-y-auto z-10",
       isMobile 
         ? "w-full h-full p-3" 
         : "p-3 md:p-4 w-full md:w-[260px] lg:w-[320px] md:h-auto lg:h-[calc(100vh-4rem)]"
@@ -162,7 +162,7 @@ export function WeekAndDaySelector({ isMobile = false, onDaySelect }: WeekAndDay
                         "w-full rounded-md transition-colors flex items-center justify-between",
                         isSelected
                           ? "bg-blue-100 text-blue-900 font-medium"
-                          : "hover:bg-gray-100"
+                          : "hover:bg-muted"
                       )}
                     >
                       <button

@@ -191,7 +191,7 @@ export default function OnboardingWizard({ userEmail, userName }: OnboardingWiza
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-strentor-blue/10 via-white to-strentor-yellow/10">
+    <div className="min-h-screen bg-gradient-to-br from-strentor-blue/10 via-background to-strentor-yellow/10">
       {/* Improved layout for larger screens */}
       <div className="container mx-auto px-4 py-8">
         <div className="max-w-6xl mx-auto">
@@ -199,9 +199,9 @@ export default function OnboardingWizard({ userEmail, userName }: OnboardingWiza
           {/* Header */}
           <div className="text-center mb-8">
             <div className="flex justify-center mb-4">
-              <Image src="/strentor.png" alt="Strentor Logo" width={150} height={120} className="w-32 h-24" />
+              <Image src="/strentor-logo.png" alt="Strentor Logo" width={150} height={136} className="w-32 h-auto" />
             </div>
-            <p className="text-gray-600 text-lg">
+            <p className="text-muted-foreground text-lg">
               Let's set up your profile to get started on your fitness journey
             </p>
           </div>
@@ -223,7 +223,7 @@ export default function OnboardingWizard({ userEmail, userName }: OnboardingWiza
           )}
 
           {/* Main Form Card - Improved layout for larger screens */}
-          <div className="bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden">
+          <div className="bg-card rounded-2xl shadow-xl border border-border overflow-hidden">
             <div className="p-8 md:p-12">
               <FormProvider {...methods}>
                 <form noValidate onSubmit={handleSubmit(onSubmit)} className="space-y-8">
@@ -237,7 +237,7 @@ export default function OnboardingWizard({ userEmail, userName }: OnboardingWiza
                   <div className="flex justify-center space-x-[20px]">
                     <button
                       type="button"
-                      className="w-[100px] px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-strentor-red disabled:opacity-50 disabled:cursor-not-allowed"
+                      className="w-[100px] px-4 py-2 text-sm font-medium text-muted-foreground bg-card border border-border rounded-md hover:bg-muted focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-strentor-red disabled:opacity-50 disabled:cursor-not-allowed"
                       onClick={handleBack}
                       disabled={activeStep === 1}
                     >
@@ -268,7 +268,7 @@ export default function OnboardingWizard({ userEmail, userName }: OnboardingWiza
 
           {/* Footer */}
           <div className="text-center mt-8">
-            <p className="text-sm text-gray-500 flex items-center justify-center gap-2">
+            <p className="text-sm text-muted-foreground flex items-center justify-center gap-2">
               <svg className="w-4 h-4 text-strentor-green" fill="currentColor" viewBox="0 0 20 20">
                 <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
               </svg>

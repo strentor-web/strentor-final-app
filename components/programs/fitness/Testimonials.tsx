@@ -10,28 +10,28 @@ interface TestimonialCardProps {
 }
 
 const TestimonialCard = ({ quote, author, condition }: TestimonialCardProps) => (
-  <div className="p-8 bg-white rounded-xl shadow-lg text-center flex flex-col items-center h-full">
-    <Quote className="w-10 h-10 text-[#F31818] mb-6" />
-    <p className="text-gray-900 font-semibold text-lg leading-relaxed mb-6">{quote}</p>
+  <div className="p-8 bg-card rounded-xl shadow-lg text-center flex flex-col items-center h-full">
+    <Quote className="w-10 h-10 text-[#D4AF37] mb-6" />
+    <p className="text-foreground font-semibold text-lg leading-relaxed mb-6">{quote}</p>
     <div className="mt-auto flex flex-col items-center">
-      <div className="h-1 w-16 bg-[#F31818] mb-4"></div>
+      <div className="h-1 w-16 bg-[#D4AF37] mb-4"></div>
       <p className="font-semibold flex flex-col items-center">
-        <span className="text-[#F31818] text-lg mb-1">{author}</span>
-        {condition && <span className="text-gray-600 text-sm">{condition}</span>}
+        <span className="text-[#D4AF37] text-lg mb-1">{author}</span>
+        {condition && <span className="text-muted-foreground text-sm">{condition}</span>}
       </p>
     </div>
   </div>
 );
 
 const TestimonialCardMobile = ({ quote, author, condition }: TestimonialCardProps) => (
-  <div className="p-6 bg-white rounded-xl shadow-lg text-center flex flex-col items-center h-full">
-    <Quote className="w-8 h-8 text-[#F31818] mb-4" />
-    <p className="text-gray-900 font-semibold text-base leading-relaxed mb-4">{quote}</p>
+  <div className="p-6 bg-card rounded-xl shadow-lg text-center flex flex-col items-center h-full">
+    <Quote className="w-8 h-8 text-[#D4AF37] mb-4" />
+    <p className="text-foreground font-semibold text-base leading-relaxed mb-4">{quote}</p>
     <div className="mt-auto flex flex-col items-center">
-      <div className="h-1 w-12 bg-[#F31818] mb-3"></div>
+      <div className="h-1 w-12 bg-[#D4AF37] mb-3"></div>
       <p className="font-semibold flex flex-col items-center">
-        <span className="text-[#F31818] text-sm mb-1">{author}</span>
-        {condition && <span className="text-gray-600 text-xs">{condition}</span>}
+        <span className="text-[#D4AF37] text-sm mb-1">{author}</span>
+        {condition && <span className="text-muted-foreground text-xs">{condition}</span>}
       </p>
     </div>
   </div>
@@ -83,16 +83,16 @@ export default function FitnessTestimonials() {
   }, [totalWidth]);
 
   return (
-    <section className="py-20 bg-white">
+    <section className="py-20 bg-background">
       <div className="max-w-7xl mx-auto px-4">
         <h2 className="text-4xl md:text-5xl font-bold mb-12 text-center">
-          Real Stories of <span className="text-[#F31818]">Transformation</span>
+          Real Stories of <span className="text-[#D4AF37]">Transformation</span>
         </h2>
 
         <div className="relative w-full overflow-hidden">
           {/* Fade effect overlays */}
-          <div className="absolute left-0 top-0 w-16 h-full bg-gradient-to-r from-white to-transparent z-10"></div>
-          <div className="absolute right-0 top-0 w-16 h-full bg-gradient-to-l from-white to-transparent z-10"></div>
+          <div className="absolute left-0 top-0 w-16 h-full bg-gradient-to-r from-background to-transparent z-10"></div>
+          <div className="absolute right-0 top-0 w-16 h-full bg-gradient-to-l from-background to-transparent z-10"></div>
 
           {/* Testimonial cards */}
           <div

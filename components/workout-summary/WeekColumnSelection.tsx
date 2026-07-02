@@ -55,7 +55,7 @@ export default function WeekColumnSelection({
                 "flex items-center gap-2",
                 viewMode === 'weekly' 
                   ? "bg-strentor-red hover:bg-strentor-red/80 text-white" 
-                  : "bg-white text-strentor-red hover:bg-strentor-red/10 border-strentor-red"
+                  : "bg-card text-strentor-red hover:bg-strentor-red/10 border-strentor-red"
               )}
             >
               {viewMode === 'overall' ? (

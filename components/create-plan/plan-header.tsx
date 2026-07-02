@@ -502,7 +502,7 @@ export function PlanHeader({ mode, trainerId, planId }: PlanHeaderProps) {
             className={cn(
               meta.status === WorkoutPlanStatus.PUBLISHED 
                 ? "bg-green-100 text-green-800 hover:bg-green-200" 
-                : "bg-gray-100 text-gray-800 hover:bg-gray-200"
+                : "bg-muted text-muted-foreground hover:bg-muted/80"
             )}
           >
             {meta.status === WorkoutPlanStatus.PUBLISHED ? "Published" : "Draft"}

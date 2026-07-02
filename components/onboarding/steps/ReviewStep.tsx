@@ -64,10 +64,10 @@ export default function ReviewStep({ onConfirmationChange, isConfirmed }: Review
     <div className="space-y-6">
       {/* Header */}
       <div className="text-center">
-        <h2 className="text-2xl font-semibold text-gray-900 mb-2">
+        <h2 className="text-2xl font-semibold text-foreground mb-2">
           Review Your Information
         </h2>
-        <p className="text-gray-600">
+        <p className="text-muted-foreground">
           Please review your details before completing setup
         </p>
       </div>
@@ -83,31 +83,31 @@ export default function ReviewStep({ onConfirmationChange, isConfirmed }: Review
           <CardContent className="space-y-4 pt-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="flex justify-between">
-                <span className="text-gray-600 font-medium">Name:</span>
+                <span className="text-muted-foreground font-medium">Name:</span>
                 <span className="font-semibold">{data.name}</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-gray-600 font-medium">Email:</span>
+                <span className="text-muted-foreground font-medium">Email:</span>
                 <span className="font-semibold text-sm">{data.email}</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-gray-600 font-medium">Date of Birth:</span>
+                <span className="text-muted-foreground font-medium">Date of Birth:</span>
                 <span className="font-semibold">
                   {data.dateOfBirth ? formatDateOfBirth(data.dateOfBirth) : 'N/A'}
                 </span>
               </div>
               <div className="flex justify-between">
-                <span className="text-gray-600 font-medium">Age:</span>
+                <span className="text-muted-foreground font-medium">Age:</span>
                 <span className="font-semibold">
                   {data.dateOfBirth ? calculateAge(data.dateOfBirth) : 'N/A'} years
                 </span>
               </div>
               <div className="flex justify-between">
-                <span className="text-gray-600 font-medium">Gender:</span>
+                <span className="text-muted-foreground font-medium">Gender:</span>
                 <span className="font-semibold">{data.gender}</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-gray-600 font-medium">Country:</span>
+                <span className="text-muted-foreground font-medium">Country:</span>
                 <div className="flex items-center gap-2">
                   {countryInfo && (
                     <div className="w-4 h-4 rounded-full overflow-hidden flex-shrink-0">
@@ -124,7 +124,7 @@ export default function ReviewStep({ onConfirmationChange, isConfirmed }: Review
                 </div>
               </div>
               <div className="flex justify-between">
-                <span className="text-gray-600 font-medium">Phone:</span>
+                <span className="text-muted-foreground font-medium">Phone:</span>
                 <span className="font-semibold text-sm">
                   {formatPhoneNumber(data.phone || '')}
                 </span>
@@ -143,19 +143,19 @@ export default function ReviewStep({ onConfirmationChange, isConfirmed }: Review
           <CardContent className="space-y-4 pt-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="flex justify-between">
-                <span className="text-gray-600 font-medium">Weight:</span>
+                <span className="text-muted-foreground font-medium">Weight:</span>
                 <span className="font-semibold">
                   {data.weight} kg
                 </span>
               </div>
               <div className="flex justify-between">
-                <span className="text-gray-600 font-medium">Height:</span>
+                <span className="text-muted-foreground font-medium">Height:</span>
                 <span className="font-semibold">
                   {data.height} cm
                 </span>
               </div>
               <div className="flex justify-between md:col-span-2">
-                <span className="text-gray-600 font-medium">Activity Level:</span>
+                <span className="text-muted-foreground font-medium">Activity Level:</span>
                 <span className="font-semibold">
                   {formatActivityLevel(data.activityLevel || '')}
                 </span>
@@ -176,25 +176,25 @@ export default function ReviewStep({ onConfirmationChange, isConfirmed }: Review
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {data.neck && (
                   <div className="flex justify-between">
-                    <span className="text-gray-600 font-medium">Neck:</span>
+                    <span className="text-muted-foreground font-medium">Neck:</span>
                     <span className="font-semibold">{data.neck} cm</span>
                   </div>
                 )}
                 {data.waist && (
                   <div className="flex justify-between">
-                    <span className="text-gray-600 font-medium">Waist:</span>
+                    <span className="text-muted-foreground font-medium">Waist:</span>
                     <span className="font-semibold">{data.waist} cm</span>
                   </div>
                 )}
                 {data.hips && (
                   <div className="flex justify-between">
-                    <span className="text-gray-600 font-medium">Hips:</span>
+                    <span className="text-muted-foreground font-medium">Hips:</span>
                     <span className="font-semibold">{data.hips} cm</span>
                   </div>
                 )}
               </div>
               {(!data.neck || !data.waist || !data.hips) && (
-                <p className="text-xs text-gray-500 bg-gray-50 p-2 rounded">
+                <p className="text-xs text-muted-foreground bg-muted p-2 rounded">
                   💡 Missing measurements can be added later for advanced calculators
                 </p>
               )}

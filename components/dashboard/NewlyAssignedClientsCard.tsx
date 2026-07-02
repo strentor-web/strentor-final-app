@@ -20,7 +20,7 @@ export function NewlyAssignedClientsCard({ clients }: NewlyAssignedClientsCardPr
       case "ALL_IN_ONE":
         return "bg-orange-100 text-orange-800 border-orange-200";
       default:
-        return "bg-gray-100 text-gray-800 border-gray-200";
+        return "bg-muted text-muted-foreground border-border";
     }
   };
 
@@ -46,7 +46,7 @@ export function NewlyAssignedClientsCard({ clients }: NewlyAssignedClientsCardPr
             {clients.map((client) => (
               <div
                 key={client.id}
-                className="flex items-center justify-between p-4 border rounded-lg hover:bg-gray-50 transition-colors"
+                className="flex items-center justify-between p-4 border rounded-lg hover:bg-muted transition-colors"
               >
                 <div className="flex items-center space-x-4">
                   <div className="flex-shrink-0">
@@ -56,7 +56,7 @@ export function NewlyAssignedClientsCard({ clients }: NewlyAssignedClientsCardPr
                   </div>
                   <div className="space-y-1">
                     <div className="flex items-center space-x-2">
-                      <p className="font-medium text-gray-900">{client.clientName}</p>
+                      <p className="font-medium text-foreground">{client.clientName}</p>
                       {client.category && (
                         <Badge 
                           variant="outline" 
@@ -66,8 +66,8 @@ export function NewlyAssignedClientsCard({ clients }: NewlyAssignedClientsCardPr
                         </Badge>
                       )}
                     </div>
-                    <p className="text-sm text-gray-500">{client.clientEmail}</p>
-                    <div className="flex items-center space-x-1 text-xs text-gray-500">
+                    <p className="text-sm text-muted-foreground">{client.clientEmail}</p>
+                    <div className="flex items-center space-x-1 text-xs text-muted-foreground">
                       <Calendar className="h-3 w-3" />
                       <span>Assigned {formatDistanceToNow(new Date(client.assignedAt), { addSuffix: true })}</span>
                     </div>
@@ -87,10 +87,10 @@ export function NewlyAssignedClientsCard({ clients }: NewlyAssignedClientsCardPr
         ) : (
           <div className="text-center py-12">
             <User className="h-12 w-12 mx-auto text-gray-400 mb-4" />
-            <h3 className="text-lg font-medium text-gray-900 mb-2">
+            <h3 className="text-lg font-medium text-foreground mb-2">
               All clients have plans!
             </h3>
-            <p className="text-gray-500 mb-4">
+            <p className="text-muted-foreground mb-4">
               Great job! All your newly assigned clients already have active or future workout plans.
             </p>
             <Link href="/fitness/plans/create">

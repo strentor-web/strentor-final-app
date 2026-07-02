@@ -94,10 +94,10 @@ export default function MeasurementsStep() {
     <div className="space-y-6">
       {/* Header */}
       <div className="text-center">
-        <h2 className="text-2xl font-semibold text-gray-900 mb-2">
+        <h2 className="text-2xl font-semibold text-foreground mb-2">
           Body Measurements
         </h2>
-        <p className="text-gray-600">
+        <p className="text-muted-foreground">
           These optional measurements help us provide more accurate body composition calculations
         </p>
       </div>
@@ -120,7 +120,7 @@ export default function MeasurementsStep() {
       <div className="space-y-6">
         {/* Neck */}
         <div className="space-y-2">
-          <Label htmlFor="neck" className="text-sm font-medium text-gray-700">
+          <Label htmlFor="neck" className="text-sm font-medium text-muted-foreground">
             Neck Circumference (cm)
           </Label>
           <Input
@@ -136,7 +136,7 @@ export default function MeasurementsStep() {
             }`}
             onChange={(e) => updateValidation('neck', e.target.value)}
           />
-          <p className="text-xs text-gray-500">
+          <p className="text-xs text-muted-foreground">
             Measure around the base of your neck
           </p>
           {errors.neck && (
@@ -160,7 +160,7 @@ export default function MeasurementsStep() {
 
         {/* Waist */}
         <div className="space-y-2">
-          <Label htmlFor="waist" className="text-sm font-medium text-gray-700">
+          <Label htmlFor="waist" className="text-sm font-medium text-muted-foreground">
             Waist Circumference (cm)
           </Label>
           <Input
@@ -176,7 +176,7 @@ export default function MeasurementsStep() {
             }`}
             onChange={(e) => updateValidation('waist', e.target.value)}
           />
-          <p className="text-xs text-gray-500">
+          <p className="text-xs text-muted-foreground">
             Measure around your natural waistline
           </p>
           {errors.waist && (
@@ -200,7 +200,7 @@ export default function MeasurementsStep() {
 
         {/* Hips */}
         <div className="space-y-2">
-          <Label htmlFor="hips" className="text-sm font-medium text-gray-700">
+          <Label htmlFor="hips" className="text-sm font-medium text-muted-foreground">
             Hip Circumference (cm)
           </Label>
           <Input
@@ -216,7 +216,7 @@ export default function MeasurementsStep() {
             }`}
             onChange={(e) => updateValidation('hips', e.target.value)}
           />
-          <p className="text-xs text-gray-500">
+          <p className="text-xs text-muted-foreground">
             Measure around the widest part of your hips
           </p>
           {errors.hips && (
@@ -248,7 +248,7 @@ export default function MeasurementsStep() {
           </CardTitle>
         </CardHeader>
         <CardContent className="pt-0 space-y-2">
-          <div className="text-sm text-gray-700 space-y-1">
+          <div className="text-sm text-muted-foreground space-y-1">
             <p>• Use a flexible measuring tape</p>
             <p>• Measure over minimal clothing</p>
             <p>• Don't pull the tape too tight</p>

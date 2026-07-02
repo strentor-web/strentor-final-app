@@ -365,7 +365,7 @@ Are you sure you want to proceed with this downgrade?`;
     switch (category) {
       case 'FITNESS': return 'border-blue-200';
       case 'ALL_IN_ONE': return 'border-green-200';
-      default: return 'border-gray-200';
+      default: return 'border-border';
     }
   };
 

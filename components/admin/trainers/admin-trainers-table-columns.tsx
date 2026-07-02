@@ -24,7 +24,7 @@ function getCategoryBadgeColor(category: string) {
     case "FITNESS":
       return "bg-blue-100 text-blue-800 hover:bg-blue-200";
     default:
-      return "bg-gray-100 text-gray-800 hover:bg-gray-200";
+      return "bg-muted text-foreground hover:bg-muted/80";
   }
 }
 
@@ -40,15 +40,15 @@ export function useAdminTrainersTableColumns() {
         return (
           <div className="flex items-center gap-3">
             <Avatar className="h-8 w-8">
-              <AvatarFallback className="bg-gray-100 text-gray-600 text-xs">
+              <AvatarFallback className="bg-muted text-muted-foreground text-xs">
                 {getInitials(trainer.name)}
               </AvatarFallback>
             </Avatar>
             <div className="min-w-0 flex-1">
-              <div className="font-medium text-gray-900 truncate">
+              <div className="font-medium text-foreground truncate">
                 {trainer.name}
               </div>
-              <div className="text-sm text-gray-500 truncate">
+              <div className="text-sm text-muted-foreground truncate">
                 {trainer.email}
               </div>
             </div>
@@ -84,11 +84,11 @@ export function useAdminTrainersTableColumns() {
         
         return (
           <div className="text-center">
-            <div className="font-medium text-gray-900">
+            <div className="font-medium text-foreground">
               {clientCount}
             </div>
             {clientCount > 0 && (
-              <div className="text-xs text-gray-500">
+              <div className="text-xs text-muted-foreground">
                 {clientCount === 1 ? 'client' : 'clients'}
               </div>
             )}
@@ -107,7 +107,7 @@ export function useAdminTrainersTableColumns() {
         
         return (
           <div className="text-sm">
-            <div className={`font-medium ${isAdmin ? 'text-orange-600' : 'text-gray-900'}`}>
+            <div className={`font-medium ${isAdmin ? 'text-orange-600' : 'text-foreground'}`}>
               {role.replace(/_/g, ' ')}
             </div>
             {isAdmin && (
@@ -127,7 +127,7 @@ export function useAdminTrainersTableColumns() {
       cell: ({ row }) => {
         const date = row.getValue("createdAt") as Date;
         return (
-          <div className="text-sm text-gray-900">
+          <div className="text-sm text-foreground">
             {format(date, "MMM dd, yyyy")}
           </div>
         );

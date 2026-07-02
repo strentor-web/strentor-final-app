@@ -110,10 +110,10 @@ export function AssignTrainerModal({
         
         <div className="space-y-4">
           {/* Customer Information */}
-          <div className="bg-gray-50 p-3 rounded-lg">
-            <h4 className="font-medium text-sm text-gray-900">{customerName}</h4>
-            <p className="text-xs text-gray-600">{customerEmail}</p>
-            <p className="text-xs text-gray-600 mt-1">
+          <div className="bg-muted p-3 rounded-lg">
+            <h4 className="font-medium text-sm text-foreground">{customerName}</h4>
+            <p className="text-xs text-muted-foreground">{customerEmail}</p>
+            <p className="text-xs text-muted-foreground mt-1">
               Plan: <span className="font-medium">{getCategoryDisplayName(planCategory)}</span>
             </p>
           </div>
@@ -124,10 +124,10 @@ export function AssignTrainerModal({
             {isLoading ? (
               <div className="flex items-center justify-center p-4">
                 <Loader2 className="h-4 w-4 animate-spin" />
-                <span className="ml-2 text-sm text-gray-600">Loading trainers...</span>
+                <span className="ml-2 text-sm text-muted-foreground">Loading trainers...</span>
               </div>
             ) : trainers.length === 0 ? (
-              <div className="text-center p-4 text-sm text-gray-500">
+              <div className="text-center p-4 text-sm text-muted-foreground">
                 No trainers available for this plan category.
               </div>
             ) : (
@@ -140,7 +140,7 @@ export function AssignTrainerModal({
                     <SelectItem key={trainer.id} value={trainer.id}>
                       <div className="flex flex-col">
                         <span className="font-medium">{trainer.name}</span>
-                        <span className="text-xs text-gray-500">
+                        <span className="text-xs text-muted-foreground">
                           {getTrainerRoleDisplayName(trainer.role)}
                         </span>
                       </div>

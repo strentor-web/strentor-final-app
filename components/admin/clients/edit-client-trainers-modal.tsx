@@ -245,9 +245,9 @@ export function EditClientTrainersModal({
         
         <div className="space-y-6">
           {/* Client Info */}
-          <div className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg">
+          <div className="flex items-center gap-3 p-3 bg-muted rounded-lg">
             <Avatar className="h-10 w-10">
-              <AvatarFallback className="bg-gray-200 text-gray-600">
+              <AvatarFallback className="bg-secondary text-secondary-foreground">
                 {getInitials(client.name)}
               </AvatarFallback>
             </Avatar>

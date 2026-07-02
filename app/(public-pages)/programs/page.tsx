@@ -39,7 +39,7 @@ export default function TeamPage() {
         />
         <div className="absolute inset-0 flex flex-col items-center justify-center px-4 text-center">
           <h1 className="text-5xl md:text-7xl font-bold text-white mb-6">
-            Our <span className="text-[#F31818]">Programs</span>
+            Our <span className="text-[#D4AF37]">Programs</span>
           </h1>
           <p className="text-xl md:text-2xl text-gray-200 max-w-3xl">
             Experts dedicated to your holistic transformation
@@ -62,31 +62,31 @@ export default function TeamPage() {
                       <h2 className="text-4xl font-bold text-foreground mb-2">
                         {member.name}
                       </h2>
-                      <Badge className="bg-[#FFBD22] text-black text-md font-semibold">
+                      <Badge className="bg-[#C9972B] text-black text-md font-semibold">
                         {member.role}
                       </Badge>
                       <div className="mt-8 space-y-20">
                         <div>
-                          <h3 className="text-lg font-semibold text-[#0D97FF] mb-4">
+                          <h3 className="text-lg font-semibold text-[#B7BAC0] mb-4">
                             Qualifications
                           </h3>
                           <ul className="space-y-3 text-muted-foreground font-bold">
                             {member.qualifications.map((qual, idx) => (
                               <li key={idx} className="flex items-start">
-                                <Star className="h-5 w-5 text-[#FFBD22] mt-1 mr-3 flex-shrink-0" />
+                                <Star className="h-5 w-5 text-[#C9972B] mt-1 mr-3 flex-shrink-0" />
                                 <span>{qual}</span>
                               </li>
                             ))}
                           </ul>
                         </div>
                         <div>
-                          <h3 className="text-lg font-semibold text-[#00D115] mb-4">
+                          <h3 className="text-lg font-semibold text-[#2FA366] mb-4">
                             What We Offer
                           </h3>
                           <ul className="space-y-3 text-muted-foreground font-bold">
                             {member.offerings.map((offer, idx) => (
                               <li key={idx} className="flex items-start">
-                                <Check className="h-5 w-5 text-[#00D115] mt-1 mr-3 flex-shrink-0" />
+                                <Check className="h-5 w-5 text-[#2FA366] mt-1 mr-3 flex-shrink-0" />
                                 <span>{offer}</span>
                               </li>
                             ))}
@@ -95,7 +95,7 @@ export default function TeamPage() {
                       </div>
                       <div className="mt-8">
                         <Button
-                          className="bg-[#F31818] hover:bg-[#F31818]/90 text-lg font-bold text-white rounded-full px-8 py-6 group"
+                          className="bg-[#D4AF37] hover:bg-[#D4AF37]/90 text-lg font-bold text-white rounded-full px-8 py-6 group"
                           onClick={() => member.link ? window.location.href = member.link : null}
                         >
                           Find Out More <span className="group-hover:translate-x-1 transition-transform inline-block ml-1">→</span>
@@ -121,13 +121,13 @@ export default function TeamPage() {
       {/* <div className="text-center py-20 bg-gradient-to-br from-blue-600/20 via-purple-500/20 to-pink-500/20"> */}
       <div className="text-center py-20 bg-gray-900">
           <h2 className="text-4xl font-bold text-white mb-4 sm:text-5xl md:text-6xl lg:text-7xl">
-            Ready to Begin Your <span className="text-[#F31818]">Journey</span>?
+            Ready to Begin Your <span className="text-[#D4AF37]">Journey</span>?
           </h2>
           <p className="mx-auto max-w-[700px] text-gray-300 font-medium md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed dark:text-gray-400 pb-8 pt-2">
             Take the first step towards transformation with our expert team of coaches and mentors.
           </p>
-          <Button 
-            className="bg-[#F31818] hover:bg-[#F31818]/90 text-white font-bold rounded-full px-8 py-6 text-lg"
+          <Button
+            className="bg-[#D4AF37] hover:bg-[#D4AF37]/90 text-white font-bold rounded-full px-8 py-6 text-lg"
             onClick={() => window.open("https://calendly.com/strentor/strentor-services", "_blank")}
           >
             Start Your Transformation

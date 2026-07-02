@@ -48,7 +48,7 @@ function getCategoryColor(category: string) {
     case "obese":
       return "text-red-600";
     default:
-      return "text-gray-600";
+      return "text-muted-foreground";
   }
 }
 
@@ -516,9 +516,9 @@ export default function BodyFatCalculator({
         </div>
         
         {isBodyFatDataLoading ? (
-          <div className="py-4 text-center text-gray-500">Loading...</div>
+          <div className="py-4 text-center text-muted-foreground">Loading...</div>
         ) : paginatedEntries.length === 0 ? (
-          <div className="py-4 text-center text-gray-500">No body fat entries found.</div>
+          <div className="py-4 text-center text-muted-foreground">No body fat entries found.</div>
         ) : (
           paginatedEntries.map((item, idx) => {
             const inputs = item.inputs as any;
@@ -555,19 +555,19 @@ export default function BodyFatCalculator({
       {/* Right: Body Fat Information card */}
       <div className="flex-1 min-w-[280px] flex justify-center md:justify-start mt-8 md:mt-0">
         <div className="w-full md:w-80 max-w-xs">
-          <div className="bg-white rounded-lg shadow p-6 space-y-6 border">
+          <div className="bg-card rounded-lg shadow p-6 space-y-6 border">
                          <div>
-               <h3 className="text-lg font-medium text-gray-500">What is Body Fat %?</h3>
-               <p className="text-sm text-gray-600 mt-2">
+               <h3 className="text-lg font-medium text-muted-foreground">What is Body Fat %?</h3>
+               <p className="text-sm text-muted-foreground mt-2">
                  Body fat percentage is the proportion of your body weight that consists of fat tissue. It's a key indicator of health and fitness.
                </p>
-               <p className="text-sm text-gray-500 mt-2">
+               <p className="text-sm text-muted-foreground mt-2">
                  <strong>Navy Standards:</strong> The US Navy uses specific body fat limits based on age and gender for service members.
                </p>
              </div>
             
                          <div>
-               <h4 className="font-medium text-gray-700 mb-2">Body Fat Categories:</h4>
+               <h4 className="font-medium text-muted-foreground mb-2">Body Fat Categories:</h4>
                <div className="space-y-2 text-sm">
                  <div className="flex justify-between">
                    <span className="text-blue-600">Essential:</span>
@@ -597,7 +597,7 @@ export default function BodyFatCalculator({
              </div>
             
                          <div className="pt-4 border-t">
-               <p className="text-sm text-gray-600">
+               <p className="text-sm text-muted-foreground">
                  <strong>Formula:</strong> Navy Body Fat Formula (2024)
                  <br />
                  <strong>Men:</strong> %BF = 495 / (1.0324 − 0.19077 × log10(waist − neck) + 0.15456 × log10(height)) − 450

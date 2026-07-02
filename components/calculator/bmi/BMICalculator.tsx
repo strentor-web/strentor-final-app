@@ -41,7 +41,7 @@ function getCategoryColor(category: string) {
     case "obese":
       return "text-red-600";
     default:
-      return "text-gray-600";
+      return "text-muted-foreground";
   }
 }
 
@@ -370,9 +370,9 @@ export default function BMICalculator({ initialWeight, initialHeight }: { initia
           </div>
         </div>
         {isBMIDataLoading ? (
-          <div className="py-4 text-center text-gray-500">Loading...</div>
+          <div className="py-4 text-center text-muted-foreground">Loading...</div>
         ) : paginatedEntries.length === 0 ? (
-          <div className="py-4 text-center text-gray-500">No BMI entries found.</div>
+          <div className="py-4 text-center text-muted-foreground">No BMI entries found.</div>
         ) : (
           paginatedEntries.map((item, idx) => (
             <div key={`${item.date.toISOString()}-${item.bmi}-${idx}`} className="grid grid-cols-7 gap-6 border-b py-2">
@@ -403,9 +403,9 @@ export default function BMICalculator({ initialWeight, initialHeight }: { initia
       <div className="flex-1 min-w-[280px] flex justify-center md:justify-start mt-8 md:mt-0">
         {latest && (
           <div className="w-full md:w-80 max-w-xs">
-            <div className="bg-white rounded-lg shadow p-6 text-center space-y-6 border">
+            <div className="bg-card rounded-lg shadow p-6 text-center space-y-6 border">
               <div>
-                <h3 className="text-lg font-medium text-gray-500">Latest Result</h3>
+                <h3 className="text-lg font-medium text-muted-foreground">Latest Result</h3>
                 <div className={`text-7xl font-bold ${getCategoryColor(getBmiCategory(latest.bmi))}`}>{latest.bmi}</div>
                 <div className="mt-2 text-lg">
                   You are <span className={`font-medium ${getCategoryColor(getBmiCategory(latest.bmi))}`}>{getBmiCategory(latest.bmi)}</span>
@@ -424,7 +424,7 @@ export default function BMICalculator({ initialWeight, initialHeight }: { initia
                   <div className="bg-red-500 h-full w-1/4"></div>
                 </div>
               </div>
-              <div className="flex justify-between text-xs text-gray-600">
+              <div className="flex justify-between text-xs text-muted-foreground">
                 <span>
                   Underweight
                   <br />
@@ -447,7 +447,7 @@ export default function BMICalculator({ initialWeight, initialHeight }: { initia
                 </span>
               </div>
               <div className="pt-4 border-t">
-                <p className="text-gray-600">
+                <p className="text-muted-foreground">
                   Your ideal weight is <span className="font-medium">
                     {userWeightUnit === WeightUnit.KG 
                       ? ((22 * (latest.height / 100) * (latest.height / 100)).toFixed(1))

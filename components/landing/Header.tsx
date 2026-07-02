@@ -34,11 +34,11 @@ export default function Header() {
           <div>
             <Link href="/" className="flex items-center">
               <Image
-                src="/strentor.png"
+                src="/strentor-logo.png"
                 alt="Strentor Logo"
-                width={120}
-                height={240}
-                className="w-38 h-28"
+                width={140}
+                height={127}
+                className="w-32 h-auto"
               />
             </Link>
           </div>

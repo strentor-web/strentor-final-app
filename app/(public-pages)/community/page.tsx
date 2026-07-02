@@ -9,25 +9,25 @@ const communityGroups = [
   {
     title: "STRENTOR Main Community",
     description: "Your hub for general updates, announcements, and discussions across all services.",
-    icon: "/strentorfav.png",
-    color: "from-[#ffde21]/10 to-[#ffde21]/5",
-    buttonColor: "bg-[#ffde21] hover:bg-[#ffde21]/90",
+    icon: "/strentor-icon.png",
+    color: "from-[#E8C766]/10 to-[#E8C766]/5",
+    buttonColor: "bg-[#E8C766] hover:bg-[#E8C766]/90",
     whatsappLink: "https://chat.whatsapp.com/GJRdI9y1NRkFei0IosUAlL"
   },
   {
     title: "Fitness Group",
     description: "For those focused on physical health and fitness, this group shares workouts, fitness tips, and motivational content.",
     icon: "/fitness.svg",
-    color: "from-[#F31818]/10 to-[#F31818]/5",
-    buttonColor: "bg-[#F31818]/70 hover:bg-[#F31818]/90",
+    color: "from-[#D4AF37]/10 to-[#D4AF37]/5",
+    buttonColor: "bg-[#D4AF37]/70 hover:bg-[#D4AF37]/90",
     whatsappLink: "https://chat.whatsapp.com/EYr2NBxdcPoFKoj3TFmKQr"
   },
   // {
   //   title: "Life Coaching Group",
   //   description: "Focused on personal growth, goal-setting, and achieving your full potential.",
   //   icon: "/lifecoaching.png",
-  //   color: "from-[#00D115]/10 to-[#00D115]/5",
-  //   buttonColor: "bg-[#00D115] hover:bg-[#00D115]/90",
+  //   color: "from-[#2FA366]/10 to-[#2FA366]/5",
+  //   buttonColor: "bg-[#2FA366] hover:bg-[#2FA366]/90",
   //   whatsappLink: "https://chat.whatsapp.com/BW8s55o0pLCHCimnM0za3x"
   // },
   
@@ -49,7 +49,7 @@ export default function CommunityPage() {
         />
         <div className="absolute inset-0 flex flex-col items-center justify-center px-4 text-center">
           <h1 className="text-5xl md:text-7xl font-bold text-white mb-6">
-            Join Our <span className="text-[#F31818]">Community</span>
+            Join Our <span className="text-[#D4AF37]">Community</span>
           </h1>
           <p className="text-xl md:text-2xl text-gray-200 max-w-3xl">
             Connect, grow, and transform with like-minded individuals
@@ -61,7 +61,7 @@ export default function CommunityPage() {
       <section className="max-w-7xl mx-auto px-4 py-16">
         <div className="text-center max-w-4xl mx-auto mb-16">
           <h2 className="text-4xl font-bold text-foreground mb-6">
-            Welcome to the <span className="text-[#F31818]">STRENTOR</span> Community!
+            Welcome to the <span className="text-[#D4AF37]">STRENTOR</span> Community!
           </h2>
           <p className="text-lg text-foreground font-semibold leading-relaxed">
             We are excited to have you join our journey of holistic empowerment and personal growth. 
@@ -113,13 +113,13 @@ export default function CommunityPage() {
       </section>
         <div className="text-center py-20 bg-gray-900">
             <h2 className="text-4xl font-bold text-white mb-4 sm:text-5xl md:text-6xl lg:text-7xl">
-              Ready to Begin Your <span className="text-[#F31818]">Journey</span>?
+              Ready to Begin Your <span className="text-[#D4AF37]">Journey</span>?
             </h2>
             <p className="mx-auto max-w-[700px] text-gray-300 font-medium md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed dark:text-gray-400 pb-8 pt-2">
               Take the first step towards transformation with our expert team of coaches and mentors.
             </p>
-            <Button 
-              className="bg-[#F31818] hover:bg-[#F31818]/90 text-white font-bold rounded-full px-8 py-6 text-lg"
+            <Button
+              className="bg-[#D4AF37] hover:bg-[#D4AF37]/90 text-white font-bold rounded-full px-8 py-6 text-lg"
               onClick={() => window.open("https://calendly.com/strentor/strentor-services", "_blank")}
             >
               Start Your Transformation

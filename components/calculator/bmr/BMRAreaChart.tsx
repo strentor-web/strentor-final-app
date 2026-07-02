@@ -39,8 +39,8 @@ export default function BMRAreaChart({ data }: BMRAreaChartProps) {
     if (active && payload && payload.length) {
       const data = payload[0].payload;
       return (
-        <div className="bg-white p-3 border rounded-lg shadow-lg">
-          <p className="font-medium text-gray-900">{new Date(label).toLocaleDateString('en-US', { 
+        <div className="bg-card p-3 border rounded-lg shadow-lg">
+          <p className="font-medium text-foreground">{new Date(label).toLocaleDateString('en-US', { 
             weekday: 'long', 
             year: 'numeric', 
             month: 'long', 
@@ -53,16 +53,16 @@ export default function BMRAreaChart({ data }: BMRAreaChartProps) {
             <p className="text-green-600">
               <span className="font-medium">Daily Calories:</span> {data.dailyCalories} calories
             </p>
-            <p className="text-gray-600">
+            <p className="text-muted-foreground">
               <span className="font-medium">Weight:</span> {data.weight} kg
             </p>
-            <p className="text-gray-600">
+            <p className="text-muted-foreground">
               <span className="font-medium">Height:</span> {data.height} cm
             </p>
-            <p className="text-gray-600">
+            <p className="text-muted-foreground">
               <span className="font-medium">Age:</span> {data.age} years
             </p>
-            <p className="text-gray-600">
+            <p className="text-muted-foreground">
               <span className="font-medium">Activity:</span> {data.activityLevel.replace('_', ' ')}
             </p>
           </div>
@@ -74,15 +74,15 @@ export default function BMRAreaChart({ data }: BMRAreaChartProps) {
 
   if (chartData.length === 0) {
     return (
-      <div className="bg-gray-50 rounded-lg p-8 text-center">
-        <p className="text-gray-500 text-lg">No BMR data available</p>
+      <div className="bg-muted rounded-lg p-8 text-center">
+        <p className="text-muted-foreground text-lg">No BMR data available</p>
         <p className="text-gray-400 text-sm mt-2">Add your first BMR calculation to see trends</p>
       </div>
     );
   }
 
   return (
-    <div className="w-full h-80 bg-white rounded-lg border p-4">
+    <div className="w-full h-80 bg-card rounded-lg border p-4">
       <ResponsiveContainer width="100%" height="100%">
         <AreaChart data={chartData} margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
           <defs>
@@ -143,11 +143,11 @@ export default function BMRAreaChart({ data }: BMRAreaChartProps) {
       <div className="flex justify-center mt-4 space-x-6">
         <div className="flex items-center space-x-2">
           <div className="w-4 h-4 bg-blue-500 rounded"></div>
-          <span className="text-sm text-gray-600">BMR (Basal Metabolic Rate)</span>
+          <span className="text-sm text-muted-foreground">BMR (Basal Metabolic Rate)</span>
         </div>
         <div className="flex items-center space-x-2">
           <div className="w-4 h-4 bg-green-500 rounded"></div>
-          <span className="text-sm text-gray-600">Daily Calories (with activity)</span>
+          <span className="text-sm text-muted-foreground">Daily Calories (with activity)</span>
         </div>
       </div>
     </div>

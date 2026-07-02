@@ -9,7 +9,7 @@ export function NoWorkoutPlanCard() {
       <Alert className="border-accent/20 bg-accent/5">
         <Dumbbell className="h-4 w-4 text-accent" />
         <AlertTitle className="text-accent">No Active Workout Plan</AlertTitle>
-        <AlertDescription className="text-black mt-2">
+        <AlertDescription className="text-accent-foreground/80 mt-2">
           Currently you got no plans assigned, please contact your trainer for a personalized workout plan based on your goals.
         </AlertDescription>
       </Alert>

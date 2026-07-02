@@ -47,7 +47,7 @@ export function CreatePlanMain({ mode, trainerId, planId }: CreatePlanMainProps)
       {/* Main Content Grid - Responsive Layout */}
       <div className="grid grid-cols-1 lg:grid-cols-[320px_1fr] gap-0 h-[calc(100vh-7rem)] md:h-[calc(100vh-4rem)]">
         {/* Sidebar - Hidden on mobile, shown on tablet+, sticky only on desktop */}
-        <div className="hidden md:block md:w-[260px] lg:w-[320px] md:static lg:sticky lg:top-0 lg:h-[calc(100vh-4rem)] border-r bg-gray-50">
+        <div className="hidden md:block md:w-[260px] lg:w-[320px] md:static lg:sticky lg:top-0 lg:h-[calc(100vh-4rem)] border-r bg-muted">
           <WeekAndDaySelector />
         </div>
         

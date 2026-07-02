@@ -59,16 +59,16 @@ const FitnessFAQ = () => {
   return (
     <section className="container mx-auto px-4 py-20">
       <h2 className="text-4xl md:text-5xl font-bold mb-12 text-center">
-        Common <span className="text-[#F31818]">Questions</span>
+        Common <span className="text-[#D4AF37]">Questions</span>
       </h2>
       <div className="max-w-3xl mx-auto">
         <Accordion type="single" collapsible className="w-full">
           {faqs.map((faq, index) => (
             <AccordionItem key={index} value={`item-${index}`}>
-              <AccordionTrigger className="text-left text-lg hover:text-[#F31818]">
+              <AccordionTrigger className="text-left text-lg hover:text-[#D4AF37]">
                 {faq.question}
               </AccordionTrigger>
-              <AccordionContent className="text-left text-base font-normal text-gray-900">
+              <AccordionContent className="text-left text-base font-normal text-foreground">
                 {faq.answer}
               </AccordionContent>
             </AccordionItem>

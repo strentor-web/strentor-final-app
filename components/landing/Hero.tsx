@@ -44,7 +44,7 @@ export default function Hero() {
   return (
     <>
       <div className="relative min-h-[90vh] flex items-center">
-        <div className="absolute inset-0 bg-gradient-to-br from-[#F31818]/5 via-[#00D115]/5 to-[#0D97FF]/5" />
+        <div className="absolute inset-0 bg-gradient-to-br from-[#D4AF37]/5 via-[#2FA366]/5 to-[#B7BAC0]/5" />
         
         <div className="container mx-auto p-4">
           <div className="relative flex flex-col md:grid md:grid-cols-2 gap-8 p-6 md:p-12 bg-background/90 backdrop-blur-sm rounded-2xl shadow-xl">
@@ -53,7 +53,7 @@ export default function Hero() {
               <h1 className="text-4xl md:text-6xl font-bold text-foreground">
                  Wellness Programs
                 <br />
-                Made For <span className="text-[#F31818]">YOU</span>
+                Made For <span className="text-[#D4AF37]">YOU</span>
               </h1>
               <p className="text-xl md:text-2xl font-medium text-muted-foreground">
                 Personalized pathways to your best self, crafted by experts who understand your unique journey.
@@ -61,7 +61,7 @@ export default function Hero() {
               <div className="flex flex-col sm:flex-row gap-4">
                 <Button 
                   onClick={handleBookingClick}
-                  className="h-14 px-8 text-lg rounded-full font-bold bg-[#F31818] hover:bg-[#F31818]/90 transition-all transform hover:scale-105"
+                  className="h-14 px-8 text-lg rounded-full font-bold bg-[#D4AF37] hover:bg-[#D4AF37]/90 transition-all transform hover:scale-105"
                 >
                   Book Your Discovery Call
                 </Button>
@@ -90,7 +90,7 @@ export default function Hero() {
                 key={index}
                 className="flex items-center gap-3 bg-background/90 backdrop-blur-sm rounded-lg px-4 py-3 shadow-lg transform hover:scale-105 transition-all w-full sm:w-auto"
               >
-                <div className="flex-shrink-0 w-8 h-8 rounded-full bg-[#00D115] flex items-center justify-center">
+                <div className="flex-shrink-0 w-8 h-8 rounded-full bg-[#2FA366] flex items-center justify-center">
                   <Check className="w-5 h-5 text-white" />
                 </div>
                 <span className="text-base font-bold text-foreground">{guarantee}</span>

@@ -219,7 +219,7 @@ export const ContactForm: React.FC<ContactFormProps> = ({ open, onOpenChange }) 
                   align="start"
                   sideOffset={5}
                 >
-                 <div className="sticky top-0 z-50 bg-white p-2 border-b shadow-sm hidden md:block"> 
+                 <div className="sticky top-0 z-50 bg-card p-2 border-b shadow-sm hidden md:block">
                     <div className="flex items-center px-2 py-1 border rounded-md">
                       <Search className="w-4 h-4 mr-2 text-gray-400" />
                       <input
@@ -242,7 +242,7 @@ export const ContactForm: React.FC<ContactFormProps> = ({ open, onOpenChange }) 
                         </SelectItem>
                       ))
                     ) : (
-                      <p className="text-sm text-gray-500 p-2">No countries found</p>
+                      <p className="text-sm text-muted-foreground p-2">No countries found</p>
                     )}
                   </div>
                 </SelectContent>
@@ -292,7 +292,7 @@ export const ContactForm: React.FC<ContactFormProps> = ({ open, onOpenChange }) 
 
             {/* Services Interested remains the same */}
             <div>
-              <Label className="block font-medium text-gray-700">Services Interested In</Label>
+              <Label className="block font-medium text-muted-foreground">Services Interested In</Label>
               <div className="flex flex-col gap-2 mt-2">
                 {serviceOptions.map((service) => (
                   <label key={service} className="flex items-center space-x-2">
@@ -330,7 +330,7 @@ export const ContactForm: React.FC<ContactFormProps> = ({ open, onOpenChange }) 
               <Button 
                 type="submit"
                 disabled={isSubmitting}
-                className="min-w-[100px] bg-[#F31818]"
+                className="min-w-[100px] bg-[#D4AF37]"
               >
                 {isSubmitting ? (
                   <>
@@ -354,7 +354,7 @@ export const ContactForm: React.FC<ContactFormProps> = ({ open, onOpenChange }) 
           </DialogHeader>
           <p className="text-center py-4">We Will Reach Out To You Soon!</p>
           <div className="flex justify-end">
-            <Button className="bg-[#F31818]" onClick={() => setShowSuccessDialog(false)}>
+            <Button className="bg-[#D4AF37]" onClick={() => setShowSuccessDialog(false)}>
               Close
             </Button>
           </div>

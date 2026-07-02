@@ -22,7 +22,7 @@ export function AdminTrainersTableHeaderCell({
       className="h-auto p-0 font-semibold text-left justify-start hover:bg-transparent"
       onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
     >
-      <span className="text-gray-700">{title}</span>
+      <span className="text-muted-foreground">{title}</span>
       <div className="ml-2 h-4 w-4">
         {isSorted === "asc" ? (
           <ArrowUp className="h-4 w-4" />

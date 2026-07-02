@@ -27,7 +27,7 @@ export const categoryColors: Record<WorkoutCategory, string> = {
 export const statusColors: Record<string, string> = {
   active: "bg-green-100 text-green-800",
   upcoming: "bg-blue-100 text-blue-800",
-  previous: "bg-gray-100 text-gray-800",
+  previous: "bg-muted text-muted-foreground",
 };
 
 export function PlansTableColumns(): ColumnDef<WorkoutPlanWithDetails>[] {

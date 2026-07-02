@@ -139,7 +139,7 @@ export function RecentSalesCard({ recentSubscriptions }: RecentSalesCardProps) {
               <div key={subscription.id} className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
                   <Avatar className="h-8 w-8">
-                    <AvatarFallback className="bg-gray-100 text-gray-600 text-xs font-medium">
+                    <AvatarFallback className="bg-muted text-muted-foreground text-xs font-medium">
                       {getInitials(subscription.customerName)}
                     </AvatarFallback>
                   </Avatar>

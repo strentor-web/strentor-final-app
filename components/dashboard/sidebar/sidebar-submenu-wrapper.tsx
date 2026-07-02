@@ -57,7 +57,7 @@ export function SidebarSubmenuWrapper({ item, isPopover }: Props) {
         // that rule here with `!flex` so that it is displayed within the
         // popover while keeping the original spacing tweaks.
         isPopover && "mx-0 border-none px-0 !flex",
-        !isPopover && "border-gray-700",
+        !isPopover && "border-sidebar-border",
       )}
       role="menu"
       aria-label={`${item.title} submenu items`}

@@ -26,26 +26,26 @@ export default function DashboardLayout({
   // Show skeleton loading while checking auth
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-50">
+      <div className="min-h-screen bg-background">
         <div className="container py-8 space-y-8">
           {/* Header skeleton */}
           <div className="flex justify-between items-center mb-8">
             <div className="space-y-2">
-              <div className="h-8 w-64 bg-gray-200 rounded animate-pulse"></div>
-              <div className="h-6 w-48 bg-gray-200 rounded animate-pulse"></div>
+              <div className="h-8 w-64 bg-muted rounded animate-pulse"></div>
+              <div className="h-6 w-48 bg-muted rounded animate-pulse"></div>
             </div>
           </div>
           
           {/* Cards skeleton */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div className="md:col-span-2 h-32 bg-gray-200 rounded-lg animate-pulse"></div>
-            <div className="h-32 bg-gray-200 rounded-lg animate-pulse"></div>
+            <div className="md:col-span-2 h-32 bg-muted rounded-lg animate-pulse"></div>
+            <div className="h-32 bg-muted rounded-lg animate-pulse"></div>
           </div>
           
           {/* Content skeleton */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            <div className="h-64 bg-gray-200 rounded-lg animate-pulse"></div>
-            <div className="h-64 bg-gray-200 rounded-lg animate-pulse"></div>
+            <div className="h-64 bg-muted rounded-lg animate-pulse"></div>
+            <div className="h-64 bg-muted rounded-lg animate-pulse"></div>
           </div>
         </div>
       </div>
@@ -55,26 +55,26 @@ export default function DashboardLayout({
   // Show redirecting skeleton
   if (isRedirecting) {
     return (
-      <div className="min-h-screen bg-gray-50">
+      <div className="min-h-screen bg-background">
         <div className="container py-8 space-y-8">
           {/* Header skeleton */}
           <div className="flex justify-between items-center mb-8">
             <div className="space-y-2">
-              <div className="h-8 w-64 bg-gray-200 rounded animate-pulse"></div>
-              <div className="h-6 w-48 bg-gray-200 rounded animate-pulse"></div>
+              <div className="h-8 w-64 bg-muted rounded animate-pulse"></div>
+              <div className="h-6 w-48 bg-muted rounded animate-pulse"></div>
             </div>
           </div>
           
           {/* Cards skeleton */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div className="md:col-span-2 h-32 bg-gray-200 rounded-lg animate-pulse"></div>
-            <div className="h-32 bg-gray-200 rounded-lg animate-pulse"></div>
+            <div className="md:col-span-2 h-32 bg-muted rounded-lg animate-pulse"></div>
+            <div className="h-32 bg-muted rounded-lg animate-pulse"></div>
           </div>
           
           {/* Content skeleton */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            <div className="h-64 bg-gray-200 rounded-lg animate-pulse"></div>
-            <div className="h-64 bg-gray-200 rounded-lg animate-pulse"></div>
+            <div className="h-64 bg-muted rounded-lg animate-pulse"></div>
+            <div className="h-64 bg-muted rounded-lg animate-pulse"></div>
           </div>
         </div>
       </div>

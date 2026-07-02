@@ -97,8 +97,8 @@ export default function MetricCard() {
         <Link 
         href={`/calculator/${calculator.id}`}
         key={calculator.id}
-        className="transition-transform hover:scale-105 hover:shadow-lg hover:bg-gray-50">
-          <Card className="h-full border-2 hover:border-gray-300">
+        className="transition-transform hover:scale-105 hover:shadow-lg hover:bg-muted">
+          <Card className="h-full border-2 hover:border-border">
           <CardHeader className={`${calculator.color} rounded-t-lg`}>
             <div className="flex items-center gap-3">
               {calculator.icon} 
@@ -109,7 +109,7 @@ export default function MetricCard() {
                 <CardDescription className="text-base">{calculator.description}</CardDescription>
               </CardContent>
               <CardFooter className="flex justify-end">
-                <Calculator className="h-5 w-5 text-gray-500" />
+                <Calculator className="h-5 w-5 text-muted-foreground" />
               </CardFooter>
           </Card>
         </Link>

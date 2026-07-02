@@ -643,7 +643,7 @@ export function UserSubscriptions({ subscriptions, onRefresh, userId, userData }
 
   const renderCancelledCard = (subscription: SubscriptionWithPlan) => {
     return (
-      <Card key={subscription.id} className="border-gray-200 bg-gray-50">
+      <Card key={subscription.id} className="border-border bg-muted">
         <CardHeader className="pb-3">
           <div className="flex items-start justify-between">
             <div className="flex items-center gap-3">
@@ -662,11 +662,11 @@ export function UserSubscriptions({ subscriptions, onRefresh, userId, userData }
         </CardHeader>
         <CardContent className="pt-0">
           <div className="space-y-4">
-            <div className="bg-gray-100 p-4 rounded-lg">
-              <p className="text-sm text-gray-800">
+            <div className="bg-muted p-4 rounded-lg">
+              <p className="text-sm text-foreground">
                 <strong>Subscription Cancelled</strong>
               </p>
-              <p className="text-sm text-gray-700 mt-2">
+              <p className="text-sm text-muted-foreground mt-2">
                 Your subscription ended on {formatDate(subscription.endDate)}. 
                 You no longer have access to premium features.
               </p>

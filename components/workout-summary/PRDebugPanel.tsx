@@ -87,7 +87,7 @@ export default function PRDebugPanel({ planId }: PRDebugPanelProps) {
             <div className="bg-yellow-50 p-3 rounded max-h-96 overflow-y-auto">
               <h4 className="font-semibold mb-2">Exercise Logs Analysis</h4>
               {debugData.exerciseLogs.map((log, i) => (
-                <div key={i} className="mb-3 p-2 border rounded bg-white">
+                <div key={i} className="mb-3 p-2 border rounded bg-card">
                   <div className="flex items-center justify-between mb-1">
                     <span className="font-medium">
                       {log.exerciseName} - Set {log.setNumber}
@@ -104,7 +104,7 @@ export default function PRDebugPanel({ planId }: PRDebugPanelProps) {
                       </Badge>
                     )}
                   </div>
-                  <div className="text-xs text-gray-600 space-y-1">
+                  <div className="text-xs text-muted-foreground space-y-1">
                     <p>Weight: {log.weight}kg × {log.reps} reps = {log.calculatedORM}kg ORM</p>
                     <p>Exceeds Previous PR: {log.exceedsPreviousPR ? "✅" : "❌"}</p>
                     <p>Exceeds Week Best: {log.exceedsWeekBest ? "✅" : "❌"}</p>

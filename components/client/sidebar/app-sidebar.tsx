@@ -50,11 +50,11 @@ export function ClientSidebar({
                 aria-label="Go to home"
               >
                 <div
-                  className="bg-white text-black flex aspect-square size-8 items-center justify-center rounded-full"
+                  className="bg-sidebar-primary text-sidebar-primary-foreground flex aspect-square size-8 items-center justify-center rounded-full"
                   aria-hidden="true"
                 >
                   <Image
-                    src="/strentorfav.png"
+                    src="/strentor-icon.png"
                     alt="Logo"
                     width={16}
                     height={16}

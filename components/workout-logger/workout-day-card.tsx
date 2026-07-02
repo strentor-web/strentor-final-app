@@ -64,12 +64,12 @@ export function WorkoutDayCard({ day, onSaveSet, isSaving }: WorkoutDayCardProps
             {day.isCompleted ? (
               <CheckCircle className="h-5 w-5 text-green-500" />
             ) : (
-              <Circle className="h-5 w-5 text-gray-400" />
+              <Circle className="h-5 w-5 text-muted-foreground" />
             )}
           </div>
         
         <div className="space-y-2">
-          <div className="flex items-center justify-between text-sm text-gray-600">
+          <div className="flex items-center justify-between text-sm text-muted-foreground">
             <span>{dayDate}</span>
             {!isRestDay && (
               <span>{day.completedSets} / {day.totalSets} sets</span>
@@ -80,7 +80,7 @@ export function WorkoutDayCard({ day, onSaveSet, isSaving }: WorkoutDayCardProps
             <div className="space-y-1">
               <Progress value={day.progressPercentage} className="h-2" />
               <div className="flex items-center justify-between text-xs">
-                <span className="text-gray-500">{day.progressPercentage}% complete</span>
+                <span className="text-muted-foreground">{day.progressPercentage}% complete</span>
                 {day.isCompleted && (
                   <Badge variant="outline" className="text-green-600 border-green-600">
                     Complete
@@ -94,7 +94,7 @@ export function WorkoutDayCard({ day, onSaveSet, isSaving }: WorkoutDayCardProps
 
       <CardContent className="pt-0">
         {isRestDay ? (
-          <div className="text-center py-8 text-gray-500">
+          <div className="text-center py-8 text-muted-foreground">
             <Circle className="h-8 w-8 mx-auto mb-2 opacity-50" />
             <p>Rest Day</p>
           </div>
@@ -115,13 +115,13 @@ export function WorkoutDayCard({ day, onSaveSet, isSaving }: WorkoutDayCardProps
                       {exercise.isCompleted ? (
                         <CheckCircle className="h-4 w-4 text-green-500 flex-shrink-0" />
                       ) : (
-                        <Circle className="h-4 w-4 text-gray-400 flex-shrink-0" />
+                        <Circle className="h-4 w-4 text-muted-foreground flex-shrink-0" />
                       )}
                       <span className="font-medium text-left truncate">
                         {exercise.name}
                       </span>
                     </div>
-                    <div className="flex items-center gap-2 text-sm text-gray-600">
+                    <div className="flex items-center gap-2 text-sm text-muted-foreground">
                       <span>{exercise.completedSets}/{exercise.totalSets}</span>
                       {exercise.youtubeLink && (
                         <Play className="h-3 w-3" />

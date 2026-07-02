@@ -52,8 +52,8 @@ export function DayContainer({weekNumber, dayNumber}: {weekNumber: number, dayNu
       <CardHeader className="py-6 px-6">
         <CardTitle className="flex flex-col items-center gap-3 text-center">
           <div className="flex items-center gap-3">
-            <span className="text-xl font-bold text-gray-900">Day {dayNumber}</span>
-            <Badge variant="outline" className="text-xs px-2 py-1 bg-gray-100 text-gray-600">
+            <span className="text-xl font-bold text-foreground">Day {dayNumber}</span>
+            <Badge variant="outline" className="text-xs px-2 py-1 bg-muted text-muted-foreground">
               Week {weekNumber}
             </Badge>
           </div>
@@ -64,7 +64,7 @@ export function DayContainer({weekNumber, dayNumber}: {weekNumber: number, dayNu
               dispatch({ type: "RENAME_DAY", week: weekNumber, day: dayNumber, newName: e.target.value })
             }
             placeholder="Day title"
-            className="w-full max-w-md h-10 text-center text-base font-medium border-gray-200 focus:border-blue-500"
+            className="w-full max-w-md h-10 text-center text-base font-medium border-border focus:border-blue-500"
           />
         </CardTitle>
       </CardHeader>

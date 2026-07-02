@@ -68,7 +68,7 @@ export default function FitnessPricing() {
   const pricing = fitnessPlan.pricing[selectedCycle as keyof typeof fitnessPlan.pricing];
 
   return (
-    <div id="fitness-pricing-section" className="relative w-full overflow-hidden py-20 bg-white">
+    <div id="fitness-pricing-section" className="relative w-full overflow-hidden py-20 bg-background">
       <div className="container mx-auto px-4 md:px-6">
         {/* Pricing Header with Billing Cycle Tabs */}
         <PricingHeader
