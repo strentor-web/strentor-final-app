@@ -66,10 +66,12 @@ export default function Header() {
               Community
               <span className="absolute inset-x-0 -bottom-0.5 h-0.5 origin-left scale-x-0 bg-primary transition-transform duration-300 ease-out group-hover:scale-x-100" />
             </a>
+            {/* Hidden for now
             <a href="https://empowerment-hub.strentor.com/" className="group relative text-foreground hover:text-primary transition-colors py-1">
               Empowerment Hub
               <span className="absolute inset-x-0 -bottom-0.5 h-0.5 origin-left scale-x-0 bg-primary transition-transform duration-300 ease-out group-hover:scale-x-100" />
             </a>
+            */}
           </nav>
 
           <div className="flex items-center">
@@ -97,8 +99,10 @@ export default function Header() {
             <a href="/aboutus" className="block text-foreground hover:text-primary py-2 transition-colors">About Us</a>
             <a href="/programs" className="block text-foreground hover:text-primary py-2 transition-colors">Programs</a>      
             <a href="/community" className="block text-foreground hover:text-primary py-2 transition-colors">Community</a>
-            <a href="https://empowerment-hub.strentor.com/"  className="block text-foreground hover:text-primary py-2 transition-colors">Empowerment Hub</a>     
-            <Button 
+            {/* Hidden for now
+            <a href="https://empowerment-hub.strentor.com/"  className="block text-foreground hover:text-primary py-2 transition-colors">Empowerment Hub</a>
+            */}
+            <Button
               className="shadow-2xl h-10 rounded-full bg-strentor-red hover:bg-strentor-red/80 text-primary-foreground"
               onClick={handleBookingClick}
             >
