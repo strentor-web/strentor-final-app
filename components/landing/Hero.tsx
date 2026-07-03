@@ -50,7 +50,7 @@ export default function Hero() {
           <div className="relative flex flex-col md:grid md:grid-cols-2 gap-8 p-6 md:p-12 bg-background/90 backdrop-blur-sm rounded-2xl shadow-xl">
             {/* Headline Section */}
             <div className="flex flex-col justify-center space-y-6">
-              <h1 className="text-4xl md:text-6xl font-bold text-foreground">
+              <h1 className="text-4xl md:text-6xl font-bold font-display text-foreground">
                  Wellness Programs
                 <br />
                 Made For <span className="text-[#D4AF37]">YOU</span>

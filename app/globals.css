@@ -9,9 +9,35 @@ body {
 }
 
 body {
+  position: relative;
   font-family: var(--font-satoshi), system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+/* Premium background treatment: a soft gold glow plus a faint grain texture,
+   so large black surfaces read as matte/textured rather than flat and cheap. */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -2;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse 80% 50% at 50% -10%, hsl(46 65% 52% / 0.12), transparent 60%),
+    radial-gradient(ellipse 60% 40% at 100% 100%, hsl(216 8% 74% / 0.06), transparent 60%);
+}
+
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  opacity: 0.05;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+  background-size: 160px 160px;
 }
 
 * {
@@ -133,22 +159,22 @@ a {
   :root {
     --background: 0 0% 4%; /* near-black, matches logo backdrop */
     --foreground: 46 27% 90%; /* warm off-white/champagne */
-    --card: 0 0% 8%;
+    --card: 0 0% 11%; /* lifted further off the background for clear elevation */
     --card-foreground: 46 27% 90%;
-    --popover: 0 0% 8%;
+    --popover: 0 0% 11%;
     --popover-foreground: 46 27% 90%;
     --primary: 46 65% 52%; /* gold: #D4AF37 */
     --primary-foreground: 0 0% 4%; /* Black text on gold */
-    --secondary: 0 0% 12%;
+    --secondary: 0 0% 15%;
     --secondary-foreground: 46 27% 90%;
-    --muted: 0 0% 10%;
-    --muted-foreground: 0 0% 65%;
+    --muted: 0 0% 13%;
+    --muted-foreground: 0 0% 68%;
     --accent: 216 8% 74%; /* silver: #B8BCC2 */
     --accent-foreground: 0 0% 4%; /* Black text on silver */
     --destructive: 358 75% 59%; /* keep a true red for real error states */
     --destructive-foreground: 0 0% 100%;
-    --border: 0 0% 16%;
-    --input: 0 0% 16%;
+    --border: 0 0% 22%; /* brighter for clearer card/input edges */
+    --input: 0 0% 22%;
     --ring: 46 65% 52%; /* Match primary (gold) for focus rings */
     --chart-1: 46 65% 52%; /* gold */
     --chart-2: 216 8% 74%; /* silver */
@@ -161,31 +187,31 @@ a {
     --sidebar-foreground: 46 27% 90%;
     --sidebar-primary: 46 65% 52%; /* gold */
     --sidebar-primary-foreground: 0 0% 4%;
-    --sidebar-accent: 0 0% 10%;
+    --sidebar-accent: 0 0% 14%;
     --sidebar-accent-foreground: 46 65% 52%; /* gold text on hover/active */
-    --sidebar-border: 0 0% 16%;
+    --sidebar-border: 0 0% 20%;
     --sidebar-ring: 46 65% 52%;
   }
 
   .dark {
     --background: 0 0% 4%;
     --foreground: 46 27% 90%;
-    --card: 0 0% 8%;
+    --card: 0 0% 11%;
     --card-foreground: 46 27% 90%;
-    --popover: 0 0% 8%;
+    --popover: 0 0% 11%;
     --popover-foreground: 46 27% 90%;
     --primary: 46 65% 58%; /* Slightly brighter gold for dark mode */
     --primary-foreground: 0 0% 4%;
-    --secondary: 0 0% 12%;
+    --secondary: 0 0% 15%;
     --secondary-foreground: 46 27% 90%;
-    --muted: 0 0% 10%;
-    --muted-foreground: 0 0% 65%;
+    --muted: 0 0% 13%;
+    --muted-foreground: 0 0% 68%;
     --accent: 216 8% 78%; /* Brighter silver for dark mode */
     --accent-foreground: 0 0% 4%;
     --destructive: 358 75% 64%; /* Brighter red for dark mode */
     --destructive-foreground: 0 0% 100%;
-    --border: 0 0% 16%;
-    --input: 0 0% 16%;
+    --border: 0 0% 22%;
+    --input: 0 0% 22%;
     --ring: 46 65% 58%;
     --chart-1: 46 65% 58%; /* gold */
     --chart-2: 216 8% 78%; /* silver */
@@ -196,9 +222,9 @@ a {
     --sidebar-foreground: 46 27% 90%;
     --sidebar-primary: 46 65% 58%;
     --sidebar-primary-foreground: 0 0% 4%;
-    --sidebar-accent: 0 0% 10%;
+    --sidebar-accent: 0 0% 14%;
     --sidebar-accent-foreground: 46 65% 58%;
-    --sidebar-border: 0 0% 16%;
+    --sidebar-border: 0 0% 20%;
     --sidebar-ring: 46 65% 58%;
   }
 }

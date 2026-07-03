@@ -36,7 +36,7 @@ export default function Team() {
     <div className="relative w-full overflow-hidden py-20">
       <div className="container mx-auto px-4 md:px-6">
         <div className="flex flex-col items-center justify-center space-y-4 text-center">
-          <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl text-[#D4AF37]">Meet Our Team</h2>
+          <h2 className="text-3xl font-bold font-display tracking-tighter sm:text-5xl text-[#D4AF37]">Meet Our Team</h2>
           <p className="max-w-[900px] text-muted-foreground font-semibold md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
             Our Expert Team is comprised of dedicated fitness specialists who bring a holistic blend of knowledge and passion to empower your journey toward wellness and transformation.
           </p>

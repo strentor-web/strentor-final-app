@@ -83,7 +83,7 @@ export default function Testimonials() {
   return (
     <section className="py-16">
       <div className="max-w-7xl mx-auto px-4">
-        <h2 className="text-4xl md:text-5xl font-bold mb-12 text-center text-foreground">
+        <h2 className="text-4xl md:text-5xl font-bold font-display mb-12 text-center text-foreground">
           Transforming Lives, <span className="text-[#D4AF37]">One Story</span> at a Time
         </h2>
 

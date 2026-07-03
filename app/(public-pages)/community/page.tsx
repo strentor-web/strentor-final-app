@@ -48,7 +48,7 @@ export default function CommunityPage() {
           priority
         />
         <div className="absolute inset-0 flex flex-col items-center justify-center px-4 text-center">
-          <h1 className="text-5xl md:text-7xl font-bold text-white mb-6">
+          <h1 className="text-5xl md:text-7xl font-bold font-display text-white mb-6">
             Join Our <span className="text-[#D4AF37]">Community</span>
           </h1>
           <p className="text-xl md:text-2xl text-gray-200 max-w-3xl">
@@ -60,7 +60,7 @@ export default function CommunityPage() {
       {/* Welcome Section */}
       <section className="max-w-7xl mx-auto px-4 py-16">
         <div className="text-center max-w-4xl mx-auto mb-16">
-          <h2 className="text-4xl font-bold text-foreground mb-6">
+          <h2 className="text-4xl font-bold font-display text-foreground mb-6">
             Welcome to the <span className="text-[#D4AF37]">STRENTOR</span> Community!
           </h2>
           <p className="text-lg text-foreground font-semibold leading-relaxed">
@@ -112,7 +112,7 @@ export default function CommunityPage() {
         
       </section>
         <div className="text-center py-20 bg-gray-900">
-            <h2 className="text-4xl font-bold text-white mb-4 sm:text-5xl md:text-6xl lg:text-7xl">
+            <h2 className="text-4xl font-bold font-display text-white mb-4 sm:text-5xl md:text-6xl lg:text-7xl">
               Ready to Begin Your <span className="text-[#D4AF37]">Journey</span>?
             </h2>
             <p className="mx-auto max-w-[700px] text-gray-300 font-medium md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed dark:text-gray-400 pb-8 pt-2">

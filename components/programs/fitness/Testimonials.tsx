@@ -85,7 +85,7 @@ export default function FitnessTestimonials() {
   return (
     <section className="py-20 bg-background">
       <div className="max-w-7xl mx-auto px-4">
-        <h2 className="text-4xl md:text-5xl font-bold mb-12 text-center">
+        <h2 className="text-4xl md:text-5xl font-bold font-display mb-12 text-center">
           Real Stories of <span className="text-[#D4AF37]">Transformation</span>
         </h2>
 

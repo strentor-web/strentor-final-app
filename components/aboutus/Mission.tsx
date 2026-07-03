@@ -10,7 +10,7 @@ export function Mission() {
     <section className="bg-gradient-to-br from-gray-900 to-black text-white py-16 md:py-24 relative overflow-hidden">
       <div className="absolute inset-0 bg-gradient-to-r from-gray-900 via-gray-900/50 to-gray-900 opacity-30"></div>
       <div className="max-w-7xl mx-auto px-4 text-center relative z-10">
-        <h2 className="text-5xl font-extrabold mb-8 tracking-tight">
+        <h2 className="text-5xl font-extrabold font-display mb-8 tracking-tight">
           <span className="text-[#C9972B] drop-shadow-[0_0_10px_rgba(201,151,43,0.5)]">Our Mission</span>
         </h2>
         <p className="text-2xl text-gray-200 max-w-4xl mx-auto mb-16 leading-relaxed">

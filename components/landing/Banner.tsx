@@ -35,7 +35,7 @@ const Banner = () => {
       <section className="relative min-h-[300px] w-full overflow-hidden bg-muted">
         <div className="container mx-auto px-4 py-24 text-center">
           <div className="space-y-4">
-            <h1 className="text-4xl text-foreground font-bold tracking-tighter sm:text-5xl md:text-6xl lg:text-7xl">
+            <h1 className="text-4xl text-foreground font-bold font-display tracking-tighter sm:text-5xl md:text-6xl lg:text-7xl">
               Ready to Transform Your Fitness Journey?
             </h1>
             <p className="mx-auto max-w-[700px] text-muted-foreground font-medium md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
