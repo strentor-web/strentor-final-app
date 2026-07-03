@@ -8,7 +8,7 @@ const features = [
   {
     text: "Expert Para-Athlete Coach",
     icon: Award,
-    color: "#D4AF37"
+    color: "#C9A96A"
   },
   {
     text: "Customized Programs",
@@ -18,7 +18,7 @@ const features = [
   {
     text: "Proven Results",
     icon: TrendingUp,
-    color: "#B7BAC0"
+    color: "#C9C0B4"
   }
 ]
 
@@ -43,7 +43,7 @@ export default function FitnessHero() {
           <div className="max-w-[800px] text-center px-4 py-8 md:py-0">
             <h1 className="text-4xl sm:text-5xl md:text-7xl font-bold font-display text-white mb-6 leading-tight">
               Transform Your Limits Into 
-              <span className="text-[#D4AF37]"> Strength</span>
+              <span className="text-[#C9A96A]"> Strength</span>
             </h1>
             <p className="text-lg sm:text-xl md:text-2xl text-gray-200 mb-8 max-w-[600px] mx-auto">
               Personalized fitness programs crafted for individuals with chronic conditions and physical challenges.
@@ -69,7 +69,7 @@ export default function FitnessHero() {
             
             {/* CTA Button */}
             <Button 
-              className="bg-[#D4AF37] hover:bg-[#D4AF37]/90 text-primary-foreground font-bold rounded-full px-6 sm:px-8 py-4 sm:py-6 text-base sm:text-lg"
+              className="bg-[#C9A96A] hover:bg-[#C9A96A]/90 text-primary-foreground font-bold rounded-full px-6 sm:px-8 py-4 sm:py-6 text-base sm:text-lg"
               onClick={() => window.open("https://calendly.com/strentor/strentor-services", "_blank")}
             >
               Start Your Fitness Journey

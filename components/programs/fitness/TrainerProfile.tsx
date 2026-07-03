@@ -10,7 +10,7 @@ const TrainerProfile = () => {
       {/* Headline Section */}
       <div className="text-center mb-16">
         <h2 className="text-4xl md:text-5xl font-bold font-display mb-4">
-          Meet Your <span className="text-[#D4AF37]">Champion</span> Coach
+          Meet Your <span className="text-[#C9A96A]">Champion</span> Coach
         </h2>
         <p className="text-xl text-muted-foreground max-w-4xl mx-auto">
           From breaking barriers as a para powerlifter to transforming lives through fitness

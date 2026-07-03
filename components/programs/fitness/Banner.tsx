@@ -9,14 +9,14 @@ const FitnessBanner = () => {
       <div className="container mx-auto px-4 py-24 text-center">
         <div className="space-y-4">
           <h2 className="text-4xl text-white font-bold font-display tracking-tighter sm:text-5xl md:text-6xl lg:text-7xl">
-            Ready to Transform Your <span className="text-[#D4AF37]">Fitness Journey</span>?
+            Ready to Transform Your <span className="text-[#C9A96A]">Fitness Journey</span>?
           </h2>
           <p className="mx-auto max-w-[700px] text-gray-300 font-medium md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
             Join our specialized fitness program designed for individuals with unique challenges and conditions.
           </p>
           <div className="mx-auto max-w-sm space-y-4">
             <Button 
-              className="w-full py-7 text-lg font-extrabold bg-[#D4AF37] hover:bg-[#D4AF37]/90"
+              className="w-full py-7 text-lg font-extrabold bg-[#C9A96A] hover:bg-[#C9A96A]/90"
               onClick={() => window.open("https://calendly.com/strentor/strentor-services", "_blank")}
             >
               Book Your Free Consultation

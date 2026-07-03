@@ -74,7 +74,7 @@ export const EmailCaptureModal: React.FC<EmailCaptureModalProps> = ({
       <DialogContent className="max-w-md">
         <DialogHeader>
           <DialogTitle className="text-center flex items-center justify-center gap-2">
-            <Calendar className="h-6 w-6 text-[#D4AF37]" />
+            <Calendar className="h-6 w-6 text-[#C9A96A]" />
             Book Your Discovery Call
           </DialogTitle>
         </DialogHeader>
@@ -110,7 +110,7 @@ export const EmailCaptureModal: React.FC<EmailCaptureModalProps> = ({
           <Button 
             type="submit" 
             disabled={isSubmitting}
-            className="w-full h-12 text-lg font-semibold bg-[#D4AF37] hover:bg-[#D4AF37]/90"
+            className="w-full h-12 text-lg font-semibold bg-[#C9A96A] hover:bg-[#C9A96A]/90"
           >
             {isSubmitting ? (
               <>

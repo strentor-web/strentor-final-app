@@ -16,7 +16,7 @@ const billingOptions = [
 ];
 
 const categoryGradients = {
-  FITNESS: "from-[#D4AF37] to-[#C9972B]",
+  FITNESS: "from-[#C9A96A] to-[#B8935A]",
 };
 
 const categoryIcons = {

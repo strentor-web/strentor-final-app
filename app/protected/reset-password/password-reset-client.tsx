@@ -77,10 +77,10 @@ export function PasswordResetClient({ searchParams }: PasswordResetClientProps) 
   // Show loading state while checking auth
   if (isLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center p-4 bg-gradient-to-br from-[#D4AF37]/5 via-[#2FA366]/5 to-[#B7BAC0]/5">
+      <div className="min-h-screen flex items-center justify-center p-4 bg-gradient-to-br from-[#C9A96A]/5 via-[#2FA366]/5 to-[#C9C0B4]/5">
         <div className="bg-card/90 backdrop-blur-sm rounded-2xl shadow-xl p-8 max-w-md w-full">
           <div className="text-center">
-            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#D4AF37] mx-auto mb-4"></div>
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#C9A96A] mx-auto mb-4"></div>
             <p className="text-muted-foreground">Verifying your password reset request...</p>
           </div>
         </div>
@@ -91,7 +91,7 @@ export function PasswordResetClient({ searchParams }: PasswordResetClientProps) 
   // For direct access, we only need a valid session
   if (!session && !isLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center p-4 bg-gradient-to-br from-[#D4AF37]/5 via-[#2FA366]/5 to-[#B7BAC0]/5">
+      <div className="min-h-screen flex items-center justify-center p-4 bg-gradient-to-br from-[#C9A96A]/5 via-[#2FA366]/5 to-[#C9C0B4]/5">
         <div className="bg-card/90 backdrop-blur-sm rounded-2xl shadow-xl p-8 max-w-md w-full">
           <div className="text-center">
             <div className="text-red-500 mb-4">
@@ -105,7 +105,7 @@ export function PasswordResetClient({ searchParams }: PasswordResetClientProps) 
             </p>
             <button
               onClick={() => router.push('/sign-in')}
-              className="bg-[#D4AF37] hover:bg-[#D4AF37]/90 text-primary-foreground font-bold py-2 px-4 rounded-lg transition-all"
+              className="bg-[#C9A96A] hover:bg-[#C9A96A]/90 text-primary-foreground font-bold py-2 px-4 rounded-lg transition-all"
             >
               Go to Sign In
             </button>
@@ -117,7 +117,7 @@ export function PasswordResetClient({ searchParams }: PasswordResetClientProps) 
 
   // Show password reset form
   return (
-    <div className="min-h-screen flex items-center justify-center p-4 bg-gradient-to-br from-[#D4AF37]/5 via-[#2FA366]/5 to-[#B7BAC0]/5">
+    <div className="min-h-screen flex items-center justify-center p-4 bg-gradient-to-br from-[#C9A96A]/5 via-[#2FA366]/5 to-[#C9C0B4]/5">
       <div className="absolute top-4 left-4">
         <button
           onClick={() => router.push('/')}
@@ -174,7 +174,7 @@ export function PasswordResetClient({ searchParams }: PasswordResetClientProps) 
           
           <SubmitButton 
             formAction={resetPasswordAction}
-            className="w-full bg-[#D4AF37] hover:bg-[#D4AF37]/90 text-primary-foreground font-bold py-3 rounded-lg text-lg transform hover:scale-105 transition-all"
+            className="w-full bg-[#C9A96A] hover:bg-[#C9A96A]/90 text-primary-foreground font-bold py-3 rounded-lg text-lg transform hover:scale-105 transition-all"
           >
             Change Password
           </SubmitButton>

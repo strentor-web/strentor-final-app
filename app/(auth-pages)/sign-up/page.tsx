@@ -13,7 +13,7 @@ export default async function Signup(props: {
   const searchParams = await props.searchParams;
 
   return (
-    <div className="relative min-h-screen flex items-center justify-center p-4 bg-gradient-to-br from-[#D4AF37]/5 via-[#2FA366]/5 to-[#B7BAC0]/5">
+    <div className="relative min-h-screen flex items-center justify-center p-4 bg-gradient-to-br from-[#C9A96A]/5 via-[#2FA366]/5 to-[#C9C0B4]/5">
       
       <div className="relative w-full max-w-6xl grid md:grid-cols-2 gap-8 items-start">
         {/* Left Section - Brand & Benefits (Mobile Second) */}
@@ -53,7 +53,7 @@ export default async function Signup(props: {
             <h2 className="text-3xl font-bold text-card-foreground">Create an account</h2>
             <p className="text-muted-foreground">
               Already have an account?{" "}
-              <Link href="/sign-in" className="text-[#D4AF37] hover:underline font-semibold">
+              <Link href="/sign-in" className="text-[#C9A96A] hover:underline font-semibold">
                 Sign in
               </Link>
             </p>
@@ -80,11 +80,11 @@ export default async function Signup(props: {
 
           <p className="text-xs text-muted-foreground text-center leading-relaxed">
             By signing up, you agree to our{" "}
-            <Link href="/terms-of-service" className="text-[#D4AF37] hover:underline">
+            <Link href="/terms-of-service" className="text-[#C9A96A] hover:underline">
               Terms of Service
             </Link>{" "}
             and{" "}
-            <Link href="/privacy-policy" className="text-[#D4AF37] hover:underline">
+            <Link href="/privacy-policy" className="text-[#C9A96A] hover:underline">
               Privacy Policy
             </Link>
           </p>

@@ -18,7 +18,7 @@ const transformations: TransformationItem[] = [
     title: "Take Control of Your Condition",
     description: "Manage or Reverse Chronic Health Issues Like Diabetes or Thyroid Problems.",
     icon: HeartPulse,
-    color: "#D4AF37",
+    color: "#C9A96A",
     lightColor: "rgba(212, 175, 55, 0.1)"
   },
   {
@@ -33,7 +33,7 @@ const transformations: TransformationItem[] = [
     title: "Achieve Weight Goals",
     description: "Experience Weight Management as a Byproduct of Better Health and Strength.",
     icon: Scale,
-    color: "#B7BAC0",
+    color: "#C9C0B4",
     lightColor: "rgba(183, 186, 192, 0.1)"
   },
   {
@@ -48,7 +48,7 @@ const transformations: TransformationItem[] = [
     title: "Enhance Your Quality of Life",
     description: "Enjoy Reduced Pain and More Energy.",
     icon: Sparkles,
-    color: "#E8C766",
+    color: "#EDE0C8",
     lightColor: "rgba(232, 199, 102, 0.1)"
   }
 ]
@@ -59,7 +59,7 @@ export default function Transformations() {
       <div className="container mx-auto px-4">
         <div className="text-center mb-16">
           <h2 className="text-4xl md:text-5xl font-bold font-display mb-4">
-            Your <span className="text-[#D4AF37]">Journey</span> to Transformation
+            Your <span className="text-[#C9A96A]">Journey</span> to Transformation
           </h2>
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
             Five major transformations you&apos;ll experience on your fitness journey with us.

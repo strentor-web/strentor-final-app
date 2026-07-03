@@ -96,7 +96,7 @@ function ConfirmEmailContent() {
       case 'loading':
         return (
           <div className="text-center space-y-4">
-            <Loader2 className="w-12 h-12 animate-spin mx-auto text-[#D4AF37]" />
+            <Loader2 className="w-12 h-12 animate-spin mx-auto text-[#C9A96A]" />
             <h2 className="text-2xl font-bold text-card-foreground">Verifying your email...</h2>
             <p className="text-muted-foreground">Please wait while we confirm your account.</p>
           </div>
@@ -113,7 +113,7 @@ function ConfirmEmailContent() {
             <div className="pt-4">
               <Button 
                 onClick={() => router.push('/dashboard')}
-                className="bg-[#D4AF37] hover:bg-[#D4AF37]/90 rounded-full"
+                className="bg-[#C9A96A] hover:bg-[#C9A96A]/90 rounded-full"
               >
                 Go to Dashboard
               </Button>
@@ -125,8 +125,8 @@ function ConfirmEmailContent() {
         return (
           <div className="space-y-6">
             <div className="text-center space-y-4">
-              <XCircle className="w-16 h-16 mx-auto text-[#D4AF37]" />
-              <h2 className="text-3xl font-bold text-[#D4AF37]">Link Expired</h2>
+              <XCircle className="w-16 h-16 mx-auto text-[#C9A96A]" />
+              <h2 className="text-3xl font-bold text-[#C9A96A]">Link Expired</h2>
               <p className="text-muted-foreground text-lg">
                 The confirmation link has expired or is invalid. Don't worry, we can send you a new one!
               </p>
@@ -148,7 +148,7 @@ function ConfirmEmailContent() {
               <Button
                 onClick={handleResendEmail}
                 disabled={isResending || !email}
-                className="w-full bg-[#D4AF37] hover:bg-[#D4AF37]/90 rounded-full"
+                className="w-full bg-[#C9A96A] hover:bg-[#C9A96A]/90 rounded-full"
               >
                 {isResending ? (
                   <>
@@ -191,8 +191,8 @@ function ConfirmEmailContent() {
       case 'error':
         return (
           <div className="text-center space-y-4">
-            <XCircle className="w-16 h-16 mx-auto text-[#D4AF37]" />
-            <h2 className="text-3xl font-bold text-[#D4AF37]">Something went wrong</h2>
+            <XCircle className="w-16 h-16 mx-auto text-[#C9A96A]" />
+            <h2 className="text-3xl font-bold text-[#C9A96A]">Something went wrong</h2>
             <p className="text-muted-foreground text-lg">
               We encountered an error while verifying your email. Please try again or contact support.
             </p>
@@ -213,7 +213,7 @@ function ConfirmEmailContent() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-4 bg-gradient-to-br from-[#D4AF37]/5 via-[#2FA366]/5 to-[#B7BAC0]/5">
+    <div className="min-h-screen flex items-center justify-center p-4 bg-gradient-to-br from-[#C9A96A]/5 via-[#2FA366]/5 to-[#C9C0B4]/5">
       <div className="w-full max-w-md">
         {/* Logo */}
         <div className="text-center mb-8">
@@ -245,7 +245,7 @@ function ConfirmEmailContent() {
         {/* Footer Links */}
         <div className="text-center mt-6 space-y-2">
           <p className="text-sm text-muted-foreground">
-            <Link href="/sign-in" className="text-[#D4AF37] hover:underline font-medium">
+            <Link href="/sign-in" className="text-[#C9A96A] hover:underline font-medium">
               Back to Sign In
             </Link>
           </p>

@@ -11,17 +11,17 @@ export function Mission() {
       <div className="absolute inset-0 bg-gradient-to-r from-gray-900 via-gray-900/50 to-gray-900 opacity-30"></div>
       <div className="max-w-7xl mx-auto px-4 text-center relative z-10">
         <h2 className="text-5xl font-extrabold font-display mb-8 tracking-tight">
-          <span className="text-[#C9972B] drop-shadow-[0_0_10px_rgba(201,151,43,0.5)]">Our Mission</span>
+          <span className="text-[#B8935A] drop-shadow-[0_0_10px_rgba(201,151,43,0.5)]">Our Mission</span>
         </h2>
         <p className="text-2xl text-gray-200 max-w-4xl mx-auto mb-16 leading-relaxed">
-          <span className="text-[#C9972B] font-bold">Inclusion</span> fuels our mission. We ensure our transformative programs remain
+          <span className="text-[#B8935A] font-bold">Inclusion</span> fuels our mission. We ensure our transformative programs remain
           accessible to all—because true empowerment knows no economic barriers.
         </p>
         <div className="grid md:grid-cols-3 gap-8 text-left max-w-5xl mx-auto">
-          <div className="bg-gray-800/70 backdrop-blur-sm p-8 rounded-xl border-t-4 border-[#D4AF37] shadow-2xl hover:scale-105 transition-transform">
+          <div className="bg-gray-800/70 backdrop-blur-sm p-8 rounded-xl border-t-4 border-[#C9A96A] shadow-2xl hover:scale-105 transition-transform">
             <div className="flex items-center mb-4">
-              <Target className="text-[#D4AF37] mr-4" size={40} strokeWidth={2} />
-              <h3 className="text-2xl font-bold text-[#D4AF37]">Vision</h3>
+              <Target className="text-[#C9A96A] mr-4" size={40} strokeWidth={2} />
+              <h3 className="text-2xl font-bold text-[#C9A96A]">Vision</h3>
             </div>
             <p className="text-gray-300 text-lg">
               To create a world where every individual has the tools, support, and 
@@ -38,10 +38,10 @@ export function Mission() {
               journey of transformation is celebrated.
             </p>
           </div>
-          <div className="bg-gray-800/70 backdrop-blur-sm p-8 rounded-xl border-t-4 border-[#B7BAC0] shadow-2xl hover:scale-105 transition-transform">
+          <div className="bg-gray-800/70 backdrop-blur-sm p-8 rounded-xl border-t-4 border-[#C9C0B4] shadow-2xl hover:scale-105 transition-transform">
             <div className="flex items-center mb-4">
-              <Star className="text-[#B7BAC0] mr-4" size={40} strokeWidth={2} />
-              <h3 className="text-2xl font-bold text-[#B7BAC0]">Values</h3>
+              <Star className="text-[#C9C0B4] mr-4" size={40} strokeWidth={2} />
+              <h3 className="text-2xl font-bold text-[#C9C0B4]">Values</h3>
             </div>
             <p className="text-gray-300 text-lg">
               Empowerment, inclusivity, and continuous growth form the foundation 

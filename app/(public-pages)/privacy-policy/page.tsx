@@ -328,7 +328,7 @@ export default function PrivacyPolicy() {
               <section>
                 <h2 className="text-2xl font-bold text-foreground mb-4">21. Contact Us</h2>
                 <div className="text-muted-foreground">
-                  <p>If you have any questions about this Privacy Policy, please contact us by email: <a href="mailto:adityamandan@strentor.com" className="text-[#D4AF37] hover:underline">adityamandan@strentor.com</a>.</p>
+                  <p>If you have any questions about this Privacy Policy, please contact us by email: <a href="mailto:adityamandan@strentor.com" className="text-[#C9A96A] hover:underline">adityamandan@strentor.com</a>.</p>
                 </div>
               </section>
 

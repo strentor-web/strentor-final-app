@@ -5,9 +5,9 @@ export function BrandStory() {
     <section className="max-w-7xl mx-auto px-4 py-16 md:py-24">
       <div className="grid md:grid-cols-2 gap-12 items-center">
         <div className="space-y-6">
-          <span className="text-[#B7BAC0] font-semibold text-5xl">Our Story</span>
+          <span className="text-[#C9C0B4] font-semibold text-5xl">Our Story</span>
           <h2 className="text-3xl font-bold font-display text-foreground">
-            A Movement of <span className="text-[#D4AF37]">Transformation</span>
+            A Movement of <span className="text-[#C9A96A]">Transformation</span>
           </h2>
           <div className="space-y-4 text-lg text-muted-foreground font-semibold leading-relaxed">
             <p>

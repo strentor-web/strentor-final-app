@@ -11,7 +11,7 @@ const ProgramsCard = () => {
       title: "Fitness Training",
       description:
         "Personalized workout plans and nutrition guidance to help you achieve your fitness goals",
-      gradient: "from-[#D4AF37] to-[#C9972B]",
+      gradient: "from-[#C9A96A] to-[#B8935A]",
     },
   ];
 
@@ -20,7 +20,7 @@ const ProgramsCard = () => {
       <div className="container mx-auto px-4 md:px-6">
         {/* Headline Section */}
         <div className="flex flex-col items-center justify-center space-y-4 text-center">
-          <h2 className="text-3xl font-bold font-display tracking-tighter sm:text-5xl text-[#D4AF37]">
+          <h2 className="text-3xl font-bold font-display tracking-tighter sm:text-5xl text-[#C9A96A]">
             Our Programs
           </h2>
           <p className="max-w-[900px] text-muted-foreground font-semibold md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">

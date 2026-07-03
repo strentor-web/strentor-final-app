@@ -11,12 +11,12 @@ interface TestimonialCardProps {
 
 const TestimonialCard = ({ quote, author, condition }: TestimonialCardProps) => (
   <div className="p-8 bg-card rounded-xl shadow-lg text-center flex flex-col items-center h-full">
-    <Quote className="w-10 h-10 text-[#D4AF37] mb-6" />
+    <Quote className="w-10 h-10 text-[#C9A96A] mb-6" />
     <p className="text-foreground font-semibold text-lg leading-relaxed mb-6">{quote}</p>
     <div className="mt-auto flex flex-col items-center">
-      <div className="h-1 w-16 bg-[#D4AF37] mb-4"></div>
+      <div className="h-1 w-16 bg-[#C9A96A] mb-4"></div>
       <p className="font-semibold flex flex-col items-center">
-        <span className="text-[#D4AF37] text-lg mb-1">{author}</span>
+        <span className="text-[#C9A96A] text-lg mb-1">{author}</span>
         {condition && <span className="text-muted-foreground text-sm">{condition}</span>}
       </p>
     </div>
@@ -25,12 +25,12 @@ const TestimonialCard = ({ quote, author, condition }: TestimonialCardProps) => 
 
 const TestimonialCardMobile = ({ quote, author, condition }: TestimonialCardProps) => (
   <div className="p-6 bg-card rounded-xl shadow-lg text-center flex flex-col items-center h-full">
-    <Quote className="w-8 h-8 text-[#D4AF37] mb-4" />
+    <Quote className="w-8 h-8 text-[#C9A96A] mb-4" />
     <p className="text-foreground font-semibold text-base leading-relaxed mb-4">{quote}</p>
     <div className="mt-auto flex flex-col items-center">
-      <div className="h-1 w-12 bg-[#D4AF37] mb-3"></div>
+      <div className="h-1 w-12 bg-[#C9A96A] mb-3"></div>
       <p className="font-semibold flex flex-col items-center">
-        <span className="text-[#D4AF37] text-sm mb-1">{author}</span>
+        <span className="text-[#C9A96A] text-sm mb-1">{author}</span>
         {condition && <span className="text-muted-foreground text-xs">{condition}</span>}
       </p>
     </div>
@@ -86,7 +86,7 @@ export default function FitnessTestimonials() {
     <section className="py-20 bg-background">
       <div className="max-w-7xl mx-auto px-4">
         <h2 className="text-4xl md:text-5xl font-bold font-display mb-12 text-center">
-          Real Stories of <span className="text-[#D4AF37]">Transformation</span>
+          Real Stories of <span className="text-[#C9A96A]">Transformation</span>
         </h2>
 
         <div className="relative w-full overflow-hidden">
