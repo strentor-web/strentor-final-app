@@ -44,7 +44,7 @@ export default function Hero() {
   return (
     <>
       <div className="relative min-h-[90vh] flex items-center">
-        <div className="absolute inset-0 bg-gradient-to-br from-[#C9A96A]/5 via-[#2FA366]/5 to-[#C9C0B4]/5" />
+        <div className="absolute inset-0 bg-gradient-to-br from-[#C9A96A]/5 via-[#B8935A]/5 to-[#C9C0B4]/5" />
         
         <div className="container mx-auto p-4">
           <motion.div
@@ -78,8 +78,8 @@ export default function Hero() {
                 key={index}
                 className="flex items-center gap-3 bg-background/90 backdrop-blur-sm rounded-lg px-4 py-3 shadow-lg transform hover:scale-105 transition-all w-full sm:w-auto"
               >
-                <div className="flex-shrink-0 w-8 h-8 rounded-full bg-[#2FA366] flex items-center justify-center">
-                  <Check className="w-5 h-5 text-white" />
+                <div className="flex-shrink-0 w-8 h-8 rounded-full bg-[#C9A96A] flex items-center justify-center">
+                  <Check className="w-5 h-5 text-strentor-black" />
                 </div>
                 <span className="text-base font-bold text-foreground">{guarantee}</span>
               </div>

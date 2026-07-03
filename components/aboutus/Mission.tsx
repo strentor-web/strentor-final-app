@@ -28,10 +28,10 @@ export function Mission() {
               opportunity to unlock their full potential.
             </p>
           </div>
-          <div className="bg-gray-800/70 backdrop-blur-sm p-8 rounded-xl border-t-4 border-[#2FA366] shadow-2xl hover:scale-105 transition-transform">
+          <div className="bg-gray-800/70 backdrop-blur-sm p-8 rounded-xl border-t-4 border-[#B8935A] shadow-2xl hover:scale-105 transition-transform">
             <div className="flex items-center mb-4">
-              <HandshakeIcon className="text-[#2FA366] mr-4" size={40} strokeWidth={2} />
-              <h3 className="text-2xl font-bold text-[#2FA366]">Promise</h3>
+              <HandshakeIcon className="text-[#B8935A] mr-4" size={40} strokeWidth={2} />
+              <h3 className="text-2xl font-bold text-[#B8935A]">Promise</h3>
             </div>
             <p className="text-gray-300 text-lg">
               To provide an inclusive space where diverse narratives unfold, and every 

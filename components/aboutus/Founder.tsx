@@ -30,7 +30,7 @@ export function FounderStory() {
               relentless commitment to empowering individuals to surmount obstacles 
               and flourish.
             </p>
-            <p className="text-xl font-semibold text-[#2FA366] mt-6">
+            <p className="text-xl font-semibold text-[#C9A96A] mt-6">
             &quot;The only impossible journey is the one you never begin.&quot;
             </p>
           </div>

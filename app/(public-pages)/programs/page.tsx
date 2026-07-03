@@ -80,13 +80,13 @@ export default function TeamPage() {
                           </ul>
                         </div>
                         <div>
-                          <h3 className="text-lg font-semibold text-[#2FA366] mb-4">
+                          <h3 className="text-lg font-semibold text-[#C9A96A] mb-4">
                             What We Offer
                           </h3>
                           <ul className="space-y-3 text-muted-foreground font-bold">
                             {member.offerings.map((offer, idx) => (
                               <li key={idx} className="flex items-start">
-                                <Check className="h-5 w-5 text-[#2FA366] mt-1 mr-3 flex-shrink-0" />
+                                <Check className="h-5 w-5 text-[#C9A96A] mt-1 mr-3 flex-shrink-0" />
                                 <span>{offer}</span>
                               </li>
                             ))}
