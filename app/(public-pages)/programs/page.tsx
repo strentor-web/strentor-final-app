@@ -12,7 +12,7 @@ export default function TeamPage() {
     {
       name: "Aditya Mandan",
       role: "Fitness and Nutrition Coaching",
-      image: "/Aditya.jpg",
+      image: "/Aditya-transparent.png",
       qualifications: [
         "National-level Para Powerlifter",
         "Certified Fitness Trainer (Level 2, PEPT) and Nutrition Consultant",
