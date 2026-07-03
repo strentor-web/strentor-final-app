@@ -247,7 +247,7 @@ export const CalendlyEmbedModal: React.FC<CalendlyEmbedModalProps> = ({
         <DialogHeader className="px-4 sm:px-6 py-3 sm:py-4 border-b bg-card sticky top-0 z-10 shrink-0">
           <div className="flex items-center justify-between">
             <DialogTitle className="flex items-center gap-2 text-lg sm:text-xl">
-              <Calendar className="h-5 w-5 sm:h-6 sm:w-6 text-[#D4AF37]" />
+              <Calendar className="h-5 w-5 sm:h-6 sm:w-6 text-[#C9A96A]" />
               Select Your Preferred Time
             </DialogTitle>
             <button
@@ -265,7 +265,7 @@ export const CalendlyEmbedModal: React.FC<CalendlyEmbedModalProps> = ({
           {isLoading && (
             <div className="absolute inset-0 bg-card bg-opacity-90 flex items-center justify-center z-10">
               <div className="flex flex-col items-center gap-3">
-                <Loader2 className="h-8 w-8 animate-spin text-[#D4AF37]" />
+                <Loader2 className="h-8 w-8 animate-spin text-[#C9A96A]" />
                 <p className="text-muted-foreground font-medium">Loading Calendar...</p>
               </div>
             </div>
@@ -294,7 +294,7 @@ export const CalendlyEmbedModal: React.FC<CalendlyEmbedModalProps> = ({
                 </p>
                 <button
                   onClick={handleRetry}
-                  className="px-4 py-2 bg-[#D4AF37] text-primary-foreground rounded-lg hover:bg-[#D4AF37]/90 transition-colors"
+                  className="px-4 py-2 bg-[#C9A96A] text-primary-foreground rounded-lg hover:bg-[#C9A96A]/90 transition-colors"
                 >
                   {hasError ? "Retry" : "Let's Go"}
                 </button>

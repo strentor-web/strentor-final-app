@@ -24,8 +24,8 @@ body::before {
   z-index: -2;
   pointer-events: none;
   background:
-    radial-gradient(ellipse 80% 50% at 50% -10%, hsl(46 65% 52% / 0.12), transparent 60%),
-    radial-gradient(ellipse 60% 40% at 100% 100%, hsl(216 8% 74% / 0.06), transparent 60%);
+    radial-gradient(ellipse 80% 50% at 50% -10%, hsl(40 47% 60% / 0.12), transparent 60%),
+    radial-gradient(ellipse 60% 40% at 100% 100%, hsl(34 16% 75% / 0.06), transparent 60%);
 }
 
 body::after {
@@ -58,12 +58,12 @@ a {
 }
 
 :root {
-  --strentor-red: #D4AF37;
+  --strentor-red: #C9A96A;
   --strentor-green: #2FA366;
-  --strentor-orange: #C9972B;
-  --strentor-blue: #B7BAC0;
-  --strentor-gold: #D4AF37;
-  --strentor-silver: #B7BAC0;
+  --strentor-orange: #B8935A;
+  --strentor-blue: #C9C0B4;
+  --strentor-gold: #C9A96A;
+  --strentor-silver: #C9C0B4;
 }
 
 /* Calendly Embed Modal Styles */
@@ -158,74 +158,74 @@ a {
 @layer base {
   :root {
     --background: 0 0% 4%; /* near-black, matches logo backdrop */
-    --foreground: 46 27% 90%; /* warm off-white/champagne */
+    --foreground: 40 27% 90%; /* warm off-white/champagne diamond */
     --card: 0 0% 11%; /* lifted further off the background for clear elevation */
-    --card-foreground: 46 27% 90%;
+    --card-foreground: 40 27% 90%;
     --popover: 0 0% 11%;
-    --popover-foreground: 46 27% 90%;
-    --primary: 46 65% 52%; /* gold: #D4AF37 */
-    --primary-foreground: 0 0% 4%; /* Black text on gold */
+    --popover-foreground: 40 27% 90%;
+    --primary: 40 47% 60%; /* champagne gold: #C9A96A */
+    --primary-foreground: 0 0% 4%; /* Black text on champagne gold */
     --secondary: 0 0% 15%;
-    --secondary-foreground: 46 27% 90%;
+    --secondary-foreground: 40 27% 90%;
     --muted: 0 0% 13%;
     --muted-foreground: 0 0% 68%;
-    --accent: 216 8% 74%; /* silver: #B8BCC2 */
-    --accent-foreground: 0 0% 4%; /* Black text on silver */
+    --accent: 34 16% 75%; /* champagne platinum: #C9C0B4 */
+    --accent-foreground: 0 0% 4%; /* Black text on champagne platinum */
     --destructive: 358 75% 59%; /* keep a true red for real error states */
     --destructive-foreground: 0 0% 100%;
     --border: 0 0% 22%; /* brighter for clearer card/input edges */
     --input: 0 0% 22%;
-    --ring: 46 65% 52%; /* Match primary (gold) for focus rings */
-    --chart-1: 46 65% 52%; /* gold */
-    --chart-2: 216 8% 74%; /* silver */
-    --chart-3: 43 89% 38%; /* bronze */
+    --ring: 40 47% 60%; /* Match primary (champagne gold) for focus rings */
+    --chart-1: 40 47% 60%; /* champagne gold */
+    --chart-2: 34 16% 75%; /* champagne platinum */
+    --chart-3: 36 40% 54%; /* champagne gold deep */
     --chart-4: 148 55% 41%; /* emerald (success) */
-    --chart-5: 45 74% 65%; /* champagne */
+    --chart-5: 39 51% 86%; /* champagne diamond */
     --radius: 0.5rem;
     --sidebar: 0 0% 0%;
     --sidebar-background: 0 0% 0%; /* pure black, matches logo */
-    --sidebar-foreground: 46 27% 90%;
-    --sidebar-primary: 46 65% 52%; /* gold */
+    --sidebar-foreground: 40 27% 90%;
+    --sidebar-primary: 40 47% 60%; /* champagne gold */
     --sidebar-primary-foreground: 0 0% 4%;
     --sidebar-accent: 0 0% 14%;
-    --sidebar-accent-foreground: 46 65% 52%; /* gold text on hover/active */
+    --sidebar-accent-foreground: 40 47% 60%; /* champagne gold text on hover/active */
     --sidebar-border: 0 0% 20%;
-    --sidebar-ring: 46 65% 52%;
+    --sidebar-ring: 40 47% 60%;
   }
 
   .dark {
     --background: 0 0% 4%;
-    --foreground: 46 27% 90%;
+    --foreground: 40 27% 90%;
     --card: 0 0% 11%;
-    --card-foreground: 46 27% 90%;
+    --card-foreground: 40 27% 90%;
     --popover: 0 0% 11%;
-    --popover-foreground: 46 27% 90%;
-    --primary: 46 65% 58%; /* Slightly brighter gold for dark mode */
+    --popover-foreground: 40 27% 90%;
+    --primary: 40 47% 66%; /* Slightly brighter champagne gold for dark mode */
     --primary-foreground: 0 0% 4%;
     --secondary: 0 0% 15%;
-    --secondary-foreground: 46 27% 90%;
+    --secondary-foreground: 40 27% 90%;
     --muted: 0 0% 13%;
     --muted-foreground: 0 0% 68%;
-    --accent: 216 8% 78%; /* Brighter silver for dark mode */
+    --accent: 34 16% 81%; /* Brighter champagne platinum for dark mode */
     --accent-foreground: 0 0% 4%;
     --destructive: 358 75% 64%; /* Brighter red for dark mode */
     --destructive-foreground: 0 0% 100%;
     --border: 0 0% 22%;
     --input: 0 0% 22%;
-    --ring: 46 65% 58%;
-    --chart-1: 46 65% 58%; /* gold */
-    --chart-2: 216 8% 78%; /* silver */
-    --chart-3: 43 89% 45%; /* bronze */
+    --ring: 40 47% 66%;
+    --chart-1: 40 47% 66%; /* champagne gold */
+    --chart-2: 34 16% 81%; /* champagne platinum */
+    --chart-3: 36 40% 60%; /* champagne gold deep */
     --chart-4: 148 55% 48%; /* emerald (success) */
-    --chart-5: 45 74% 70%; /* champagne */
+    --chart-5: 39 51% 92%; /* champagne diamond */
     --sidebar-background: 0 0% 0%;
-    --sidebar-foreground: 46 27% 90%;
-    --sidebar-primary: 46 65% 58%;
+    --sidebar-foreground: 40 27% 90%;
+    --sidebar-primary: 40 47% 66%;
     --sidebar-primary-foreground: 0 0% 4%;
     --sidebar-accent: 0 0% 14%;
-    --sidebar-accent-foreground: 46 65% 58%;
+    --sidebar-accent-foreground: 40 47% 66%;
     --sidebar-border: 0 0% 20%;
-    --sidebar-ring: 46 65% 58%;
+    --sidebar-ring: 40 47% 66%;
   }
 }
 

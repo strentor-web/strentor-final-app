@@ -71,7 +71,7 @@ export function ResendEmailModal({ isOpen, onClose, email, onResendSuccess }: Re
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
-            <Mail className="w-5 h-5 text-[#D4AF37]" />
+            <Mail className="w-5 h-5 text-[#C9A96A]" />
             Resend Confirmation Email
           </DialogTitle>
           <DialogDescription>
@@ -110,7 +110,7 @@ export function ResendEmailModal({ isOpen, onClose, email, onResendSuccess }: Re
             <Button
               onClick={handleResendEmail}
               disabled={isResending || !emailInput.trim()}
-              className="flex-1 bg-[#D4AF37] hover:bg-[#D4AF37]/90 rounded-full"
+              className="flex-1 bg-[#C9A96A] hover:bg-[#C9A96A]/90 rounded-full"
             >
               {isResending ? (
                 <>

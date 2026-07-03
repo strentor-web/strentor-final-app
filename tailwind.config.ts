@@ -23,14 +23,14 @@ const config = {
   			'display': ['var(--font-display)', 'Georgia', 'serif'],
   		},
   		colors: {
-			// Strentor Brand Colors (black + gold + silver)
-			'strentor-yellow': '#E8C766',
-			'strentor-red': '#D4AF37',
+			// Strentor Brand Colors (champagne gold / platinum / diamond)
+			'strentor-yellow': '#EDE0C8',
+			'strentor-red': '#C9A96A',
 			'strentor-green': '#2FA366',
-			'strentor-orange': '#C9972B',
-			'strentor-blue': '#B7BAC0',
-			'strentor-gold': '#D4AF37',
-			'strentor-silver': '#B7BAC0',
+			'strentor-orange': '#B8935A',
+			'strentor-blue': '#C9C0B4',
+			'strentor-gold': '#C9A96A',
+			'strentor-silver': '#C9C0B4',
 			'strentor-black': '#0A0A0A',
 			// Default shadcn colors
   			border: 'hsl(var(--border))',

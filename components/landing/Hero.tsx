@@ -44,7 +44,7 @@ export default function Hero() {
   return (
     <>
       <div className="relative min-h-[90vh] flex items-center">
-        <div className="absolute inset-0 bg-gradient-to-br from-[#D4AF37]/5 via-[#2FA366]/5 to-[#B7BAC0]/5" />
+        <div className="absolute inset-0 bg-gradient-to-br from-[#C9A96A]/5 via-[#2FA366]/5 to-[#C9C0B4]/5" />
         
         <div className="container mx-auto p-4">
           <div className="relative flex flex-col md:grid md:grid-cols-2 gap-8 p-6 md:p-12 bg-background/90 backdrop-blur-sm rounded-2xl shadow-xl">
@@ -53,7 +53,7 @@ export default function Hero() {
               <h1 className="text-4xl md:text-6xl font-bold font-display text-foreground">
                  Wellness Programs
                 <br />
-                Made For <span className="text-[#D4AF37]">YOU</span>
+                Made For <span className="text-[#C9A96A]">YOU</span>
               </h1>
               <p className="text-xl md:text-2xl font-medium text-muted-foreground">
                 Personalized pathways to your best self, crafted by experts who understand your unique journey.
@@ -61,7 +61,7 @@ export default function Hero() {
               <div className="flex flex-col sm:flex-row gap-4">
                 <Button 
                   onClick={handleBookingClick}
-                  className="h-14 px-8 text-lg rounded-full font-bold bg-[#D4AF37] hover:bg-[#D4AF37]/90 transition-all transform hover:scale-105"
+                  className="h-14 px-8 text-lg rounded-full font-bold bg-[#C9A96A] hover:bg-[#C9A96A]/90 transition-all transform hover:scale-105"
                 >
                   Book Your Discovery Call
                 </Button>

@@ -43,7 +43,7 @@ const Banner = () => {
             </p>
             <div className="mx-auto max-w-sm space-y-2">
               <Button
-                className="w-full py-7 text-lg font-extrabold bg-[#D4AF37] hover:bg-[#D4AF37]/90"
+                className="w-full py-7 text-lg font-extrabold bg-[#C9A96A] hover:bg-[#C9A96A]/90"
                 onClick={() => window.open("https://calendly.com/strentor/strentor-services", "_blank")}
               >
                 Start Your Fitness Journey

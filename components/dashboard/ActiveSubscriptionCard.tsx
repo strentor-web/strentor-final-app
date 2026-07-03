@@ -17,8 +17,8 @@ export function ActiveSubscriptionCard({ subscriptions }: ActiveSubscriptionCard
   };
 
   const categoryGradients = {
-    FITNESS: "from-[#D4AF37] to-[#C9972B]",
-    ALL_IN_ONE: "from-[#B7BAC0] to-[#D4AF37]"
+    FITNESS: "from-[#C9A96A] to-[#B8935A]",
+    ALL_IN_ONE: "from-[#C9C0B4] to-[#C9A96A]"
   };
 
   const categoryIcons = {

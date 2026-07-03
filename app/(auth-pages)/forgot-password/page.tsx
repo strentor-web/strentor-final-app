@@ -17,7 +17,7 @@ export default async function ForgotPassword(props: {
       <div className="w-full flex-1 flex items-center h-screen justify-center gap-2 p-4">
         <div className="bg-card/90 backdrop-blur-sm border border-border rounded-2xl shadow-xl p-8 max-w-md w-full">
           <FormMessage message={searchParams} />
-          <Link href="/forgot-password" className="w-full mt-6 bg-[#D4AF37] hover:bg-[#D4AF37]/90 rounded-full font-bold inline-block text-center py-3 text-primary-foreground">
+          <Link href="/forgot-password" className="w-full mt-6 bg-[#C9A96A] hover:bg-[#C9A96A]/90 rounded-full font-bold inline-block text-center py-3 text-primary-foreground">
             Try Again
           </Link>
         </div>
@@ -26,7 +26,7 @@ export default async function ForgotPassword(props: {
   }
   
   return (
-    <div className="relative min-h-screen flex items-center justify-center p-4 bg-gradient-to-br from-[#D4AF37]/5 via-[#2FA366]/5 to-[#B7BAC0]/5">
+    <div className="relative min-h-screen flex items-center justify-center p-4 bg-gradient-to-br from-[#C9A96A]/5 via-[#2FA366]/5 to-[#C9C0B4]/5">
       
       <div className="relative w-full max-w-6xl grid md:grid-cols-2 gap-8 items-start">
         {/* Left Section - Brand & Benefits (Mobile Second) */}
@@ -36,7 +36,7 @@ export default async function ForgotPassword(props: {
               <Image src="/strentor-logo.png" alt="Strentor Logo" width={150} height={136} className="w-32 h-auto" />
             </div>
             <h1 className="text-4xl md:text-6xl font-bold text-foreground">
-              RESET YOUR <span className="text-[#D4AF37]">PASSWORD</span>
+              RESET YOUR <span className="text-[#C9A96A]">PASSWORD</span>
             </h1>
             <p className="text-xl md:text-2xl font-medium text-muted-foreground">
               No worries! We'll help you reset your password and get back on track to your transformation journey.
@@ -66,7 +66,7 @@ export default async function ForgotPassword(props: {
             <h2 className="text-3xl font-bold text-card-foreground">Reset Password</h2>
             <p className="text-muted-foreground">
               Remember your password?{" "}
-              <Link href="/sign-in" className="text-[#D4AF37] hover:underline font-semibold">
+              <Link href="/sign-in" className="text-[#C9A96A] hover:underline font-semibold">
                 Sign in
               </Link>
             </p>
@@ -82,13 +82,13 @@ export default async function ForgotPassword(props: {
                 type="email"
                 placeholder="you@example.com"
                 required
-                className="w-full p-3 border-2 rounded-lg focus:border-[#D4AF37] transition-colors"
+                className="w-full p-3 border-2 rounded-lg focus:border-[#C9A96A] transition-colors"
               />
             </div>
             <SubmitButton
               formAction={forgotPasswordAction}
               pendingText="Sending reset link..."
-              className="w-full bg-[#D4AF37] hover:bg-[#D4AF37]/90 text-primary-foreground font-bold py-3 rounded-full text-lg transform hover:scale-105 transition-all"
+              className="w-full bg-[#C9A96A] hover:bg-[#C9A96A]/90 text-primary-foreground font-bold py-3 rounded-full text-lg transform hover:scale-105 transition-all"
             >
               Send Reset Link
             </SubmitButton>
@@ -102,7 +102,7 @@ export default async function ForgotPassword(props: {
             </p>
             <p className="text-xs text-muted-foreground">
               Need help?{" "}
-              <Link href="/contact" className="text-[#D4AF37] hover:underline">
+              <Link href="/contact" className="text-[#C9A96A] hover:underline">
                 Contact support
               </Link>
             </p>

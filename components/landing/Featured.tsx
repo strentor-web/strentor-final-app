@@ -22,7 +22,7 @@ export const Logo = ({ src, alt, href }: LogoProps) => (
 export default function Featured() {
   return (
     <div className="container mx-auto px-4 mt-12 items-center">
-      <h2 className="text-3xl font-bold font-display tracking-tighter sm:text-5xl mb-6 text-center text-[#D4AF37]">
+      <h2 className="text-3xl font-bold font-display tracking-tighter sm:text-5xl mb-6 text-center text-[#C9A96A]">
         Also Featured In
       </h2>
       <div className="flex flex-row flex-wrap gap-x-6 gap-y-6 sm:gap-x-9 justify-center items-center">

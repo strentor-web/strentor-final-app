@@ -5,8 +5,8 @@ const successStories = [
     condition: "Type-2 Diabetes",
     description: "Supported clients in managing their sugar levels and regaining strength - one even returned to running marathons.",
     number: "01",
-    color: "from-[#D4AF37]/10 to-[#D4AF37]/5",
-    numberBg: "#D4AF37"
+    color: "from-[#C9A96A]/10 to-[#C9A96A]/5",
+    numberBg: "#C9A96A"
   },
   {
     condition: "Cerebral Palsy",
@@ -19,8 +19,8 @@ const successStories = [
     condition: "Thyroid Issues",
     description: "Helped clients reverse weight management and significantly reduced joint pain.",
     number: "03",
-    color: "from-[#B7BAC0]/10 to-[#B7BAC0]/5",
-    numberBg: "#B7BAC0"
+    color: "from-[#C9C0B4]/10 to-[#C9C0B4]/5",
+    numberBg: "#C9C0B4"
   },
   {
     condition: "Down's Syndrome",
@@ -33,8 +33,8 @@ const successStories = [
     condition: "Spina Bifida",
     description: "Helped clients play sports like critical pain-free with customised fitness plans.",
     number: "05",
-    color: "from-[#E8C766]/10 to-[#E8C766]/5",
-    numberBg: "#E8C766"
+    color: "from-[#EDE0C8]/10 to-[#EDE0C8]/5",
+    numberBg: "#EDE0C8"
   }
 ]
 
@@ -44,7 +44,7 @@ export default function SuccessStories() {
       <div className="container mx-auto px-4">
         <div className="text-center mb-16">
           <h2 className="text-4xl md:text-5xl font-bold font-display mb-4">
-            Real <span className="text-[#D4AF37]">Transformations</span>, Real Results
+            Real <span className="text-[#C9A96A]">Transformations</span>, Real Results
           </h2>
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
             At STRENTOR, we&apos;ve already helped people achieve life-changing results. We don&apos;t promise magic - we deliver proven strategies that empower you to break through your limitations.

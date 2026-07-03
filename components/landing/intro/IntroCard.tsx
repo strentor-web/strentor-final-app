@@ -15,10 +15,10 @@ const iconComponents: Record<IntroCardProps['icon'], LucideIcon> = {
 };
 
 const colorMap: Record<IntroCardProps['icon'], string> = {
-  holistic: '#D4AF37',     // Strentor Gold
-  inclusivity: '#E8C766',  // Strentor Champagne
-  empowerment: '#C9972B',  // Strentor Antique Gold
-  community: '#B7BAC0',    // Strentor Silver
+  holistic: '#C9A96A',     // Strentor Gold
+  inclusivity: '#EDE0C8',  // Strentor Champagne
+  empowerment: '#B8935A',  // Strentor Antique Gold
+  community: '#C9C0B4',    // Strentor Silver
 };
 
 // Icon glyph color chosen per badge for maximum contrast against its solid background.
