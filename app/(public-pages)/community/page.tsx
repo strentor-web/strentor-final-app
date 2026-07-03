@@ -14,23 +14,6 @@ const communityGroups = [
     buttonColor: "bg-[#EDE0C8] hover:bg-[#EDE0C8]/90",
     whatsappLink: "https://chat.whatsapp.com/GJRdI9y1NRkFei0IosUAlL"
   },
-  {
-    title: "Fitness Group",
-    description: "For those focused on physical health and fitness, this group shares workouts, fitness tips, and motivational content.",
-    icon: "/fitness.svg",
-    color: "from-[#C9A96A]/10 to-[#C9A96A]/5",
-    buttonColor: "bg-[#C9A96A]/70 hover:bg-[#C9A96A]/90",
-    whatsappLink: "https://chat.whatsapp.com/EYr2NBxdcPoFKoj3TFmKQr"
-  },
-  // {
-  //   title: "Life Coaching Group",
-  //   description: "Focused on personal growth, goal-setting, and achieving your full potential.",
-  //   icon: "/lifecoaching.png",
-  //   color: "from-[#2FA366]/10 to-[#2FA366]/5",
-  //   buttonColor: "bg-[#2FA366] hover:bg-[#2FA366]/90",
-  //   whatsappLink: "https://chat.whatsapp.com/BW8s55o0pLCHCimnM0za3x"
-  // },
-  
 ];
 
 
@@ -71,7 +54,7 @@ export default function CommunityPage() {
         </div>
 
         {/* Community Groups */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 p-6">
+        <div className="grid grid-cols-1 gap-6 p-6 max-w-xl mx-auto">
           {communityGroups.map((group, index) => (
             <div
               key={index}
