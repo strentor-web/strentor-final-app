@@ -94,7 +94,7 @@ export default function CommunityPage() {
         {/* Call to Action */}
         
       </section>
-        <div className="text-center py-20 bg-gray-900">
+        <div className="text-center py-20 bg-black">
             <h2 className="text-4xl font-bold font-display text-white mb-4 sm:text-5xl md:text-6xl lg:text-7xl">
               Ready to Begin Your <span className="text-[#C9A96A]">Journey</span>?
             </h2>
