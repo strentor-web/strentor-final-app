@@ -13,7 +13,7 @@ const features = [
   {
     text: "Customized Programs",
     icon: Target,
-    color: "#2FA366"
+    color: "#B8935A"
   },
   {
     text: "Proven Results",
@@ -60,7 +60,7 @@ export default function FitnessHero() {
                     className="flex-shrink-0 w-8 sm:w-10 h-8 sm:h-10 rounded-full flex items-center justify-center"
                     style={{ backgroundColor: feature.color }}
                   >
-                    <feature.icon className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
+                    <feature.icon className="w-5 h-5 sm:w-6 sm:h-6 text-strentor-black" />
                   </div>
                   <span className="text-sm sm:text-base font-bold text-card-foreground flex-1 text-left">{feature.text}</span>
                 </div>

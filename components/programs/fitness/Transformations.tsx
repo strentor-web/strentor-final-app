@@ -26,30 +26,30 @@ const transformations: TransformationItem[] = [
     description: "Develop Physical and Mental Resilience to Conquer Life's Toughest Challenge.",
     isCustomIcon: true,
     iconPath: "/dumbbell.png",
-    color: "#2FA366",
-    lightColor: "rgba(47, 163, 102, 0.1)"
+    color: "#B8935A",
+    lightColor: "rgba(184, 147, 90, 0.1)"
   },
   {
     title: "Achieve Weight Goals",
     description: "Experience Weight Management as a Byproduct of Better Health and Strength.",
     icon: Scale,
     color: "#C9C0B4",
-    lightColor: "rgba(183, 186, 192, 0.1)"
+    lightColor: "rgba(201, 192, 180, 0.1)"
   },
   {
     title: "Rediscover Confidence and Freedom",
     description: "Regain Mobility and Feel Empowered in Your Own Body.",
     isCustomIcon: true,
     iconPath: "/self-confidence.png",
-    color: "#FFA500",
-    lightColor: "rgba(255, 165, 0, 0.1)"
+    color: "#DCC28C",
+    lightColor: "rgba(220, 194, 140, 0.1)"
   },
   {
     title: "Enhance Your Quality of Life",
     description: "Enjoy Reduced Pain and More Energy.",
     icon: Sparkles,
     color: "#EDE0C8",
-    lightColor: "rgba(232, 199, 102, 0.1)"
+    lightColor: "rgba(237, 224, 200, 0.1)"
   }
 ]
 
