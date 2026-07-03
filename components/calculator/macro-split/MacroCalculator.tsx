@@ -228,7 +228,7 @@ export function MacroCalculator({
                     className={cn(
                       "flex items-center gap-2 px-4 py-3 rounded-full transition-all hover:scale-105",
                       fitnessGoal === goal 
-                        ? "bg-strentor-red hover:bg-strentor-red/80 text-white shadow-md" 
+                        ? "bg-strentor-red hover:bg-strentor-red/80 text-primary-foreground shadow-md" 
                         : "bg-card text-strentor-red hover:bg-strentor-red/10 border-strentor-red border-2"
                     )}
                   >

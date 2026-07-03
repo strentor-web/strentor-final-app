@@ -57,7 +57,7 @@ export function SignUpForm({ searchParams }: SignUpFormProps) {
             <Button
               onClick={() => setIsModalOpen(true)}
               variant="outline"
-              className="text-strentor-red border-strentor-red hover:bg-strentor-red/80 hover:text-white rounded-full"
+              className="text-strentor-red border-strentor-red hover:bg-strentor-red/80 hover:text-primary-foreground rounded-full"
             >
               Let's Try Again
             </Button>
@@ -162,7 +162,7 @@ export function SignUpForm({ searchParams }: SignUpFormProps) {
       <SubmitButton
         formAction={signUpAction}
         pendingText="Creating account..."
-        className="w-full bg-strentor-red hover:bg-strentor-red/80 text-white font-bold py-3 rounded-full text-lg transform hover:scale-105 transition-all"
+        className="w-full bg-strentor-red hover:bg-strentor-red/80 text-primary-foreground font-bold py-3 rounded-full text-lg transform hover:scale-105 transition-all"
       >
         Get Started
       </SubmitButton>

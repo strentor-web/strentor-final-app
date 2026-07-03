@@ -54,7 +54,7 @@ export function ClientProfileClient({ profile, bestPRs, uniqueBodyParts }: Clien
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <User className="h-5 w-5 text-strentor-red" />
-            <span className="text-black">Client Details</span>
+            <span className="text-foreground">Client Details</span>
           </CardTitle>
         </CardHeader>
         <CardContent>
@@ -114,7 +114,7 @@ export function ClientProfileClient({ profile, bestPRs, uniqueBodyParts }: Clien
           <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
             <CardTitle className="flex items-center gap-2">
               <Activity className="h-5 w-5 text-strentor-red" />
-              <span className="text-black">Best Personal Records</span>
+              <span className="text-foreground">Best Personal Records</span>
             </CardTitle>
             
             {/* Body Part Filter */}

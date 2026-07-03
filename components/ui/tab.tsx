@@ -26,7 +26,7 @@ export const Tab = ({
         discount && "flex items-center justify-center gap-1 sm:gap-1.5 md:gap-2.5",
       )}
     >
-      <span className={cn("relative z-10 truncate", selected && "text-white")}>{text}</span>
+      <span className={cn("relative z-10 truncate", selected && "text-primary-foreground")}>{text}</span>
       {selected && (
         <motion.span
           layoutId="tab"
@@ -39,7 +39,7 @@ export const Tab = ({
           className={cn(
             "relative z-10 whitespace-nowrap text-[10px] sm:text-xs shadow-none px-1 sm:px-2 py-0.5 min-w-0 flex-shrink-0",
             selected
-              ? "bg-white/20 text-white hover:bg-white/20"
+              ? "bg-primary-foreground/20 text-primary-foreground hover:bg-primary-foreground/20"
               : "bg-green-100 text-green-700 hover:bg-green-100",
           )}
         >

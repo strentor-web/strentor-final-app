@@ -558,7 +558,7 @@ Are you sure you want to proceed with this downgrade?`;
             <AlertDialogAction
               onClick={handleConfirmPlanUpdate}
               disabled={isUpdatingPlan}
-              className="bg-strentor-red hover:bg-strentor-red/80 text-white"
+              className="bg-strentor-red hover:bg-strentor-red/80 text-primary-foreground"
             >
               {isUpdatingPlan ? (
                 <>

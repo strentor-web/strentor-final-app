@@ -268,7 +268,7 @@ export default function BMICalculator({ initialWeight, initialHeight }: { initia
         <div className="flex flex-row justify-between mb-6">
           <h1 className="text-2xl font-bold">BMI Results</h1>
           <div className="flex flex-row gap-2">
-            <Button className="bg-strentor-red text-white"
+            <Button className="bg-strentor-red text-primary-foreground"
               onClick={() => setShowAddForm(!showAddForm)}
               disabled={isTodayLogged || isAdding}
               title={isTodayLogged ? "You have already inputted today's data." : undefined}
@@ -329,7 +329,7 @@ export default function BMICalculator({ initialWeight, initialHeight }: { initia
                   <Button 
                     onClick={() => handleAddBMI({ weight, height })} 
                     disabled={!weight || !height || isAdding}
-                    className="bg-strentor-red text-white"
+                    className="bg-strentor-red text-primary-foreground"
                   >
                     {isAdding ? "Adding..." : "Add BMI"}
                   </Button>

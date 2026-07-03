@@ -25,7 +25,7 @@ export const PricingHeader = ({
       <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-medium leading-tight">{title}</h1>
       <p className="text-sm sm:text-base text-muted-foreground px-2 sm:px-0">{subtitle}</p>
     </div>
-    <div className="mx-auto flex w-full max-w-sm sm:max-w-md lg:w-auto lg:max-w-lg rounded-full bg-[#F3F4F6] p-0.5 sm:p-1 dark:bg-[#222]">
+    <div className="mx-auto flex w-full max-w-sm sm:max-w-md lg:w-auto lg:max-w-lg rounded-full bg-muted p-0.5 sm:p-1">
       {options.map((opt) => (
         <Tab
           key={opt.value}

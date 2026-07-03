@@ -193,7 +193,7 @@ export default function ProgressGraphs({ weightLogs }: ProgressGraphsProps) {
           <p className="text-muted-foreground">Track your fitness journey over time</p>
         </div>
         <Button 
-          className="bg-strentor-red hover:bg-strentor-red/80 text-white"
+          className="bg-strentor-red hover:bg-strentor-red/80 text-primary-foreground"
           onClick={() => setShowAddWeightForm(!showAddWeightForm)}
           disabled={isUpdating}
         >
@@ -237,7 +237,7 @@ export default function ProgressGraphs({ weightLogs }: ProgressGraphsProps) {
                 <Button 
                   onClick={() => handleUpdateWeight({ weight: todayWeight })} 
                   disabled={!todayWeight || todayWeight < 10 || isUpdating}
-                  className="bg-strentor-red hover:bg-strentor-red/80 text-white"
+                  className="bg-strentor-red hover:bg-strentor-red/80 text-primary-foreground"
                 >
                   {isUpdating ? "Updating..." : (isTodayWeightLogged ? "Update Weight" : "Add Weight")}
                 </Button>

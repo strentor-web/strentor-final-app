@@ -95,7 +95,7 @@ export default function TeamPage() {
                       </div>
                       <div className="mt-8">
                         <Button
-                          className="bg-[#D4AF37] hover:bg-[#D4AF37]/90 text-lg font-bold text-white rounded-full px-8 py-6 group"
+                          className="bg-[#D4AF37] hover:bg-[#D4AF37]/90 text-lg font-bold text-primary-foreground rounded-full px-8 py-6 group"
                           onClick={() => member.link ? window.location.href = member.link : null}
                         >
                           Find Out More <span className="group-hover:translate-x-1 transition-transform inline-block ml-1">→</span>
@@ -127,7 +127,7 @@ export default function TeamPage() {
             Take the first step towards transformation with our expert team of coaches and mentors.
           </p>
           <Button
-            className="bg-[#D4AF37] hover:bg-[#D4AF37]/90 text-white font-bold rounded-full px-8 py-6 text-lg"
+            className="bg-[#D4AF37] hover:bg-[#D4AF37]/90 text-primary-foreground font-bold rounded-full px-8 py-6 text-lg"
             onClick={() => window.open("https://calendly.com/strentor/strentor-services", "_blank")}
           >
             Start Your Transformation

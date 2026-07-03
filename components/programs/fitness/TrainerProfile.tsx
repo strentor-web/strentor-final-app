@@ -22,8 +22,8 @@ const TrainerProfile = () => {
         <div className="space-y-8">
           <div>
             <h2 className="text-5xl font-bold mb-4">Aditya Mandan</h2>
-            <div className="inline-block bg-yellow-400 px-4 py-2 rounded-full">
-              <span className="text-foreground font-semibold">Fitness and Nutrition Coaching</span>
+            <div className="inline-block bg-primary px-4 py-2 rounded-full">
+              <span className="text-primary-foreground font-semibold">Fitness and Nutrition Coaching</span>
             </div>
           </div>
 

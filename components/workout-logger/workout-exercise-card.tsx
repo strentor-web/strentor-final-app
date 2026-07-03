@@ -393,7 +393,7 @@ export function WorkoutExerciseCard({ exercise, onSaveSet, isSaving, isPastDeadl
                   variant="ghost"
                   onClick={() => handleEditSet(set.setNumber, set)}
                   disabled={isPastDeadline}
-                  className="h-8 px-2 bg-strentor-red hover:bg-strentor-red/80 text-white"
+                  className="h-8 px-2 bg-strentor-red hover:bg-strentor-red/80 text-primary-foreground"
                   title={isPastDeadline ? `Logging deadline passed (${deadlineDate})` : undefined}
                 >
                   <Edit className="h-3 w-3" />
@@ -404,7 +404,7 @@ export function WorkoutExerciseCard({ exercise, onSaveSet, isSaving, isPastDeadl
                     size="sm"
                     onClick={() => handleSaveSet(set.setNumber)}
                     disabled={(!inputs.weight && !exercise.isRepsBased) || !inputs.reps || isSaving || !!validationErrors[`${set.setNumber}-rpe`] || isPastDeadline}
-                    className={`h-8 px-2 bg-strentor-red hover:bg-strentor-red/80 text-white ${validationErrors[`${set.setNumber}-rpe`] ? 'opacity-50 cursor-not-allowed' : ''}`}
+                    className={`h-8 px-2 bg-strentor-red hover:bg-strentor-red/80 text-primary-foreground ${validationErrors[`${set.setNumber}-rpe`] ? 'opacity-50 cursor-not-allowed' : ''}`}
                     title={isPastDeadline ? `Logging deadline passed (${deadlineDate})` : undefined}
                   >
                     Save
@@ -423,7 +423,7 @@ export function WorkoutExerciseCard({ exercise, onSaveSet, isSaving, isPastDeadl
                   size="sm"
                   onClick={() => handleSaveSet(set.setNumber)}
                   disabled={(!inputs.weight && !exercise.isRepsBased) || !inputs.reps || isSaving || !!validationErrors[`${set.setNumber}-rpe`] || isPastDeadline}
-                  className={`h-8 px-2 bg-strentor-red hover:bg-strentor-red/80 text-white ${validationErrors[`${set.setNumber}-rpe`] ? 'opacity-50 cursor-not-allowed' : ''}`}
+                  className={`h-8 px-2 bg-strentor-red hover:bg-strentor-red/80 text-primary-foreground ${validationErrors[`${set.setNumber}-rpe`] ? 'opacity-50 cursor-not-allowed' : ''}`}
                   title={isPastDeadline ? `Logging deadline passed (${deadlineDate})` : undefined}
                 >
                   Log

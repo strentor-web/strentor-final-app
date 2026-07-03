@@ -89,7 +89,7 @@ export function DatePickerWithLabel({
   return (
     <div className="space-y-2">
       {label && (
-        <Label className="text-sm font-medium text-gray-700">
+        <Label className="text-sm font-medium text-foreground">
           {label} {required && <span className="text-red-500">*</span>}
         </Label>
       )}
@@ -137,7 +137,7 @@ export function DatePickerForm({
   return (
     <div className="space-y-2">
       {label && (
-        <Label className="text-sm font-medium text-gray-700">
+        <Label className="text-sm font-medium text-foreground">
           {label} {required && <span className="text-red-500">*</span>}
         </Label>
       )}
