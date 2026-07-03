@@ -13,9 +13,11 @@ export default function Footer() {
             <li className="hover:text-primary">
               <Link href="/aboutus">About Us</Link>
             </li>
+            {/* Hidden for now
             <li className="hover:text-primary">
               <Link href="/programs">Programs</Link>
             </li>
+            */}
             <li className="hover:text-primary">
               <Link href="/community">Community</Link>
             </li>
