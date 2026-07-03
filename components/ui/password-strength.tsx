@@ -39,7 +39,7 @@ export function PasswordStrength({ password, className }: PasswordStrengthProps)
 
   return (
     <div className={`space-y-2 ${className}`}>
-      <p className="text-sm font-medium text-gray-700">Password Requirements:</p>
+      <p className="text-sm font-medium text-foreground">Password Requirements:</p>
       <div className="space-y-1">
         {requirements.map((req) => (
           <div key={req.key} className="flex items-center gap-2 text-xs">

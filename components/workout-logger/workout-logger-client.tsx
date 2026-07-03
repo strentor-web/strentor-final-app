@@ -314,7 +314,7 @@ export function WorkoutLoggerClient({
       <div className="flex items-center justify-between">
         <Button
           variant="outline"
-          className="bg-strentor-red hover:bg-strentor-red/80 text-white"
+          className="bg-strentor-red hover:bg-strentor-red/80 text-primary-foreground"
           onClick={() => navigateWeek("prev")}
           disabled={isFetching || weekNumber === 1}
         >
@@ -331,7 +331,7 @@ export function WorkoutLoggerClient({
 
         <Button
           variant="outline"
-          className="bg-strentor-red hover:bg-strentor-red/80 text-white"
+          className="bg-strentor-red hover:bg-strentor-red/80 text-primary-foreground"
           onClick={() => navigateWeek("next")}
           disabled={isFetching || weekNumber === totalWeeks}
         >

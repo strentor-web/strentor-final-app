@@ -246,7 +246,7 @@ export default function OnboardingWizard({ userEmail, userName }: OnboardingWiza
                     {activeStep === ONBOARDING_STEPS.length ? (
                       <button
                         type="submit"
-                        className="w-[100px] px-4 py-2 text-sm font-medium text-white bg-strentor-red border border-transparent rounded-md hover:bg-strentor-red/80 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-strentor-red disabled:opacity-50 disabled:cursor-not-allowed"
+                        className="w-[100px] px-4 py-2 text-sm font-medium text-primary-foreground bg-strentor-red border border-transparent rounded-md hover:bg-strentor-red/80 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-strentor-red disabled:opacity-50 disabled:cursor-not-allowed"
                         disabled={isSubmitting}
                       >
                         {isSubmitting ? 'Submitting...' : 'Submit'}
@@ -254,7 +254,7 @@ export default function OnboardingWizard({ userEmail, userName }: OnboardingWiza
                     ) : (
                       <button
                         type="button"
-                        className="w-[100px] px-4 py-2 text-sm font-medium text-white bg-strentor-red border border-transparent rounded-md hover:bg-strentor-red/80 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-strentor-red"
+                        className="w-[100px] px-4 py-2 text-sm font-medium text-primary-foreground bg-strentor-red border border-transparent rounded-md hover:bg-strentor-red/80 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-strentor-red"
                         onClick={handleNext}
                       >
                         Next

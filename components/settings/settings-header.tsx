@@ -54,7 +54,7 @@ export function SettingsActions({ hasResetPassword = true }: SettingsActionsProp
         </Button>
       )}
       <form action={signOutAction}>
-        <Button className="bg-strentor-red text-white hover:bg-strentor-red/80" type="submit">
+        <Button className="bg-strentor-red text-primary-foreground hover:bg-strentor-red/80" type="submit">
           <LogOut className="w-4 h-4" />
           Logout
         </Button>

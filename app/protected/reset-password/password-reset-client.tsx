@@ -105,7 +105,7 @@ export function PasswordResetClient({ searchParams }: PasswordResetClientProps) 
             </p>
             <button
               onClick={() => router.push('/sign-in')}
-              className="bg-[#D4AF37] hover:bg-[#D4AF37]/90 text-white font-bold py-2 px-4 rounded-lg transition-all"
+              className="bg-[#D4AF37] hover:bg-[#D4AF37]/90 text-primary-foreground font-bold py-2 px-4 rounded-lg transition-all"
             >
               Go to Sign In
             </button>
@@ -174,7 +174,7 @@ export function PasswordResetClient({ searchParams }: PasswordResetClientProps) 
           
           <SubmitButton 
             formAction={resetPasswordAction}
-            className="w-full bg-[#D4AF37] hover:bg-[#D4AF37]/90 text-white font-bold py-3 rounded-lg text-lg transform hover:scale-105 transition-all"
+            className="w-full bg-[#D4AF37] hover:bg-[#D4AF37]/90 text-primary-foreground font-bold py-3 rounded-lg text-lg transform hover:scale-105 transition-all"
           >
             Change Password
           </SubmitButton>

@@ -357,7 +357,7 @@ export default function BodyFatCalculator({
         <div className="flex flex-row justify-between mb-6">
           <h1 className="text-2xl font-bold">Body Fat Results</h1>
           <div className="flex flex-row gap-2">
-            <Button className="bg-strentor-red text-white"
+            <Button className="bg-strentor-red text-primary-foreground"
               onClick={() => setShowAddForm(!showAddForm)}
               disabled={isTodayLogged || isAdding || !hasRequiredMeasurements}
               title={!hasRequiredMeasurements ? "Please complete your measurements in Settings" : isTodayLogged ? "You have already inputted today's data." : undefined}
@@ -472,7 +472,7 @@ export default function BodyFatCalculator({
                        handleAddBodyFat({ height, waist, neck, hips });
                      }} 
                      disabled={!height || !waist || !neck || (gender === Gender.FEMALE && !hips) || isAdding}
-                     className="bg-strentor-red text-white"
+                     className="bg-strentor-red text-primary-foreground"
                    >
                      {isAdding ? "Adding..." : "Add Body Fat"}
                    </Button>

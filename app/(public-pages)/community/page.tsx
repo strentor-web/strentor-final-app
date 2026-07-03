@@ -119,7 +119,7 @@ export default function CommunityPage() {
               Take the first step towards transformation with our expert team of coaches and mentors.
             </p>
             <Button
-              className="bg-[#D4AF37] hover:bg-[#D4AF37]/90 text-white font-bold rounded-full px-8 py-6 text-lg"
+              className="bg-[#D4AF37] hover:bg-[#D4AF37]/90 text-primary-foreground font-bold rounded-full px-8 py-6 text-lg"
               onClick={() => window.open("https://calendly.com/strentor/strentor-services", "_blank")}
             >
               Start Your Transformation

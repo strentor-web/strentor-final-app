@@ -17,7 +17,7 @@ export default async function ForgotPassword(props: {
       <div className="w-full flex-1 flex items-center h-screen justify-center gap-2 p-4">
         <div className="bg-card/90 backdrop-blur-sm border border-border rounded-2xl shadow-xl p-8 max-w-md w-full">
           <FormMessage message={searchParams} />
-          <Link href="/forgot-password" className="w-full mt-6 bg-[#D4AF37] hover:bg-[#D4AF37]/90 rounded-full font-bold inline-block text-center py-3 text-white">
+          <Link href="/forgot-password" className="w-full mt-6 bg-[#D4AF37] hover:bg-[#D4AF37]/90 rounded-full font-bold inline-block text-center py-3 text-primary-foreground">
             Try Again
           </Link>
         </div>
@@ -88,7 +88,7 @@ export default async function ForgotPassword(props: {
             <SubmitButton
               formAction={forgotPasswordAction}
               pendingText="Sending reset link..."
-              className="w-full bg-[#D4AF37] hover:bg-[#D4AF37]/90 text-white font-bold py-3 rounded-full text-lg transform hover:scale-105 transition-all"
+              className="w-full bg-[#D4AF37] hover:bg-[#D4AF37]/90 text-primary-foreground font-bold py-3 rounded-full text-lg transform hover:scale-105 transition-all"
             >
               Send Reset Link
             </SubmitButton>
