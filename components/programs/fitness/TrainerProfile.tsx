@@ -9,7 +9,7 @@ const TrainerProfile = () => {
     <section className="container mx-auto px-4 py-20">
       {/* Headline Section */}
       <div className="text-center mb-16">
-        <h2 className="text-4xl md:text-5xl font-bold mb-4">
+        <h2 className="text-4xl md:text-5xl font-bold font-display mb-4">
           Meet Your <span className="text-[#D4AF37]">Champion</span> Coach
         </h2>
         <p className="text-xl text-muted-foreground max-w-4xl mx-auto">

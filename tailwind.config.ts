@@ -20,6 +20,7 @@ const config = {
   	extend: {
   		fontFamily: {
   			'satoshi': ['var(--font-satoshi)', 'system-ui', 'sans-serif'],
+  			'display': ['var(--font-display)', 'Georgia', 'serif'],
   		},
   		colors: {
 			// Strentor Brand Colors (black + gold + silver)

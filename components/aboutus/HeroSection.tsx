@@ -11,7 +11,7 @@ export function HeroSection() {
         priority
       />
       <div className="absolute inset-0 flex flex-col items-center justify-center px-4 text-center">
-        <h1 className="text-5xl md:text-7xl font-bold text-white mb-6">
+        <h1 className="text-5xl md:text-7xl font-bold font-display text-white mb-6">
           Empowering Beyond <span className="text-[#D4AF37]">Limits</span>
         </h1>
         <p className="text-xl md:text-2xl text-gray-200 max-w-3xl">

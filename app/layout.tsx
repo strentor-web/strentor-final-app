@@ -2,6 +2,7 @@
 import { Providers } from "@/components/providers/Providers";
 import "./globals.css";
 import localFont from 'next/font/local';
+import { Playfair_Display } from 'next/font/google';
 import { GoogleAnalytics } from '@next/third-parties/google'
 import Script from "next/script";
 import { Metadata } from "next";
@@ -52,13 +53,22 @@ const previewImageUrl = new URL("/strentor-social-preview.jpg", siteUrl).toStrin
     fallback: ['system-ui', 'arial'],
   });
 
+  const playfairDisplay = Playfair_Display({
+    subsets: ['latin'],
+    weight: ['600', '700', '800'],
+    style: ['normal', 'italic'],
+    display: 'swap',
+    variable: '--font-display',
+    fallback: ['Georgia', 'serif'],
+  });
+
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${satoshi.variable} font-satoshi`} suppressHydrationWarning>
+    <html lang="en" className={`${satoshi.variable} ${playfairDisplay.variable} font-satoshi`} suppressHydrationWarning>
       <body className="bg-background text-foreground">
           <Providers>
               <main className="min-h-screen">

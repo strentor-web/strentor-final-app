@@ -38,7 +38,7 @@ export default function TeamPage() {
           priority
         />
         <div className="absolute inset-0 flex flex-col items-center justify-center px-4 text-center">
-          <h1 className="text-5xl md:text-7xl font-bold text-white mb-6">
+          <h1 className="text-5xl md:text-7xl font-bold font-display text-white mb-6">
             Our <span className="text-[#D4AF37]">Programs</span>
           </h1>
           <p className="text-xl md:text-2xl text-gray-200 max-w-3xl">
@@ -120,7 +120,7 @@ export default function TeamPage() {
 
       {/* <div className="text-center py-20 bg-gradient-to-br from-blue-600/20 via-purple-500/20 to-pink-500/20"> */}
       <div className="text-center py-20 bg-gray-900">
-          <h2 className="text-4xl font-bold text-white mb-4 sm:text-5xl md:text-6xl lg:text-7xl">
+          <h2 className="text-4xl font-bold font-display text-white mb-4 sm:text-5xl md:text-6xl lg:text-7xl">
             Ready to Begin Your <span className="text-[#D4AF37]">Journey</span>?
           </h2>
           <p className="mx-auto max-w-[700px] text-gray-300 font-medium md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed dark:text-gray-400 pb-8 pt-2">

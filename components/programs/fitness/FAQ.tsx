@@ -58,7 +58,7 @@ const FitnessFAQ = () => {
 
   return (
     <section className="container mx-auto px-4 py-20">
-      <h2 className="text-4xl md:text-5xl font-bold mb-12 text-center">
+      <h2 className="text-4xl md:text-5xl font-bold font-display mb-12 text-center">
         Common <span className="text-[#D4AF37]">Questions</span>
       </h2>
       <div className="max-w-3xl mx-auto">

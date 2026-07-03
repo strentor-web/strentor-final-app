@@ -15,7 +15,7 @@ export function FounderStory() {
         </div>
         <div className="space-y-6">
           <span className="text-[#B7BAC0] text-5xl font-semibold">Founder&apos;s Story</span>
-          <h2 className="text-3xl font-bold text-foreground">
+          <h2 className="text-3xl font-bold font-display text-foreground">
             A Journey of <span className="text-[#D4AF37]">Purpose</span>
           </h2>
           <div className="space-y-4 text-lg font-semibold text-muted-foreground leading-relaxed">
