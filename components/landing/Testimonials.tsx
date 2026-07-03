@@ -13,7 +13,7 @@ const TestimonialCard = ({ quote, author }: TestimonialCardProps) => (
     <Quote className="w-10 h-10 text-[#B8935A] mb-6" />
     <p className="text-card-foreground font-semibold text-lg leading-relaxed mb-6">{quote}</p>
     <div className="mt-auto flex flex-col items-center">
-      <div className="h-1 w-16 bg-gradient-to-r from-[#C9A96A] via-[#2FA366] to-[#C9C0B4] mb-4"></div>
+      <div className="h-1 w-16 bg-gradient-to-r from-[#C9A96A] via-[#B8935A] to-[#C9C0B4] mb-4"></div>
       <p className="font-semibold">
         <span className="text-[#C9A96A] text-lg">{author}</span>
       </p>
@@ -26,7 +26,7 @@ const TestimonialCardMobile = ({ quote, author }: TestimonialCardProps) => (
     <Quote className="w-8 h-8 text-[#B8935A] mb-4" />
     <p className="text-card-foreground font-semibold text-base leading-relaxed mb-4">{quote}</p>
     <div className="mt-auto flex flex-col items-center">
-      <div className="h-1 w-12 bg-gradient-to-r from-[#C9A96A] via-[#2FA366] to-[#C9C0B4] mb-3"></div>
+      <div className="h-1 w-12 bg-gradient-to-r from-[#C9A96A] via-[#B8935A] to-[#C9C0B4] mb-3"></div>
       <p className="font-semibold text-sm">
         <span className="text-[#C9A96A]">{author}</span>
       </p>
