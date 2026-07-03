@@ -19,9 +19,11 @@ export default function Footer() {
             <li className="hover:text-primary">
               <Link href="/community">Community</Link>
             </li>
+            {/* Hidden for now
             <li className="hover:text-primary">
               <Link href="https://empowerment-hub.strentor.com/">Empowerment Hub</Link>
             </li>
+            */}
           </ul>
         </div>
 
