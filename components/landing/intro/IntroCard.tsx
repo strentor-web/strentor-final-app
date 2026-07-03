@@ -27,16 +27,16 @@ export function IntroCard({ icon, title, description }: IntroCardProps) {
 
   return (
     <div className="flex items-start gap-4 rounded-lg border border-border bg-card p-6 shadow-sm transition-all hover:shadow-lg">
-      <div 
-        className="flex h-12 w-12 shrink-0 items-center justify-center rounded-lg"
-        style={{ backgroundColor: `${iconColor}15` }}
+      <div
+        className="flex h-14 w-14 shrink-0 items-center justify-center rounded-lg border"
+        style={{ backgroundColor: `${iconColor}2E`, borderColor: `${iconColor}66` }}
       >
-        <div className="relative h-8 w-8">
+        <div className="relative h-9 w-9">
           <Image
             src={iconPath}
             alt={`${title} Icon`}
             fill
-            sizes="32px"
+            sizes="36px"
             className="object-contain"
           />
         </div>
