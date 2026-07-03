@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 
 const FitnessBanner = () => {
   return (
-    <section className="relative min-h-[300px] w-full overflow-hidden bg-gray-800">
+    <section className="relative min-h-[300px] w-full overflow-hidden bg-black">
       <div className="container mx-auto px-4 py-24 text-center">
         <div className="space-y-4">
           <h2 className="text-4xl text-white font-bold font-display tracking-tighter sm:text-5xl md:text-6xl lg:text-7xl">
