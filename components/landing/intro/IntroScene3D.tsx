@@ -10,24 +10,24 @@ const CHAMPAGNE_GOLD_DEEP = "#B8935A"
 const CHAMPAGNE_PLATINUM = "#C9C0B4"
 const CHAMPAGNE_DIAMOND = "#EDE0C8"
 
-function Emblem({ reducedMotion }: { reducedMotion: boolean }) {
+function Emblem({ reducedMotion, speedFactor = 1, scale = 1 }: { reducedMotion: boolean; speedFactor?: number; scale?: number }) {
   const coreRef = useRef<THREE.Mesh>(null)
   const wireRef = useRef<THREE.Mesh>(null)
 
   useFrame((_, delta) => {
     if (reducedMotion) return
     if (coreRef.current) {
-      coreRef.current.rotation.y += delta * 0.22
-      coreRef.current.rotation.x += delta * 0.08
+      coreRef.current.rotation.y += delta * 0.22 * speedFactor
+      coreRef.current.rotation.x += delta * 0.08 * speedFactor
     }
     if (wireRef.current) {
-      wireRef.current.rotation.y -= delta * 0.14
-      wireRef.current.rotation.x -= delta * 0.05
+      wireRef.current.rotation.y -= delta * 0.14 * speedFactor
+      wireRef.current.rotation.x -= delta * 0.05 * speedFactor
     }
   })
 
   return (
-    <group position={[0, 0.15, -1.2]}>
+    <group position={[0, 0.15, -1.2]} scale={scale}>
       <mesh ref={coreRef}>
         <icosahedronGeometry args={[0.95, 0]} />
         <meshStandardMaterial
@@ -71,21 +71,34 @@ function usePrefersReducedMotion() {
   return reduced
 }
 
+function useIsMobile() {
+  const [isMobile, setIsMobile] = useState(false)
+  useEffect(() => {
+    const mq = window.matchMedia("(max-width: 767px)")
+    setIsMobile(mq.matches)
+    const handler = (e: MediaQueryListEvent) => setIsMobile(e.matches)
+    mq.addEventListener("change", handler)
+    return () => mq.removeEventListener("change", handler)
+  }, [])
+  return isMobile
+}
+
 export function IntroScene3D() {
   const reducedMotion = usePrefersReducedMotion()
+  const isMobile = useIsMobile()
 
   return (
     <Canvas
-      dpr={[1, 1.5]}
+      dpr={isMobile ? 1 : [1, 1.5]}
       camera={{ position: [0, 0, 5], fov: 45 }}
-      gl={{ antialias: true, alpha: true }}
+      gl={{ antialias: !isMobile, alpha: true, powerPreference: isMobile ? "low-power" : "default" }}
       frameloop={reducedMotion ? "demand" : "always"}
     >
       <Lights />
-      <Emblem reducedMotion={reducedMotion} />
+      <Emblem reducedMotion={reducedMotion} speedFactor={isMobile ? 0.6 : 1} scale={isMobile ? 0.7 : 1} />
       <Sparkles
-        count={70}
-        scale={[7, 4, 4]}
+        count={isMobile ? 25 : 70}
+        scale={isMobile ? [4.5, 3, 3] : [7, 4, 4]}
         size={2.5}
         speed={reducedMotion ? 0 : 0.25}
         color={CHAMPAGNE_DIAMOND}
