@@ -53,6 +53,7 @@ export default function Header() {
               About Us
               <span className="absolute inset-x-0 -bottom-0.5 h-0.5 origin-left scale-x-0 bg-primary transition-transform duration-300 ease-out group-hover:scale-x-100" />
             </a>
+            {/* Hidden for now
             <div className="relative group">
               <button className="relative text-foreground hover:text-primary focus:outline-none flex items-center gap-1 transition-colors py-1">
                 Programs
@@ -62,6 +63,7 @@ export default function Header() {
                 <a href="/programs/fitness-training" className="block px-6 py-3 text-card-foreground hover:bg-muted hover:text-primary transition-colors rounded-b-lg">Fitness Training</a>
               </div>
             </div>
+            */}
             <a href="/community" className="group relative text-foreground hover:text-primary transition-colors py-1">
               Community
               <span className="absolute inset-x-0 -bottom-0.5 h-0.5 origin-left scale-x-0 bg-primary transition-transform duration-300 ease-out group-hover:scale-x-100" />
@@ -97,7 +99,9 @@ export default function Header() {
           <div className="md:hidden py-4 space-y-4 border-t border-border flex flex-col items-center font-semibold bg-background">
             <a href="/" className="block text-foreground hover:text-primary py-2 transition-colors">Home</a>
             <a href="/aboutus" className="block text-foreground hover:text-primary py-2 transition-colors">About Us</a>
-            <a href="/programs" className="block text-foreground hover:text-primary py-2 transition-colors">Programs</a>      
+            {/* Hidden for now
+            <a href="/programs" className="block text-foreground hover:text-primary py-2 transition-colors">Programs</a>
+            */}
             <a href="/community" className="block text-foreground hover:text-primary py-2 transition-colors">Community</a>
             {/* Hidden for now
             <a href="https://empowerment-hub.strentor.com/"  className="block text-foreground hover:text-primary py-2 transition-colors">Empowerment Hub</a>
