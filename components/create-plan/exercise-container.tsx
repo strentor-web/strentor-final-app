@@ -135,7 +135,7 @@ export function ExerciseContainer({ exercise, weekNumber, dayNumber, dragHandleP
         <Button
           variant="default"
           size="sm"
-          className="w-full justify-center bg-strentor-blue text-white hover:bg-blue-700"
+          className="w-full justify-center bg-primary text-primary-foreground hover:bg-primary/90"
           onClick={() =>
             dispatch({
               type: "ADD_SET",

@@ -40,7 +40,7 @@ export const Tab = ({
             "relative z-10 whitespace-nowrap text-[10px] sm:text-xs shadow-none px-1 sm:px-2 py-0.5 min-w-0 flex-shrink-0",
             selected
               ? "bg-primary-foreground/20 text-primary-foreground hover:bg-primary-foreground/20"
-              : "bg-green-100 text-green-700 hover:bg-green-100",
+              : "bg-primary/10 text-primary hover:bg-primary/10",
           )}
         >
           <span className="hidden sm:inline">Save&nbsp;</span><span className="sm:hidden">{discount}%</span><span className="hidden sm:inline"> &nbsp;{discount}%</span>

@@ -39,8 +39,8 @@ const billingOptions = [
 ];
 
 const categoryGradients = {
-  FITNESS: "from-blue-500 to-purple-500",
-  ALL_IN_ONE: "from-green-500 to-emerald-500"
+  FITNESS: "from-[#D4AF37] to-[#C9972B]",
+  ALL_IN_ONE: "from-[#B7BAC0] to-[#D4AF37]"
 };
 
 const categoryIcons = {
@@ -48,7 +48,7 @@ const categoryIcons = {
     <div className={`rounded-full bg-gradient-to-r ${categoryGradients.FITNESS} w-10 h-10 flex items-center justify-center flex-shrink-0`}>
       <div className="relative w-6 h-6">
         <Image
-          src="/fitness.svg"
+          src="/fitness-dark.svg"
           alt="Fitness Training"
           fill
           sizes="24px"
@@ -60,7 +60,7 @@ const categoryIcons = {
   ),
   ALL_IN_ONE: (
     <div className={`rounded-full bg-gradient-to-r ${categoryGradients.ALL_IN_ONE} w-10 h-10 flex items-center justify-center flex-shrink-0`}>
-      <Crown className="h-6 w-6 text-white" />
+      <Crown className="h-6 w-6 text-primary-foreground" />
     </div>
   )
 };
@@ -363,8 +363,8 @@ Are you sure you want to proceed with this downgrade?`;
   // Get category-specific styling
   const getCategoryBorderClass = (category: string) => {
     switch (category) {
-      case 'FITNESS': return 'border-blue-200';
-      case 'ALL_IN_ONE': return 'border-green-200';
+      case 'FITNESS': return 'border-primary/30';
+      case 'ALL_IN_ONE': return 'border-[#B7BAC0]/40';
       default: return 'border-border';
     }
   };
@@ -459,7 +459,7 @@ Are you sure you want to proceed with this downgrade?`;
                               ₹{originalPrice.toLocaleString()}
                             </span>
                           )}
-                          <span className={`font-medium ${hasDiscount ? 'text-3xl text-green-600' : 'text-4xl'}`}>
+                          <span className={`font-medium ${hasDiscount ? 'text-3xl text-primary' : 'text-4xl'}`}>
                             ₹{plan.price.toLocaleString()}
                           </span>
                         </>
