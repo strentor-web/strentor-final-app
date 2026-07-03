@@ -30,35 +30,35 @@ export default function Featured() {
       <div className="flex flex-row space-x-9 justify-center">
      
         <Logo 
-          src="/zeebiz.jpg" 
+          src="/zeebiz.png" 
           alt="Zee Business" 
           width={300} 
           height={300} 
           href="https://youtu.be/yNR2nag2bxY?si=nKXvHjeBSn7vK1Ve"
         />
         <Logo 
-          src="/dailyhunt1.jpg" 
+          src="/dailyhunt1.png" 
           alt="DailyHunt" 
           width={100} 
           height={300} 
           href="https://m.dailyhunt.in/news/india/english/r+news+india-epaper-dhfacc36dfce9c4bb68db0e89d033c921b/strentor+the+space+where+your+mind+body+soul+finally+sync+up-newsid-dhfacc36dfce9c4bb68db0e89d033c921b_a3f1cd10314611f0bd7e4ef0a55aa118?sm=Y"
         />
         <Logo 
-          src="/startupstory1.jpg" 
+          src="/startupstory1.png" 
           alt="The Startup Story" 
           width={300}   
           height={300} 
           href="https://thestartupstory.co.in/index.php/2025/04/23/strentor-a-new-era-of-holistic-coaching-and-wellness"
         />
         <Logo 
-          src="/gameroom.jpg" 
+          src="/gameroom.png" 
           alt="Game Room" 
           width={600} 
           height={600} 
           href="https://youtu.be/jIjfj5b9kLU?si=IHWL4so_xWoH1z7l"
         />
         <Logo 
-          src="/udaan.jpg" 
+          src="/udaan.png" 
           alt="Radio Udaan" 
           width={600} 
           height={600} 
