@@ -12,8 +12,8 @@ const successStories = [
     condition: "Cerebral Palsy",
     description: "Ensured consistent fitness routines and improved overall well-being for clients",
     number: "02",
-    color: "from-[#2FA366]/10 to-[#2FA366]/5",
-    numberBg: "#2FA366"
+    color: "from-[#B8935A]/10 to-[#B8935A]/5",
+    numberBg: "#B8935A"
   },
   {
     condition: "Thyroid Issues",
@@ -26,8 +26,8 @@ const successStories = [
     condition: "Down's Syndrome",
     description: "Empowered individuals to become regular and committed gym-goers.",
     number: "04",
-    color: "from-[#FFA500]/10 to-[#FFA500]/5",
-    numberBg: "#FFA500"
+    color: "from-[#DCC28C]/10 to-[#DCC28C]/5",
+    numberBg: "#DCC28C"
   },
   {
     condition: "Spina Bifida",
@@ -64,7 +64,7 @@ export default function SuccessStories() {
                     className="flex-shrink-0 w-12 h-12 rounded-full flex items-center justify-center"
                     style={{ backgroundColor: story.numberBg }}
                   >
-                    <span className="text-xl font-bold text-white">{story.number}</span>
+                    <span className="text-xl font-bold text-strentor-black">{story.number}</span>
                   </div>
                   <div className="flex-1">
                     <h3 className="text-xl font-semibold text-foreground mb-2">{story.condition}</h3>
@@ -87,7 +87,7 @@ export default function SuccessStories() {
                     className="flex-shrink-0 w-12 h-12 rounded-full flex items-center justify-center"
                     style={{ backgroundColor: story.numberBg }}
                   >
-                    <span className="text-xl font-bold text-white">{story.number}</span>
+                    <span className="text-xl font-bold text-strentor-black">{story.number}</span>
                   </div>
                   <div className="flex-1">
                     <h3 className="text-xl font-semibold text-foreground mb-2">{story.condition}</h3>

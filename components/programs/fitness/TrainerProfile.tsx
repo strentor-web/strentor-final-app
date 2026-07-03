@@ -29,14 +29,14 @@ const TrainerProfile = () => {
 
           {/* Qualifications */}
           <div className="space-y-4">
-            <h3 className="text-2xl font-semibold text-blue-500">Qualifications</h3>
+            <h3 className="text-2xl font-semibold text-[#C9A96A]">Qualifications</h3>
             <div className="space-y-3">
               {[
                 "National-level Para Powerlifter",
                 "Certified Fitness Trainer (Level 2, PEPT) and Nutrition Consultant"
               ].map((qualification, index) => (
                 <div key={index} className="flex items-center gap-3">
-                  <Star className="w-6 h-6 text-yellow-400 flex-shrink-0" />
+                  <Star className="w-6 h-6 text-[#EDE0C8] flex-shrink-0" />
                   <span className="text-lg text-foreground">{qualification}</span>
                 </div>
               ))}
@@ -45,7 +45,7 @@ const TrainerProfile = () => {
 
           {/* What We Offer */}
           <div className="space-y-4">
-            <h3 className="text-2xl font-semibold text-[#2FA366]">What We Offer</h3>
+            <h3 className="text-2xl font-semibold text-[#C9C0B4]">What We Offer</h3>
             <div className="space-y-3">
               {[
                 "Tailored Fitness Programs: From fat loss to powerlifting",
@@ -53,11 +53,11 @@ const TrainerProfile = () => {
                 "Inclusive Approach: Accessible and empowering fitness for everyone"
               ].map((offering, index) => (
                 <div key={index} className="flex items-center gap-3">
-                  <svg 
-                    className="w-6 h-6 text-[#2FA366] flex-shrink-0"
-                    viewBox="0 0 24 24" 
-                    fill="none" 
-                    stroke="currentColor" 
+                  <svg
+                    className="w-6 h-6 text-[#C9C0B4] flex-shrink-0"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
                     strokeWidth="2"
                   >
                     <path d="M20 6L9 17l-5-5" />
