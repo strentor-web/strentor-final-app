@@ -72,7 +72,7 @@ const TrainerProfile = () => {
         {/* Right Image */}
         <div className="relative h-[600px] w-full">
           <Image
-            src="/Aditya.jpg"
+            src="/Aditya-transparent.png"
             alt="Aditya Mandan - Fitness and Nutrition Coach"
             fill
             className="object-cover rounded-lg"

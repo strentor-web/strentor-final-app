@@ -19,7 +19,7 @@ export default function Team() {
     {
       name: "Aditya Mandan",
       role: "Founder & Empowerment Coach",
-      image: "/Aditya.jpg",
+      image: "/Aditya-transparent.png",
       social: {
         instagram: "https://www.instagram.com/strentor/"
       }
