@@ -16,7 +16,7 @@ const billingOptions = [
 ];
 
 const categoryGradients = {
-  FITNESS: "from-blue-500 to-purple-500",
+  FITNESS: "from-[#D4AF37] to-[#C9972B]",
 };
 
 const categoryIcons = {
@@ -24,7 +24,7 @@ const categoryIcons = {
     <div className={`rounded-full bg-gradient-to-r ${categoryGradients.FITNESS} w-10 h-10 flex items-center justify-center flex-shrink-0`}>
       <div className="relative w-6 h-6">
         <Image
-          src="/fitness.svg"
+          src="/fitness-dark.svg"
           alt="Fitness Training"
           fill
           sizes="24px"
@@ -79,7 +79,7 @@ export default function Pricing() {
 
   const getCategoryBorderClass = (category: string) => {
     switch (category) {
-      case 'FITNESS': return 'border-blue-200';
+      case 'FITNESS': return 'border-primary/30';
       default: return 'border-border';
     }
   };
@@ -140,7 +140,7 @@ export default function Pricing() {
                       <span className="text-lg font-medium text-muted-foreground line-through">
                         ₹{pricing.original.toLocaleString()}
                       </span>
-                      <span className="text-3xl font-medium text-green-600">
+                      <span className="text-3xl font-medium text-primary">
                         ₹{pricing.discounted.toLocaleString()}
                       </span>
                     </div>
@@ -159,7 +159,7 @@ export default function Pricing() {
                       
                       return featuresToShow.map((feature: string, index: number) => (
                         <li key={index} className="flex items-center gap-2 text-sm font-medium text-foreground/60">
-                          <BadgeCheck strokeWidth={1} size={16} className="text-green-500" />
+                          <BadgeCheck strokeWidth={1} size={16} className="text-primary" />
                           {feature}
                         </li>
                       ));
@@ -184,9 +184,9 @@ export default function Pricing() {
                   <Button
                     onClick={handleGetStarted}
                     className={`w-full ${
-                      isAllInOne 
-                        ? 'bg-green-600 hover:bg-green-700 text-white' 
-                        : 'bg-strentor-blue hover:bg-strentor-blue/90 text-white'
+                      isAllInOne
+                        ? 'bg-green-600 hover:bg-green-700 text-white'
+                        : 'bg-primary hover:bg-primary/90 text-primary-foreground'
                     }`}
                   >
                     Get Started

@@ -15,7 +15,7 @@ const billingOptions = [
 ];
 
 const categoryGradients = {
-  FITNESS: "from-blue-500 to-purple-500",
+  FITNESS: "from-[#D4AF37] to-[#C9972B]",
 };
 
 const categoryIcons = {
@@ -23,7 +23,7 @@ const categoryIcons = {
     <div className={`rounded-full bg-gradient-to-r ${categoryGradients.FITNESS} w-12 h-12 flex items-center justify-center flex-shrink-0`}>
       <div className="relative w-8 h-8">
         <Image
-          src="/fitness.svg"
+          src="/fitness-dark.svg"
           alt="Fitness Training"
           fill
           sizes="32px"
@@ -82,7 +82,7 @@ export default function FitnessPricing() {
         {/* Single Fitness Card - Centered */}
         <div className="flex justify-center mt-12">
           <div className="w-full max-w-md">
-            <Card className="h-full flex flex-col overflow-hidden rounded-2xl border p-8 shadow bg-background border-blue-200">
+            <Card className="h-full flex flex-col overflow-hidden rounded-2xl border p-8 shadow bg-background border-primary/30">
               {/* Header Section */}
               <div className="mb-6">
                 <div className="flex items-center gap-3 mb-4">
@@ -100,7 +100,7 @@ export default function FitnessPricing() {
                     <span className="text-lg font-medium text-muted-foreground line-through">
                       ₹{pricing.original.toLocaleString()}
                     </span>
-                    <span className="text-4xl font-medium text-green-600">
+                    <span className="text-4xl font-medium text-primary">
                       ₹{pricing.discounted.toLocaleString()}
                     </span>
                   </div>
@@ -115,7 +115,7 @@ export default function FitnessPricing() {
                 <ul className="space-y-3">
                   {fitnessPlan.features.map((feature: string, index: number) => (
                     <li key={index} className="flex items-center gap-3 text-sm font-medium text-foreground/60">
-                      <BadgeCheck strokeWidth={1} size={16} className="text-green-500 flex-shrink-0" />
+                      <BadgeCheck strokeWidth={1} size={16} className="text-primary flex-shrink-0" />
                       <span>{feature}</span>
                     </li>
                   ))}
@@ -126,7 +126,7 @@ export default function FitnessPricing() {
               <div className="mt-auto">
                 <Button
                   onClick={handleGetStarted}
-                  className="w-full bg-strentor-blue hover:bg-strentor-blue/90 text-white py-3 text-lg font-semibold"
+                  className="w-full bg-primary hover:bg-primary/90 text-primary-foreground py-3 text-lg font-semibold"
                 >
                   Get Started with Fitness Plan
                 </Button>

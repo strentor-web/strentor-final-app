@@ -7,11 +7,11 @@ import Image from "next/image";
 const ProgramsCard = () => {
   const programs = [
     {
-      icon: "/fitness.svg",
+      icon: "/fitness-dark.svg",
       title: "Fitness Training",
       description:
         "Personalized workout plans and nutrition guidance to help you achieve your fitness goals",
-      gradient: "from-blue-500 to-purple-500",
+      gradient: "from-[#D4AF37] to-[#C9972B]",
     },
   ];
 
