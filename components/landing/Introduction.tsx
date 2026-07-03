@@ -12,7 +12,7 @@ export default function Introduction() {
     <section className="">
       <div className="container mx-auto px-4 py-16 md:py-24">
         <div className="relative">
-          <div className="pointer-events-none absolute inset-x-0 -top-16 -bottom-16 hidden md:block" aria-hidden="true">
+          <div className="pointer-events-none absolute inset-x-0 -top-8 -bottom-8 md:-top-16 md:-bottom-16" aria-hidden="true">
             <IntroScene3D />
           </div>
           <div className="relative z-10">
