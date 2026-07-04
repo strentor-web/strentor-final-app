@@ -7,6 +7,21 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 
+// Plain-text answers for the FAQPage structured data (mirrors the rendered content below).
+const faqJsonLdAnswers = [
+  "STRENTOR is a holistic empowerment brand dedicated to helping individuals discover their inner strength and achieve their full potential through fitness training. Our brand is built on four key values: Resilience, Empowerment, Inclusivity, and Transformation.",
+  "We provide tailored fitness training programs to enhance physical health and fitness, with a holistic approach that addresses your physical well-being.",
+  "STRENTOR is designed for anyone seeking empowerment and personal growth. Whether you're looking to enhance your fitness or achieve life goals, we provide premium, inclusive solutions tailored to your unique challenges and aspirations.",
+  "We prioritize accessibility and personalization. Our services are tailored to meet the diverse needs of individuals from all backgrounds and challenges, fostering an environment where everyone feels supported and empowered.",
+  "STRENTOR takes a holistic and integrated approach to empowerment, centered on fitness training. Our emphasis on inclusivity, affordability, and personalized support sets us apart, creating a one-stop solution for overall well-being.",
+  "Getting started is simple! Visit our website to explore our range of services and select the ones that best fit your needs. You can also schedule a free consultation to discuss your goals and create a personalized plan.",
+  "Yes, all our fitness training services are available virtually. The results depend on your commitment, but we're here to support you every step of the way!",
+  "Our programs are designed to help you improve physical health and fitness, enhance mental clarity and emotional stability, achieve personal and professional goals, and cultivate a positive and empowered mindset.",
+  "Yes, we believe in the power of community. Join our online groups to connect with others on similar journeys, share progress, and access exclusive content. We also host workshops, webinars, and live sessions.",
+  "We regularly gather feedback through surveys and reviews to refine our offerings. Our team of experts is dedicated to continuous learning and improvement, ensuring you receive the best possible support and guidance.",
+  "Yes, we collaborate with brands, influencers, and companies to extend our reach and impact. Our corporate inclusion programs and workshops focus on stress management, work-life balance, and personal growth.",
+];
+
 const FAQSection = () => {
   const faqs = [
     {
@@ -97,8 +112,25 @@ const FAQSection = () => {
     }
   ];
 
+  const faqJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: faqs.map((faq, index) => ({
+      "@type": "Question",
+      name: faq.question,
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: faqJsonLdAnswers[index],
+      },
+    })),
+  };
+
   return (
     <section className="container mx-auto px-4 text-center mt-20 mb-20">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
+      />
       <h2 className="text-5xl font-bold font-display text-[#C9A96A] mb-8">
         Frequently Asked Questions
       </h2>

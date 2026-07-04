@@ -1,5 +1,18 @@
 import Header from "@/components/landing/Header";
 import Footer from "@/components/landing/Footer";
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: "Terms of Service",
+  description: "Read Strentor's terms of service governing use of our website and fitness coaching programs.",
+  alternates: {
+    canonical: "/terms-of-service",
+  },
+  robots: {
+    index: false,
+    follow: true,
+  },
+};
 
 export default function TermsOfService() {
   return (
