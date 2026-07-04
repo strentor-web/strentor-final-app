@@ -22,7 +22,7 @@ export const Tab = ({
     <button
       onClick={() => setSelected(value)}
       className={cn(
-        "relative flex-1 sm:w-fit px-2 sm:px-3 md:px-4 py-2 text-xs sm:text-sm font-semibold capitalize text-foreground transition-colors focus:outline-none focus:ring-0",
+        "relative flex-1 sm:w-fit px-2 sm:px-3 md:px-4 py-2 text-xs sm:text-sm font-semibold capitalize text-foreground transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary rounded-full",
         discount && "flex items-center justify-center gap-1 sm:gap-1.5 md:gap-2.5",
       )}
     >

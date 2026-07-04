@@ -55,37 +55,41 @@ export default function Footer() {
           <h3 className="text-lg font-semibold text-foreground">Stay Connected</h3>
           <div className="flex justify-center sm:justify-start gap-4 text-muted-foreground">
             <Link
-              className="hover:text-primary"
+              className="hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary rounded"
               href="https://www.facebook.com/strentor/"
               target="_blank"
               rel="noopener noreferrer"
+              aria-label="Follow Strentor on Facebook"
             >
               <Facebook className="h-5 w-5" />
             </Link>
 
             <Link
-              className="hover:text-primary"
+              className="hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary rounded"
               href="https://in.linkedin.com/company/strentor"
               target="_blank"
               rel="noopener noreferrer"
+              aria-label="Follow Strentor on LinkedIn"
             >
               <Linkedin className="h-5 w-5" />
             </Link>
 
             <Link
-              className="hover:text-primary"
+              className="hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary rounded"
               href="https://www.instagram.com/strentor/"
               target="_blank"
               rel="noopener noreferrer"
+              aria-label="Follow Strentor on Instagram"
             >
               <Instagram className="h-5 w-5" />
             </Link>
 
             <Link
-              className="hover:text-primary"
+              className="hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary rounded"
               href="https://www.youtube.com/@STRENTOR"
               target="_blank"
               rel="noopener noreferrer"
+              aria-label="Subscribe to Strentor on YouTube"
             >
               <Youtube className="h-5 w-5" />
             </Link>
