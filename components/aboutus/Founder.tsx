@@ -8,7 +8,7 @@ export function FounderStory() {
           <Image
             // src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=1974"
             src="/Me.png"           
-            alt="Founder portrait"
+            alt="Aditya Mandan, founder of Strentor"
             fill
             className="object-fit"
           />

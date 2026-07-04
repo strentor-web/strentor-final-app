@@ -60,7 +60,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                 >
                   <Image
                     src="/strentor-icon.png"
-                    alt="Logo"
+                    alt="Strentor logo"
                     width={16}
                     height={16}
                     className="rounded"
