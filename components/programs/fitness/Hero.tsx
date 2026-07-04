@@ -46,7 +46,7 @@ export default function FitnessHero() {
               <span className="text-[#C9A96A]"> Strength</span>
             </h1>
             <p className="text-lg sm:text-xl md:text-2xl text-gray-200 mb-8 max-w-[600px] mx-auto">
-              Personalized fitness programs crafted for individuals with chronic conditions and physical challenges.
+              Adaptive strength and nutrition coaching for wheelchair users with spina bifida, CKD, chronic health realities, or long-term physical challenges.
             </p>
             
             {/* Feature Points as Badges */}

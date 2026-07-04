@@ -32,7 +32,7 @@ export function IntroHeader() {
         viewport={{ once: true, amount: 0.6 }}
         transition={{ duration: 0.5, delay: 0.45, ease: "easeOut" }}
       >
-        Welcome to STRENTOR — your catalyst for total transformation. We blend physical power, mental strength, and personal growth to help you become <strong className="text-foreground">UNSTOPPABLE</strong>.
+        STRENTOR is an online adaptive strength, nutrition, mindset, and purpose coaching brand for <strong className="text-foreground">wheelchair users with spina bifida, CKD, chronic health realities, or long-term physical challenges</strong>.
       </motion.p>
     </div>
   )

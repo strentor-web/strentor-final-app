@@ -9,7 +9,7 @@ import {
 
 // Plain-text answers for the FAQPage structured data (mirrors the rendered content below).
 const faqJsonLdAnswers = [
-  "STRENTOR is a holistic empowerment brand dedicated to helping individuals discover their inner strength and achieve their full potential through fitness training. Our brand is built on four key values: Resilience, Empowerment, Inclusivity, and Transformation.",
+  "STRENTOR is an online adaptive strength, nutrition, mindset, and purpose coaching brand for wheelchair users with spina bifida, CKD, chronic health realities, or long-term physical challenges. Our brand is built on four key values: Resilience, Empowerment, Inclusivity, and Transformation.",
   "We provide tailored fitness training programs to enhance physical health and fitness, with a holistic approach that addresses your physical well-being.",
   "STRENTOR is designed for anyone seeking empowerment and personal growth. Whether you're looking to enhance your fitness or achieve life goals, we provide premium, inclusive solutions tailored to your unique challenges and aspirations.",
   "We prioritize accessibility and personalization. Our services are tailored to meet the diverse needs of individuals from all backgrounds and challenges, fostering an environment where everyone feels supported and empowered.",
@@ -29,7 +29,7 @@ const FAQSection = () => {
       answer: (
         <div className="space-y-4">
           <p>
-            STRENTOR is a holistic empowerment brand dedicated to helping individuals discover their inner strength and achieve their full potential. Our name symbolizes strength and resilience, embodying our mission to break barriers and promote personal growth through fitness training.
+            STRENTOR is an online adaptive strength, nutrition, mindset, and purpose coaching brand for wheelchair users with spina bifida, CKD, chronic health realities, or long-term physical challenges. Our name symbolizes strength and resilience, embodying our mission to break barriers and promote personal growth through fitness training.
           </p>
           <div>
             <p>Our brand is built on four key values:</p>

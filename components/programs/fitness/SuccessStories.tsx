@@ -1,5 +1,8 @@
 "use client"
 
+import Link from "next/link"
+import { ArrowRight } from "lucide-react"
+
 const successStories = [
   {
     condition: "Type-2 Diabetes",
@@ -34,7 +37,8 @@ const successStories = [
     description: "Helped clients play sports like critical pain-free with customised fitness plans.",
     number: "05",
     color: "from-[#EDE0C8]/10 to-[#EDE0C8]/5",
-    numberBg: "#EDE0C8"
+    numberBg: "#EDE0C8",
+    href: "/programs/spina-bifida-fitness-coaching"
   }
 ]
 
@@ -77,13 +81,11 @@ export default function SuccessStories() {
 
           {/* Second Row - Centered */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:px-[16.666%]">
-            {successStories.slice(3).map((story, index) => (
-              <div
-                key={index}
-                className={`rounded-xl p-6 bg-gradient-to-br ${story.color} border border-border transition-all duration-300 hover:shadow-lg`}
-              >
+            {successStories.slice(3).map((story, index) => {
+              const cardClassName = `rounded-xl p-6 bg-gradient-to-br ${story.color} border border-border transition-all duration-300 hover:shadow-lg`
+              const cardContent = (
                 <div className="flex items-start gap-4">
-                  <div 
+                  <div
                     className="flex-shrink-0 w-12 h-12 rounded-full flex items-center justify-center"
                     style={{ backgroundColor: story.numberBg }}
                   >
@@ -92,10 +94,26 @@ export default function SuccessStories() {
                   <div className="flex-1">
                     <h3 className="text-xl font-semibold text-foreground mb-2">{story.condition}</h3>
                     <p className="text-muted-foreground">{story.description}</p>
+                    {story.href && (
+                      <span className="mt-3 inline-flex items-center gap-1 text-sm font-bold text-[#C9A96A]">
+                        Learn More
+                        <ArrowRight className="h-4 w-4" />
+                      </span>
+                    )}
                   </div>
                 </div>
-              </div>
-            ))}
+              )
+
+              return story.href ? (
+                <Link key={index} href={story.href} className={`group ${cardClassName}`}>
+                  {cardContent}
+                </Link>
+              ) : (
+                <div key={index} className={cardClassName}>
+                  {cardContent}
+                </div>
+              )
+            })}
           </div>
         </div>
       </div>
