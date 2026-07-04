@@ -22,8 +22,8 @@ export default async function OnboardingPage() {
   // For now, we'll proceed with the onboarding flow
   
   return (
-    <main>
+    <div>
       <OnboardingWizard userEmail={user.email || ''} userName={profileDetails?.name || ''} />
-    </main>
+    </div>
   )
 } 

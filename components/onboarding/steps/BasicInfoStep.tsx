@@ -111,7 +111,7 @@ export default function BasicInfoStep() {
 
       {/* Phone Number */}
       <div className="space-y-2">
-        <Label className="text-sm font-medium text-muted-foreground">
+        <Label htmlFor="phone" className="text-sm font-medium text-muted-foreground">
           Phone Number <span className="text-muted-foreground">(Optional)</span>
         </Label>
         <Controller
@@ -120,6 +120,7 @@ export default function BasicInfoStep() {
           render={({ field }) => (
             <PhoneInput
               {...field}
+              id="phone"
               value={field.value || ''}
               onChange={(e) => field.onChange(e.target.value)}
               defaultCountry={selectedCountry?.alpha2?.toLowerCase()}

@@ -209,7 +209,7 @@ export const ContactForm: React.FC<ContactFormProps> = ({ open, onOpenChange }) 
                 value={formData.country}
                 onValueChange={(value) => handleSelectChange("country", value)}
               >
-                <SelectTrigger>
+                <SelectTrigger id="country">
                   <SelectValue placeholder="Select a country" />
                 </SelectTrigger>
                 <SelectContent 
@@ -224,6 +224,7 @@ export const ContactForm: React.FC<ContactFormProps> = ({ open, onOpenChange }) 
                       <Search className="w-4 h-4 mr-2 text-gray-400" />
                       <input
                         type="search"
+                        aria-label="Search countries"
                         className="w-full border-none outline-none bg-transparent placeholder:text-gray-400"
                         placeholder="Search countries..."
                         value={searchQuery}
@@ -261,7 +262,7 @@ export const ContactForm: React.FC<ContactFormProps> = ({ open, onOpenChange }) 
                     value={formData.dialCode}
                     onValueChange={(value) => handleSelectChange("dialCode", value)}
                   >
-                    <SelectTrigger className="w-24">
+                    <SelectTrigger className="w-24" aria-label="Country dial code">
                       <SelectValue placeholder="Code" />
                     </SelectTrigger>
                     <SelectContent>

@@ -123,12 +123,18 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${satoshi.variable} ${playfairDisplay.variable} font-satoshi`} suppressHydrationWarning>
       <body className="bg-background text-foreground">
+          <a
+            href="#main-content"
+            className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:rounded-md focus:bg-primary focus:px-4 focus:py-2 focus:text-primary-foreground focus:outline-none focus:ring-2 focus:ring-primary"
+          >
+            Skip to main content
+          </a>
           <script
             type="application/ld+json"
             dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }}
           />
           <Providers>
-              <main className="min-h-screen">
+              <main id="main-content" className="min-h-screen">
               {children}
               </main>
           </Providers>

@@ -19,7 +19,7 @@ const communityGroups = [
 
 export default function CommunityPage() {
   return (
-    <main className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background">
       <Header/>
       {/* Hero Section */}
       <div className="relative h-[50vh] bg-black">
@@ -109,6 +109,6 @@ export default function CommunityPage() {
             </Button>
         </div>
         <Footer/>
-    </main>
+    </div>
   );
 }

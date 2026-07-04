@@ -522,6 +522,7 @@ export function ProfileForm({ user, initialData, onDataUpdate }: ProfileFormProp
           <div className="space-y-2">
             <Label htmlFor="phone">Phone Number</Label>
             <PhoneInput
+              id="phone"
               value={formData.phone || ''}
               onChange={(e) => handleInputChange("phone", e.target.value)}
               defaultCountry={selectedCountry?.alpha2?.toLowerCase()}
@@ -579,7 +580,7 @@ export function ProfileForm({ user, initialData, onDataUpdate }: ProfileFormProp
               onValueChange={(value) => handleInputChange("gender", value)}
               disabled={!isEditing}
             >
-              <SelectTrigger className={!isEditing ? "bg-muted/50 text-muted-foreground" : ""}>
+              <SelectTrigger id="gender" className={!isEditing ? "bg-muted/50 text-muted-foreground" : ""}>
                 <SelectValue placeholder="Select gender" />
               </SelectTrigger>
               <SelectContent>
@@ -595,7 +596,7 @@ export function ProfileForm({ user, initialData, onDataUpdate }: ProfileFormProp
               onValueChange={(value) => handleInputChange("activity_level", value)}
               disabled={!isEditing}
             >
-              <SelectTrigger className={!isEditing ? "bg-muted/50 text-muted-foreground" : ""}>
+              <SelectTrigger id="activity_level" className={!isEditing ? "bg-muted/50 text-muted-foreground" : ""}>
                 <SelectValue placeholder="Select activity level" />
               </SelectTrigger>
               <SelectContent>
