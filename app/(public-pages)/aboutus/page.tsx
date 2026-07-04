@@ -8,7 +8,7 @@ import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
   title: "About Us",
-  description: "Meet the founder behind Strentor: a national-level para powerlifter building inclusive fitness programs for people with chronic conditions and disabilities.",
+  description: "Meet the founder behind Strentor: a national-level para powerlifter building adaptive strength and nutrition coaching for wheelchair users with spina bifida, CKD, and long-term physical challenges.",
   alternates: {
     canonical: "/aboutus",
   },

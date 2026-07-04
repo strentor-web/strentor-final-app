@@ -11,9 +11,9 @@ const siteUrl = "https://www.strentor.com/";
 
 const previewImageUrl = new URL("/strentor-social-preview.jpg", siteUrl).toString();
 
-const defaultTitle = "Strentor | Inclusive Fitness Coaching for Every Body";
+const defaultTitle = "Strentor | Adaptive Strength Coaching for Wheelchair Users";
 const defaultDescription =
-  "Personalized fitness and nutrition coaching from a national-level para powerlifter. STRENTOR designs inclusive training programs for people with chronic conditions, disabilities, and unique physical challenges.";
+  "STRENTOR is an online adaptive strength, nutrition, mindset, and purpose coaching brand for wheelchair users with spina bifida, CKD, chronic health realities, or long-term physical challenges. Coached by a national-level para powerlifter.";
 
   export const metadata: Metadata = {
     metadataBase: new URL(siteUrl),
@@ -23,12 +23,16 @@ const defaultDescription =
     },
     description: defaultDescription,
     keywords: [
-      "inclusive fitness coaching",
-      "adaptive fitness training",
+      "wheelchair fitness coach India",
+      "online wheelchair fitness coaching",
+      "fitness for wheelchair users",
+      "spina bifida fitness coaching",
+      "CKD-aware fitness coaching",
+      "adaptive strength coaching",
+      "seated strength training",
+      "wheelchair strength program",
+      "adaptive nutrition guidance",
       "para powerlifter coach",
-      "fitness for disabilities",
-      "fitness for chronic conditions",
-      "personal training India",
       "Strentor",
     ],
     alternates: {

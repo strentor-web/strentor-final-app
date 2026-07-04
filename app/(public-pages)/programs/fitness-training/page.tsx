@@ -5,6 +5,7 @@ import Banner from '@/components/programs/fitness/Banner'
 import Footer from "@/components/landing/Footer"
 import FitnessHero from "@/components/programs/fitness/Hero"
 import SuccessStories from "@/components/programs/fitness/SuccessStories"
+import SpecializedCoaching from "@/components/programs/fitness/SpecializedCoaching"
 import Transformations from "@/components/programs/fitness/Transformations"
 import FitnessTestimonials from "@/components/programs/fitness/Testimonials"
 import TrainerProfile from "@/components/programs/fitness/TrainerProfile"
@@ -17,6 +18,7 @@ export default function FitnessPage() {
       <FitnessHero />
       <TrainerProfile />
       <SuccessStories />
+      <SpecializedCoaching />
       <Transformations />
       <FitnessTestimonials />
       <FitnessPricing />

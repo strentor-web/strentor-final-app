@@ -1,8 +1,8 @@
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: "Fitness Training Program | Strentor",
-  description: "Personalized fitness programs for individuals with chronic conditions and physical challenges — expert para-athlete coaching, customized plans, and proven results.",
+  title: "Adaptive Transformation Coaching Program | Strentor",
+  description: "STRENTOR's adaptive transformation coaching program — personalized strength, nutrition, and mindset coaching for wheelchair users with spina bifida, CKD, chronic health realities, or long-term physical challenges. Expert para-athlete coaching, customized plans, proven results.",
   alternates: {
     canonical: "/programs/fitness-training",
   },
@@ -11,9 +11,9 @@ export const metadata: Metadata = {
 const serviceJsonLd = {
   "@context": "https://schema.org",
   "@type": "Service",
-  serviceType: "Fitness Training",
-  name: "Strentor Fitness Training Program",
-  description: "Personalized fitness and nutrition coaching for individuals with chronic conditions and physical challenges, led by a national-level para powerlifter.",
+  serviceType: "Adaptive Fitness Transformation Coaching",
+  name: "Strentor Transformation Program",
+  description: "Adaptive strength, nutrition, and mindset coaching for wheelchair users with spina bifida, CKD, chronic health realities, or long-term physical challenges, led by a national-level para powerlifter.",
   provider: {
     "@type": "Organization",
     name: "Strentor",
@@ -22,7 +22,7 @@ const serviceJsonLd = {
   areaServed: "Online",
   audience: {
     "@type": "Audience",
-    audienceType: "Individuals with chronic conditions or physical challenges",
+    audienceType: "Wheelchair users and individuals with chronic health conditions or long-term physical challenges",
   },
 };
 
