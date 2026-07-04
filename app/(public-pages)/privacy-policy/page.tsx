@@ -1,5 +1,18 @@
 import Header from "@/components/landing/Header";
 import Footer from "@/components/landing/Footer";
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: "Privacy Policy",
+  description: "Read Strentor's privacy policy to learn how we collect, use, and protect your personal information.",
+  alternates: {
+    canonical: "/privacy-policy",
+  },
+  robots: {
+    index: false,
+    follow: true,
+  },
+};
 
 export default function PrivacyPolicy() {
   return (

@@ -11,15 +11,43 @@ const siteUrl = "https://www.strentor.com/";
 
 const previewImageUrl = new URL("/strentor-social-preview.jpg", siteUrl).toString();
 
+const defaultTitle = "Strentor | Inclusive Fitness Coaching for Every Body";
+const defaultDescription =
+  "Personalized fitness and nutrition coaching from a national-level para powerlifter. STRENTOR designs inclusive training programs for people with chronic conditions, disabilities, and unique physical challenges.";
+
   export const metadata: Metadata = {
     metadataBase: new URL(siteUrl),
-    title: "Strentor",
-    description: "Your Personal Transformation Journey",
+    title: {
+      default: defaultTitle,
+      template: "%s | Strentor",
+    },
+    description: defaultDescription,
+    keywords: [
+      "inclusive fitness coaching",
+      "adaptive fitness training",
+      "para powerlifter coach",
+      "fitness for disabilities",
+      "fitness for chronic conditions",
+      "personal training India",
+      "Strentor",
+    ],
+    alternates: {
+      canonical: siteUrl,
+    },
+    robots: {
+      index: true,
+      follow: true,
+      googleBot: {
+        index: true,
+        follow: true,
+      },
+    },
     openGraph: {
-      title: "Strentor",
-      description: "Your Personal Transformation Journey",
+      title: defaultTitle,
+      description: defaultDescription,
       type: "website",
       url: siteUrl,
+      siteName: "Strentor",
       images: [
         {
           url: previewImageUrl,
@@ -31,14 +59,35 @@ const previewImageUrl = new URL("/strentor-social-preview.jpg", siteUrl).toStrin
     },
     twitter: {
       card: "summary_large_image",
-      title: "Strentor",
-      description: "Your Personal Transformation Journey",
+      title: defaultTitle,
+      description: defaultDescription,
       images: [previewImageUrl],
     },
     icons: {
       icon: '/favicon.ico',
     },
   }
+
+const organizationJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  name: "Strentor",
+  url: siteUrl,
+  logo: new URL("/strentor-icon.png", siteUrl).toString(),
+  description: defaultDescription,
+  founder: {
+    "@type": "Person",
+    name: "Aditya Mandan",
+    jobTitle: "Founder & Fitness Coach",
+    description: "National-level para powerlifter and certified fitness trainer.",
+  },
+  sameAs: [
+    "https://www.facebook.com/strentor/",
+    "https://in.linkedin.com/company/strentor",
+    "https://www.instagram.com/strentor/",
+    "https://www.youtube.com/@STRENTOR",
+  ],
+};
   
   const satoshi = localFont({
     display: 'swap',
@@ -70,6 +119,10 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${satoshi.variable} ${playfairDisplay.variable} font-satoshi`} suppressHydrationWarning>
       <body className="bg-background text-foreground">
+          <script
+            type="application/ld+json"
+            dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }}
+          />
           <Providers>
               <main className="min-h-screen">
               {children}
