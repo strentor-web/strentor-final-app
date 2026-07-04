@@ -55,7 +55,7 @@ export function ClientSidebar({
                 >
                   <Image
                     src="/strentor-icon.png"
-                    alt="Logo"
+                    alt="Strentor logo"
                     width={16}
                     height={16}
                     className="rounded"
