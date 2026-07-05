@@ -10,23 +10,23 @@ export function IntroContent() {
   const features: Feature[] = [
     {
       icon: "holistic",
-      title: "Holistic Approach",
-      description: "Comprehensive wellness programs integrating physical and mental growth"
+      title: "Built Around You, Not Retrofitted",
+      description: "Every program starts with your equipment, your mobility, and your goals — not a standing-body plan with a few exercises swapped out."
     },
     {
       icon: "inclusivity",
-      title: "Inclusivity",
-      description: "Accessible and adaptable programs welcoming individuals from all walks of life"
+      title: "Adaptive From Day One",
+      description: "Seated strength training, nutrition, and mindset coaching designed for wheelchair users with spina bifida, CKD, or long-term physical challenges."
     },
     {
       icon: "empowerment",
-      title: "Empowerment",
-      description: "Tools and guidance to break barriers and achieve transformative growth"
+      title: "Coached by a Para-Athlete",
+      description: "Programming shaped by a national-level para powerlifter's own training experience — not a generic certification applied to your situation."
     },
     {
       icon: "community",
-      title: "Community",
-      description: "Supportive environment fostering connection, growth, and shared success"
+      title: "Never Training Alone",
+      description: "Regular check-ins, progress tracking, and a community of people on the same journey, wherever you're training from."
     }
   ];
 

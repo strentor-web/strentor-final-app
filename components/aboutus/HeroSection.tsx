@@ -15,7 +15,7 @@ export function HeroSection() {
           Empowering Beyond <span className="text-[#C9A96A]">Limits</span>
         </h1>
         <p className="text-xl md:text-2xl text-gray-200 max-w-3xl">
-          Where strength meets purpose, and resilience knows no bounds
+          National-level para powerlifter. Certified fitness trainer. Founder of STRENTOR.
         </p>
       </div>
     </div>

@@ -11,15 +11,14 @@ import {
 const faqJsonLdAnswers = [
   "STRENTOR is an online adaptive strength, nutrition, mindset, and purpose coaching brand for wheelchair users with spina bifida, CKD, chronic health realities, or long-term physical challenges. Our brand is built on four key values: Resilience, Empowerment, Inclusivity, and Transformation.",
   "We provide tailored fitness training programs to enhance physical health and fitness, with a holistic approach that addresses your physical well-being.",
-  "STRENTOR is designed for anyone seeking empowerment and personal growth. Whether you're looking to enhance your fitness or achieve life goals, we provide premium, inclusive solutions tailored to your unique challenges and aspirations.",
-  "We prioritize accessibility and personalization. Our services are tailored to meet the diverse needs of individuals from all backgrounds and challenges, fostering an environment where everyone feels supported and empowered.",
-  "STRENTOR takes a holistic and integrated approach to empowerment, centered on fitness training. Our emphasis on inclusivity, affordability, and personalized support sets us apart, creating a one-stop solution for overall well-being.",
+  "STRENTOR is built primarily for wheelchair users and people managing conditions like spina bifida, CKD, cerebral palsy, or other long-term physical challenges. If that's you, our programs are designed specifically around your equipment and ability, rather than adapted from a standard plan.",
+  "Every program starts from your circumstances, not a generic template. Your coach adapts strength training, nutrition guidance, and check-ins to your equipment, mobility, and goals — accessibility is the starting point, not an add-on.",
+  "STRENTOR is coached by Aditya Mandan, a national-level para powerlifter and certified fitness trainer, so programming comes from real coaching experience with adaptive training — not a generic plan with the standing exercises removed.",
   "Getting started is simple! Visit our website to explore our range of services and select the ones that best fit your needs. You can also schedule a free consultation to discuss your goals and create a personalized plan.",
   "Yes, all our fitness training services are available virtually. The results depend on your commitment, but we're here to support you every step of the way!",
   "Our programs are designed to help you improve physical health and fitness, enhance mental clarity and emotional stability, achieve personal and professional goals, and cultivate a positive and empowered mindset.",
   "Yes, we believe in the power of community. Join our online groups to connect with others on similar journeys, share progress, and access exclusive content. We also host workshops, webinars, and live sessions.",
-  "We regularly gather feedback through surveys and reviews to refine our offerings. Our team of experts is dedicated to continuous learning and improvement, ensuring you receive the best possible support and guidance.",
-  "Yes, we collaborate with brands, influencers, and companies to extend our reach and impact. Our corporate inclusion programs and workshops focus on stress management, work-life balance, and personal growth.",
+  "Progress is tracked and reviewed through regular check-ins, so your program keeps adjusting to what's actually working for you rather than following a fixed script.",
 ];
 
 const FAQSection = () => {
@@ -57,15 +56,15 @@ const FAQSection = () => {
     },
     {
       question: "Who can benefit from STRENTOR's services?",
-      answer: "STRENTOR is designed for anyone seeking empowerment and personal growth. Whether you're looking to enhance your fitness or achieve life goals, we provide premium, inclusive solutions tailored to your unique challenges and aspirations."
+      answer: "STRENTOR is built primarily for wheelchair users and people managing conditions like spina bifida, CKD, cerebral palsy, or other long-term physical challenges. If that's you, our programs are designed specifically around your equipment and ability, rather than adapted from a standard plan."
     },
     {
       question: "How does STRENTOR ensure inclusivity in its services?",
-      answer: "We prioritize accessibility and personalization. Our services are tailored to meet the diverse needs of individuals from all backgrounds and challenges. Our goal is to foster an environment where everyone feels supported and empowered, regardless of their circumstances."
+      answer: "Every program starts from your circumstances, not a generic template. Your coach adapts strength training, nutrition guidance, and check-ins to your equipment, mobility, and goals — accessibility is the starting point, not an add-on."
     },
     {
       question: "What makes STRENTOR different from other wellness or coaching brands?",
-      answer: "STRENTOR takes a holistic and integrated approach to empowerment, centered on fitness training. Our emphasis on inclusivity, affordability, and personalized support sets us apart, creating a one-stop solution for overall well-being."
+      answer: "STRENTOR is coached by Aditya Mandan, a national-level para powerlifter and certified fitness trainer, so programming comes from real coaching experience with adaptive training — not a generic plan with the standing exercises removed."
     },
     {
       question: "How can I get started with STRENTOR?",
@@ -104,11 +103,7 @@ const FAQSection = () => {
     },
     {
       question: "How do you ensure the quality of your services?",
-      answer: "We regularly gather feedback through surveys and reviews to refine our offerings. Additionally, our team of experts is dedicated to continuous learning and improvement, ensuring you receive the best possible support and guidance."
-    },
-    {
-      question: "Do you have any partnerships or corporate programs?",
-      answer: "Yes, we collaborate with brands, influencers, and companies to extend our reach and impact. Our corporate inclusion programs and workshops focus on stress management, work-life balance, and personal growth. Reach out to learn how we can work together."
+      answer: "Progress is tracked and reviewed through regular check-ins, so your program keeps adjusting to what's actually working for you rather than following a fixed script."
     }
   ];
 

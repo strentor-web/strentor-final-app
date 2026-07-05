@@ -80,7 +80,7 @@ export default function Header() {
 
           <div className="flex items-center">
             <button
-              className="md:hidden focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary rounded"
+              className="md:hidden focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary rounded-full p-2 -m-2"
               onClick={() => setIsMenuOpen(!isMenuOpen)}
               aria-label={isMenuOpen ? "Close menu" : "Open menu"}
               aria-expanded={isMenuOpen}

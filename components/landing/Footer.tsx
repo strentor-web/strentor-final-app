@@ -5,6 +5,15 @@ import { Facebook, Linkedin, Instagram, Youtube } from "lucide-react";
 export default function Footer() {
   return (
     <footer className="w-full border-t border-border bg-background/5 backdrop-blur-lg">
+      <div className="container mx-auto px-4 py-10 text-center border-b border-border">
+        <p className="text-lg font-semibold text-foreground">Ready to get stronger?</p>
+        <Link
+          href="/sign-up"
+          className="mt-2 inline-flex items-center gap-1 text-sm font-bold text-primary hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary rounded"
+        >
+          Book your free discovery call →
+        </Link>
+      </div>
       <div className="container mx-auto px-4 py-12 grid gap-8 sm:grid-cols-3 text-center sm:text-left">
         {/* Company Sections */}
         <div className="space-y-4">
@@ -55,7 +64,7 @@ export default function Footer() {
           <h3 className="text-lg font-semibold text-foreground">Stay Connected</h3>
           <div className="flex justify-center sm:justify-start gap-4 text-muted-foreground">
             <Link
-              className="hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary rounded"
+              className="hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary rounded-full p-2 -m-2"
               href="https://www.facebook.com/strentor/"
               target="_blank"
               rel="noopener noreferrer"
@@ -65,7 +74,7 @@ export default function Footer() {
             </Link>
 
             <Link
-              className="hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary rounded"
+              className="hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary rounded-full p-2 -m-2"
               href="https://in.linkedin.com/company/strentor"
               target="_blank"
               rel="noopener noreferrer"
@@ -75,7 +84,7 @@ export default function Footer() {
             </Link>
 
             <Link
-              className="hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary rounded"
+              className="hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary rounded-full p-2 -m-2"
               href="https://www.instagram.com/strentor/"
               target="_blank"
               rel="noopener noreferrer"
@@ -85,7 +94,7 @@ export default function Footer() {
             </Link>
 
             <Link
-              className="hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary rounded"
+              className="hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary rounded-full p-2 -m-2"
               href="https://www.youtube.com/@STRENTOR"
               target="_blank"
               rel="noopener noreferrer"
