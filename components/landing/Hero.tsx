@@ -54,19 +54,19 @@ export default function Hero() {
             transition={{ duration: 0.6, ease: "easeOut" }}
           >
             <h1 className="text-4xl md:text-6xl font-bold font-display text-foreground">
-               Wellness Programs
+              You Don&apos;t Need to Stand
               <br />
-              Made For <span className="text-[#C9A96A]">YOU</span>
+              to Get <span className="text-[#C9A96A]">Stronger</span>
             </h1>
             <p className="text-xl md:text-2xl font-medium text-muted-foreground">
-              Personalized pathways to your best self, crafted by experts who understand your unique journey.
+              Adaptive strength, nutrition, and mindset coaching for wheelchair users with spina bifida, CKD, or long-term physical challenges — coached virtually by a national-level para powerlifter.
             </p>
             <div className="flex flex-col sm:flex-row gap-4">
               <Button
                 onClick={handleBookingClick}
                 className="h-14 px-8 text-lg rounded-full font-bold bg-[#C9A96A] hover:bg-[#C9A96A]/90 transition-all transform hover:scale-105"
               >
-                Book Your Discovery Call
+                Book Your Free Discovery Call
               </Button>
             </div>
           </motion.div>
