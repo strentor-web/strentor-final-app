@@ -10,11 +10,6 @@ const specializedPrograms = [
     href: "/programs/wheelchair-fitness-coaching-india",
   },
   {
-    title: "Online Strength Training for Wheelchair Users",
-    description: "Progressive seated strength programs with video form check-ins — no accessible gym required.",
-    href: "/programs/online-wheelchair-strength-training",
-  },
-  {
     title: "Spina Bifida Fitness Coaching",
     description: "Personalized coaching built around your ability level, not a generic program.",
     href: "/programs/spina-bifida-fitness-coaching",
@@ -38,7 +33,7 @@ export default function SpecializedCoaching() {
             Explore coaching built around your specific circumstances.
           </p>
         </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 max-w-4xl mx-auto">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 max-w-5xl mx-auto">
           {specializedPrograms.map((program) => (
             <Link
               key={program.href}
