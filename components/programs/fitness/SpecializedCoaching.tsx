@@ -6,12 +6,12 @@ import { ArrowRight } from "lucide-react"
 const specializedPrograms = [
   {
     title: "Wheelchair Fitness Coaching in India",
-    description: "Adaptive strength training and nutrition guidance for wheelchair users, delivered virtually across India.",
+    description: "Full strength, nutrition, and mindset coaching for clients anywhere in India — coached by a national-level para powerlifter.",
     href: "/programs/wheelchair-fitness-coaching-india",
   },
   {
     title: "Online Strength Training for Wheelchair Users",
-    description: "Seated strength training, progression tracking, and coach check-ins — fully online.",
+    description: "Progressive seated strength programs with video form check-ins — no accessible gym required.",
     href: "/programs/online-wheelchair-strength-training",
   },
   {
