@@ -11,7 +11,7 @@ const words = [
 export function IntroHeader() {
   return (
     <div className="mb-16 text-center">
-      <h1 className="mb-6 flex flex-wrap justify-center gap-x-4 text-5xl font-bold font-display tracking-tight sm:text-6xl">
+      <h2 className="mb-6 flex flex-wrap justify-center gap-x-4 text-5xl font-bold font-display tracking-tight sm:text-6xl">
         {words.map((word, index) => (
           <motion.span
             key={word.text}
@@ -24,7 +24,7 @@ export function IntroHeader() {
             {word.text}
           </motion.span>
         ))}
-      </h1>
+      </h2>
       <motion.p
         className="mx-auto max-w-3xl text-lg font-semibold text-muted-foreground"
         initial={{ opacity: 0, y: 16 }}

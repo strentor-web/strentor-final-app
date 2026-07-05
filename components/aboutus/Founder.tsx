@@ -20,15 +20,18 @@ export function FounderStory() {
           </h2>
           <div className="space-y-4 text-lg font-semibold text-muted-foreground leading-relaxed">
             <p>
-              As a para powerlifter, I intimately understand the multifaceted battles our
-              community endures—transcending mere physical barriers to confront mental,
-              emotional, and financial hurdles.
+              As a national-level para powerlifter and certified fitness trainer, I&apos;ve
+              spent years coaching athletes and clients who use wheelchairs or manage
+              conditions like spina bifida and CKD. I&apos;ve seen firsthand how much
+              training changes when it&apos;s built around your equipment and ability from
+              day one — not adapted from a standing-body plan as an afterthought.
             </p>
             <p>
-              This deep comprehension ignited an unwavering passion within me, compelling 
-              me to spearhead STRENTOR. It&apos;s not merely a project; it embodies our 
-              relentless commitment to empowering individuals to surmount obstacles 
-              and flourish.
+              That&apos;s what pushed me to build STRENTOR. It&apos;s not a generic wellness
+              brand with a few accessible options bolted on — it&apos;s adaptive strength,
+              nutrition, and mindset coaching designed specifically for people managing
+              long-term physical challenges, delivered virtually so location is never
+              the barrier.
             </p>
             <p className="text-xl font-semibold text-[#C9A96A] mt-6">
             &quot;The only impossible journey is the one you never begin.&quot;
