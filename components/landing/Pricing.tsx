@@ -9,6 +9,7 @@ import { BadgeCheck, Minus, Plus } from "lucide-react";
 import Image from "next/image";
 import { PricingHeader } from "@/components/subscription/PricingHeader";
 import { useRouter } from "next/navigation";
+import { savePendingPlan } from "@/utils/pending-plan";
 
 const RATE_PER_SESSION = 1000;
 const MIN_SESSIONS_PER_WEEK = 1;
@@ -68,7 +69,8 @@ export default function Pricing() {
   const router = useRouter();
 
   const handleGetStarted = () => {
-    router.push('/sign-in');
+    savePendingPlan({ sessionsPerWeek, billingCycle: selectedCycle });
+    router.push('/sign-up');
   };
 
   const toggleExpansion = (category: string) => {
