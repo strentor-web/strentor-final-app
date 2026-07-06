@@ -1,18 +1,22 @@
 "use client";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { Facebook, Linkedin, Instagram, Youtube } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 export default function Footer() {
+  const router = useRouter();
+
   return (
     <footer className="w-full border-t border-border bg-background/5 backdrop-blur-lg">
       <div className="container mx-auto px-4 py-10 text-center border-b border-border">
-        <p className="text-lg font-semibold text-foreground">Ready to get stronger?</p>
-        <Link
-          href="/sign-up"
-          className="mt-2 inline-flex items-center gap-1 text-sm font-bold text-primary hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary rounded"
+        <p className="text-lg font-semibold text-foreground mb-4">Ready to get stronger?</p>
+        <Button
+          onClick={() => router.push("/sign-up")}
+          className="h-12 px-8 rounded-full font-bold bg-strentor-red hover:bg-strentor-red/80 text-primary-foreground"
         >
           Book your free discovery call →
-        </Link>
+        </Button>
       </div>
       <div className="container mx-auto px-4 py-12 grid gap-8 sm:grid-cols-3 text-center sm:text-left">
         {/* Company Sections */}
