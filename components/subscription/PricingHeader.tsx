@@ -22,10 +22,10 @@ export const PricingHeader = ({
 }) => (
   <div className="space-y-4 sm:space-y-6 lg:space-y-7 text-center px-4 sm:px-6 lg:px-0">
     <div className="space-y-2 sm:space-y-3 lg:space-y-4">
-      <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-medium leading-tight">{title}</h1>
+      <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-medium leading-tight">{title}</h2>
       <p className="text-sm sm:text-base text-muted-foreground px-2 sm:px-0">{subtitle}</p>
     </div>
-    <div className="mx-auto flex w-full max-w-sm sm:max-w-md lg:w-auto lg:max-w-lg rounded-full bg-muted p-0.5 sm:p-1">
+    <div className="mx-auto flex w-full max-w-sm sm:max-w-2xl lg:w-auto lg:max-w-2xl gap-1 overflow-x-auto rounded-full bg-muted p-0.5 sm:p-1 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
       {options.map((opt) => (
         <Tab
           key={opt.value}

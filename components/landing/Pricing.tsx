@@ -4,16 +4,25 @@ import React, { useState } from "react";
 import { Card, CardContent, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { BadgeCheck } from "lucide-react";
+import { Input } from "@/components/ui/input";
+import { BadgeCheck, Minus, Plus } from "lucide-react";
 import Image from "next/image";
 import { PricingHeader } from "@/components/subscription/PricingHeader";
 import { useRouter } from "next/navigation";
 
+const RATE_PER_SESSION = 1000;
+const MIN_SESSIONS = 1;
+const DEFAULT_SESSIONS = 12;
+
 const billingOptions = [
+  { label: "Monthly", value: 1, discount: 0 },
   { label: "Quarterly", value: 3, discount: 10 },
   { label: "Semi-Annual", value: 6, discount: 20 },
   { label: "Annual", value: 12, discount: 30 },
 ];
+
+const cycleLabelText = (months: number) =>
+  months === 1 ? "Billed monthly" : `Billed every ${months} months`;
 
 const categoryGradients = {
   FITNESS: "from-[#C9A96A] to-[#B8935A]",
@@ -47,16 +56,12 @@ const pricingData = {
       "Daily Accountability Submissions",
       "Unlimited WhatsApp/Text Support",
       "Results Guarantee"
-    ],
-    pricing: {
-      3: { original: 75000, discounted: 67500 },
-      6: { original: 150000, discounted: 120000 },
-      12: { original: 300000, discounted: 210000 }
-    }
+    ]
   },
 };
 
 export default function Pricing() {
+  const [sessions, setSessions] = useState<number>(DEFAULT_SESSIONS);
   const [selectedCycle, setSelectedCycle] = useState<number>(3);
   const [expandedCards, setExpandedCards] = useState<Set<string>>(new Set());
   const router = useRouter();
@@ -84,8 +89,17 @@ export default function Pricing() {
     }
   };
 
-  const getDiscountPercentage = (cycle: number) => {
-    return cycle === 3 ? 10 : cycle === 6 ? 20 : 30;
+  const selectedOption = billingOptions.find((option) => option.value === selectedCycle) ?? billingOptions[0];
+  const originalPrice = sessions * RATE_PER_SESSION;
+  const discountedPrice = Math.round(originalPrice * (1 - selectedOption.discount / 100));
+
+  const adjustSessions = (delta: number) => {
+    setSessions((prev) => Math.max(MIN_SESSIONS, prev + delta));
+  };
+
+  const handleSessionsInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = parseInt(e.target.value, 10);
+    setSessions(Number.isNaN(value) ? MIN_SESSIONS : Math.max(MIN_SESSIONS, value));
   };
 
   return (
@@ -100,11 +114,44 @@ export default function Pricing() {
           onSelect={setSelectedCycle}
         />
 
+        {/* Session Count Selector */}
+        <div className="mx-auto mt-8 flex max-w-xs flex-col items-center gap-2">
+          <label htmlFor="landing-session-count" className="text-sm font-medium text-muted-foreground">
+            Number of Sessions
+          </label>
+          <div className="flex items-center gap-3">
+            <button
+              type="button"
+              onClick={() => adjustSessions(-1)}
+              aria-label="Decrease number of sessions"
+              disabled={sessions <= MIN_SESSIONS}
+              className="flex h-10 w-10 items-center justify-center rounded-full border border-input text-foreground transition-colors hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary disabled:opacity-40 disabled:cursor-not-allowed"
+            >
+              <Minus className="h-4 w-4" />
+            </button>
+            <Input
+              id="landing-session-count"
+              type="number"
+              min={MIN_SESSIONS}
+              value={sessions}
+              onChange={handleSessionsInputChange}
+              className="w-20 text-center text-lg font-semibold"
+            />
+            <button
+              type="button"
+              onClick={() => adjustSessions(1)}
+              aria-label="Increase number of sessions"
+              className="flex h-10 w-10 items-center justify-center rounded-full border border-input text-foreground transition-colors hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+            >
+              <Plus className="h-4 w-4" />
+            </button>
+          </div>
+          <p className="text-xs text-muted-foreground">₹{RATE_PER_SESSION.toLocaleString()} per session</p>
+        </div>
+
         {/* Pricing Cards Grid */}
-        <div className="grid grid-cols-1 max-w-sm mx-auto mt-12">
+        <div className="grid grid-cols-1 max-w-sm mx-auto mt-10">
           {Object.entries(pricingData).map(([category, plan]) => {
-            const pricing = plan.pricing[selectedCycle as keyof typeof plan.pricing];
-            const discountPercentage = getDiscountPercentage(selectedCycle);
             const isAllInOne = category === 'ALL_IN_ONE';
             
             return (
@@ -137,15 +184,18 @@ export default function Pricing() {
                   {/* Price Section */}
                   <div className="mb-4">
                     <div className="flex items-baseline gap-2">
-                      <span className="text-lg font-medium text-muted-foreground line-through">
-                        ₹{pricing.original.toLocaleString()}
-                      </span>
+                      {selectedOption.discount > 0 && (
+                        <span className="text-lg font-medium text-muted-foreground line-through">
+                          ₹{originalPrice.toLocaleString()}
+                        </span>
+                      )}
                       <span className="text-3xl font-medium text-primary">
-                        ₹{pricing.discounted.toLocaleString()}
+                        ₹{discountedPrice.toLocaleString()}
                       </span>
                     </div>
                     <p className="text-xs font-medium text-muted-foreground">
-                      Billed every {selectedCycle} months
+                      {sessions} session{sessions === 1 ? "" : "s"} · {cycleLabelText(selectedOption.value)}
+                      {selectedOption.discount > 0 && ` · ${selectedOption.discount}% off`}
                     </p>
                   </div>
                 </div>
