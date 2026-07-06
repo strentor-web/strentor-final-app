@@ -11,6 +11,7 @@ import Image from 'next/image'
 
 import { completeOnboardingAction } from '@/actions/onboarding.action'
 import { useLocalStorage } from '@/hooks/useLocalStorage'
+import { PENDING_PLAN_KEY } from '@/utils/pending-plan'
 import { OnboardingData, onboardingSchema, OnboardingFormKeysType } from '@/types/onboarding'
 import { ONBOARDING_FORM_KEYS, ONBOARDING_STEPS } from './constants/onboarding-constants'
 
@@ -143,7 +144,9 @@ export default function OnboardingWizard({ userEmail, userName }: OnboardingWiza
         setSavedStep(1)
         
         toast.success('Welcome to Strentor! Your profile is now complete.')
-        router.push('/')
+
+        const hasPendingPlan = typeof window !== 'undefined' && !!localStorage.getItem(PENDING_PLAN_KEY)
+        router.push(hasPendingPlan ? '/subscribe/confirm' : '/')
       } else {
         // Handle server errors with automatic navigation
         if (result.error) {
