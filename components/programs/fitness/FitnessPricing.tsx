@@ -3,16 +3,25 @@
 import React, { useState } from "react";
 import { Card, CardContent, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { BadgeCheck } from "lucide-react";
+import { Input } from "@/components/ui/input";
+import { BadgeCheck, Minus, Plus } from "lucide-react";
 import Image from "next/image";
 import { PricingHeader } from "@/components/subscription/PricingHeader";
 import { useRouter } from "next/navigation";
 
+const RATE_PER_SESSION = 1000;
+const MIN_SESSIONS = 1;
+const DEFAULT_SESSIONS = 12;
+
 const billingOptions = [
+  { label: "Monthly", value: 1, discount: 0 },
   { label: "Quarterly", value: 3, discount: 10 },
   { label: "Semi-Annual", value: 6, discount: 20 },
   { label: "Annual", value: 12, discount: 30 },
 ];
+
+const cycleLabelText = (months: number) =>
+  months === 1 ? "Billed monthly" : `Billed every ${months} months`;
 
 const categoryGradients = {
   FITNESS: "from-[#C9A96A] to-[#B8935A]",
@@ -49,15 +58,11 @@ const fitnessPlan = {
     "Custom adaptive fitness blueprint and progression map",
     "Modified strength training suited to your condition",
     "Goal-based programs: muscle gain, fat loss, endurance, or rehab"
-  ],
-  pricing: {
-    3: { original: 75000, discounted: 67500 },
-    6: { original: 150000, discounted: 120000 },
-    12: { original: 300000, discounted: 210000 }
-  }
+  ]
 };
 
 export default function FitnessPricing() {
+  const [sessions, setSessions] = useState<number>(DEFAULT_SESSIONS);
   const [selectedCycle, setSelectedCycle] = useState<number>(3);
   const router = useRouter();
 
@@ -65,7 +70,18 @@ export default function FitnessPricing() {
     router.push('/sign-up');
   };
 
-  const pricing = fitnessPlan.pricing[selectedCycle as keyof typeof fitnessPlan.pricing];
+  const selectedOption = billingOptions.find((option) => option.value === selectedCycle) ?? billingOptions[0];
+  const originalPrice = sessions * RATE_PER_SESSION;
+  const discountedPrice = Math.round(originalPrice * (1 - selectedOption.discount / 100));
+
+  const adjustSessions = (delta: number) => {
+    setSessions((prev) => Math.max(MIN_SESSIONS, prev + delta));
+  };
+
+  const handleSessionsInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = parseInt(e.target.value, 10);
+    setSessions(Number.isNaN(value) ? MIN_SESSIONS : Math.max(MIN_SESSIONS, value));
+  };
 
   return (
     <div id="fitness-pricing-section" className="relative w-full overflow-hidden py-20 bg-background">
@@ -79,8 +95,43 @@ export default function FitnessPricing() {
           onSelect={setSelectedCycle}
         />
 
+        {/* Session Count Selector */}
+        <div className="mx-auto mt-8 flex max-w-xs flex-col items-center gap-2">
+          <label htmlFor="fitness-session-count" className="text-sm font-medium text-muted-foreground">
+            Number of Sessions
+          </label>
+          <div className="flex items-center gap-3">
+            <button
+              type="button"
+              onClick={() => adjustSessions(-1)}
+              aria-label="Decrease number of sessions"
+              disabled={sessions <= MIN_SESSIONS}
+              className="flex h-10 w-10 items-center justify-center rounded-full border border-input text-foreground transition-colors hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary disabled:opacity-40 disabled:cursor-not-allowed"
+            >
+              <Minus className="h-4 w-4" />
+            </button>
+            <Input
+              id="fitness-session-count"
+              type="number"
+              min={MIN_SESSIONS}
+              value={sessions}
+              onChange={handleSessionsInputChange}
+              className="w-20 text-center text-lg font-semibold"
+            />
+            <button
+              type="button"
+              onClick={() => adjustSessions(1)}
+              aria-label="Increase number of sessions"
+              className="flex h-10 w-10 items-center justify-center rounded-full border border-input text-foreground transition-colors hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+            >
+              <Plus className="h-4 w-4" />
+            </button>
+          </div>
+          <p className="text-xs text-muted-foreground">₹{RATE_PER_SESSION.toLocaleString()} per session</p>
+        </div>
+
         {/* Single Fitness Card - Centered */}
-        <div className="flex justify-center mt-12">
+        <div className="flex justify-center mt-10">
           <div className="w-full max-w-md">
             <Card className="h-full flex flex-col overflow-hidden rounded-2xl border p-8 shadow bg-background border-primary/30">
               {/* Header Section */}
@@ -97,15 +148,18 @@ export default function FitnessPricing() {
                 {/* Price Section */}
                 <div className="mb-6">
                   <div className="flex items-baseline gap-2">
-                    <span className="text-lg font-medium text-muted-foreground line-through">
-                      ₹{pricing.original.toLocaleString()}
-                    </span>
+                    {selectedOption.discount > 0 && (
+                      <span className="text-lg font-medium text-muted-foreground line-through">
+                        ₹{originalPrice.toLocaleString()}
+                      </span>
+                    )}
                     <span className="text-4xl font-medium text-primary">
-                      ₹{pricing.discounted.toLocaleString()}
+                      ₹{discountedPrice.toLocaleString()}
                     </span>
                   </div>
                   <p className="text-sm font-medium text-muted-foreground mt-2">
-                    Billed every {selectedCycle} months
+                    {sessions} session{sessions === 1 ? "" : "s"} · {cycleLabelText(selectedOption.value)}
+                    {selectedOption.discount > 0 && ` · ${selectedOption.discount}% off`}
                   </p>
                 </div>
               </div>
