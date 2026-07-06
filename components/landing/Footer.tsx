@@ -15,7 +15,7 @@ export default function Footer() {
           onClick={() => router.push("/sign-up")}
           className="h-12 px-8 rounded-full font-bold bg-strentor-red hover:bg-strentor-red/80 text-primary-foreground"
         >
-          Book your free discovery call →
+          Book your free discovery call
         </Button>
       </div>
       <div className="container mx-auto px-4 py-12 grid gap-8 sm:grid-cols-3 text-center sm:text-left">
