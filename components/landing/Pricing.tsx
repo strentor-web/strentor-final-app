@@ -11,8 +11,9 @@ import { PricingHeader } from "@/components/subscription/PricingHeader";
 import { useRouter } from "next/navigation";
 
 const RATE_PER_SESSION = 1000;
-const MIN_SESSIONS = 1;
-const DEFAULT_SESSIONS = 12;
+const MIN_SESSIONS_PER_WEEK = 1;
+const DEFAULT_SESSIONS_PER_WEEK = 1;
+const WEEKS_PER_MONTH = 4;
 
 const billingOptions = [
   { label: "Monthly", value: 1, discount: 0 },
@@ -61,7 +62,7 @@ const pricingData = {
 };
 
 export default function Pricing() {
-  const [sessions, setSessions] = useState<number>(DEFAULT_SESSIONS);
+  const [sessionsPerWeek, setSessionsPerWeek] = useState<number>(DEFAULT_SESSIONS_PER_WEEK);
   const [selectedCycle, setSelectedCycle] = useState<number>(3);
   const [expandedCards, setExpandedCards] = useState<Set<string>>(new Set());
   const router = useRouter();
@@ -90,16 +91,18 @@ export default function Pricing() {
   };
 
   const selectedOption = billingOptions.find((option) => option.value === selectedCycle) ?? billingOptions[0];
-  const originalPrice = sessions * RATE_PER_SESSION;
+  const weeksInCycle = selectedOption.value * WEEKS_PER_MONTH;
+  const totalSessions = sessionsPerWeek * weeksInCycle;
+  const originalPrice = totalSessions * RATE_PER_SESSION;
   const discountedPrice = Math.round(originalPrice * (1 - selectedOption.discount / 100));
 
-  const adjustSessions = (delta: number) => {
-    setSessions((prev) => Math.max(MIN_SESSIONS, prev + delta));
+  const adjustSessionsPerWeek = (delta: number) => {
+    setSessionsPerWeek((prev) => Math.max(MIN_SESSIONS_PER_WEEK, prev + delta));
   };
 
   const handleSessionsInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = parseInt(e.target.value, 10);
-    setSessions(Number.isNaN(value) ? MIN_SESSIONS : Math.max(MIN_SESSIONS, value));
+    setSessionsPerWeek(Number.isNaN(value) ? MIN_SESSIONS_PER_WEEK : Math.max(MIN_SESSIONS_PER_WEEK, value));
   };
 
   return (
@@ -114,17 +117,17 @@ export default function Pricing() {
           onSelect={setSelectedCycle}
         />
 
-        {/* Session Count Selector */}
+        {/* Sessions Per Week Selector */}
         <div className="mx-auto mt-8 flex max-w-xs flex-col items-center gap-2">
           <label htmlFor="landing-session-count" className="text-sm font-medium text-muted-foreground">
-            Number of Sessions
+            Sessions per Week
           </label>
           <div className="flex items-center gap-3">
             <button
               type="button"
-              onClick={() => adjustSessions(-1)}
-              aria-label="Decrease number of sessions"
-              disabled={sessions <= MIN_SESSIONS}
+              onClick={() => adjustSessionsPerWeek(-1)}
+              aria-label="Decrease sessions per week"
+              disabled={sessionsPerWeek <= MIN_SESSIONS_PER_WEEK}
               className="flex h-10 w-10 items-center justify-center rounded-full border border-input text-foreground transition-colors hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary disabled:opacity-40 disabled:cursor-not-allowed"
             >
               <Minus className="h-4 w-4" />
@@ -132,15 +135,15 @@ export default function Pricing() {
             <Input
               id="landing-session-count"
               type="number"
-              min={MIN_SESSIONS}
-              value={sessions}
+              min={MIN_SESSIONS_PER_WEEK}
+              value={sessionsPerWeek}
               onChange={handleSessionsInputChange}
               className="w-20 text-center text-lg font-semibold"
             />
             <button
               type="button"
-              onClick={() => adjustSessions(1)}
-              aria-label="Increase number of sessions"
+              onClick={() => adjustSessionsPerWeek(1)}
+              aria-label="Increase sessions per week"
               className="flex h-10 w-10 items-center justify-center rounded-full border border-input text-foreground transition-colors hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
             >
               <Plus className="h-4 w-4" />
@@ -194,7 +197,7 @@ export default function Pricing() {
                       </span>
                     </div>
                     <p className="text-xs font-medium text-muted-foreground">
-                      {sessions} session{sessions === 1 ? "" : "s"} · {cycleLabelText(selectedOption.value)}
+                      {totalSessions} session{totalSessions === 1 ? "" : "s"} ({sessionsPerWeek}/week × {weeksInCycle} weeks) · {cycleLabelText(selectedOption.value)}
                       {selectedOption.discount > 0 && ` · ${selectedOption.discount}% off`}
                     </p>
                   </div>
