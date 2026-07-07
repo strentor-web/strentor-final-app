@@ -12,6 +12,7 @@ import { useRouter } from "next/navigation";
 
 const RATE_PER_SESSION = 1000;
 const MIN_SESSIONS_PER_WEEK = 3;
+const MAX_SESSIONS_PER_WEEK = 5;
 const DEFAULT_SESSIONS_PER_WEEK = 3;
 const WEEKS_PER_MONTH = 4;
 
@@ -97,12 +98,16 @@ export default function Pricing() {
   const discountedPrice = Math.round(originalPrice * (1 - selectedOption.discount / 100));
 
   const adjustSessionsPerWeek = (delta: number) => {
-    setSessionsPerWeek((prev) => Math.max(MIN_SESSIONS_PER_WEEK, prev + delta));
+    setSessionsPerWeek((prev) => Math.min(MAX_SESSIONS_PER_WEEK, Math.max(MIN_SESSIONS_PER_WEEK, prev + delta)));
   };
 
   const handleSessionsInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = parseInt(e.target.value, 10);
-    setSessionsPerWeek(Number.isNaN(value) ? MIN_SESSIONS_PER_WEEK : Math.max(MIN_SESSIONS_PER_WEEK, value));
+    setSessionsPerWeek(
+      Number.isNaN(value)
+        ? MIN_SESSIONS_PER_WEEK
+        : Math.min(MAX_SESSIONS_PER_WEEK, Math.max(MIN_SESSIONS_PER_WEEK, value))
+    );
   };
 
   return (
@@ -136,6 +141,7 @@ export default function Pricing() {
               id="landing-session-count"
               type="number"
               min={MIN_SESSIONS_PER_WEEK}
+              max={MAX_SESSIONS_PER_WEEK}
               value={sessionsPerWeek}
               onChange={handleSessionsInputChange}
               className="w-20 text-center text-lg font-semibold"
@@ -144,7 +150,8 @@ export default function Pricing() {
               type="button"
               onClick={() => adjustSessionsPerWeek(1)}
               aria-label="Increase sessions per week"
-              className="flex h-10 w-10 items-center justify-center rounded-full border border-input text-foreground transition-colors hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+              disabled={sessionsPerWeek >= MAX_SESSIONS_PER_WEEK}
+              className="flex h-10 w-10 items-center justify-center rounded-full border border-input text-foreground transition-colors hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary disabled:opacity-40 disabled:cursor-not-allowed"
             >
               <Plus className="h-4 w-4" />
             </button>
