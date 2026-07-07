@@ -30,6 +30,7 @@ export type PlanMatrixItem = {
   price: number;
   features: any;
   razorpay_plan_id: string;
+  sessions_per_week: number | null;
   buttonState: PlanButtonState;
   buttonText: string;
   action: {
@@ -298,7 +299,7 @@ const handler = async (data: InputType): Promise<ActionState<InputType, ReturnTy
         } else if (plan.billing_cycle > currentPlan.billing_cycle) {
           // Allow upgrade within same category
           buttonState = 'upgrade';
-          buttonText = `Upgrade to ${plan.billing_cycle === 3 ? 'Quarterly' : plan.billing_cycle === 6 ? 'Semi-Annual' : 'Annual'}`;
+          buttonText = `Upgrade to ${plan.billing_cycle === 1 ? 'Monthly' : plan.billing_cycle === 3 ? 'Quarterly' : plan.billing_cycle === 6 ? 'Semi-Annual' : 'Annual'}`;
           action = { 
             type: 'upgrade', 
             subscriptionId: activeInCategory.id, 
@@ -308,7 +309,7 @@ const handler = async (data: InputType): Promise<ActionState<InputType, ReturnTy
         } else {
           // Allow downgrade within same category
           buttonState = 'downgrade';
-          buttonText = `Downgrade to ${plan.billing_cycle === 3 ? 'Quarterly' : plan.billing_cycle === 6 ? 'Semi-Annual' : 'Annual'}`;
+          buttonText = `Downgrade to ${plan.billing_cycle === 1 ? 'Monthly' : plan.billing_cycle === 3 ? 'Quarterly' : plan.billing_cycle === 6 ? 'Semi-Annual' : 'Annual'}`;
           action = { 
             type: 'downgrade', 
             subscriptionId: activeInCategory.id, 
@@ -404,6 +405,7 @@ const handler = async (data: InputType): Promise<ActionState<InputType, ReturnTy
         price: Number(plan.price),
         features: plan.features,
         razorpay_plan_id: plan.razorpay_plan_id,
+        sessions_per_week: plan.sessions_per_week,
         buttonState,
         buttonText,
         action,
