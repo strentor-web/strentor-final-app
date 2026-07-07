@@ -11,8 +11,8 @@ import { PricingHeader } from "@/components/subscription/PricingHeader";
 import { useRouter } from "next/navigation";
 
 const RATE_PER_SESSION = 1000;
-const MIN_SESSIONS_PER_WEEK = 1;
-const DEFAULT_SESSIONS_PER_WEEK = 1;
+const MIN_SESSIONS_PER_WEEK = 3;
+const DEFAULT_SESSIONS_PER_WEEK = 3;
 const WEEKS_PER_MONTH = 4;
 
 const billingOptions = [
