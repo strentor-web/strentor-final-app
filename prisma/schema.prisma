@@ -93,7 +93,6 @@ model subscription_plans {
   billing_period     String               @default("monthly")
   billing_cycle      Int                  @default(1)
   is_active          Boolean?              @default(true)
-  sessions_per_week  Int?
   user_subscriptions user_subscriptions[]
 
   @@schema("public")
