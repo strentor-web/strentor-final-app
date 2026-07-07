@@ -1,11 +1,12 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Alert, AlertDescription } from '@/components/ui/alert';
+import { Input } from '@/components/ui/input';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -16,7 +17,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from '@/components/ui/alert-dialog';
-import { AlertCircle, Loader2, Crown, BadgeCheck } from 'lucide-react';
+import { AlertCircle, Loader2, Crown, BadgeCheck, Minus, Plus } from 'lucide-react';
 import Image from 'next/image';
 import { SubscribeButton } from './subscribe-button';
 import { PricingHeader } from './PricingHeader';
@@ -33,10 +34,40 @@ interface SettingsPricingSectionProps {
 }
 
 const billingOptions = [
+  { label: "Monthly", value: 1, discount: 0 },
   { label: "Quarterly", value: 3, discount: 10 },
   { label: "Semi-Annual", value: 6, discount: 20 },
   { label: "Annual", value: 12, discount: 30 },
 ];
+
+const MIN_SESSIONS_PER_WEEK = 3;
+const MAX_SESSIONS_PER_WEEK = 5;
+const DEFAULT_SESSIONS_PER_WEEK = 3;
+
+const trainingModes = [
+  { label: "Trainer-Led", value: "ONLINE" as const },
+  { label: "Self-Paced", value: "SELF_PACED" as const },
+];
+
+// Once a user has any relationship to a FITNESS plan (active, pending,
+// failed, paused, or eligible for upgrade/downgrade), their sessions/week
+// is locked to whatever that plan was created with — only the billing
+// cycle can change from here on.
+const LOCKED_FITNESS_STATES = new Set([
+  'current',
+  'payment_verification',
+  'retry_payment',
+  'resume_subscription',
+  'scheduled_end',
+  'upgrade',
+  'downgrade',
+]);
+
+function findLockedFitnessPlan(plans: PlanMatrixItem[]): PlanMatrixItem | undefined {
+  return plans.find(
+    (plan) => plan.category === 'FITNESS' && LOCKED_FITNESS_STATES.has(plan.buttonState)
+  );
+}
 
 const categoryGradients = {
   FITNESS: "from-[#C9A96A] to-[#B8935A]",
@@ -75,7 +106,10 @@ export function SettingsPricingSection({
 }: SettingsPricingSectionProps) {
   const [plans, setPlans] = useState<PlanMatrixItem[]>([]);
   const [selectedCycle, setSelectedCycle] = useState<number>(3);
+  const [sessionsPerWeek, setSessionsPerWeek] = useState<number>(DEFAULT_SESSIONS_PER_WEEK);
+  const [trainingMode, setTrainingMode] = useState<typeof trainingModes[number]["value"]>("ONLINE");
   const [isLoading, setIsLoading] = useState(true);
+  const [isEnsuringPlan, setIsEnsuringPlan] = useState(false);
   const [error, setError] = useState<string | null>(null);
   
   // Confirmation dialog states
@@ -128,6 +162,61 @@ export function SettingsPricingSection({
   useEffect(() => {
     loadPlans();
   }, [userId]);
+
+  // New subscribers can pick sessions/week + billing cycle for FITNESS;
+  // make sure a matching plan exists (creating one on the fly if needed)
+  // before it can show up in the matrix below.
+  useEffect(() => {
+    if (isLoading) return;
+    if (findLockedFitnessPlan(plans)) return;
+
+    const alreadyExists = plans.some(
+      (plan) =>
+        plan.category === 'FITNESS' &&
+        plan.billing_cycle === selectedCycle &&
+        plan.sessions_per_week === sessionsPerWeek &&
+        plan.plan_type === trainingMode
+    );
+    if (alreadyExists) return;
+
+    let cancelled = false;
+
+    (async () => {
+      setIsEnsuringPlan(true);
+      try {
+        const response = await fetch('/api/subscriptions/ensure-plan', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ sessionsPerWeek, billingCycle: selectedCycle, planType: trainingMode }),
+        });
+
+        if (response.ok && !cancelled) {
+          await loadPlans();
+        }
+      } catch (err) {
+        console.error('Failed to prepare fitness plan:', err);
+      } finally {
+        if (!cancelled) setIsEnsuringPlan(false);
+      }
+    })();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [selectedCycle, sessionsPerWeek, trainingMode, plans, isLoading]);
+
+  const adjustSessionsPerWeek = (delta: number) => {
+    setSessionsPerWeek((prev) => Math.min(MAX_SESSIONS_PER_WEEK, Math.max(MIN_SESSIONS_PER_WEEK, prev + delta)));
+  };
+
+  const handleSessionsInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = parseInt(e.target.value, 10);
+    setSessionsPerWeek(
+      Number.isNaN(value)
+        ? MIN_SESSIONS_PER_WEEK
+        : Math.min(MAX_SESSIONS_PER_WEEK, Math.max(MIN_SESSIONS_PER_WEEK, value))
+    );
+  };
 
   const handlePlanAction = async (plan: PlanMatrixItem) => {
     const { action } = plan;
@@ -343,12 +432,12 @@ Are you sure you want to proceed with this downgrade?`;
         {/* Header still shown during error */}
         <PricingHeader
           title="All Subscription Plans"
-          subtitle="Choose from quarterly, semi-annual, or annual billing for each category"
+          subtitle="Choose from monthly, quarterly, semi-annual, or annual billing for each category"
           options={billingOptions}
           selected={selectedCycle}
           onSelect={setSelectedCycle}
         />
-        
+
         {/* Error Alert */}
         <Alert variant="destructive">
           <AlertCircle className="h-4 w-4" />
@@ -397,21 +486,104 @@ Are you sure you want to proceed with this downgrade?`;
     return "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"; // Fallback
   };
 
-  // Filter plans based on selected billing cycle
-  const filteredPlans = plans.filter(
-    (plan) => plan.billing_cycle === selectedCycle
-  );
+  // For FITNESS plans, lock to the sessions/week and training mode of an
+  // existing subscription (if any); otherwise use whatever the pickers
+  // are set to.
+  const lockedFitnessPlan = findLockedFitnessPlan(plans);
+  const hasFitnessSubscription = !!lockedFitnessPlan;
+  const effectiveSessionsPerWeek = lockedFitnessPlan
+    ? lockedFitnessPlan.sessions_per_week
+    : sessionsPerWeek;
+  const effectiveTrainingMode = lockedFitnessPlan
+    ? lockedFitnessPlan.plan_type
+    : trainingMode;
+
+  // Filter plans based on selected billing cycle (and, for FITNESS, the
+  // sessions/week + training mode that's currently relevant to this user).
+  const filteredPlans = plans.filter((plan) => {
+    if (plan.billing_cycle !== selectedCycle) return false;
+    if (plan.category === 'FITNESS') {
+      return plan.sessions_per_week === effectiveSessionsPerWeek && plan.plan_type === effectiveTrainingMode;
+    }
+    return true;
+  });
 
   return (
     <div id="pricing-section" className="space-y-8">
       {/* Pricing Header with Billing Cycle Tabs */}
       <PricingHeader
         title="All Subscription Plans"
-        subtitle="Choose from quarterly, semi-annual, or annual billing for each category"
+        subtitle="Choose from monthly, quarterly, semi-annual, or annual billing for each category"
         options={billingOptions}
         selected={selectedCycle}
         onSelect={setSelectedCycle}
       />
+
+      {/* Training Mode Toggle - only for new Fitness subscribers */}
+      {!hasFitnessSubscription && (
+        <div className="mx-auto flex max-w-xs flex-col items-center gap-2">
+          <span className="text-sm font-medium text-muted-foreground">Fitness Training Mode</span>
+          <div className="flex rounded-full border border-input p-1">
+            {trainingModes.map((mode) => (
+              <button
+                key={mode.value}
+                type="button"
+                onClick={() => setTrainingMode(mode.value)}
+                className={`rounded-full px-4 py-1.5 text-sm font-medium transition-colors ${
+                  trainingMode === mode.value
+                    ? "bg-primary text-primary-foreground"
+                    : "text-muted-foreground hover:text-foreground"
+                }`}
+              >
+                {mode.label}
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* Sessions Per Week Selector - only for new Fitness subscribers */}
+      {!hasFitnessSubscription && (
+        <div className="mx-auto flex max-w-xs flex-col items-center gap-2">
+          <label htmlFor="settings-session-count" className="text-sm font-medium text-muted-foreground">
+            Fitness Sessions per Week
+          </label>
+          <div className="flex items-center gap-3">
+            <button
+              type="button"
+              onClick={() => adjustSessionsPerWeek(-1)}
+              aria-label="Decrease sessions per week"
+              disabled={sessionsPerWeek <= MIN_SESSIONS_PER_WEEK}
+              className="flex h-10 w-10 items-center justify-center rounded-full border border-input text-foreground transition-colors hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary disabled:opacity-40 disabled:cursor-not-allowed"
+            >
+              <Minus className="h-4 w-4" />
+            </button>
+            <Input
+              id="settings-session-count"
+              type="number"
+              min={MIN_SESSIONS_PER_WEEK}
+              max={MAX_SESSIONS_PER_WEEK}
+              value={sessionsPerWeek}
+              onChange={handleSessionsInputChange}
+              className="w-20 text-center text-lg font-semibold"
+            />
+            <button
+              type="button"
+              onClick={() => adjustSessionsPerWeek(1)}
+              aria-label="Increase sessions per week"
+              disabled={sessionsPerWeek >= MAX_SESSIONS_PER_WEEK}
+              className="flex h-10 w-10 items-center justify-center rounded-full border border-input text-foreground transition-colors hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary disabled:opacity-40 disabled:cursor-not-allowed"
+            >
+              <Plus className="h-4 w-4" />
+            </button>
+          </div>
+          <p className="text-xs text-muted-foreground">Applies to a new Fitness subscription</p>
+        </div>
+      )}
+
+      {isEnsuringPlan && (
+        <p className="text-center text-sm text-muted-foreground">Preparing pricing options…</p>
+      )}
 
       {/* Single Grid Layout - No Category Grouping */}
       <div className={`grid ${getGridLayout(filteredPlans.length)} gap-4`}>
@@ -448,9 +620,11 @@ Are you sure you want to proceed with this downgrade?`;
                   <div className="flex items-baseline gap-2">
                     {/* Calculate original price based on billing cycle discount */}
                     {(() => {
-                      const discountPercentage = plan.billing_cycle === 3 ? 10 : plan.billing_cycle === 6 ? 20 : 30;
-                      const originalPrice = Math.round(plan.price / (1 - discountPercentage / 100));
+                      const discountPercentage = plan.billing_cycle === 1 ? 0 : plan.billing_cycle === 3 ? 10 : plan.billing_cycle === 6 ? 20 : 30;
                       const hasDiscount = discountPercentage > 0;
+                      const originalPrice = hasDiscount
+                        ? Math.round(plan.price / (1 - discountPercentage / 100))
+                        : plan.price;
                       
                       return (
                         <>
@@ -467,7 +641,11 @@ Are you sure you want to proceed with this downgrade?`;
                     })()}
                   </div>
                   <p className="text-xs font-medium text-muted-foreground">
-                    Billed every {plan.billing_cycle} months
+                    {plan.billing_cycle === 1 ? 'Billed monthly' : `Billed every ${plan.billing_cycle} months`}
+                    {plan.category === 'FITNESS' && plan.sessions_per_week
+                      ? ` · ${plan.sessions_per_week} sessions/week`
+                      : ''}
+                    {plan.category === 'FITNESS' && plan.plan_type === 'SELF_PACED' ? ' · Self-Paced' : ''}
                   </p>
                 </div>
               </div>

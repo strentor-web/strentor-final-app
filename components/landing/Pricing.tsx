@@ -10,11 +10,15 @@ import Image from "next/image";
 import { PricingHeader } from "@/components/subscription/PricingHeader";
 import { useRouter } from "next/navigation";
 
-const RATE_PER_SESSION = 1000;
 const MIN_SESSIONS_PER_WEEK = 3;
 const MAX_SESSIONS_PER_WEEK = 5;
 const DEFAULT_SESSIONS_PER_WEEK = 3;
 const WEEKS_PER_MONTH = 4;
+
+const trainingModes = [
+  { label: "Trainer-Led", value: "ONLINE" as const, ratePerSession: 1000 },
+  { label: "Self-Paced", value: "SELF_PACED" as const, ratePerSession: 500 },
+];
 
 const billingOptions = [
   { label: "Monthly", value: 1, discount: 0 },
@@ -65,6 +69,7 @@ const pricingData = {
 export default function Pricing() {
   const [sessionsPerWeek, setSessionsPerWeek] = useState<number>(DEFAULT_SESSIONS_PER_WEEK);
   const [selectedCycle, setSelectedCycle] = useState<number>(3);
+  const [trainingMode, setTrainingMode] = useState<typeof trainingModes[number]["value"]>("ONLINE");
   const [expandedCards, setExpandedCards] = useState<Set<string>>(new Set());
   const router = useRouter();
 
@@ -92,9 +97,10 @@ export default function Pricing() {
   };
 
   const selectedOption = billingOptions.find((option) => option.value === selectedCycle) ?? billingOptions[0];
+  const selectedMode = trainingModes.find((mode) => mode.value === trainingMode) ?? trainingModes[0];
   const weeksInCycle = selectedOption.value * WEEKS_PER_MONTH;
   const totalSessions = sessionsPerWeek * weeksInCycle;
-  const originalPrice = totalSessions * RATE_PER_SESSION;
+  const originalPrice = totalSessions * selectedMode.ratePerSession;
   const discountedPrice = Math.round(originalPrice * (1 - selectedOption.discount / 100));
 
   const adjustSessionsPerWeek = (delta: number) => {
@@ -122,8 +128,30 @@ export default function Pricing() {
           onSelect={setSelectedCycle}
         />
 
-        {/* Sessions Per Week Selector */}
+        {/* Training Mode Toggle */}
         <div className="mx-auto mt-8 flex max-w-xs flex-col items-center gap-2">
+          <span className="text-sm font-medium text-muted-foreground">Training Mode</span>
+          <div className="flex rounded-full border border-input p-1">
+            {trainingModes.map((mode) => (
+              <button
+                key={mode.value}
+                type="button"
+                onClick={() => setTrainingMode(mode.value)}
+                className={`rounded-full px-4 py-1.5 text-sm font-medium transition-colors ${
+                  trainingMode === mode.value
+                    ? "bg-primary text-primary-foreground"
+                    : "text-muted-foreground hover:text-foreground"
+                }`}
+              >
+                {mode.label}
+              </button>
+            ))}
+          </div>
+          <p className="text-xs text-muted-foreground">₹{selectedMode.ratePerSession.toLocaleString()} per session</p>
+        </div>
+
+        {/* Sessions Per Week Selector */}
+        <div className="mx-auto mt-6 flex max-w-xs flex-col items-center gap-2">
           <label htmlFor="landing-session-count" className="text-sm font-medium text-muted-foreground">
             Sessions per Week
           </label>
@@ -156,7 +184,6 @@ export default function Pricing() {
               <Plus className="h-4 w-4" />
             </button>
           </div>
-          <p className="text-xs text-muted-foreground">₹{RATE_PER_SESSION.toLocaleString()} per session</p>
         </div>
 
         {/* Pricing Cards Grid */}

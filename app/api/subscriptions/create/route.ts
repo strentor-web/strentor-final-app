@@ -98,7 +98,7 @@ export async function POST(request: NextRequest) {
     // Create a subscription with 30-year duration
     try {
       // Calculate total_count for 30 years based on billing cycle
-      const totalCount = selectedCycle === 3 ? 120 : selectedCycle === 6 ? 60 : 30;
+      const totalCount = selectedCycle === 1 ? 360 : selectedCycle === 3 ? 120 : selectedCycle === 6 ? 60 : 30;
       
       const subscription = await razorpay.subscriptions.create({
         plan_id: plan.razorpay_plan_id,
