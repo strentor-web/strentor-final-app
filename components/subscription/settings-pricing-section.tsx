@@ -44,6 +44,11 @@ const MIN_SESSIONS_PER_WEEK = 3;
 const MAX_SESSIONS_PER_WEEK = 5;
 const DEFAULT_SESSIONS_PER_WEEK = 3;
 
+const trainingModes = [
+  { label: "Trainer-Led", value: "ONLINE" as const },
+  { label: "Self-Paced", value: "SELF_PACED" as const },
+];
+
 // Once a user has any relationship to a FITNESS plan (active, pending,
 // failed, paused, or eligible for upgrade/downgrade), their sessions/week
 // is locked to whatever that plan was created with — only the billing
@@ -102,6 +107,7 @@ export function SettingsPricingSection({
   const [plans, setPlans] = useState<PlanMatrixItem[]>([]);
   const [selectedCycle, setSelectedCycle] = useState<number>(3);
   const [sessionsPerWeek, setSessionsPerWeek] = useState<number>(DEFAULT_SESSIONS_PER_WEEK);
+  const [trainingMode, setTrainingMode] = useState<typeof trainingModes[number]["value"]>("ONLINE");
   const [isLoading, setIsLoading] = useState(true);
   const [isEnsuringPlan, setIsEnsuringPlan] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -168,7 +174,8 @@ export function SettingsPricingSection({
       (plan) =>
         plan.category === 'FITNESS' &&
         plan.billing_cycle === selectedCycle &&
-        plan.sessions_per_week === sessionsPerWeek
+        plan.sessions_per_week === sessionsPerWeek &&
+        plan.plan_type === trainingMode
     );
     if (alreadyExists) return;
 
@@ -180,7 +187,7 @@ export function SettingsPricingSection({
         const response = await fetch('/api/subscriptions/ensure-plan', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ sessionsPerWeek, billingCycle: selectedCycle }),
+          body: JSON.stringify({ sessionsPerWeek, billingCycle: selectedCycle, planType: trainingMode }),
         });
 
         if (response.ok && !cancelled) {
@@ -196,7 +203,7 @@ export function SettingsPricingSection({
     return () => {
       cancelled = true;
     };
-  }, [selectedCycle, sessionsPerWeek, plans, isLoading]);
+  }, [selectedCycle, sessionsPerWeek, trainingMode, plans, isLoading]);
 
   const adjustSessionsPerWeek = (delta: number) => {
     setSessionsPerWeek((prev) => Math.min(MAX_SESSIONS_PER_WEEK, Math.max(MIN_SESSIONS_PER_WEEK, prev + delta)));
@@ -479,20 +486,24 @@ Are you sure you want to proceed with this downgrade?`;
     return "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"; // Fallback
   };
 
-  // For FITNESS plans, lock to the sessions/week of an existing
-  // subscription (if any); otherwise use whatever the picker is set to.
+  // For FITNESS plans, lock to the sessions/week and training mode of an
+  // existing subscription (if any); otherwise use whatever the pickers
+  // are set to.
   const lockedFitnessPlan = findLockedFitnessPlan(plans);
   const hasFitnessSubscription = !!lockedFitnessPlan;
   const effectiveSessionsPerWeek = lockedFitnessPlan
     ? lockedFitnessPlan.sessions_per_week
     : sessionsPerWeek;
+  const effectiveTrainingMode = lockedFitnessPlan
+    ? lockedFitnessPlan.plan_type
+    : trainingMode;
 
   // Filter plans based on selected billing cycle (and, for FITNESS, the
-  // sessions/week that's currently relevant to this user).
+  // sessions/week + training mode that's currently relevant to this user).
   const filteredPlans = plans.filter((plan) => {
     if (plan.billing_cycle !== selectedCycle) return false;
     if (plan.category === 'FITNESS') {
-      return plan.sessions_per_week === effectiveSessionsPerWeek;
+      return plan.sessions_per_week === effectiveSessionsPerWeek && plan.plan_type === effectiveTrainingMode;
     }
     return true;
   });
@@ -507,6 +518,29 @@ Are you sure you want to proceed with this downgrade?`;
         selected={selectedCycle}
         onSelect={setSelectedCycle}
       />
+
+      {/* Training Mode Toggle - only for new Fitness subscribers */}
+      {!hasFitnessSubscription && (
+        <div className="mx-auto flex max-w-xs flex-col items-center gap-2">
+          <span className="text-sm font-medium text-muted-foreground">Fitness Training Mode</span>
+          <div className="flex rounded-full border border-input p-1">
+            {trainingModes.map((mode) => (
+              <button
+                key={mode.value}
+                type="button"
+                onClick={() => setTrainingMode(mode.value)}
+                className={`rounded-full px-4 py-1.5 text-sm font-medium transition-colors ${
+                  trainingMode === mode.value
+                    ? "bg-primary text-primary-foreground"
+                    : "text-muted-foreground hover:text-foreground"
+                }`}
+              >
+                {mode.label}
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
 
       {/* Sessions Per Week Selector - only for new Fitness subscribers */}
       {!hasFitnessSubscription && (
@@ -611,6 +645,7 @@ Are you sure you want to proceed with this downgrade?`;
                     {plan.category === 'FITNESS' && plan.sessions_per_week
                       ? ` · ${plan.sessions_per_week} sessions/week`
                       : ''}
+                    {plan.category === 'FITNESS' && plan.plan_type === 'SELF_PACED' ? ' · Self-Paced' : ''}
                   </p>
                 </div>
               </div>

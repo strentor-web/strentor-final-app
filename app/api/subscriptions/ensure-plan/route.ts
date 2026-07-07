@@ -3,10 +3,19 @@ import { createClient } from '@/utils/supabase/server';
 import Razorpay from 'razorpay';
 import prisma from '@/utils/prisma/prismaClient';
 
-const RATE_PER_SESSION = 1000;
 const WEEKS_PER_MONTH = 4;
 const MIN_SESSIONS_PER_WEEK = 3;
 const MAX_SESSIONS_PER_WEEK = 5;
+
+const RATE_PER_SESSION: Record<string, number> = {
+  ONLINE: 1000,
+  SELF_PACED: 500,
+};
+
+const PLAN_TYPE_LABELS: Record<string, string> = {
+  ONLINE: 'Trainer-Led',
+  SELF_PACED: 'Self-Paced',
+};
 
 const CYCLE_DISCOUNTS: Record<number, number> = {
   1: 0,
@@ -37,7 +46,7 @@ function getRazorpayPeriod(months: number): { period: 'monthly' | 'yearly'; inte
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { sessionsPerWeek, billingCycle } = body;
+    const { sessionsPerWeek, billingCycle, planType = 'ONLINE' } = body;
 
     if (
       typeof sessionsPerWeek !== 'number' ||
@@ -58,6 +67,13 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    if (!(planType in RATE_PER_SESSION)) {
+      return NextResponse.json(
+        { error: 'planType must be one of ONLINE or SELF_PACED' },
+        { status: 400 }
+      );
+    }
+
     const supabase = await createClient();
     const { data: { user }, error: userError } = await supabase.auth.getUser();
 
@@ -70,6 +86,7 @@ export async function POST(request: NextRequest) {
         category: 'FITNESS',
         billing_cycle: billingCycle,
         sessions_per_week: sessionsPerWeek,
+        plan_type: planType,
         is_active: true,
       },
     });
@@ -94,10 +111,10 @@ export async function POST(request: NextRequest) {
     const weeksInCycle = billingCycle * WEEKS_PER_MONTH;
     const totalSessions = sessionsPerWeek * weeksInCycle;
     const discount = CYCLE_DISCOUNTS[billingCycle];
-    const originalAmount = totalSessions * RATE_PER_SESSION;
+    const originalAmount = totalSessions * RATE_PER_SESSION[planType];
     const discountedAmount = Math.round(originalAmount * (1 - discount / 100));
     const cycleLabel = CYCLE_LABELS[billingCycle];
-    const planName = `Fitness — ${sessionsPerWeek}/week (${cycleLabel})`;
+    const planName = `Fitness ${PLAN_TYPE_LABELS[planType]} — ${sessionsPerWeek}/week (${cycleLabel})`;
 
     const { period, interval } = getRazorpayPeriod(billingCycle);
 
@@ -113,6 +130,7 @@ export async function POST(request: NextRequest) {
       notes: {
         sessions_per_week: sessionsPerWeek,
         billing_cycle: billingCycle,
+        plan_type: planType,
       },
     });
 
@@ -120,7 +138,7 @@ export async function POST(request: NextRequest) {
       data: {
         name: planName,
         category: 'FITNESS',
-        plan_type: 'ONLINE',
+        plan_type: planType,
         price: discountedAmount,
         razorpay_plan_id: razorpayPlan.id,
         billing_period: cycleLabel,

@@ -31,6 +31,7 @@ export type PlanMatrixItem = {
   features: any;
   razorpay_plan_id: string;
   sessions_per_week: number | null;
+  plan_type: string;
   buttonState: PlanButtonState;
   buttonText: string;
   action: {
@@ -406,6 +407,7 @@ const handler = async (data: InputType): Promise<ActionState<InputType, ReturnTy
         features: plan.features,
         razorpay_plan_id: plan.razorpay_plan_id,
         sessions_per_week: plan.sessions_per_week,
+        plan_type: plan.plan_type,
         buttonState,
         buttonText,
         action,
