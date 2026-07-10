@@ -1,14 +1,11 @@
 "use client";
 
-import { useMemo, useRef } from "react";
-import { Canvas, useFrame } from "@react-three/fiber";
-import { Line } from "@react-three/drei";
+import { useEffect, useRef, useState, type RefObject } from "react";
 import * as THREE from "three";
 import { motion, useScroll, useTransform, MotionValue } from "motion/react";
 import { Button } from "@/components/ui/button";
 import { CalendlyEmbedModal } from "@/components/forms/CalendlyEmbedModal";
 import { EmailCaptureModal } from "@/components/forms/EmailCaptureModal";
-import { useState } from "react";
 import type { LucideIcon } from "lucide-react";
 
 export type JourneyStage = {
@@ -17,8 +14,8 @@ export type JourneyStage = {
   description: string;
 };
 
-const GOLD = "#C9A96A";
-const GOLD_LIGHT = "#EDE0C8";
+const GOLD = 0xc9a96a;
+const GOLD_LIGHT = 0xede0c8;
 
 // Control points for a rising path, one per stage, front-loaded toward camera.
 const CONTROL_POINTS = [
@@ -29,117 +26,118 @@ const CONTROL_POINTS = [
   new THREE.Vector3(3.4, -2.4, -1.2),
 ];
 
-function buildCurve() {
-  return new THREE.CatmullRomCurve3(CONTROL_POINTS, false, "catmullrom", 0.4);
-}
+// Drives the WebGL scene imperatively (no react-reconciler) so it has no
+// dependency on React's internal APIs — avoids the known Next.js 15 +
+// @react-three/fiber compatibility break entirely.
+function useJourneyScene(
+  containerRef: RefObject<HTMLDivElement | null>,
+  progressRef: RefObject<number>
+) {
+  useEffect(() => {
+    const container = containerRef.current;
+    if (!container) return;
 
-function PathLine({ curve }: { curve: THREE.CatmullRomCurve3 }) {
-  const points = useMemo(() => curve.getPoints(120), [curve]);
-  return (
-    <Line
-      points={points}
-      color={GOLD}
-      lineWidth={2}
-      transparent
-      opacity={0.55}
-    />
-  );
-}
+    const curve = new THREE.CatmullRomCurve3(CONTROL_POINTS, false, "catmullrom", 0.4);
 
-function NodeMarker({
-  position,
-  progress,
-  nodeT,
-}: {
-  position: THREE.Vector3;
-  progress: MotionValue<number>;
-  nodeT: number;
-}) {
-  const meshRef = useRef<THREE.Mesh>(null);
-  const materialRef = useRef<THREE.MeshStandardMaterial>(null);
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(45, 1, 0.1, 100);
+    camera.position.set(0, 0, 7.5);
 
-  useFrame(() => {
-    const p = progress.get();
-    const reached = p >= nodeT - 0.02;
-    const active = Math.abs(p - nodeT) < 0.08;
-    const targetScale = active ? 1.5 : reached ? 1.1 : 0.7;
-    if (meshRef.current) {
-      meshRef.current.scale.lerp(
-        new THREE.Vector3(targetScale, targetScale, targetScale),
-        0.15
-      );
-    }
-    if (materialRef.current) {
-      const targetIntensity = active ? 1.4 : reached ? 0.7 : 0.15;
-      materialRef.current.emissiveIntensity = THREE.MathUtils.lerp(
-        materialRef.current.emissiveIntensity,
-        targetIntensity,
-        0.15
-      );
-    }
-  });
+    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
+    container.appendChild(renderer.domElement);
 
-  return (
-    <mesh ref={meshRef} position={position}>
-      <sphereGeometry args={[0.14, 20, 20]} />
-      <meshStandardMaterial
-        ref={materialRef}
-        color={GOLD_LIGHT}
-        emissive={GOLD}
-        emissiveIntensity={0.15}
-        roughness={0.35}
-        metalness={0.4}
-      />
-    </mesh>
-  );
-}
+    scene.add(new THREE.AmbientLight(GOLD_LIGHT, 0.4));
+    const directional = new THREE.DirectionalLight(GOLD_LIGHT, 0.8);
+    directional.position.set(3, 4, 5);
+    scene.add(directional);
 
-function Traveler({ curve, progress }: { curve: THREE.CatmullRomCurve3; progress: MotionValue<number> }) {
-  const groupRef = useRef<THREE.Group>(null);
+    const linePoints = curve.getPoints(120);
+    const lineGeometry = new THREE.BufferGeometry().setFromPoints(linePoints);
+    const lineMaterial = new THREE.LineBasicMaterial({ color: GOLD, transparent: true, opacity: 0.55 });
+    scene.add(new THREE.Line(lineGeometry, lineMaterial));
 
-  useFrame(() => {
-    if (!groupRef.current) return;
-    const t = THREE.MathUtils.clamp(progress.get(), 0, 1);
-    const point = curve.getPointAt(t);
-    groupRef.current.position.lerp(point, 0.35);
-  });
+    const nodeMeshes = CONTROL_POINTS.map((point) => {
+      const geometry = new THREE.SphereGeometry(0.14, 20, 20);
+      const material = new THREE.MeshStandardMaterial({
+        color: GOLD_LIGHT,
+        emissive: GOLD,
+        emissiveIntensity: 0.15,
+        roughness: 0.35,
+        metalness: 0.4,
+      });
+      const mesh = new THREE.Mesh(geometry, material);
+      mesh.position.copy(point);
+      scene.add(mesh);
+      return mesh;
+    });
 
-  return (
-    <group ref={groupRef}>
-      <mesh>
-        <icosahedronGeometry args={[0.16, 0]} />
-        <meshStandardMaterial
-          color={GOLD_LIGHT}
-          emissive={GOLD_LIGHT}
-          emissiveIntensity={1.1}
-          roughness={0.2}
-          metalness={0.6}
-        />
-      </mesh>
-      <pointLight color={GOLD} intensity={2} distance={2.5} />
-    </group>
-  );
-}
+    const travelerGroup = new THREE.Group();
+    const travelerMesh = new THREE.Mesh(
+      new THREE.IcosahedronGeometry(0.16, 0),
+      new THREE.MeshStandardMaterial({
+        color: GOLD_LIGHT,
+        emissive: GOLD_LIGHT,
+        emissiveIntensity: 1.1,
+        roughness: 0.2,
+        metalness: 0.6,
+      })
+    );
+    const travelerLight = new THREE.PointLight(GOLD, 2, 2.5);
+    travelerGroup.add(travelerMesh, travelerLight);
+    scene.add(travelerGroup);
 
-function Scene({ progress }: { progress: MotionValue<number> }) {
-  const curve = useMemo(() => buildCurve(), []);
+    const resize = () => {
+      const { clientWidth, clientHeight } = container;
+      if (clientWidth === 0 || clientHeight === 0) return;
+      renderer.setSize(clientWidth, clientHeight);
+      camera.aspect = clientWidth / clientHeight;
+      camera.updateProjectionMatrix();
+    };
+    resize();
+    const resizeObserver = new ResizeObserver(resize);
+    resizeObserver.observe(container);
 
-  return (
-    <>
-      <ambientLight intensity={0.4} />
-      <directionalLight position={[3, 4, 5]} intensity={0.8} color={GOLD_LIGHT} />
-      <PathLine curve={curve} />
-      {CONTROL_POINTS.map((point, index) => (
-        <NodeMarker
-          key={index}
-          position={point}
-          progress={progress}
-          nodeT={index / (CONTROL_POINTS.length - 1)}
-        />
-      ))}
-      <Traveler curve={curve} progress={progress} />
-    </>
-  );
+    let frameId: number;
+    const tmpScale = new THREE.Vector3();
+    const animate = () => {
+      const progress = progressRef.current ?? 0;
+
+      nodeMeshes.forEach((mesh, index) => {
+        const nodeT = index / (nodeMeshes.length - 1);
+        const reached = progress >= nodeT - 0.02;
+        const active = Math.abs(progress - nodeT) < 0.08;
+        const targetScale = active ? 1.5 : reached ? 1.1 : 0.7;
+        tmpScale.set(targetScale, targetScale, targetScale);
+        mesh.scale.lerp(tmpScale, 0.15);
+        const material = mesh.material as THREE.MeshStandardMaterial;
+        const targetIntensity = active ? 1.4 : reached ? 0.7 : 0.15;
+        material.emissiveIntensity = THREE.MathUtils.lerp(material.emissiveIntensity, targetIntensity, 0.15);
+      });
+
+      const t = THREE.MathUtils.clamp(progress, 0, 1);
+      travelerGroup.position.lerp(curve.getPointAt(t), 0.35);
+
+      renderer.render(scene, camera);
+      frameId = requestAnimationFrame(animate);
+    };
+    animate();
+
+    return () => {
+      cancelAnimationFrame(frameId);
+      resizeObserver.disconnect();
+      nodeMeshes.forEach((mesh) => {
+        mesh.geometry.dispose();
+        (mesh.material as THREE.Material).dispose();
+      });
+      travelerMesh.geometry.dispose();
+      (travelerMesh.material as THREE.Material).dispose();
+      lineGeometry.dispose();
+      lineMaterial.dispose();
+      renderer.dispose();
+      container.removeChild(renderer.domElement);
+    };
+  }, [containerRef, progressRef]);
 }
 
 function NodeCopy({
@@ -154,16 +152,15 @@ function NodeCopy({
   scrollYProgress: MotionValue<number>;
 }) {
   const t = index / (total - 1);
-  const gap = 1 / (total - 1) / 2;
-  const range: number[] =
-    index === 0
-      ? [0, 0, t + gap]
-      : index === total - 1
-      ? [t - gap, 1, 1]
-      : [t - gap, t, t + gap];
-  const output = index === 0 || index === total - 1 ? [1, 1, 0] : [0, 1, 0];
-  const opacity = useTransform(scrollYProgress, range, index === 0 ? [1, 1, 0] : output);
-  const y = useTransform(scrollYProgress, range, [16, 0, index === total - 1 ? 0 : -16]);
+  // Full neighbor-spacing (not half) so each node's fade window overlaps
+  // its neighbors' by 50%, leaving no dead zone where every node is
+  // simultaneously at zero opacity.
+  const gap = 1 / (total - 1);
+  const isFirst = index === 0;
+  const isLast = index === total - 1;
+  const range: number[] = isFirst ? [t, t + gap] : isLast ? [t - gap, t] : [t - gap, t, t + gap];
+  const opacity = useTransform(scrollYProgress, range, isFirst ? [1, 0] : isLast ? [0, 1] : [0, 1, 0]);
+  const y = useTransform(scrollYProgress, range, isFirst ? [0, -16] : isLast ? [16, 0] : [16, 0, -16]);
 
   const isLeft = index % 2 === 0;
   const Icon = stage.icon;
@@ -193,10 +190,20 @@ function NodeCopy({
 
 export function JourneyPathScene({ stages }: { stages: JourneyStage[] }) {
   const containerRef = useRef<HTMLDivElement>(null);
+  const canvasHostRef = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ["start start", "end end"],
   });
+
+  const progressRef = useRef(0);
+  useEffect(() => {
+    return scrollYProgress.on("change", (value) => {
+      progressRef.current = value;
+    });
+  }, [scrollYProgress]);
+
+  useJourneyScene(canvasHostRef, progressRef);
 
   const ctaOpacity = useTransform(scrollYProgress, [0.85, 1], [0, 1]);
   const [showEmailCapture, setShowEmailCapture] = useState(false);
@@ -213,15 +220,7 @@ export function JourneyPathScene({ stages }: { stages: JourneyStage[] }) {
   return (
     <section ref={containerRef} className="relative h-[400vh]">
       <div className="sticky top-0 h-screen w-full overflow-hidden bg-background">
-        <div className="absolute inset-0">
-          <Canvas
-            dpr={[1, 1.5]}
-            camera={{ position: [0, 0, 7.5], fov: 45 }}
-            gl={{ antialias: true, alpha: true }}
-          >
-            <Scene progress={scrollYProgress} />
-          </Canvas>
-        </div>
+        <div ref={canvasHostRef} className="absolute inset-0" />
 
         <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-background via-transparent to-background" />
 
