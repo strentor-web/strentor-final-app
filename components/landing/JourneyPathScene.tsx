@@ -218,9 +218,9 @@ export function JourneyPathScene({ stages }: { stages: JourneyStage[] }) {
   };
 
   return (
-    <section ref={containerRef} className="relative h-[400vh]">
-      <div className="sticky top-0 h-screen w-full overflow-hidden bg-background">
-        <div ref={canvasHostRef} className="absolute inset-0" />
+    <section ref={containerRef} className="relative h-[400dvh]">
+      <div className="sticky top-0 h-dvh w-full overflow-hidden bg-background">
+        <div ref={canvasHostRef} className="pointer-events-none absolute inset-0" />
 
         <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-background via-transparent to-background" />
 
