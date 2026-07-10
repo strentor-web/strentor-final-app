@@ -151,16 +151,28 @@ function NodeCopy({
   total: number;
   scrollYProgress: MotionValue<number>;
 }) {
-  const t = index / (total - 1);
-  // Full neighbor-spacing (not half) so each node's fade window overlaps
-  // its neighbors' by 50%, leaving no dead zone where every node is
-  // simultaneously at zero opacity.
-  const gap = 1 / (total - 1);
+  // Each stage owns an equal, non-overlapping "segment" of scroll and stays
+  // fully visible through most of it, with only a short crossfade at each
+  // segment boundary — not a wide overlap spanning the whole segment. A
+  // wide overlap reads fine on desktop (left/right text has room to
+  // breathe) but on a narrow phone screen two overlapping text blocks are
+  // simply unreadable, so keep the transition brief.
+  const segment = 1 / total;
+  const fade = segment * 0.2;
   const isFirst = index === 0;
   const isLast = index === total - 1;
-  const range: number[] = isFirst ? [t, t + gap] : isLast ? [t - gap, t] : [t - gap, t, t + gap];
-  const opacity = useTransform(scrollYProgress, range, isFirst ? [1, 0] : isLast ? [0, 1] : [0, 1, 0]);
-  const y = useTransform(scrollYProgress, range, isFirst ? [0, -16] : isLast ? [16, 0] : [16, 0, -16]);
+  const segmentStart = index * segment;
+  const segmentEnd = (index + 1) * segment;
+
+  const range: number[] = isFirst
+    ? [0, segmentEnd - fade, segmentEnd + fade]
+    : isLast
+    ? [segmentStart - fade, segmentStart + fade, 1]
+    : [segmentStart - fade, segmentStart + fade, segmentEnd - fade, segmentEnd + fade];
+  const opacityOutput: number[] = isFirst ? [1, 1, 0] : isLast ? [0, 1, 1] : [0, 1, 1, 0];
+  const yOutput: number[] = isFirst ? [0, 0, -16] : isLast ? [16, 0, 0] : [16, 0, 0, -16];
+  const opacity = useTransform(scrollYProgress, range, opacityOutput);
+  const y = useTransform(scrollYProgress, range, yOutput);
 
   const isLeft = index % 2 === 0;
   const Icon = stage.icon;
@@ -168,11 +180,11 @@ function NodeCopy({
   return (
     <motion.div
       style={{ opacity, y }}
-      className={`pointer-events-none absolute top-1/2 -translate-y-1/2 max-w-xs sm:max-w-sm ${
-        isLeft ? "left-4 sm:left-10 text-left" : "right-4 sm:right-10 text-right"
+      className={`pointer-events-none absolute top-1/2 -translate-y-1/2 left-4 right-4 text-center sm:max-w-sm ${
+        isLeft ? "sm:left-10 sm:right-auto sm:text-left" : "sm:right-10 sm:left-auto sm:text-right"
       }`}
     >
-      <div className={`flex items-center gap-2 mb-2 ${isLeft ? "" : "flex-row-reverse"}`}>
+      <div className={`flex items-center justify-center gap-2 mb-2 sm:justify-start ${isLeft ? "" : "sm:flex-row-reverse"}`}>
         <span className="flex h-9 w-9 items-center justify-center rounded-full bg-[#C9A96A]/15 border border-[#C9A96A]/40 flex-shrink-0">
           <Icon className="h-4 w-4 text-[#C9A96A]" />
         </span>
