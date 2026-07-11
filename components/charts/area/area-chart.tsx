@@ -104,7 +104,7 @@ export function AreaChart() {
           preserveAspectRatio="none"
         >
           {/* Area */}
-          <path d={areaPath} className="text-purple-200 dark:text-purple-400" fill="currentColor" />
+          <path d={areaPath} className="text-[#C9A96A] dark:text-[#B8935A]" fill="currentColor" />
 
           {/* Line */}
           <path

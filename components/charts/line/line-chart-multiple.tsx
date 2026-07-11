@@ -125,7 +125,7 @@ export function LineChartMultiple() {
           <path
             d={d}
             fill="none"
-            className="stroke-violet-400"
+            className="stroke-[#C9A96A]"
             strokeWidth="2"
             vectorEffect="non-scaling-stroke"
           />
@@ -134,7 +134,7 @@ export function LineChartMultiple() {
           <path
             d={d2}
             fill="none"
-            className="stroke-fuchsia-400"
+            className="stroke-[#B8935A]"
             strokeWidth="2"
             vectorEffect="non-scaling-stroke"
           />
@@ -149,7 +149,7 @@ export function LineChartMultiple() {
                   strokeLinecap="round"
                   fill="none"
                   stroke="currentColor"
-                  className="text-violet-300"
+                  className="text-[#C9A96A]"
                 />
            ))}
           {/* Circles 2 */}
@@ -162,7 +162,7 @@ export function LineChartMultiple() {
               strokeLinecap="round"
               fill="none"
               stroke="currentColor"
-              className="text-fuchsia-300"
+              className="text-[#B8935A]"
             />
           ))}
         </svg>

@@ -87,7 +87,7 @@ export function LineChartLabelsCurved() {
           <path
             d={d}
             fill="none"
-            className="text-purple-300"
+            className="text-[#C9A96A]"
             stroke="currentColor"
             strokeWidth="2"
             vectorEffect="non-scaling-stroke"
@@ -137,7 +137,7 @@ export function LineChartLabelsCurved() {
               left: `${xScale(entry.date)}%`,
               transform: "translate(-50%, -50%)",
             }}
-            className="absolute bg-purple-50 dark:bg-zinc-900 border border-purple-300 rounded-full text-xs text-zinc-700 dark:text-zinc-200 size-5 flex items-center justify-center"
+            className="absolute bg-[#EDE0C8]/30 dark:bg-zinc-900 border border-[#C9A96A] rounded-full text-xs text-zinc-700 dark:text-zinc-200 size-5 flex items-center justify-center"
           >
             {entry.value}
           </div>

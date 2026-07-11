@@ -117,8 +117,8 @@ export function LineChartStep() {
           />
           <defs>
             <linearGradient id="lineStep-gradient" x1="0%" y1="0%" x2="100%" y2="0%">
-              <stop offset="0%" stopColor="currentColor" className="text-emerald-500" />
-              <stop offset="100%" stopColor="currentColor" className="text-lime-400" />
+              <stop offset="0%" stopColor="currentColor" className="text-[#C9A96A]" />
+              <stop offset="100%" stopColor="currentColor" className="text-[#EDE0C8]" />
             </linearGradient>
           </defs>
 

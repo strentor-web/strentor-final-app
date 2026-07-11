@@ -111,7 +111,7 @@ export function LineChartCurved() {
           <path
             d={d}
             fill="none"
-            className="stroke-violet-400"
+            className="stroke-[#C9A96A]"
             strokeWidth="2"
             vectorEffect="non-scaling-stroke"
           />
@@ -126,7 +126,7 @@ export function LineChartCurved() {
                   strokeLinecap="round"
                   fill="none"
                   stroke="currentColor"
-                  className="text-violet-300"
+                  className="text-[#C9A96A]"
                 />
            ))}
         </svg>
