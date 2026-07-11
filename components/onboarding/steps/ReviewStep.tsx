@@ -135,7 +135,7 @@ export default function ReviewStep({ onConfirmationChange, isConfirmed }: Review
 
         {/* Body Metrics */}
         <Card className="border-2">
-          <CardHeader className="bg-gradient-to-r from-strentor-blue/5 to-strentor-green/5">
+          <CardHeader className="bg-gradient-to-r from-strentor-blue/5 to-strentor-gold/5">
             <CardTitle className="text-lg flex items-center gap-2">
               📊 Body Metrics
             </CardTitle>
@@ -167,7 +167,7 @@ export default function ReviewStep({ onConfirmationChange, isConfirmed }: Review
         {/* Body Measurements (if provided) */}
         {hasMeasurements && (
           <Card className="border-2">
-            <CardHeader className="bg-gradient-to-r from-strentor-purple/5 to-strentor-blue/5">
+            <CardHeader className="bg-gradient-to-r from-strentor-orange/5 to-strentor-blue/5">
               <CardTitle className="text-lg flex items-center gap-2">
                 📏 Body Measurements
               </CardTitle>
@@ -221,36 +221,36 @@ export default function ReviewStep({ onConfirmationChange, isConfirmed }: Review
         </Card>
 
         {/* What's Next */}
-        <Card className="border-2 border-strentor-green/30 bg-gradient-to-r from-strentor-green/5 to-strentor-yellow/5">
+        <Card className="border-2 border-strentor-gold/30 bg-gradient-to-r from-strentor-gold/5 to-strentor-yellow/5">
           <CardHeader>
-            <CardTitle className="text-lg text-strentor-green flex items-center gap-2">
+            <CardTitle className="text-lg text-strentor-gold flex items-center gap-2">
               🚀 What's Next?
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-3">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
               <div className="flex items-center gap-2">
-                <span className="text-strentor-green">✅</span>
+                <span className="text-strentor-gold">✅</span>
                 <span className="text-sm">Access to personalized calculators</span>
               </div>
               <div className="flex items-center gap-2">
-                <span className="text-strentor-green">✅</span>
+                <span className="text-strentor-gold">✅</span>
                 <span className="text-sm">Track your fitness progress</span>
               </div>
               <div className="flex items-center gap-2">
-                <span className="text-strentor-green">✅</span>
+                <span className="text-strentor-gold">✅</span>
                 <span className="text-sm">Follow customized workout plans</span>
               </div>
               <div className="flex items-center gap-2">
-                <span className="text-strentor-green">✅</span>
+                <span className="text-strentor-gold">✅</span>
                 <span className="text-sm">Connect with fitness community</span>
               </div>
               <div className="flex items-center gap-2">
-                <span className="text-strentor-green">✅</span>
+                <span className="text-strentor-gold">✅</span>
                 <span className="text-sm">Join our fitness community</span>
               </div>
               <div className="flex items-center gap-2">
-                <span className="text-strentor-green">✅</span>
+                <span className="text-strentor-gold">✅</span>
                 <span className="text-sm">Access premium features</span>
               </div>
             </div>

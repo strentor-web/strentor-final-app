@@ -37,8 +37,8 @@ export function SignUpForm({ searchParams }: SignUpFormProps) {
     return (
       <div className="space-y-6">
         <div className="text-center space-y-4">
-          <div className="w-16 h-16 mx-auto rounded-full bg-strentor-green/10 flex items-center justify-center">
-            <Mail className="w-8 h-8 text-strentor-green" />
+          <div className="w-16 h-16 mx-auto rounded-full bg-strentor-gold/10 flex items-center justify-center">
+            <Mail className="w-8 h-8 text-strentor-gold" />
           </div>
           <h3 className="text-xl font-bold text-foreground">Check your email!</h3>
           <p className="text-muted-foreground">
@@ -65,8 +65,8 @@ export function SignUpForm({ searchParams }: SignUpFormProps) {
         )}
 
         {hasResent && (
-          <div className="text-center p-3 bg-strentor-green/10 border border-strentor-green/20 rounded-lg">
-            <p className="text-sm text-strentor-green">
+          <div className="text-center p-3 bg-strentor-gold/10 border border-strentor-gold/20 rounded-lg">
+            <p className="text-sm text-strentor-gold">
               ✅ New confirmation email sent! Check your inbox.
             </p>
           </div>

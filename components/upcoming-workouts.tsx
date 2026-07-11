@@ -73,13 +73,12 @@ export default async function UpcomingWorkouts({planId, week}: {planId: string, 
       </div>
 
       {/* Single Start Current Week Link */}
-      <div className="mt-6 pt-4 border-t">
-        <Link 
-          href={`/workout-plan/${planId}`}
-          className="text-strentor-red hover:text-strentor-red/80 font-medium flex items-center justify-center gap-2 transition-colors"
-        >
-          Start Current Week →
-        </Link>
+      <div className="mt-6 pt-4 border-t flex justify-center">
+        <Button asChild>
+          <Link href={`/workout-plan/${planId}`}>
+            Start Current Week →
+          </Link>
+        </Button>
       </div>
     </div>
   )

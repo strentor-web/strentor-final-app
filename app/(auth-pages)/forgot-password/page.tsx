@@ -26,7 +26,7 @@ export default async function ForgotPassword(props: {
   }
   
   return (
-    <div className="relative min-h-screen flex items-center justify-center p-4 bg-gradient-to-br from-[#C9A96A]/5 via-[#2FA366]/5 to-[#C9C0B4]/5">
+    <div className="relative min-h-screen flex items-center justify-center p-4 bg-gradient-to-br from-[#C9A96A]/5 via-[#B8935A]/5 to-[#C9C0B4]/5">
       
       <div className="relative w-full max-w-6xl grid md:grid-cols-2 gap-8 items-start">
         {/* Left Section - Brand & Benefits (Mobile Second) */}
@@ -51,7 +51,7 @@ export default async function ForgotPassword(props: {
               "24/7 support available"
             ].map((benefit, index) => (
               <div key={index} className="flex items-center gap-3">
-                <div className="flex-shrink-0 w-8 h-8 rounded-full bg-[#2FA366] flex items-center justify-center">
+                <div className="flex-shrink-0 w-8 h-8 rounded-full bg-[#C9A96A] flex items-center justify-center">
                   <Check className="w-5 h-5 text-white" />
                 </div>
                 <span className="text-base font-bold text-foreground">{benefit}</span>

@@ -2,6 +2,7 @@ import { Dumbbell, Crown, Settings } from "lucide-react";
 import { ActiveSubscriptionWithPlan } from "@/actions/subscriptions/get-active-subscriptions.action";
 import Link from "next/link";
 import Image from "next/image";
+import { Button } from "@/components/ui/button";
 
 interface ActiveSubscriptionCardProps {
   subscriptions: ActiveSubscriptionWithPlan[];
@@ -92,13 +93,12 @@ export function ActiveSubscriptionCard({ subscriptions }: ActiveSubscriptionCard
       )}
 
       <div className="mt-6 pt-4 border-t">
-        <Link 
-          href="/settings/subscription" 
-          className="inline-flex items-center gap-2 text-primary hover:text-primary/80 font-medium transition-colors"
-        >
-          <Settings className="h-4 w-4" />
-          Manage Subscriptions
-        </Link>
+        <Button asChild variant="outline" size="sm">
+          <Link href="/settings/subscription">
+            <Settings className="h-4 w-4" />
+            Manage Subscriptions
+          </Link>
+        </Button>
       </div>
     </div>
   );

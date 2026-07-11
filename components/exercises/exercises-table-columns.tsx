@@ -58,7 +58,7 @@ export function ExercisesTableColumns({ onEditExercise }: ExercisesTableColumnsP
             href={youtubeLink} 
             target="_blank" 
             rel="noopener noreferrer"
-            className="text-blue-600 hover:text-blue-800 underline"
+            className="text-[#C9A96A] hover:text-[#C9A96A]/80 underline"
           >
             View Video
           </a>

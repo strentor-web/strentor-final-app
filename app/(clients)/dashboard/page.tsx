@@ -145,13 +145,12 @@ export default async function DashboardPage() {
         <div className="border rounded-lg p-6 shadow-sm">
           <div className="flex justify-between items-center mb-6">
             <h2 className="text-2xl font-bold">Recent Personal Records</h2>
-            <Link
-              href="/personal-records"
-              className="text-primary font-medium flex items-center hover:text-primary/80 transition-colors"
-            >
-              View all
-              <ArrowRight className="ml-1 h-4 w-4" />
-            </Link>
+            <Button asChild variant="outline" size="sm">
+              <Link href="/personal-records">
+                View all
+                <ArrowRight className="ml-1 h-4 w-4" />
+              </Link>
+            </Button>
           </div>
 
           {userPRs && userPRs.length > 0 ? (
