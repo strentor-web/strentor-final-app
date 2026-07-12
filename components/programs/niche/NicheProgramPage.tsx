@@ -181,22 +181,6 @@ export function NicheProgramPage({
         </section>
       )}
 
-      {/* Final CTA */}
-      <div className="bg-black py-20 text-center">
-        <h2 className="mb-4 text-4xl font-bold font-display text-white sm:text-5xl">
-          Ready to Begin Your <span className="text-[#C9A96A]">Journey</span>?
-        </h2>
-        <p className="mx-auto max-w-[700px] pb-8 pt-2 text-gray-300 md:text-xl">
-          Take the first step towards transformation with our expert coaching team.
-        </p>
-        <Button
-          className="rounded-full bg-[#C9A96A] px-8 py-6 text-lg font-bold text-primary-foreground hover:bg-[#C9A96A]/90"
-          onClick={() => window.open("https://calendly.com/strentor/strentor-services", "_blank")}
-        >
-          Start Your Transformation
-        </Button>
-      </div>
-
       <Footer />
     </div>
   )

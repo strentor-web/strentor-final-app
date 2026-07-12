@@ -1,7 +1,6 @@
 "use client"
 
 import Image from 'next/image';
-import { Button } from "@/components/ui/button";
 import Header from '@/components/landing/Header';
 import Footer from '@/components/landing/Footer';
 
@@ -91,23 +90,7 @@ export default function CommunityPage() {
           ))}
         </div>
 
-        {/* Call to Action */}
-        
       </section>
-        <div className="text-center py-20 bg-black">
-            <h2 className="text-4xl font-bold font-display text-white mb-4 sm:text-5xl md:text-6xl lg:text-7xl">
-              Ready to Begin Your <span className="text-[#C9A96A]">Journey</span>?
-            </h2>
-            <p className="mx-auto max-w-[700px] text-gray-300 font-medium md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed dark:text-gray-400 pb-8 pt-2">
-              Take the first step towards transformation with our expert team of coaches and mentors.
-            </p>
-            <Button
-              className="bg-[#C9A96A] hover:bg-[#C9A96A]/90 text-primary-foreground font-bold rounded-full px-8 py-6 text-lg"
-              onClick={() => window.open("https://calendly.com/strentor/strentor-services", "_blank")}
-            >
-              Start Your Transformation
-            </Button>
-        </div>
         <Footer/>
     </div>
   );
