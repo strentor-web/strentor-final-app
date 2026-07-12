@@ -3,9 +3,33 @@ import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import Image from "next/image"
-import { Star, Check } from 'lucide-react'
+import Link from "next/link"
+import { Star, Check, ArrowRight } from 'lucide-react'
 import Header from '@/components/landing/Header';
 import Footer from "@/components/landing/Footer"
+
+const offerLadder = [
+  {
+    name: "7-Day Starter Kit",
+    description: "A safe, structured first experience of STRENTOR coaching, from ₹1,999.",
+    href: "/programs/starter-kit",
+  },
+  {
+    name: "8-Week Flagship Transformation",
+    description: "Our core coached program — strength, nutrition and mindset across four phases.",
+    href: "/programs/flagship-transformation",
+  },
+  {
+    name: "12-Week Elite Mentorship",
+    description: "High-touch, deeply personalized mentorship with direct founder access.",
+    href: "/programs/elite-mentorship",
+  },
+  {
+    name: "Strength Circle Membership",
+    description: "Ongoing group coaching, community and accountability, month to month.",
+    href: "/programs/membership",
+  },
+]
 
 export default function TeamPage() {
   const teamMembers = [
@@ -114,6 +138,34 @@ export default function TeamPage() {
                 </div>
               </CardContent>
             </Card>
+          ))}
+        </div>
+      </div>
+
+      {/* Offer Ladder */}
+      <div className="container mx-auto px-4 py-16">
+        <h2 className="text-center text-3xl font-bold font-display text-foreground sm:text-4xl mb-2">
+          Choose Your Path
+        </h2>
+        <p className="text-center text-muted-foreground max-w-2xl mx-auto mb-10">
+          Every STRENTOR program is built for wheelchair-first adaptive training. Start wherever makes sense for you.
+        </p>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 max-w-4xl mx-auto">
+          {offerLadder.map((offer) => (
+            <Link
+              key={offer.href}
+              href={offer.href}
+              className="group flex flex-col justify-between rounded-2xl border border-border bg-card p-6 shadow-sm transition-colors hover:border-[#C9A96A]"
+            >
+              <div>
+                <h3 className="text-lg font-bold text-card-foreground">{offer.name}</h3>
+                <p className="mt-2 text-sm text-muted-foreground">{offer.description}</p>
+              </div>
+              <span className="mt-4 inline-flex items-center gap-1 text-sm font-semibold text-[#C9A96A]">
+                Learn more
+                <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+              </span>
+            </Link>
           ))}
         </div>
       </div>

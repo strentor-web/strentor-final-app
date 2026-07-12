@@ -22,6 +22,7 @@ export interface NicheProgramPageProps {
   title: string
   titleAccent: string
   subtitle: string
+  priceRange?: string
   intro: {
     heading: string
     paragraphs: string[]
@@ -37,6 +38,7 @@ export function NicheProgramPage({
   title,
   titleAccent,
   subtitle,
+  priceRange,
   intro,
   benefits,
   disclaimer,
@@ -77,6 +79,11 @@ export function NicheProgramPage({
           <p className="mx-auto mt-6 max-w-2xl text-lg text-gray-300 md:text-xl">
             {subtitle}
           </p>
+          {priceRange && (
+            <p className="mt-4 text-sm font-semibold uppercase tracking-wide text-gray-400">
+              {priceRange} · Final pricing confirmed on your discovery call
+            </p>
+          )}
           <div className="mt-8">
             <Button
               className="h-14 rounded-full bg-[#C9A96A] px-8 text-lg font-bold hover:bg-[#C9A96A]/90"
