@@ -11,7 +11,6 @@ import Featured from "@/components/landing/Featured";
 import PopupForm from "@/components/landing/PopupForm";
 import WhatsAppButton from "@/components/landing/WhatsAppButton";
 import Pricing from "@/components/landing/Pricing";
-import JourneyPath from "@/components/landing/JourneyPath";
 
 
 export default function Home() {
@@ -21,7 +20,6 @@ export default function Home() {
       <Hero/>
       <Featured/>
       <Introduction/>
-      <JourneyPath/>
       <Testimonials/>
       <ProgramsCard/>
       <Team/>
