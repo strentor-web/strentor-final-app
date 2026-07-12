@@ -13,7 +13,7 @@ export default function Footer() {
         <p className="text-lg font-semibold text-foreground mb-4">Ready to get stronger?</p>
         <Button
           onClick={() => router.push("/sign-up")}
-          className="h-12 px-8 rounded-full font-bold bg-strentor-red hover:bg-strentor-red/80 text-primary-foreground"
+          className="h-12 px-8 rounded-full bg-strentor-red hover:bg-strentor-red/80 text-primary-foreground"
         >
           Book your free discovery call
         </Button>

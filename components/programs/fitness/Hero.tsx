@@ -69,7 +69,7 @@ export default function FitnessHero() {
             
             {/* CTA Button */}
             <Button 
-              className="bg-[#C9A96A] hover:bg-[#C9A96A]/90 text-primary-foreground font-bold rounded-full px-6 sm:px-8 py-4 sm:py-6 text-base sm:text-lg"
+              className="bg-[#C9A96A] hover:bg-[#C9A96A]/90 text-primary-foreground rounded-full px-6 sm:px-8 py-4 sm:py-6"
               onClick={() => window.open("https://calendly.com/strentor/strentor-services", "_blank")}
             >
               Start Your Fitness Journey

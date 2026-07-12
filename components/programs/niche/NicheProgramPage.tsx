@@ -86,7 +86,7 @@ export function NicheProgramPage({
           )}
           <div className="mt-8">
             <Button
-              className="h-14 rounded-full bg-[#C9A96A] px-8 text-lg font-bold hover:bg-[#C9A96A]/90"
+              className="h-14 rounded-full bg-[#C9A96A] px-8 hover:bg-[#C9A96A]/90"
               onClick={() => window.open("https://calendly.com/strentor/strentor-services", "_blank")}
             >
               Book a Free Consultation

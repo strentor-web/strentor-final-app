@@ -110,7 +110,7 @@ export const EmailCaptureModal: React.FC<EmailCaptureModalProps> = ({
           <Button 
             type="submit" 
             disabled={isSubmitting}
-            className="w-full h-12 text-lg font-semibold bg-[#C9A96A] hover:bg-[#C9A96A]/90"
+            className="w-full h-12 bg-[#C9A96A] hover:bg-[#C9A96A]/90"
           >
             {isSubmitting ? (
               <>

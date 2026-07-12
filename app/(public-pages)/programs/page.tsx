@@ -119,7 +119,7 @@ export default function TeamPage() {
                       </div>
                       <div className="mt-8">
                         <Button
-                          className="bg-[#C9A96A] hover:bg-[#C9A96A]/90 text-lg font-bold text-primary-foreground rounded-full px-8 py-6 group"
+                          className="bg-[#C9A96A] hover:bg-[#C9A96A]/90 text-primary-foreground rounded-full px-8 py-6 group"
                           onClick={() => member.link ? window.location.href = member.link : null}
                         >
                           Find Out More <span className="group-hover:translate-x-1 transition-transform inline-block ml-1">→</span>

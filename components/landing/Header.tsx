@@ -96,7 +96,7 @@ export default function Header() {
               className="hidden md:inline-flex shadow-2xl h-10 rounded-full bg-strentor-red hover:bg-strentor-red/80 text-primary-foreground"
               onClick={handleBookingClick}
             >
-              <span className="whitespace-pre-wrap text-center text-sm font-bold leading-none tracking-tight lg:text-lg">
+              <span className="whitespace-pre-wrap text-center leading-none tracking-tight">
                 Sign Up
               </span>
             </Button>
