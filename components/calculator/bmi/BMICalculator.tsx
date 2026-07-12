@@ -286,7 +286,7 @@ export default function BMICalculator({ initialWeight, initialHeight }: { initia
                 <CardTitle>Add New BMI</CardTitle>
                 <p className="text-sm text-muted-foreground">
                   Weight will be automatically logged for today's BMI calculation. 
-                  To permanently update your profile weight and height, go to <a href="/settings" className="text-blue-600 hover:underline">Settings</a>.
+                  To permanently update your profile weight and height, go to <a href="/settings" className="text-[#C9A96A] hover:underline">Settings</a>.
                 </p>
               </CardHeader>
               <CardContent className="space-y-4">
@@ -297,7 +297,7 @@ export default function BMICalculator({ initialWeight, initialHeight }: { initia
                       type="number" 
                       value={weight} 
                       onChange={(e) => setWeight(Number(e.target.value))}
-                      className="rounded-r-none border-r-0 focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:border-blue-500"
+                      className="rounded-r-none border-r-0 focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:border-[#C9A96A]"
                       disabled={weightData?.isLocked}
                     />
                     <span className="inline-flex items-center px-3 py-2 text-sm text-muted-foreground bg-muted border border-l-0 rounded-r-md">
@@ -306,7 +306,7 @@ export default function BMICalculator({ initialWeight, initialHeight }: { initia
                   </div>
                   {weightData?.isLocked && (
                     <p className="text-sm text-muted-foreground">
-                      ⚠️ Weight is locked for today. Use the same weight across all calculators. Update your today&apos;s weight in the <a href="/dashboard" className="text-blue-600 hover:underline">Dashboard</a>.
+                      ⚠️ Weight is locked for today. Use the same weight across all calculators. Update your today&apos;s weight in the <a href="/dashboard" className="text-[#C9A96A] hover:underline">Dashboard</a>.
                     </p>
                   )}
                 </div>
@@ -317,7 +317,7 @@ export default function BMICalculator({ initialWeight, initialHeight }: { initia
                       type="number" 
                       value={height} 
                       onChange={(e) => setHeight(Number(e.target.value))}
-                      className="rounded-r-none border-r-0 focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:border-blue-500"
+                      className="rounded-r-none border-r-0 focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:border-[#C9A96A]"
                     />
                     <span className="inline-flex items-center px-3 py-2 text-sm text-muted-foreground bg-muted border border-l-0 rounded-r-md">
                       cm

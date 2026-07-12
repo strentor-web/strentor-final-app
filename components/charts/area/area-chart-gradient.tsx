@@ -90,18 +90,18 @@ export function AreaChartGradient() {
           preserveAspectRatio="none"
         >
           {/* Area */}
-          <path d={areaPath} className="text-blue-200" fill="url(#areaGradient)" />
+          <path d={areaPath} className="text-[#C9A96A]" fill="url(#areaGradient)" />
           <defs>
             {/* Gradient definition */}
             <linearGradient id="areaGradient" x1="0" x2="0" y1="0" y2="1">
               <stop
                 offset="0%"
-                className="text-lime-500 dark:text-lime-100"
+                className="text-[#C9A96A] dark:text-[#EDE0C8]"
                 stopColor="currentColor"
               />
               <stop
                 offset="90%"
-                className="text-lime-50/10 dark:text-green-900"
+                className="text-[#EDE0C8]/10 dark:text-[#0A0A0A]"
                 stopColor="currentColor"
               />
             </linearGradient>

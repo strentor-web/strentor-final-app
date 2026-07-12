@@ -7,10 +7,10 @@ export type WeightAreaChartData = {
 
 interface WeightAreaChartFullProps {
   data: WeightAreaChartData[];
-  colorClass?: string; // e.g. 'text-blue-200 dark:text-blue-400'
+  colorClass?: string; // e.g. 'text-[#C9A96A] dark:text-[#B8935A]'
 }
 
-export function WeightAreaChartFull({ data, colorClass = "text-blue-200 dark:text-blue-400" }: WeightAreaChartFullProps) {
+export function WeightAreaChartFull({ data, colorClass = "text-[#C9A96A] dark:text-[#B8935A]" }: WeightAreaChartFullProps) {
   if (!data || data.length === 0) return <div className="h-72 w-full flex items-center justify-center text-zinc-400">No data</div>;
 
   let xScale = scaleTime()

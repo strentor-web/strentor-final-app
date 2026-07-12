@@ -91,7 +91,7 @@ export function LineChartPulse() {
             transform: "translate(-50%, -50%)",
           }}
         >
-          <div className="animate-ping w-full h-full rounded-full bg-white dark:bg-pink-500 border-2 border-pink-400" />
+          <div className="animate-ping w-full h-full rounded-full bg-white dark:bg-[#C9A96A] border-2 border-[#C9A96A]" />
         </div>
         <svg
           viewBox="0 0 100 100"
@@ -128,8 +128,8 @@ export function LineChartPulse() {
           />
           <defs>
             <linearGradient id="linePulse-gradient" x1="0%" y1="0%" x2="100%" y2="0%">
-              <stop offset="0%" stopColor="currentColor" className="text-purple-500" />
-              <stop offset="100%" stopColor="currentColor" className="text-pink-400" />
+              <stop offset="0%" stopColor="currentColor" className="text-[#C9A96A]" />
+              <stop offset="100%" stopColor="currentColor" className="text-[#B8935A]" />
             </linearGradient>
           </defs>
 

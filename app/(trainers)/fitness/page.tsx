@@ -1,6 +1,7 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
+import { Button } from "@/components/ui/button";
 import { Users, Activity, Calendar, User, Weight, ArrowRight } from "lucide-react";
 import { getTrainerDashboardData } from "@/actions/trainer.dashboard.action";
 import { NewlyAssignedClientsCard } from "@/components/dashboard/NewlyAssignedClientsCard";
@@ -232,12 +233,11 @@ export default async function TrainerDashboard() {
                     </div>
                     
                     <div className="pt-2">
-                      <Link 
-                        href={`/fitness/plans/${plan.planId}/progress`}
-                        className="text-sm text-primary hover:text-primary/80 transition-colors flex items-center gap-1"
-                      >
-                        Check progress <ArrowRight className="h-3 w-3" />
-                      </Link>
+                      <Button asChild variant="outline" size="sm">
+                        <Link href={`/fitness/plans/${plan.planId}/progress`}>
+                          Check progress <ArrowRight className="h-3 w-3" />
+                        </Link>
+                      </Button>
                     </div>
                   </div>
                 ))}

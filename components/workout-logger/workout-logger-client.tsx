@@ -276,13 +276,12 @@ export function WorkoutLoggerClient({
     <div className="space-y-6">
       {/* Back Navigation */}
       <div className="mb-2">
-        <Link 
-          href={`/workout-plan/${workoutId}`}
-          className="inline-flex items-center gap-2 text-strentor-red hover:text-strentor-red/80 font-medium transition-colors"
-        >
-          <ArrowLeft className="h-4 w-4" />
-          Back To Workout Plan
-        </Link>
+        <Button asChild variant="outline" size="sm">
+          <Link href={`/workout-plan/${workoutId}`}>
+            <ArrowLeft className="h-4 w-4" />
+            Back To Workout Plan
+          </Link>
+        </Button>
       </div>
 
       {/* Header */}

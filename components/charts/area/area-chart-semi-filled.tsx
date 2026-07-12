@@ -90,18 +90,18 @@ export function AreaChartSemiFilled() {
           preserveAspectRatio="none"
         >
           {/* Area */}
-          <path d={areaPath} className="text-blue-200" fill="url(#outlinedAreaGradient)" />
+          <path d={areaPath} className="text-[#C9A96A]" fill="url(#outlinedAreaGradient)" />
           <defs>
             {/* Gradient definition */}
             <linearGradient id="outlinedAreaGradient" x1="0" x2="0" y1="0" y2="1">
               <stop
                 offset="0%"
-                className="text-yellow-500/20 dark:text-yellow-500/20"
+                className="text-[#EDE0C8]/20 dark:text-[#EDE0C8]/20"
                 stopColor="currentColor"
               />
               <stop
                 offset="100%"
-                className="text-yellow-50/5 dark:text-yellow-900/5"
+                className="text-[#EDE0C8]/5 dark:text-[#0A0A0A]/5"
                 stopColor="currentColor"
               />
             </linearGradient>
@@ -111,7 +111,7 @@ export function AreaChartSemiFilled() {
           <path
             d={d}
             fill="none"
-            className="text-yellow-400 dark:text-yellow-600"
+            className="text-[#C9A96A] dark:text-[#B8935A]"
             stroke="currentColor"
             strokeWidth="1.5"
             vectorEffect="non-scaling-stroke"

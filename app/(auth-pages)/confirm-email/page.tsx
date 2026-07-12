@@ -105,8 +105,8 @@ function ConfirmEmailContent() {
       case 'success':
         return (
           <div className="text-center space-y-4">
-            <CheckCircle className="w-16 h-16 mx-auto text-[#2FA366]" />
-            <h2 className="text-3xl font-bold text-[#2FA366]">Email Confirmed!</h2>
+            <CheckCircle className="w-16 h-16 mx-auto text-[#C9A96A]" />
+            <h2 className="text-3xl font-bold text-[#C9A96A]">Email Confirmed!</h2>
             <p className="text-muted-foreground text-lg">
               Your account has been successfully verified. You'll be redirected to your dashboard shortly.
             </p>
@@ -213,7 +213,7 @@ function ConfirmEmailContent() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-4 bg-gradient-to-br from-[#C9A96A]/5 via-[#2FA366]/5 to-[#C9C0B4]/5">
+    <div className="min-h-screen flex items-center justify-center p-4 bg-gradient-to-br from-[#C9A96A]/5 via-[#B8935A]/5 to-[#C9C0B4]/5">
       <div className="w-full max-w-md">
         {/* Logo */}
         <div className="text-center mb-8">

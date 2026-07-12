@@ -210,7 +210,7 @@ export default function ProgressGraphs({ weightLogs }: ProgressGraphsProps) {
               <CardTitle>{isTodayWeightLogged ? "Update Today's Weight" : "Add Today's Weight"}</CardTitle>
               <p className="text-sm text-muted-foreground">
                 Weight will be logged for today's date. 
-                To permanently update your profile weight, go to <a href="/settings" className="text-blue-600 hover:underline">Settings</a>.
+                To permanently update your profile weight, go to <a href="/settings" className="text-[#C9A96A] hover:underline">Settings</a>.
               </p>
             </CardHeader>
             <CardContent className="space-y-4">
@@ -221,7 +221,7 @@ export default function ProgressGraphs({ weightLogs }: ProgressGraphsProps) {
                     type="number" 
                     value={todayWeight} 
                     onChange={(e) => setTodayWeight(e.target.value === "" ? "" : Number(e.target.value))}
-                    className="rounded-r-none border-r-0 focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:border-blue-500"
+                    className="rounded-r-none border-r-0 focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:border-[#C9A96A]"
                     placeholder="Enter your weight"
                   />
                   <span className="inline-flex items-center px-3 py-2 text-sm text-muted-foreground bg-muted border border-l-0 rounded-r-md">

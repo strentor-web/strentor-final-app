@@ -60,7 +60,7 @@ export function PersonalRecordsChart({ data, exerciseName }: PersonalRecordsChar
             "
           >
             <div className="text-center">
-              <div className="w-4 h-4 bg-violet-400 rounded-full mx-auto mb-2"></div>
+              <div className="w-4 h-4 bg-[#C9A96A] rounded-full mx-auto mb-2"></div>
               <div className="text-sm font-medium">{sortedData[0].weight} lbs</div>
               <div className="text-xs text-gray-500">
                 {sortedData[0].date.toLocaleDateString()}
@@ -176,7 +176,7 @@ export function PersonalRecordsChart({ data, exerciseName }: PersonalRecordsChar
             <path
               d={d}
               fill="none"
-              className="stroke-violet-400"
+              className="stroke-[#C9A96A]"
               strokeWidth="2"
               vectorEffect="non-scaling-stroke"
             />
@@ -192,7 +192,7 @@ export function PersonalRecordsChart({ data, exerciseName }: PersonalRecordsChar
                     strokeLinecap="round"
                     fill="none"
                     stroke="currentColor"
-                    className="text-violet-300"
+                    className="text-[#C9A96A]"
                   />
                   <g className="group/tooltip">
                     {/* Tooltip Line */}

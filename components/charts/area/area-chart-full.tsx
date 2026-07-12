@@ -90,7 +90,7 @@ export function AreaChartFull() {
           preserveAspectRatio="none"
         >
           {/* Area */}
-          <path d={areaPath} className="text-blue-200 dark:text-blue-400" fill="currentColor" />
+          <path d={areaPath} className="text-[#C9A96A] dark:text-[#B8935A]" fill="currentColor" />
 
           {/* Line */}
           <path
