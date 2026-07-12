@@ -152,20 +152,21 @@ export default function TeamPage() {
         </p>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 max-w-4xl mx-auto">
           {offerLadder.map((offer) => (
-            <Link
+            <div
               key={offer.href}
-              href={offer.href}
-              className="group flex flex-col justify-between rounded-2xl border border-border bg-card p-6 shadow-sm transition-colors hover:border-[#C9A96A]"
+              className="flex flex-col justify-between rounded-2xl border border-border bg-card p-6 shadow-sm transition-colors hover:border-[#C9A96A]"
             >
               <div>
                 <h3 className="text-lg font-bold text-card-foreground">{offer.name}</h3>
                 <p className="mt-2 text-sm text-muted-foreground">{offer.description}</p>
               </div>
-              <span className="mt-4 inline-flex items-center gap-1 text-sm font-semibold text-[#C9A96A]">
-                Learn more
-                <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
-              </span>
-            </Link>
+              <Button asChild className="mt-4 w-fit bg-[#C9A96A] hover:bg-[#C9A96A]/90 text-primary-foreground">
+                <Link href={offer.href}>
+                  Learn more
+                  <ArrowRight className="ml-1 h-4 w-4" />
+                </Link>
+              </Button>
+            </div>
           ))}
         </div>
       </div>

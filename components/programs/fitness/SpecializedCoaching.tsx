@@ -2,6 +2,7 @@
 
 import Link from "next/link"
 import { ArrowRight } from "lucide-react"
+import { Button } from "@/components/ui/button"
 
 const specializedPrograms = [
   {
@@ -35,20 +36,21 @@ export default function SpecializedCoaching() {
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 max-w-5xl mx-auto">
           {specializedPrograms.map((program) => (
-            <Link
+            <div
               key={program.href}
-              href={program.href}
-              className="group flex flex-col justify-between rounded-xl border border-border bg-card p-6 shadow-sm transition-all hover:border-[#C9A96A] hover:shadow-lg"
+              className="flex flex-col justify-between rounded-xl border border-border bg-card p-6 shadow-sm transition-all hover:border-[#C9A96A] hover:shadow-lg"
             >
               <div>
                 <h3 className="text-lg font-bold text-card-foreground">{program.title}</h3>
                 <p className="mt-2 text-muted-foreground">{program.description}</p>
               </div>
-              <span className="mt-4 inline-flex items-center gap-1 text-sm font-bold text-[#C9A96A]">
-                Learn More
-                <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
-              </span>
-            </Link>
+              <Button asChild className="mt-4 w-fit bg-[#C9A96A] hover:bg-[#C9A96A]/90 text-primary-foreground">
+                <Link href={program.href}>
+                  Learn More
+                  <ArrowRight className="ml-1 h-4 w-4" />
+                </Link>
+              </Button>
+            </div>
           ))}
         </div>
       </div>

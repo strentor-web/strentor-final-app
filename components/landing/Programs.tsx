@@ -2,6 +2,7 @@
 
 import React from "react";
 import { Card, CardContent } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
@@ -35,41 +36,42 @@ const ProgramsCard = () => {
         <div className="mx-auto mt-12">
           <div className="grid grid-cols-1 max-w-sm mx-auto gap-6 px-6">
             {programs.map((program, index) => (
-              <Link key={index} href={program.href}>
-                <Card
-                  className="group bg-card hover:shadow-xl transition-all duration-300 border-none overflow-hidden relative cursor-pointer"
-                >
-                  <CardContent className="p-6 flex flex-col items-center relative z-10">
-                    <div
-                      className={`mb-6 rounded-full bg-gradient-to-r ${program.gradient} transform group-hover:scale-110 transition-transform duration-300 w-16 h-16 flex items-center justify-center`}
-                    >
-                      <div className="relative w-10 h-10">
-                        <Image
-                          src={program.icon}
-                          alt={program.title}
-                          fill
-                          sizes="32px"
-                          className="object-contain"
-                          priority
-                        />
-                      </div>
-                    </div>
-                    <h3 className="text-xl font-bold mb-4 text-card-foreground group-hover:text-card-foreground">
-                      {program.title}
-                    </h3>
-                    <p className="text-muted-foreground font-bold leading-relaxed text-center">
-                      {program.description}
-                    </p>
-                    <span className="mt-4 inline-flex items-center gap-1 text-sm font-bold text-[#C9A96A] group-hover:gap-2 transition-all">
-                      Learn More
-                      <ArrowRight className="h-4 w-4" />
-                    </span>
-                  </CardContent>
+              <Card
+                key={index}
+                className="group bg-card hover:shadow-xl transition-all duration-300 border-none overflow-hidden relative"
+              >
+                <CardContent className="p-6 flex flex-col items-center relative z-10">
                   <div
-                    className={`absolute inset-0 bg-gradient-to-br ${program.gradient} opacity-0 group-hover:opacity-5 transition-opacity duration-300`}
-                  />
-                </Card>
-              </Link>
+                    className={`mb-6 rounded-full bg-gradient-to-r ${program.gradient} transform group-hover:scale-110 transition-transform duration-300 w-16 h-16 flex items-center justify-center`}
+                  >
+                    <div className="relative w-10 h-10">
+                      <Image
+                        src={program.icon}
+                        alt={program.title}
+                        fill
+                        sizes="32px"
+                        className="object-contain"
+                        priority
+                      />
+                    </div>
+                  </div>
+                  <h3 className="text-xl font-bold mb-4 text-card-foreground group-hover:text-card-foreground">
+                    {program.title}
+                  </h3>
+                  <p className="text-muted-foreground font-bold leading-relaxed text-center">
+                    {program.description}
+                  </p>
+                  <Button asChild className="mt-4 bg-[#C9A96A] hover:bg-[#C9A96A]/90 text-primary-foreground">
+                    <Link href={program.href}>
+                      Learn More
+                      <ArrowRight className="ml-1 h-4 w-4" />
+                    </Link>
+                  </Button>
+                </CardContent>
+                <div
+                  className={`absolute inset-0 bg-gradient-to-br ${program.gradient} opacity-0 group-hover:opacity-5 transition-opacity duration-300`}
+                />
+              </Card>
             ))}
           </div>
         </div>

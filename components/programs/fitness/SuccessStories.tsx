@@ -2,6 +2,7 @@
 
 import Link from "next/link"
 import { ArrowRight } from "lucide-react"
+import { Button } from "@/components/ui/button"
 
 const successStories = [
   {
@@ -43,20 +44,18 @@ export default function SuccessStories() {
                     <h3 className="text-xl font-semibold text-foreground mb-2">{story.condition}</h3>
                     <p className="text-muted-foreground">{story.description}</p>
                     {story.href && (
-                      <span className="mt-3 inline-flex items-center gap-1 text-sm font-bold text-[#C9A96A]">
-                        Learn More
-                        <ArrowRight className="h-4 w-4" />
-                      </span>
+                      <Button asChild className="mt-3 bg-[#C9A96A] hover:bg-[#C9A96A]/90 text-primary-foreground">
+                        <Link href={story.href}>
+                          Learn More
+                          <ArrowRight className="ml-1 h-4 w-4" />
+                        </Link>
+                      </Button>
                     )}
                   </div>
                 </div>
               )
 
-              return story.href ? (
-                <Link key={index} href={story.href} className={`group ${cardClassName}`}>
-                  {cardContent}
-                </Link>
-              ) : (
+              return (
                 <div key={index} className={cardClassName}>
                   {cardContent}
                 </div>
