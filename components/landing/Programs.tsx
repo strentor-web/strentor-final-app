@@ -5,7 +5,6 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight } from "lucide-react";
 
 const ProgramsCard = () => {
   const programs = [
@@ -64,7 +63,6 @@ const ProgramsCard = () => {
                   <Button asChild className="mt-4 bg-[#C9A96A] hover:bg-[#C9A96A]/90 text-primary-foreground">
                     <Link href={program.href}>
                       Learn More
-                      <ArrowRight className="ml-1 h-4 w-4" />
                     </Link>
                   </Button>
                 </CardContent>
