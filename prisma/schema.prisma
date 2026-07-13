@@ -99,6 +99,19 @@ model subscription_plans {
   @@schema("public")
 }
 
+model starter_kit_purchases {
+  id                  String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  user_id             String   @db.Uuid
+  razorpay_order_id   String
+  razorpay_payment_id String?
+  amount              Decimal  @db.Decimal(10, 2)
+  status              String   @default("PENDING")
+  created_at          DateTime @default(now())
+  updated_at          DateTime @updatedAt
+
+  @@schema("public")
+}
+
 model trainer_clients {
   id                                                      String        @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   trainer_id                                              String        @db.Uuid

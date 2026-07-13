@@ -17,7 +17,7 @@ export function AppleSignInButton() {
       type="button"
       onClick={() => startTransition(signInWithApple)}
       disabled={isPending}
-      className="w-full flex items-center justify-center gap-3 py-3 px-4 border-2 border-gray-200 rounded-lg hover:bg-gray-50 hover:border-gray-300 transition-all transform hover:scale-[1.02] bg-white text-black font-semibold"
+      className="w-full flex items-center justify-center gap-3 py-3 px-4 border-2 border-gray-200 rounded-lg hover:bg-gray-50 hover:border-gray-300 transition-all transform hover:scale-[1.02] bg-white text-black"
     >
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
         <path

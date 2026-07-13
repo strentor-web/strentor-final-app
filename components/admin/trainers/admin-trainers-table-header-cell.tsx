@@ -19,7 +19,7 @@ export function AdminTrainersTableHeaderCell({
   return (
     <Button
       variant="ghost"
-      className="h-auto p-0 font-semibold text-left justify-start hover:bg-transparent"
+      className="h-auto p-0 text-left justify-start hover:bg-transparent"
       onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
     >
       <span className="text-muted-foreground">{title}</span>

@@ -459,7 +459,7 @@ Are you sure you want to proceed with this downgrade?`;
   };
 
   const getButtonClassName = (plan: PlanMatrixItem) => {
-    const baseClasses = "w-full text-white text-sm font-medium py-2 px-3 min-h-[40px] flex items-center justify-center text-center whitespace-normal break-words";
+    const baseClasses = "w-full text-white py-2 px-3 min-h-[40px] flex items-center justify-center text-center whitespace-normal break-words";
     
     if (plan.buttonState === 'current') {
       return `${baseClasses} bg-green-500 hover:bg-green-600`;

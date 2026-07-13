@@ -414,7 +414,7 @@ export function PlanHeader({ mode, trainerId, planId }: PlanHeaderProps) {
                         variant="outline"
                         role="combobox"
                         aria-expanded={isClientDropdownOpen}
-                        className="w-full justify-between font-normal bg-background"
+                        className="w-full justify-between bg-background"
                       >
                         <span className={cn("truncate", !selectedClient && "text-muted-foreground")}> 
                           {selectedClient ? selectedClient.name : "Choose a client"}

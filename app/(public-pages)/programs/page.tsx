@@ -3,9 +3,33 @@ import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import Image from "next/image"
-import { Star, Check } from 'lucide-react'
+import Link from "next/link"
+import { Star, Check, ArrowRight } from 'lucide-react'
 import Header from '@/components/landing/Header';
 import Footer from "@/components/landing/Footer"
+
+const offerLadder = [
+  {
+    name: "7-Day Starter Kit",
+    description: "A safe, structured first experience of STRENTOR coaching, from ₹1,999.",
+    href: "/programs/starter-kit",
+  },
+  {
+    name: "8-Week Flagship Transformation",
+    description: "Our core coached program — strength, nutrition and mindset across four phases.",
+    href: "/programs/flagship-transformation",
+  },
+  {
+    name: "12-Week Elite Mentorship",
+    description: "High-touch, deeply personalized mentorship with direct founder access.",
+    href: "/programs/elite-mentorship",
+  },
+  {
+    name: "Strength Circle Membership",
+    description: "Ongoing group coaching, community and accountability, month to month.",
+    href: "/programs/membership",
+  },
+]
 
 export default function TeamPage() {
   const teamMembers = [
@@ -95,7 +119,7 @@ export default function TeamPage() {
                       </div>
                       <div className="mt-8">
                         <Button
-                          className="bg-[#C9A96A] hover:bg-[#C9A96A]/90 text-lg font-bold text-primary-foreground rounded-full px-8 py-6 group"
+                          className="bg-[#C9A96A] hover:bg-[#C9A96A]/90 text-primary-foreground rounded-full px-8 py-6 group"
                           onClick={() => member.link ? window.location.href = member.link : null}
                         >
                           Find Out More <span className="group-hover:translate-x-1 transition-transform inline-block ml-1">→</span>
@@ -118,21 +142,35 @@ export default function TeamPage() {
         </div>
       </div>
 
-      {/* <div className="text-center py-20 bg-gradient-to-br from-blue-600/20 via-purple-500/20 to-pink-500/20"> */}
-      <div className="text-center py-20 bg-black">
-          <h2 className="text-4xl font-bold font-display text-white mb-4 sm:text-5xl md:text-6xl lg:text-7xl">
-            Ready to Begin Your <span className="text-[#C9A96A]">Journey</span>?
-          </h2>
-          <p className="mx-auto max-w-[700px] text-gray-300 font-medium md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed dark:text-gray-400 pb-8 pt-2">
-            Take the first step towards transformation with our expert team of coaches and mentors.
-          </p>
-          <Button
-            className="bg-[#C9A96A] hover:bg-[#C9A96A]/90 text-primary-foreground font-bold rounded-full px-8 py-6 text-lg"
-            onClick={() => window.open("https://calendly.com/strentor/strentor-services", "_blank")}
-          >
-            Start Your Transformation
-          </Button>
+      {/* Offer Ladder */}
+      <div className="container mx-auto px-4 py-16">
+        <h2 className="text-center text-3xl font-bold font-display text-foreground sm:text-4xl mb-2">
+          Choose Your Path
+        </h2>
+        <p className="text-center text-muted-foreground max-w-2xl mx-auto mb-10">
+          Every STRENTOR program is built for wheelchair-first adaptive training. Start wherever makes sense for you.
+        </p>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 max-w-4xl mx-auto">
+          {offerLadder.map((offer) => (
+            <div
+              key={offer.href}
+              className="flex flex-col justify-between rounded-2xl border border-border bg-card p-6 shadow-sm transition-colors hover:border-[#C9A96A]"
+            >
+              <div>
+                <h3 className="text-lg font-bold text-card-foreground">{offer.name}</h3>
+                <p className="mt-2 text-sm text-muted-foreground">{offer.description}</p>
+              </div>
+              <Button asChild className="mt-4 w-fit bg-[#C9A96A] hover:bg-[#C9A96A]/90 text-primary-foreground">
+                <Link href={offer.href}>
+                  Learn more
+                  <ArrowRight className="ml-1 h-4 w-4" />
+                </Link>
+              </Button>
+            </div>
+          ))}
+        </div>
       </div>
+
       <Footer/>
     </div>
   )

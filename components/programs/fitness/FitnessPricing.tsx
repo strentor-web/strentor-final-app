@@ -217,7 +217,7 @@ export default function FitnessPricing() {
               <div className="mt-auto">
                 <Button
                   onClick={handleGetStarted}
-                  className="w-full bg-primary hover:bg-primary/90 text-primary-foreground py-3 text-lg font-semibold"
+                  className="w-full bg-primary hover:bg-primary/90 text-primary-foreground py-3"
                 >
                   Get Started with Fitness Plan
                 </Button>

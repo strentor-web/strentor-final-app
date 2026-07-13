@@ -16,7 +16,7 @@ const FitnessBanner = () => {
           </p>
           <div className="mx-auto max-w-sm space-y-4">
             <Button 
-              className="w-full py-7 text-lg font-extrabold bg-[#C9A96A] hover:bg-[#C9A96A]/90"
+              className="w-full py-7 bg-[#C9A96A] hover:bg-[#C9A96A]/90"
               onClick={() => window.open("https://calendly.com/strentor/strentor-services", "_blank")}
             >
               Book Your Free Consultation

@@ -85,7 +85,7 @@ export const useAdminClientColumns = ({
           <Button
             variant="outline"
             size="sm"
-            className="h-8 px-3 text-xs bg-blue-600 text-white hover:bg-blue-700 border-blue-600"
+            className="h-8 px-3 bg-blue-600 text-white hover:bg-blue-700 border-blue-600"
             onClick={() => onAssignTrainer(client, 'FITNESS')}
           >
             <Plus className="h-3 w-3 mr-1" />

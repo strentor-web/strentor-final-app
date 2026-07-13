@@ -64,7 +64,7 @@ export default function Hero() {
             <div className="flex flex-col sm:flex-row gap-4">
               <Button
                 onClick={handleBookingClick}
-                className="h-14 px-8 text-lg rounded-full font-bold bg-[#C9A96A] hover:bg-[#C9A96A]/90 transition-all transform hover:scale-105"
+                className="h-14 px-8 rounded-full bg-[#C9A96A] hover:bg-[#C9A96A]/90 transition-all transform hover:scale-105"
               >
                 Book Your Free Discovery Call
               </Button>

@@ -22,6 +22,7 @@ export interface NicheProgramPageProps {
   title: string
   titleAccent: string
   subtitle: string
+  priceRange?: string
   intro: {
     heading: string
     paragraphs: string[]
@@ -37,6 +38,7 @@ export function NicheProgramPage({
   title,
   titleAccent,
   subtitle,
+  priceRange,
   intro,
   benefits,
   disclaimer,
@@ -77,9 +79,14 @@ export function NicheProgramPage({
           <p className="mx-auto mt-6 max-w-2xl text-lg text-gray-300 md:text-xl">
             {subtitle}
           </p>
+          {priceRange && (
+            <p className="mt-4 text-sm font-semibold uppercase tracking-wide text-gray-400">
+              {priceRange} · Final pricing confirmed on your discovery call
+            </p>
+          )}
           <div className="mt-8">
             <Button
-              className="h-14 rounded-full bg-[#C9A96A] px-8 text-lg font-bold hover:bg-[#C9A96A]/90"
+              className="h-14 rounded-full bg-[#C9A96A] px-8 hover:bg-[#C9A96A]/90"
               onClick={() => window.open("https://calendly.com/strentor/strentor-services", "_blank")}
             >
               Book a Free Consultation
@@ -173,22 +180,6 @@ export function NicheProgramPage({
           </div>
         </section>
       )}
-
-      {/* Final CTA */}
-      <div className="bg-black py-20 text-center">
-        <h2 className="mb-4 text-4xl font-bold font-display text-white sm:text-5xl">
-          Ready to Begin Your <span className="text-[#C9A96A]">Journey</span>?
-        </h2>
-        <p className="mx-auto max-w-[700px] pb-8 pt-2 text-gray-300 md:text-xl">
-          Take the first step towards transformation with our expert coaching team.
-        </p>
-        <Button
-          className="rounded-full bg-[#C9A96A] px-8 py-6 text-lg font-bold text-primary-foreground hover:bg-[#C9A96A]/90"
-          onClick={() => window.open("https://calendly.com/strentor/strentor-services", "_blank")}
-        >
-          Start Your Transformation
-        </Button>
-      </div>
 
       <Footer />
     </div>

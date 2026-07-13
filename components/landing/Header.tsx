@@ -62,8 +62,12 @@ export default function Header() {
                 Programs
                 <span className="absolute inset-x-0 -bottom-0.5 h-0.5 origin-left scale-x-0 bg-primary transition-transform duration-300 ease-out group-hover:scale-x-100" />
               </button>
-              <div className="absolute left-1/2 -translate-x-1/2 mt-2 w-56 origin-top scale-95 bg-card border border-border rounded-lg shadow-lg opacity-0 translate-y-1 invisible transition-all duration-200 ease-out z-50 group-hover:opacity-100 group-hover:scale-100 group-hover:translate-y-0 group-hover:visible group-focus-within:opacity-100 group-focus-within:scale-100 group-focus-within:translate-y-0 group-focus-within:visible">
-                <a href="/programs/fitness-training" className="block px-6 py-3 text-card-foreground hover:bg-muted hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary transition-colors rounded-b-lg">Fitness Training</a>
+              <div className="absolute left-1/2 -translate-x-1/2 mt-2 w-64 origin-top scale-95 bg-card border border-border rounded-lg shadow-lg opacity-0 translate-y-1 invisible transition-all duration-200 ease-out z-50 group-hover:opacity-100 group-hover:scale-100 group-hover:translate-y-0 group-hover:visible group-focus-within:opacity-100 group-focus-within:scale-100 group-focus-within:translate-y-0 group-focus-within:visible">
+                <a href="/programs/starter-kit" className="block px-6 py-3 text-card-foreground hover:bg-muted hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary transition-colors rounded-t-lg">7-Day Starter Kit</a>
+                <a href="/programs/fitness-training" className="block px-6 py-3 text-card-foreground hover:bg-muted hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary transition-colors">Fitness Training</a>
+                <a href="/programs/flagship-transformation" className="block px-6 py-3 text-card-foreground hover:bg-muted hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary transition-colors">8-Week Flagship</a>
+                <a href="/programs/elite-mentorship" className="block px-6 py-3 text-card-foreground hover:bg-muted hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary transition-colors">Elite Mentorship</a>
+                <a href="/programs/membership" className="block px-6 py-3 text-card-foreground hover:bg-muted hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary transition-colors rounded-b-lg">Strength Circle Membership</a>
               </div>
             </div>
             <a href="/community" className="group relative text-foreground hover:text-primary transition-colors py-1">
@@ -92,7 +96,7 @@ export default function Header() {
               className="hidden md:inline-flex shadow-2xl h-10 rounded-full bg-strentor-red hover:bg-strentor-red/80 text-primary-foreground"
               onClick={handleBookingClick}
             >
-              <span className="whitespace-pre-wrap text-center text-sm font-bold leading-none tracking-tight lg:text-lg">
+              <span className="whitespace-pre-wrap text-center leading-none tracking-tight">
                 Sign Up
               </span>
             </Button>

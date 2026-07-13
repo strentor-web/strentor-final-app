@@ -104,8 +104,8 @@ export default async function DashboardPage() {
         <div className="border rounded-lg p-6">
           <h2 className="text-2xl font-bold mb-4">Quick Actions</h2>
           <div className="space-y-3">
-            <Button 
-              className="w-full h-12 px-6 text-base rounded-full font-bold bg-strentor-red hover:bg-strentor-red/80 transition-all transform hover:scale-105" 
+            <Button
+              className="w-full h-12 px-6 rounded-full bg-strentor-red hover:bg-strentor-red/80 transition-all transform hover:scale-105"
               asChild
             >
               <Link href="/settings">
@@ -114,8 +114,8 @@ export default async function DashboardPage() {
               </Link>
             </Button>
 
-            <Button 
-              className="w-full h-12 px-6 text-base rounded-full font-bold bg-strentor-red hover:bg-strentor-red/80 transition-all transform hover:scale-105" 
+            <Button
+              className="w-full h-12 px-6 rounded-full bg-strentor-red hover:bg-strentor-red/80 transition-all transform hover:scale-105"
               asChild
             >
               <Link href="/plans">
