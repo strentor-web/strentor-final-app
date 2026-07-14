@@ -81,7 +81,8 @@ export async function POST(request: NextRequest) {
     }
 
     // Calculate new total count for 30-year duration based on new billing cycle
-    const newTotalCount = newPlan.billing_cycle === 3 ? 120 : 
+    const newTotalCount = newPlan.billing_cycle === 1 ? 360 :
+                         newPlan.billing_cycle === 3 ? 120 :
                          newPlan.billing_cycle === 6 ? 60 : 30;
 
     // Log the update details
