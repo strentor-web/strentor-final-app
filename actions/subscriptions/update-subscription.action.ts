@@ -44,7 +44,8 @@ const handler = async (data: InputType): Promise<ActionState<InputType, ReturnTy
     }
 
     // 3. Calculate new total count based on billing cycle (30-year duration)
-    const newTotalCount = newPlan.billing_cycle === 3 ? 120 : // Quarterly: 120 payments over 30 years
+    const newTotalCount = newPlan.billing_cycle === 1 ? 360 : // Monthly: 360 payments over 30 years
+                         newPlan.billing_cycle === 3 ? 120 : // Quarterly: 120 payments over 30 years
                          newPlan.billing_cycle === 6 ? 60 :   // Semi-Annual: 60 payments over 30 years
                          30;                                   // Annual: 30 payments over 30 years
 
