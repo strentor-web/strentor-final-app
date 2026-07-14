@@ -75,7 +75,7 @@ const TrainerProfile = () => {
             src="/Aditya-transparent.png"
             alt="Aditya Mandan - Fitness and Nutrition Coach"
             fill
-            className="object-cover rounded-lg"
+            className="object-cover object-top rounded-lg"
             priority
           />
         </div>

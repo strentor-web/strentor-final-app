@@ -58,7 +58,7 @@ export default function Team() {
                       alt={member.name}
                       fill
                       sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
-                      className="object-cover transition-transform duration-300 group-hover:scale-110"
+                      className="object-cover object-top transition-transform duration-300 group-hover:scale-110"
                       priority={true}
                     />
                   </div>
