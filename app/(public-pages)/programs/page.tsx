@@ -132,7 +132,7 @@ export default function TeamPage() {
                       src={member.image}
                       alt={`${member.name} - ${member.role}`}
                       fill
-                      className="object-cover"
+                      className="object-cover object-top"
                     />
                   </div>
                 </div>
