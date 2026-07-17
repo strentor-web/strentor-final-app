@@ -146,7 +146,9 @@ export function IntakeForm({ initialPathway, region, plan, sourcePage, onPathway
     setPathwayState(value)
     onPathwayChange?.(value)
   }
-  const [stepIndex, setStepIndex] = useState(0)
+  // Skip the "what brings you here?" step when the page already told us —
+  // e.g. arriving from /corporate shouldn't re-ask what's already known.
+  const [stepIndex, setStepIndex] = useState(initialPathway ? 1 : 0)
   const [contact, setContact] = useState<ContactDetails>(emptyContact)
   const [training, setTraining] = useState<AdaptiveTrainingProfile>(emptyTrainingProfile)
   const [health, setHealth] = useState<HealthSafetyScreening>(emptyHealthSafety)
