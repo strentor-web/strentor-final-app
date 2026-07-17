@@ -217,7 +217,7 @@ export default function CoachingPage() {
               asChild
               className="h-14 rounded-full bg-[#C9A96A] px-8 hover:bg-[#C9A96A]/90"
             >
-              <Link href="/contact">Book Fit Assessment</Link>
+              <Link href="/contact?type=personal">Book Fit Assessment</Link>
             </Button>
           </div>
         </div>
@@ -432,7 +432,7 @@ export default function CoachingPage() {
               asChild
               className="h-14 rounded-full bg-[#C9A96A] px-8 hover:bg-[#C9A96A]/90"
             >
-              <Link href="/contact">
+              <Link href="/contact?type=personal">
                 Book Fit Assessment
                 <ArrowRight className="ml-1 h-4 w-4" />
               </Link>

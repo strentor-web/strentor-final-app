@@ -6,8 +6,10 @@ import Header from "@/components/landing/Header"
 import Footer from "@/components/landing/Footer"
 import { DynamicContactEmail } from "@/components/forms/DynamicContactEmail"
 import { IntakeForm } from "@/components/forms/intake/IntakeForm"
-import { EnquiryPathway } from "@/types/intake"
+import { EnquiryPathway, PATHWAY_LABELS } from "@/types/intake"
 import { useRegion } from "@/hooks/useRegion"
+
+const VALID_PATHWAYS = Object.keys(PATHWAY_LABELS) as EnquiryPathway[]
 
 function ContactContent() {
   const searchParams = useSearchParams()
@@ -15,10 +17,9 @@ function ContactContent() {
   const typeParam = searchParams.get("type")
   const planParam = searchParams.get("plan") || undefined
 
-  const initialPathway: EnquiryPathway | undefined =
-    typeParam === "corporate" || typeParam === "sponsor" || typeParam === "general"
-      ? (typeParam as EnquiryPathway)
-      : undefined
+  const initialPathway: EnquiryPathway | undefined = VALID_PATHWAYS.includes(typeParam as EnquiryPathway)
+    ? (typeParam as EnquiryPathway)
+    : undefined
 
   const [pathway, setPathway] = useState<EnquiryPathway | undefined>(initialPathway)
 

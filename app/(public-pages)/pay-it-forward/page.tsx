@@ -116,7 +116,7 @@ export default function PayItForwardPage() {
               variant="outline"
               className="h-14 w-full rounded-full border-[#C9A96A]/40 bg-transparent px-8 text-white hover:bg-[#C9A96A]/10 sm:w-auto"
             >
-              <Link href="/contact?type=sponsorship-application">Apply for Support</Link>
+              <Link href="/contact?type=sponsored_support">Apply for Support</Link>
             </Button>
           </div>
         </div>
@@ -346,7 +346,7 @@ export default function PayItForwardPage() {
               variant="outline"
               className="h-14 w-full rounded-full border-[#C9A96A]/40 bg-transparent px-8 text-white hover:bg-[#C9A96A]/10 sm:w-64"
             >
-              <Link href="/contact?type=sponsorship-application">Apply for Support</Link>
+              <Link href="/contact?type=sponsored_support">Apply for Support</Link>
             </Button>
           </div>
         </div>

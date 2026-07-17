@@ -91,7 +91,7 @@ function PlansContent() {
                 </ul>
               </div>
               <Button asChild className="mt-6 w-full bg-[#C9A96A] hover:bg-[#C9A96A]/90 text-primary-foreground">
-                <Link href="/contact">Apply</Link>
+                <Link href={`/contact?type=personal&plan=${encodeURIComponent(plan.id)}`}>Apply</Link>
               </Button>
             </div>
           ))}

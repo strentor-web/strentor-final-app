@@ -33,7 +33,7 @@ const resources: Resource[] = [
     description:
       "A short, practical checklist covering the basics you should have in place before starting adaptive strength coaching — from equipment access to a general sense of your current activity level.",
     ctaLabel: "Get the Checklist",
-    href: "/contact",
+    href: "/contact?type=personal",
   },
   {
     icon: Activity,
@@ -41,7 +41,7 @@ const resources: Resource[] = [
     description:
       "A guided self-assessment that walks through training readiness, safety signals, and mobility context, so you and a coach can have a focused first conversation instead of starting from zero.",
     ctaLabel: "Start the Assessment",
-    href: "/contact",
+    href: "/contact?type=personal",
   },
   {
     icon: Rocket,
@@ -57,7 +57,7 @@ const resources: Resource[] = [
     description:
       "A one-on-one conversation with our team to review your goals, physical context, and current constraints, and to recommend which STRENTOR program — if any — is the right starting point for you.",
     ctaLabel: "Request a Fit Assessment",
-    href: "/contact",
+    href: "/contact?type=personal",
   },
   {
     icon: BookOpen,
@@ -65,7 +65,7 @@ const resources: Resource[] = [
     description:
       "A practical guide to what \"ready to train\" actually means for wheelchair users and people managing chronic health conditions — covering baseline conditioning, prior activity, and realistic starting points.",
     ctaLabel: "Request the Guide",
-    href: "/contact",
+    href: "/contact?type=personal",
   },
   {
     icon: ShieldCheck,
@@ -73,7 +73,7 @@ const resources: Resource[] = [
     description:
       "An overview of the safety considerations STRENTOR coaches build into every program — from movement selection to load progression — so you know what to expect before your first session.",
     ctaLabel: "Request the Guide",
-    href: "/contact",
+    href: "/contact?type=personal",
   },
   {
     icon: Target,
@@ -81,7 +81,7 @@ const resources: Resource[] = [
     description:
       "A structured worksheet for turning a general intention — \"get stronger,\" \"move more confidently\" — into specific, trackable training goals a coach can actually build a program around.",
     ctaLabel: "Request the Workbook",
-    href: "/contact",
+    href: "/contact?type=personal",
   },
   {
     icon: LineChart,
@@ -89,7 +89,7 @@ const resources: Resource[] = [
     description:
       "A simple template for logging training sessions, effort, and milestones over time, so progress is visible in weeks and months — not just felt in the moment.",
     ctaLabel: "Request the Tracker",
-    href: "/contact",
+    href: "/contact?type=personal",
   },
   {
     icon: Apple,
@@ -97,7 +97,7 @@ const resources: Resource[] = [
     description:
       "A short checklist covering the nutrition and hydration factors most relevant to adaptive strength training, framed as context for your coach rather than a prescriptive diet plan.",
     ctaLabel: "Request the Checklist",
-    href: "/contact",
+    href: "/contact?type=personal",
   },
   {
     icon: HandHeart,
