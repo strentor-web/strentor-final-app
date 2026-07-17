@@ -1,21 +1,15 @@
 "use client";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { Facebook, Linkedin, Instagram, Youtube } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 export default function Footer() {
-  const router = useRouter();
-
   return (
     <footer className="w-full border-t border-border bg-background/5 backdrop-blur-lg">
       <div className="container mx-auto px-4 py-10 text-center border-b border-border">
         <p className="text-lg font-semibold text-foreground mb-4">Ready to get stronger?</p>
-        <Button
-          onClick={() => router.push("/sign-up")}
-          className="h-12 px-8 rounded-full bg-strentor-red hover:bg-strentor-red/80 text-primary-foreground"
-        >
-          Book your free discovery call
+        <Button asChild className="h-12 px-8 rounded-full bg-strentor-red hover:bg-strentor-red/80 text-primary-foreground">
+          <Link href="/contact">Book Fit Assessment</Link>
         </Button>
       </div>
       <div className="container mx-auto px-4 py-12 grid gap-8 sm:grid-cols-3 text-center sm:text-left">
@@ -24,41 +18,51 @@ export default function Footer() {
           <h3 className="text-lg font-semibold text-foreground">Company</h3>
           <ul className="space-y-2 text-sm text-muted-foreground">
             <li className="hover:text-primary">
-              <Link href="/aboutus">About Us</Link>
+              <Link href="/about">About</Link>
             </li>
             <li className="hover:text-primary">
-              <Link href="/programs">Programs</Link>
+              <Link href="/coaching">Coaching</Link>
             </li>
             <li className="hover:text-primary">
-              <Link href="/community">Community</Link>
+              <Link href="/plans-pricing">Plans</Link>
             </li>
-            {/* Hidden for now
             <li className="hover:text-primary">
-              <Link href="https://empowerment-hub.strentor.com/">Empowerment Hub</Link>
+              <Link href="/corporate">Corporate / CSR</Link>
             </li>
-            */}
+            <li className="hover:text-primary">
+              <Link href="/resources">Resources</Link>
+            </li>
+            <li className="hover:text-primary">
+              <Link href="/pay-it-forward">Pay It Forward</Link>
+            </li>
           </ul>
         </div>
 
-        {/* Center Section */}
         {/* Center Section */}
         <div className="flex flex-col items-center justify-center space-y-2">
           <div className="font-bold text-foreground">
             Strentor © 2025
           </div>
-          <div className="flex gap-4 text-sm text-muted-foreground">
-            <Link 
-              href="/privacy-policy" 
+          <div className="flex flex-wrap justify-center gap-4 text-sm text-muted-foreground">
+            <Link
+              href="/privacy-policy"
               className="hover:text-primary"
             >
               Privacy Policy
             </Link>
             <span>•</span>
-            <Link 
-              href="/terms-of-use" 
+            <Link
+              href="/terms-of-service"
               className="hover:text-primary"
             >
-              Terms of Use
+              Terms of Service
+            </Link>
+            <span>•</span>
+            <Link
+              href="/medical-disclaimer"
+              className="hover:text-primary"
+            >
+              Medical Disclaimer
             </Link>
           </div>
         </div>

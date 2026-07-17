@@ -1,0 +1,12 @@
+{
+  "crons": [
+    {
+      "path": "/api/cron/subscription-reminders",
+      "schedule": "30 3 * * *"
+    },
+    {
+      "path": "/api/cron/cleanup-orphaned-subscriptions",
+      "schedule": "0 */6 * * *"
+    }
+  ]
+}

@@ -116,6 +116,13 @@ export default function PrivacyPolicy() {
                     <h3 className="text-xl font-semibold text-foreground mb-3">Other Data</h3>
                     <p>While using our Service, we may also collect the following information: sex, age, date of birth, place of birth, passport details, citizenship, registration at place of residence and actual address, telephone number (work, mobile), details of documents on education, qualification, professional training, employment agreements, NDA agreements, information on bonuses and compensation, information on marital status, family members, social security (or other taxpayer identification) number, office location and other data.</p>
                   </div>
+
+                  <div>
+                    <h3 className="text-xl font-semibold text-foreground mb-3">Health and Fitness Information</h3>
+                    <p className="mb-3">When you complete our intake or Fit Assessment form, we may ask you to self-report information relevant to coaching, such as your training history, mobility, injuries or physical limitations, relevant health conditions, and general nutrition context ("Health-Related Information"). This information is provided voluntarily by you and is used solely to help our team prepare for coaching conversations, understand your starting point, and route your enquiry to the right person within STRENTOR.</p>
+                    <p className="mb-3">Health-Related Information is not used to diagnose, treat, or otherwise provide medical care, and it is not shared publicly on our Service. Please see our <a href="/medical-disclaimer" className="text-[#C9A96A] hover:underline">Medical Disclaimer</a> for more on the scope of our coaching services.</p>
+                    <p>We limit access to Health-Related Information to team members who need it to prepare for or deliver your coaching, and we retain it only for as long as necessary for the purposes described in this Privacy Policy.</p>
+                  </div>
                 </div>
               </section>
 
@@ -139,6 +146,7 @@ export default function PrivacyPolicy() {
                     <li>in any other way we may describe when you provide the information;</li>
                     <li>for any other purpose with your consent.</li>
                   </ul>
+                  <p className="mt-3">When you submit an enquiry through our contact or intake form, we route it internally to the appropriate STRENTOR team based on the nature of your enquiry (for example, personal coaching, corporate partnerships, or sponsorship requests), so that it reaches the team best placed to respond to you.</p>
                 </div>
               </section>
 
@@ -269,9 +277,10 @@ export default function PrivacyPolicy() {
               {/* Section 13 */}
               <section>
                 <h2 className="text-2xl font-bold text-foreground mb-4">13. Service Providers</h2>
-                <div className="text-muted-foreground">
+                <div className="text-muted-foreground space-y-3">
                   <p>We may employ third party companies and individuals to facilitate our Service ("Service Providers"), provide Service on our behalf, perform Service-related services or assist us in analysing how our Service is used.</p>
                   <p>These third parties have access to your Personal Data only to perform these tasks on our behalf and are obligated not to disclose or use it for any other purpose.</p>
+                  <p>We use trusted third-party service providers to operate our Service, including Resend for delivering transactional and notification emails on our behalf, and Supabase for account authentication and secure data storage. These providers process data only as necessary to provide their services to us and are not authorized to use your information for their own purposes.</p>
                 </div>
               </section>
 
