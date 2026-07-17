@@ -69,3 +69,27 @@ export async function sendSubscriptionRenewalReminder({
     html,
   });
 }
+
+interface IntakeNotificationParams {
+  to: string;
+  cc?: string[];
+  subject: string;
+  html: string;
+  replyTo?: string;
+}
+
+export async function sendIntakeNotification({ to, cc, subject, html, replyTo }: IntakeNotificationParams) {
+  if (!resendClient) {
+    console.error("RESEND_API_KEY is not configured; skipping intake notification email.");
+    return { skipped: true };
+  }
+
+  return resendClient.emails.send({
+    from: FROM_EMAIL,
+    to,
+    cc,
+    replyTo,
+    subject,
+    html,
+  });
+}

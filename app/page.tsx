@@ -1,36 +1,39 @@
-import Banner from "@/components/landing/Banner";
 import FAQSection from "@/components/landing/FAQSection";
 import Header from "@/components/landing/Header";
 import Hero from "@/components/landing/Hero";
 import Team from "@/components/landing/Team";
-import Testimonials from "@/components/landing/Testimonials";
 import Footer from "@/components/landing/Footer";
-import ProgramsCard from "@/components/landing/Programs";
-import Introduction from "@/components/landing/Introduction";
-import Featured from "@/components/landing/Featured";
-import PopupForm from "@/components/landing/PopupForm";
 import WhatsAppButton from "@/components/landing/WhatsAppButton";
-import Pricing from "@/components/landing/Pricing";
-
+import {
+  ValueProposition,
+  ProblemSection,
+  DifferenceSection,
+  WhoItsFor,
+  CoachingPillars,
+  HowItWorks,
+  PayItForwardIntro,
+  HomeMedicalNote,
+  FinalCTA,
+} from "@/components/landing/home/HomeSections";
 
 export default function Home() {
   return (
     <div>
       <Header/>
       <Hero/>
-      <Featured/>
-      <Introduction/>
-      <Testimonials/>
-      <ProgramsCard/>
+      <ValueProposition/>
+      <ProblemSection/>
+      <DifferenceSection/>
+      <WhoItsFor/>
+      <CoachingPillars/>
+      <HowItWorks/>
+      <PayItForwardIntro/>
       <Team/>
-      <Pricing/>
-      <Banner/>
       <FAQSection/>
+      <HomeMedicalNote/>
+      <FinalCTA/>
       <Footer/>
-      {/* <PopupForm/> */}
       <WhatsAppButton/>
-      
     </div>
-    
   );
 }

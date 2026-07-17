@@ -300,15 +300,26 @@ export default function TermsOfService() {
 
               {/* Section 26 */}
               <section>
-                <h2 className="text-2xl font-bold text-foreground mb-4">26. Acknowledgement</h2>
-                <div className="text-muted-foreground">
-                  <p className="uppercase font-semibold">BY USING SERVICE OR OTHER SERVICES PROVIDED BY US, YOU ACKNOWLEDGE THAT YOU HAVE READ THESE TERMS OF SERVICE AND AGREE TO BE BOUND BY THEM.</p>
+                <h2 className="text-2xl font-bold text-foreground mb-4">26. Health Disclosure, Medical Clearance, and Coaching Boundaries</h2>
+                <div className="text-muted-foreground space-y-4">
+                  <p>STRENTOR provides fitness and nutrition coaching only. We do not provide medical treatment, physiotherapy, or emergency services, and nothing in our Service should be understood as such. Full detail on the scope and limitations of our coaching services is set out in our <a href="/medical-disclaimer" className="text-[#C9A96A] hover:underline">Medical Disclaimer</a>, which forms part of these Terms.</p>
+                  <p>When you use our intake or Fit Assessment process, you are responsible for accurately and completely disclosing any health conditions, mobility limitations, injuries, or other safety-relevant information that could affect your training. You agree to keep this information current and to promptly inform your coach of any change in your health status.</p>
+                  <p>Depending on the information you disclose, STRENTOR may require you to obtain medical clearance from a physician before starting or continuing coaching, and may pause or decline to provide coaching until such clearance is provided or until we can otherwise reasonably establish that training can proceed safely.</p>
+                  <p>You are responsible for following the advice of your own physician, physiotherapist, dietitian, or other healthcare provider. If you experience pain, discomfort, or any symptom that concerns you during or after training, you should stop activity and seek appropriate medical attention. In a medical emergency, contact your local emergency services immediately — do not contact STRENTOR or your coach for emergency assistance.</p>
                 </div>
               </section>
 
               {/* Section 27 */}
               <section>
-                <h2 className="text-2xl font-bold text-foreground mb-4">27. Contact Us</h2>
+                <h2 className="text-2xl font-bold text-foreground mb-4">27. Acknowledgement</h2>
+                <div className="text-muted-foreground">
+                  <p className="uppercase font-semibold">BY USING SERVICE OR OTHER SERVICES PROVIDED BY US, YOU ACKNOWLEDGE THAT YOU HAVE READ THESE TERMS OF SERVICE AND AGREE TO BE BOUND BY THEM.</p>
+                </div>
+              </section>
+
+              {/* Section 28 */}
+              <section>
+                <h2 className="text-2xl font-bold text-foreground mb-4">28. Contact Us</h2>
                 <div className="text-muted-foreground">
                   <p>Please send your feedback, comments, requests for technical support by email: <a href="mailto:adityamandan@strentor.com" className="text-[#C9A96A] hover:underline">adityamandan@strentor.com</a>.</p>
                 </div>
