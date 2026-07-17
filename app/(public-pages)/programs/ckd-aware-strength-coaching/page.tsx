@@ -6,6 +6,7 @@ export default function CkdAwareStrengthCoachingPage() {
   return (
     <NicheProgramPage
       eyebrow="Coordinated with your medical care"
+      contactPlan="ckd-aware-strength-coaching"
       title="CKD-Aware"
       titleAccent="Strength Coaching"
       subtitle="Safe, adaptive strength training coaching for individuals managing chronic kidney disease (CKD) — designed to work alongside your medical team, not around them."

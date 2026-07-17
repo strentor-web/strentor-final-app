@@ -6,6 +6,7 @@ export default function FlagshipTransformationPage() {
   return (
     <NicheProgramPage
       eyebrow="STRENTOR's flagship program"
+      contactPlan="flagship-transformation"
       title="8-Week Adaptive Strength"
       titleAccent="& Mindset Transformation"
       subtitle="A structured, four-phase transformation for wheelchair users — building strength, nutrition habits, and mindset together, so progress lasts well beyond week eight."

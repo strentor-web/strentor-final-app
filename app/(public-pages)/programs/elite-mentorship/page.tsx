@@ -6,6 +6,7 @@ export default function EliteMentorshipPage() {
   return (
     <NicheProgramPage
       eyebrow="STRENTOR's premium mentorship"
+      contactPlan="elite-mentorship"
       title="Elite Adaptive"
       titleAccent="Transformation Mentorship"
       subtitle="A 12-week, high-touch mentorship for wheelchair users who want intensive, deeply personalized transformation — with direct founder access and priority support."
