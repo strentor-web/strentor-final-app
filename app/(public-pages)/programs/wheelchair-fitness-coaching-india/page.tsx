@@ -6,6 +6,7 @@ export default function WheelchairFitnessCoachingIndiaPage() {
   return (
     <NicheProgramPage
       eyebrow="Serving clients across India, online"
+      contactPlan="wheelchair-fitness-coaching-india"
       title="Wheelchair Fitness Coaching"
       titleAccent="in India"
       subtitle="Adaptive strength training and nutrition coaching for wheelchair users, delivered virtually to any city in India — coached by a national-level para powerlifter."

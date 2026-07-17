@@ -6,6 +6,7 @@ export default function SpinaBifidaFitnessCoachingPage() {
   return (
     <NicheProgramPage
       eyebrow="Adaptive coaching, delivered online"
+      contactPlan="spina-bifida-fitness-coaching"
       title="Spina Bifida"
       titleAccent="Fitness Coaching"
       subtitle="Personalized, adaptive fitness and nutrition coaching for individuals with spina bifida — built around your ability level, not a generic program."

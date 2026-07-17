@@ -6,6 +6,7 @@ export default function MembershipPage() {
   return (
     <NicheProgramPage
       eyebrow="Ongoing community & continuity"
+      contactPlan="membership"
       title="STRENTOR"
       titleAccent="Strength Circle"
       subtitle="A recurring membership for wheelchair users who want ongoing coaching, community and accountability — whether you're just starting out or continuing after a flagship program."

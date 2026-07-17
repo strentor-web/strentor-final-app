@@ -6,6 +6,7 @@ export default function OnlineWheelchairStrengthTrainingPage() {
   return (
     <NicheProgramPage
       eyebrow="100% online coaching"
+      contactPlan="online-wheelchair-strength-training"
       title="Online Strength Training"
       titleAccent="for Wheelchair Users"
       subtitle="Seated strength training, progression tracking, and coach check-ins — all delivered online, so you can train consistently without needing an accessible gym nearby."

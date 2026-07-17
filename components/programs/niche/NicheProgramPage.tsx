@@ -23,6 +23,7 @@ export interface NicheProgramPageProps {
   titleAccent: string
   subtitle: string
   priceRange?: string
+  contactPlan: string
   intro: {
     heading: string
     paragraphs: string[]
@@ -39,6 +40,7 @@ export function NicheProgramPage({
   titleAccent,
   subtitle,
   priceRange,
+  contactPlan,
   intro,
   benefits,
   disclaimer,
@@ -85,11 +87,10 @@ export function NicheProgramPage({
             </p>
           )}
           <div className="mt-8">
-            <Button
-              className="h-14 rounded-full bg-[#C9A96A] px-8 hover:bg-[#C9A96A]/90"
-              onClick={() => window.open("https://calendly.com/strentor/strentor-services", "_blank")}
-            >
-              Book a Free Consultation
+            <Button asChild className="h-14 rounded-full bg-[#C9A96A] px-8 hover:bg-[#C9A96A]/90">
+              <Link href={`/contact?type=personal&plan=${encodeURIComponent(contactPlan)}`}>
+                Book Fit Assessment
+              </Link>
             </Button>
           </div>
         </div>
