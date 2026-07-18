@@ -16,12 +16,12 @@ export function DayCanvas({ className = "" }: { className?: string }) {
         <section key={weekIndex} id={`week-${weekIndex + 1}`} className="scroll-mt-20 md:scroll-mt-6">
           {/* Week Header */}
           <div className="flex items-center gap-2 md:gap-3 mb-4 md:mb-6">
-            <div className="flex items-center gap-1 md:gap-2 px-2 md:px-3 py-1.5 md:py-2 bg-blue-50 rounded-lg border border-blue-200">
-              <Calendar className="h-4 w-4 text-blue-600" />
-              <span className="text-sm font-semibold text-blue-800">
+            <div className="flex items-center gap-1 md:gap-2 px-2 md:px-3 py-1.5 md:py-2 bg-[#C9A96A]/10 rounded-lg border border-[#C9A96A]/30">
+              <Calendar className="h-4 w-4 text-[#C9A96A]" />
+              <span className="text-sm font-semibold text-[#C9A96A]">
                 Week {weekIndex + 1}
               </span>
-              <span className="text-xs text-blue-600">
+              <span className="text-xs text-[#C9A96A]">
                 ({formatWeekRange(addDays(meta.startDate, weekIndex * 7))})
               </span>
             </div>

@@ -40,7 +40,7 @@ export default function ExerciseLogButton({
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <button className="text-sm text-purple-600 font-medium hover:text-purple-800">Log Exercise</button>
+        <button className="text-sm text-[#C9A96A] font-medium hover:text-[#C9A96A]/80">Log Exercise</button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>

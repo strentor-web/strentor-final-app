@@ -18,11 +18,11 @@ const WorkoutPlanCard = ({ plan }: { plan: any }) => {
 
   return (
     <Link href={`/training/plans/${plan.id}`}>
-      <div className="group hover:shadow-lg transition-all duration-300 bg-card rounded-lg border hover:border-red-200 overflow-hidden flex flex-col h-full">
+      <div className="group hover:shadow-lg transition-all duration-300 bg-card rounded-lg border hover:border-[#C9A96A]/40 overflow-hidden flex flex-col h-full">
         <div className="p-6 flex-1">
           {/* Header with status badge */}
           <div className="flex items-start justify-between mb-2">
-            <h2 className="text-xl font-bold group-hover:text-red-600 transition-colors line-clamp-1">
+            <h2 className="text-xl font-bold group-hover:text-[#C9A96A] transition-colors line-clamp-1">
               {plan.name}
             </h2>
             <Badge className={isActive ? "bg-green-100 text-green-800" : "bg-muted text-muted-foreground"}>
@@ -56,7 +56,7 @@ const WorkoutPlanCard = ({ plan }: { plan: any }) => {
         
         {/* Consistent footer */}
         <div className="bg-muted/20 p-4 border-t flex items-center justify-end">
-          <span className="text-sm font-medium text-red-600 flex items-center">
+          <span className="text-sm font-medium text-[#C9A96A] flex items-center">
             View Plan <ArrowRightIcon className="ml-1 h-3 w-3" />
           </span>
         </div>

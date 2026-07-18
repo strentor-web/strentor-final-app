@@ -42,7 +42,7 @@ export function IdealWeightCalculator({
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <Target className="w-5 h-5 text-blue-600" />
+              <Target className="w-5 h-5 text-[#C9A96A]" />
               Your Ideal Weight
             </CardTitle>
           </CardHeader>
@@ -68,11 +68,11 @@ export function IdealWeightCalculator({
             </div>
 
             {/* Ideal Weight Result */}
-            <div className="text-center p-6 bg-blue-50 rounded-lg border-2 border-blue-200">
-              <div className="text-3xl font-bold text-blue-600 mb-2">
+            <div className="text-center p-6 bg-[#C9A96A]/10 rounded-lg border-2 border-[#C9A96A]/30">
+              <div className="text-3xl font-bold text-[#C9A96A] mb-2">
                 {idealWeight.toFixed(1)} kg
               </div>
-              <div className="text-sm text-blue-700">
+              <div className="text-sm text-[#B8935A]">
                 Ideal Weight (Miller Formula)
               </div>
             </div>
@@ -141,7 +141,7 @@ export function IdealWeightCalculator({
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <Calculator className="w-5 h-5 text-green-600" />
+              <Calculator className="w-5 h-5 text-[#C9A96A]" />
               Miller Formula
             </CardTitle>
           </CardHeader>
@@ -151,16 +151,16 @@ export function IdealWeightCalculator({
             </div>
 
             <div className="space-y-3">
-              <div className="p-3 bg-blue-50 rounded-lg">
-                <div className="font-semibold text-blue-800 mb-1">For Men:</div>
-                <div className="text-sm text-blue-700">
+              <div className="p-3 bg-[#C9A96A]/10 rounded-lg">
+                <div className="font-semibold text-[#7a5f35] mb-1">For Men:</div>
+                <div className="text-sm text-[#B8935A]">
                   Ideal Weight = 56.2 + 0.555 × (Height - 152.4)
                 </div>
               </div>
 
-              <div className="p-3 bg-pink-50 rounded-lg">
-                <div className="font-semibold text-pink-800 mb-1">For Women:</div>
-                <div className="text-sm text-pink-700">
+              <div className="p-3 bg-[#EDE0C8]/20 rounded-lg">
+                <div className="font-semibold text-[#8a6d3b] mb-1">For Women:</div>
+                <div className="text-sm text-[#8a6d3b]">
                   Ideal Weight = 53.1 + 0.535 × (Height - 152.4)
                 </div>
               </div>

@@ -21,21 +21,21 @@ export default async function Calculator() {
       description: "Calculate your Body Mass Index based on weight and height",
       icon: Scale,
       href: "/calculator/bmi",
-      color: "text-blue-600"
+      color: "text-[#C9A96A]"
     },
     {
       title: "BMR Calculator",
       description: "Calculate your Basal Metabolic Rate for daily calorie needs",
       icon: Activity,
       href: "/calculator/bmr",
-      color: "text-green-600"
+      color: "text-[#B8935A]"
     },
     {
       title: "Body Fat Calculator",
       description: "Estimate body fat percentage using various measurements",
       icon: Target,
       href: "/calculator/body-fat",
-      color: "text-purple-600"
+      color: "text-[#C9C0B4]"
     },
 
     {
@@ -43,21 +43,21 @@ export default async function Calculator() {
       description: "Determine your ideal weight range based on height and build",
       icon: TrendingUp,
       href: "/calculator/ideal-weight",
-      color: "text-red-600"
+      color: "text-[#C9A96A]/60"
     },
     {
       title: "Lean Body Mass",
       description: "Calculate your lean body mass and muscle percentage",
       icon: Heart,
       href: "/calculator/lean-body-mass",
-      color: "text-pink-600"
+      color: "text-[#EDE0C8]"
     },
     {
       title: "Macro Split",
       description: "Calculate optimal macronutrient distribution for your goals",
       icon: CalculatorIcon,
       href: "/calculator/macro-split",
-      color: "text-teal-600"
+      color: "text-[#B8935A]/70"
     }
   ];
 

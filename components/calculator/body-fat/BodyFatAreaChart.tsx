@@ -39,7 +39,7 @@ export function BodyFatAreaChart({ data }: { data: { date: string, bodyFatPercen
       return (
         <div className="bg-card p-3 border rounded-lg shadow-lg">
           <p className="font-medium">{formatDate(label)}</p>
-          <p className="text-blue-600">
+          <p className="text-[#C9A96A]">
             Body Fat: <span className="font-bold">{payload[0].value}%</span>
           </p>
         </div>
@@ -74,7 +74,7 @@ export function BodyFatAreaChart({ data }: { data: { date: string, bodyFatPercen
         <CardContent>
           <div className="h-[300px] flex items-center justify-center">
             <div className="text-center">
-              <div className="text-4xl font-bold text-blue-600 mb-2">
+              <div className="text-4xl font-bold text-[#C9A96A] mb-2">
                 {chartData[0].bodyFatPercentage}%
               </div>
               <div className="text-sm text-muted-foreground">
@@ -130,15 +130,15 @@ export function BodyFatAreaChart({ data }: { data: { date: string, bodyFatPercen
             <Area
               type="monotone"
               dataKey="bodyFatPercentage"
-              stroke="#3b82f6"
+              stroke="#C9A96A"
               strokeWidth={2}
               fill="url(#bodyFatGradient)"
               fillOpacity={0.3}
             />
             <defs>
               <linearGradient id="bodyFatGradient" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="5%" stopColor="#3b82f6" stopOpacity={0.3} />
-                <stop offset="95%" stopColor="#3b82f6" stopOpacity={0.1} />
+                <stop offset="5%" stopColor="#C9A96A" stopOpacity={0.3} />
+                <stop offset="95%" stopColor="#C9A96A" stopOpacity={0.1} />
               </linearGradient>
             </defs>
           </AreaChart>

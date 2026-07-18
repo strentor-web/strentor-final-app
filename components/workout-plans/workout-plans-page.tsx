@@ -65,7 +65,7 @@ export function WorkoutPlansPage() {
           <p className="text-red-600">Failed to load workout plans.</p>
           <button
             onClick={fetchPlans}
-            className="mt-2 text-sm text-blue-600 hover:text-blue-800"
+            className="mt-2 text-sm text-[#C9A96A] hover:text-[#C9A96A]/80"
           >
             Try again
           </button>

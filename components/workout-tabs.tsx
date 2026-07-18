@@ -13,7 +13,7 @@ export default function WorkoutTabs() {
           onClick={() => setActiveTab("routine")}
           className={`flex items-center px-4 py-2 border-b-2 ${
             activeTab === "routine"
-              ? "border-purple-500 text-purple-600"
+              ? "border-[#C9A96A] text-[#C9A96A]"
               : "border-transparent text-muted-foreground hover:text-foreground"
           }`}
         >
@@ -24,7 +24,7 @@ export default function WorkoutTabs() {
           onClick={() => setActiveTab("tracking")}
           className={`flex items-center px-4 py-2 border-b-2 ${
             activeTab === "tracking"
-              ? "border-purple-500 text-purple-600"
+              ? "border-[#C9A96A] text-[#C9A96A]"
               : "border-transparent text-muted-foreground hover:text-foreground"
           }`}
         >

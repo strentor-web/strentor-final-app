@@ -146,18 +146,18 @@ export function WorkoutVideoUpload({
             </div>
 
             {existingVideo.reviewedAt && (
-              <div className="mt-3 p-3 bg-blue-50 border border-blue-200 rounded-lg">
+              <div className="mt-3 p-3 bg-[#C9C0B4]/10 border border-[#C9C0B4]/30 rounded-lg">
                 <div className="flex items-center gap-2 mb-2">
-                  <User className="h-4 w-4 text-blue-600" />
-                  <span className="text-sm font-medium text-blue-800">Trainer Review</span>
-                  <Badge variant="outline" className="text-blue-600 border-blue-600">
+                  <User className="h-4 w-4 text-foreground" />
+                  <span className="text-sm font-medium text-foreground">Trainer Review</span>
+                  <Badge variant="outline" className="text-foreground border-[#C9C0B4]">
                     Reviewed
                   </Badge>
                 </div>
-                <div className="text-sm text-blue-700">
+                <div className="text-sm text-foreground">
                   {existingVideo.trainerNotes || "No specific feedback provided."}
                 </div>
-                <div className="text-xs text-blue-600 mt-1">
+                <div className="text-xs text-foreground mt-1">
                   Reviewed: {format(new Date(existingVideo.reviewedAt), "MMM d, yyyy 'at' h:mm a")}
                 </div>
               </div>

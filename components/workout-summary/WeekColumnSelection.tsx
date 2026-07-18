@@ -114,7 +114,7 @@ export default function WeekColumnSelection({
               <p className="text-sm text-muted-foreground">
                 View progress trends and overall performance across all weeks
               </p>
-              <Badge variant="secondary" className="bg-blue-100 text-blue-800 mt-2">
+              <Badge variant="secondary" className="bg-[#C9A96A]/15 text-[#8a6d3b] mt-2">
                 Overall Progress View
               </Badge>
             </div>

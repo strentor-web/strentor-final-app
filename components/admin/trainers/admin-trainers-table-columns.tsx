@@ -22,7 +22,7 @@ function getInitials(name: string): string {
 function getCategoryBadgeColor(category: string) {
   switch (category) {
     case "FITNESS":
-      return "bg-blue-100 text-blue-800 hover:bg-blue-200";
+      return "bg-[#C9A96A]/10 text-[#C9A96A] hover:bg-[#C9A96A]/20";
     default:
       return "bg-muted text-foreground hover:bg-muted/80";
   }
@@ -107,11 +107,11 @@ export function useAdminTrainersTableColumns() {
         
         return (
           <div className="text-sm">
-            <div className={`font-medium ${isAdmin ? 'text-orange-600' : 'text-foreground'}`}>
+            <div className={`font-medium ${isAdmin ? 'text-[#C9A96A]' : 'text-foreground'}`}>
               {role.replace(/_/g, ' ')}
             </div>
             {isAdmin && (
-              <div className="text-xs text-orange-500">
+              <div className="text-xs text-[#C9A96A]">
                 Admin Access
               </div>
             )}

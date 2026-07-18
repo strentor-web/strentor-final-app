@@ -72,7 +72,7 @@ export function TrainerClientsPage({ initialData }: TrainerClientsPageProps) {
           <p className="text-red-600">Failed to load clients.</p>
           <button
             onClick={fetchClients}
-            className="mt-2 text-sm text-blue-600 hover:text-blue-800"
+            className="mt-2 text-sm text-[#C9A96A] hover:text-[#C9A96A]/80"
           >
             Try again
           </button>

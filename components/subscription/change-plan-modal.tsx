@@ -97,10 +97,10 @@ export function ChangePlanModal({ state, onClose, onUpdatePlan }: ChangePlanModa
             {/* Available Downgrades */}
             {currentSubscriptionChanges.downgrades && currentSubscriptionChanges.downgrades.length > 0 && (
               <div>
-                <h3 className="font-semibold mb-2 text-orange-600">Downgrades</h3>
+                <h3 className="font-semibold mb-2 text-[#B8935A]">Downgrades</h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                   {currentSubscriptionChanges.downgrades.map((plan: any) => (
-                    <Card key={plan.id} className="border-orange-200 bg-orange-50">
+                    <Card key={plan.id} className="border-[#B8935A]/30 bg-[#B8935A]/10">
                       <CardHeader className="pb-2">
                         <CardTitle className="text-sm">{plan.name}</CardTitle>
                       </CardHeader>
@@ -130,7 +130,7 @@ export function ChangePlanModal({ state, onClose, onUpdatePlan }: ChangePlanModa
             {/* ALL_IN_ONE Options */}
             {currentSubscriptionChanges.allInOneOptions && currentSubscriptionChanges.allInOneOptions.length > 0 && (
               <div>
-                <h3 className="font-semibold mb-2 text-purple-600">All-in-One Plans</h3>
+                <h3 className="font-semibold mb-2 text-[#8a8072]">All-in-One Plans</h3>
                 {!currentSubscriptionChanges.canUpgradeToAllInOne && (
                   <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-3 mb-3">
                     <p className="text-sm text-yellow-800">
@@ -150,7 +150,7 @@ export function ChangePlanModal({ state, onClose, onUpdatePlan }: ChangePlanModa
                 )}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                   {currentSubscriptionChanges.allInOneOptions.map((plan: any) => (
-                    <Card key={plan.id} className="border-purple-200 bg-purple-50">
+                    <Card key={plan.id} className="border-[#C9C0B4]/40 bg-[#C9C0B4]/10">
                       <CardHeader className="pb-2">
                         <CardTitle className="text-sm">{plan.name}</CardTitle>
                       </CardHeader>

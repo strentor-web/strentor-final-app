@@ -41,7 +41,7 @@ export default async function MacroSplitPage() {
             </p>
             <a
               href="/settings"
-              className="inline-flex items-center px-4 py-2 bg-yellow-600 text-white rounded-md hover:bg-yellow-700 transition-colors"
+              className="inline-flex items-center px-4 py-2 bg-[#C9A96A] hover:bg-[#C9A96A]/90 text-black rounded-md transition-colors"
             >
               Go to Settings
             </a>

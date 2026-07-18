@@ -187,7 +187,7 @@ const Sidebar = React.forwardRef<
       return (
         <div
           className={cn(
-            "flex h-full w-[--sidebar-width] flex-col bg-sidebar text-sidebar-foreground focus:outline-none focus:ring-2 focus:ring-red-500 focus:bg-red-100",
+            "flex h-full w-[--sidebar-width] flex-col bg-sidebar text-sidebar-foreground focus:outline-none focus:ring-2 focus:ring-[#C9A96A] focus:bg-[#C9A96A]/10",
             className
           )}
           ref={ref}

@@ -86,7 +86,7 @@ function ExerciseCard({ id, name, youtube_link, type, is_reps_based, onPick }: E
             {type}
           </Badge>
           {is_reps_based && (
-            <Badge variant="outline" className="w-fit text-[10px] bg-blue-50 text-blue-700 border-blue-200">
+            <Badge variant="outline" className="w-fit text-[10px] bg-[#C9A96A]/10 text-[#C9A96A] border-[#C9A96A]/30">
               🏃 Reps-based
             </Badge>
           )}

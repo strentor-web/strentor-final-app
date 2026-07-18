@@ -173,7 +173,7 @@ export function MacroCalculator({
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <Target className="w-5 h-5 text-purple-600" />
+              <Target className="w-5 h-5 text-[#C9A96A]" />
               Your Macro Breakdown
             </CardTitle>
           </CardHeader>
@@ -240,11 +240,11 @@ export function MacroCalculator({
             </div>
 
             {/* Calorie Breakdown */}
-            <div className="text-center p-6 bg-purple-50 rounded-lg border-2 border-purple-200">
-              <div className="text-3xl font-bold text-purple-600 mb-2">
+            <div className="text-center p-6 bg-[#C9A96A]/10 rounded-lg border-2 border-[#C9A96A]/30">
+              <div className="text-3xl font-bold text-[#C9A96A] mb-2">
                 {macros.calories.toFixed(0)} calories
               </div>
-              <div className="text-sm text-purple-700">
+              <div className="text-sm text-[#B8935A]">
                 Daily Calorie Target ({getGoalName(fitnessGoal)})
               </div>
             </div>
@@ -257,34 +257,34 @@ export function MacroCalculator({
               
               <div className="grid grid-cols-3 gap-4">
                 {/* Protein */}
-                <div className="text-center p-4 bg-red-50 rounded-lg">
-                  <div className="text-lg font-bold text-red-600">
+                <div className="text-center p-4 bg-[#B8935A]/10 rounded-lg">
+                  <div className="text-lg font-bold text-[#B8935A]">
                     {macros.protein.grams.toFixed(0)}g
                   </div>
-                  <div className="text-xs text-red-700">Protein</div>
-                  <div className="text-xs text-red-600">
+                  <div className="text-xs text-[#8a6d3b]">Protein</div>
+                  <div className="text-xs text-[#B8935A]">
                     {macros.protein.percentage.toFixed(0)}%
                   </div>
                 </div>
-                
+
                 {/* Carbs */}
-                <div className="text-center p-4 bg-blue-50 rounded-lg">
-                  <div className="text-lg font-bold text-blue-600">
+                <div className="text-center p-4 bg-[#C9C0B4]/15 rounded-lg">
+                  <div className="text-lg font-bold text-[#8a8072]">
                     {macros.carbs.grams.toFixed(0)}g
                   </div>
-                  <div className="text-xs text-blue-700">Carbs</div>
-                  <div className="text-xs text-blue-600">
+                  <div className="text-xs text-[#8a8072]">Carbs</div>
+                  <div className="text-xs text-[#8a8072]">
                     {macros.carbs.percentage.toFixed(0)}%
                   </div>
                 </div>
-                
+
                 {/* Fats */}
-                <div className="text-center p-4 bg-green-50 rounded-lg">
-                  <div className="text-lg font-bold text-green-600">
+                <div className="text-center p-4 bg-[#EDE0C8]/25 rounded-lg">
+                  <div className="text-lg font-bold text-[#8a6d3b]">
                     {macros.fats.grams.toFixed(0)}g
                   </div>
-                  <div className="text-xs text-green-700">Fats</div>
-                  <div className="text-xs text-green-600">
+                  <div className="text-xs text-[#8a6d3b]">Fats</div>
+                  <div className="text-xs text-[#8a6d3b]">
                     {macros.fats.percentage.toFixed(0)}%
                   </div>
                 </div>
@@ -325,7 +325,7 @@ export function MacroCalculator({
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <Calculator className="w-5 h-5 text-blue-600" />
+              <Calculator className="w-5 h-5 text-[#C9A96A]" />
               Macro Calculation
             </CardTitle>
           </CardHeader>
@@ -335,17 +335,17 @@ export function MacroCalculator({
             </div>
 
             <div className="space-y-3">
-              <div className="p-3 bg-blue-50 rounded-lg">
-                <div className="font-semibold text-blue-800 mb-1">BMR Formula:</div>
-                <div className="text-sm text-blue-700">
+              <div className="p-3 bg-[#C9A96A]/10 rounded-lg">
+                <div className="font-semibold text-[#7a5f35] mb-1">BMR Formula:</div>
+                <div className="text-sm text-[#B8935A]">
                   Men: 10×Weight + 6.25×Height - 5×Age + 5<br/>
                   Women: 10×Weight + 6.25×Height - 5×Age - 161
                 </div>
               </div>
 
-              <div className="p-3 bg-green-50 rounded-lg">
-                <div className="font-semibold text-green-800 mb-1">TDEE Calculation:</div>
-                <div className="text-sm text-green-700">
+              <div className="p-3 bg-[#C9C0B4]/15 rounded-lg">
+                <div className="font-semibold text-[#5f584d] mb-1">TDEE Calculation:</div>
+                <div className="text-sm text-[#8a8072]">
                   TDEE = BMR × Activity Multiplier
                 </div>
               </div>
@@ -368,7 +368,7 @@ export function MacroCalculator({
                 <span><strong>Weight Loss:</strong> 30% Protein, 40% Carbs, 30% Fats</span>
               </div>
               <div className="flex items-center gap-2">
-                <Minus className="w-4 h-4 text-blue-500" />
+                <Minus className="w-4 h-4 text-muted-foreground" />
                 <span><strong>Maintenance:</strong> 25% Protein, 45% Carbs, 30% Fats</span>
               </div>
               <div className="flex items-center gap-2">
@@ -386,15 +386,15 @@ export function MacroCalculator({
           <CardContent className="space-y-3 text-sm text-muted-foreground">
             <div className="space-y-2">
               <div className="flex items-center gap-2">
-                <div className="w-3 h-3 bg-red-500 rounded-full"></div>
+                <div className="w-3 h-3 bg-[#B8935A] rounded-full"></div>
                 <span><strong>Protein:</strong> 4 calories per gram - Builds and repairs muscle</span>
               </div>
               <div className="flex items-center gap-2">
-                <div className="w-3 h-3 bg-blue-500 rounded-full"></div>
+                <div className="w-3 h-3 bg-[#C9C0B4] rounded-full"></div>
                 <span><strong>Carbs:</strong> 4 calories per gram - Primary energy source</span>
               </div>
               <div className="flex items-center gap-2">
-                <div className="w-3 h-3 bg-green-500 rounded-full"></div>
+                <div className="w-3 h-3 bg-[#EDE0C8] rounded-full"></div>
                 <span><strong>Fats:</strong> 9 calories per gram - Hormone production and nutrient absorption</span>
               </div>
             </div>

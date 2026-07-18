@@ -382,7 +382,7 @@ export default function BodyFatCalculator({
                      type="number" 
                      value={height} 
                      onChange={(e) => setHeight(Number(e.target.value))}
-                     className="focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:border-blue-500"
+                     className="focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:border-[#C9A96A]"
                      placeholder="e.g., 175"
                    />
                    <p className="text-sm text-muted-foreground">
@@ -396,7 +396,7 @@ export default function BodyFatCalculator({
                       type="number" 
                       value={waist} 
                       onChange={(e) => setWaist(Number(e.target.value))}
-                      className="focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:border-blue-500"
+                      className="focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:border-[#C9A96A]"
                       placeholder="e.g., 85"
                     />
                     <p className="text-sm text-muted-foreground">
@@ -410,7 +410,7 @@ export default function BodyFatCalculator({
                       type="number" 
                       value={neck} 
                       onChange={(e) => setNeck(Number(e.target.value))}
-                      className="focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:border-blue-500"
+                      className="focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:border-[#C9A96A]"
                       placeholder="e.g., 38"
                     />
                     <p className="text-sm text-muted-foreground">
@@ -425,7 +425,7 @@ export default function BodyFatCalculator({
                        type="number" 
                        value={hips} 
                        onChange={(e) => setHips(Number(e.target.value))}
-                       className="focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:border-blue-500"
+                       className="focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:border-[#C9A96A]"
                        placeholder="e.g., 95"
                      />
                      <p className="text-sm text-muted-foreground">

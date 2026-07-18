@@ -86,7 +86,7 @@ export function PRInvalidationModal({
           <AlertDialogTitle className="flex items-center gap-2">
             {isInvalidated ? (
               <>
-                <RotateCcw className="h-5 w-5 text-blue-600" />
+                <RotateCcw className="h-5 w-5 text-[#C9A96A]" />
                 Restore Personal Record
               </>
             ) : (
@@ -120,7 +120,7 @@ export function PRInvalidationModal({
           <AlertDialogAction
             onClick={handleConfirm}
             disabled={isLoading}
-            className={isInvalidated ? "bg-blue-600 hover:bg-blue-700" : "bg-red-600 hover:bg-red-700"}
+            className={isInvalidated ? "bg-[#C9A96A] hover:bg-[#C9A96A]/90 text-black" : "bg-red-600 hover:bg-red-700"}
           >
             {isLoading ? (
               "Processing..."

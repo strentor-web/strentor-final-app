@@ -264,7 +264,7 @@ export function EditClientTrainersModal({
               {client.activePlans.map((plan) => (
                 <span 
                   key={plan.id}
-                  className="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded-md"
+                  className="px-2 py-1 bg-[#C9A96A]/10 text-[#C9A96A] text-xs rounded-md"
                 >
                   {plan.name}
                 </span>

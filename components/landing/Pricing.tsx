@@ -195,12 +195,12 @@ export default function Pricing() {
               <Card 
                 key={category}
                 className={`h-full flex flex-col overflow-hidden rounded-2xl border p-6 shadow bg-background ${getCategoryBorderClass(category)} ${
-                  isAllInOne ? 'ring-2 ring-green-500 bg-gradient-to-br from-green-50 to-emerald-50' : ''
+                  isAllInOne ? 'ring-2 ring-[#C9A96A] bg-gradient-to-br from-[#C9A96A]/10 to-[#EDE0C8]/10' : ''
                 } relative`}
               >
                 {/* Floating Most Popular Badge */}
                 {isAllInOne && (
-                  <Badge variant="default" className="absolute top-4 right-4 bg-green-500 z-10">
+                  <Badge variant="default" className="absolute top-4 right-4 bg-[#C9A96A] text-black z-10">
                     Most Popular
                   </Badge>
                 )}
@@ -256,7 +256,7 @@ export default function Pricing() {
                   {/* {plan.features.length > 3 && (
                     <button 
                       onClick={() => toggleExpansion(category)}
-                      className="mt-3 text-sm text-blue-600 hover:text-blue-800 font-medium transition-colors"
+                      className="mt-3 text-sm text-[#C9A96A] hover:text-[#C9A96A]/80 font-medium transition-colors"
                     >
                       {expandedCards.has(category) 
                         ? 'View Less' 
@@ -272,7 +272,7 @@ export default function Pricing() {
                     onClick={handleGetStarted}
                     className={`w-full ${
                       isAllInOne
-                        ? 'bg-green-600 hover:bg-green-700 text-white'
+                        ? 'bg-[#C9A96A] hover:bg-[#C9A96A]/90 text-black'
                         : 'bg-primary hover:bg-primary/90 text-primary-foreground'
                     }`}
                   >

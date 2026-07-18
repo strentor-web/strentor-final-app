@@ -266,15 +266,15 @@ export function PersonalRecordsClient({ uniqueExercises, allMaxLifts }: Personal
         {/* Stats */}
         {/* <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <div className="bg-white dark:bg-gray-800 p-4 rounded-lg border">
-            <div className="text-2xl font-bold text-blue-600">{allMaxLifts.length}</div>
+            <div className="text-2xl font-bold text-[#C9A96A]">{allMaxLifts.length}</div>
             <div className="text-sm text-gray-600">Total Records</div>
           </div>
           <div className="bg-white dark:bg-gray-800 p-4 rounded-lg border">
-            <div className="text-2xl font-bold text-green-600">{uniqueExercises.length}</div>
+            <div className="text-2xl font-bold text-[#B8935A]">{uniqueExercises.length}</div>
             <div className="text-sm text-gray-600">Unique Exercises</div>
           </div>
           <div className="bg-white dark:bg-gray-800 p-4 rounded-lg border">
-            <div className="text-2xl font-bold text-purple-600">{chartData.length}</div>
+            <div className="text-2xl font-bold text-[#C9C0B4]">{chartData.length}</div>
             <div className="text-sm text-gray-600">Filtered Records</div>
           </div>
         </div> */}
