@@ -71,8 +71,11 @@ export interface HealthSafetyScreening {
   kidneyDetails: string[];
   diabetesDetails: string[];
   heartDetails: string[];
+  respiratoryDetails: string[];
   neurologicalDetails: string[];
   boneJointDetails: string[];
+  digestiveDetails: string[];
+  recentSurgeryDetails: string[];
   otherHealthDescription?: string;
   urgentFlags: string[];
 }
@@ -81,6 +84,7 @@ export interface NutritionContext {
   baseOptions: string[];
   renalOptions: string[];
   diabetesOptions: string[];
+  dietType: string[];
 }
 
 export interface CoachingGoals {
@@ -142,4 +146,6 @@ export interface IntakeFormPayload {
   region?: string;
   plan?: string;
   sourcePage?: string;
+  consent: boolean;
+  submittedAt: string;
 }

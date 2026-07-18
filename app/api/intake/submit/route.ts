@@ -43,7 +43,54 @@ const payloadSchema = z.object({
   region: z.string().max(10).optional(),
   plan: z.string().max(100).optional(),
   sourcePage: z.string().max(200).optional(),
+  consent: z.literal(true),
+  submittedAt: z.string().trim().min(1).max(50),
 });
+
+// Best-effort, per-instance rate limiting and duplicate-submission guard.
+// Not distributed (no Redis/Upstash configured for this project), but
+// meaningfully raises the bar against basic spam and double-submits for
+// a public contact form without adding new infra dependencies.
+const RATE_LIMIT_WINDOW_MS = 10 * 60 * 1000;
+const RATE_LIMIT_MAX_REQUESTS = 8;
+const DUPLICATE_WINDOW_MS = 60 * 1000;
+const MAX_TRACKED_ENTRIES = 5000;
+
+const rateLimitHits = new Map<string, number[]>();
+const recentSubmissions = new Map<string, number>();
+
+function pruneMap(map: Map<string, unknown>) {
+  if (map.size <= MAX_TRACKED_ENTRIES) return;
+  const keys = map.keys();
+  for (let i = 0; i < map.size - MAX_TRACKED_ENTRIES; i++) {
+    const next = keys.next();
+    if (next.done) break;
+    map.delete(next.value);
+  }
+}
+
+function getClientIp(request: NextRequest): string {
+  const forwardedFor = request.headers.get("x-forwarded-for");
+  if (forwardedFor) return forwardedFor.split(",")[0].trim();
+  return request.headers.get("x-real-ip") || "unknown";
+}
+
+function isRateLimited(ip: string): boolean {
+  const now = Date.now();
+  const hits = (rateLimitHits.get(ip) || []).filter((t) => now - t < RATE_LIMIT_WINDOW_MS);
+  hits.push(now);
+  rateLimitHits.set(ip, hits);
+  pruneMap(rateLimitHits);
+  return hits.length > RATE_LIMIT_MAX_REQUESTS;
+}
+
+function isDuplicateSubmission(key: string): boolean {
+  const now = Date.now();
+  const last = recentSubmissions.get(key);
+  recentSubmissions.set(key, now);
+  pruneMap(recentSubmissions);
+  return last !== undefined && now - last < DUPLICATE_WINDOW_MS;
+}
 
 function classifyReviewLevel(healthSafety: any): "standard_fit_review" | "strentor_safety_review_needed" | "medical_clearance_likely_needed" {
   const urgentFlags: string[] = healthSafety?.urgentFlags || [];
@@ -80,6 +127,11 @@ function renderSection(title: string, data: Record<string, unknown> | undefined)
 }
 
 export async function POST(request: NextRequest) {
+  const clientIp = getClientIp(request);
+  if (isRateLimited(clientIp)) {
+    return NextResponse.json({ error: "Too many submissions. Please try again later." }, { status: 429 });
+  }
+
   let body: unknown;
   try {
     body = await request.json();
@@ -94,6 +146,13 @@ export async function POST(request: NextRequest) {
 
   const data = parsed.data;
   const { pathway, contact } = data;
+
+  const duplicateKey = `${clientIp}:${contact.email.toLowerCase()}:${pathway}`;
+  if (isDuplicateSubmission(duplicateKey)) {
+    // Same enquiry resubmitted within the window (double-click, retry) —
+    // treat as a successful no-op rather than sending a duplicate email.
+    return NextResponse.json({ success: true });
+  }
 
   const primaryEmail = PATHWAY_PRIMARY_EMAIL[pathway];
   const ccEmails = PATHWAY_CC[pathway];
@@ -112,7 +171,13 @@ export async function POST(request: NextRequest) {
       ${renderSection("Professional Referral", data.referral)}
       ${renderSection("Pay It Forward Sponsor", data.sponsor)}
       ${renderSection("General Enquiry", data.general)}
-      ${renderSection("Context", { region: data.region, plan: data.plan, sourcePage: data.sourcePage })}
+      ${renderSection("Context", {
+        region: data.region,
+        plan: data.plan,
+        sourcePage: data.sourcePage,
+        consentStatus: data.consent ? "Confirmed" : "Not confirmed",
+        timestamp: data.submittedAt,
+      })}
     </div>
   `;
 

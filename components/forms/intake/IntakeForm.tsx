@@ -1,6 +1,6 @@
 "use client"
 
-import { useMemo, useState } from "react"
+import { useMemo, useRef, useState } from "react"
 import { toast } from "sonner"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -11,7 +11,7 @@ import {
   RadioGroup,
   RadioGroupItem,
 } from "@/components/ui/radio-group"
-import { CheckCircle2, Loader2 } from "lucide-react"
+import { ErrorSummary, LoadingState, SuccessMessage } from "@/components/forms/intake/IntakeFormFeedback"
 import {
   AdaptiveTrainingProfile,
   ContactDetails,
@@ -106,8 +106,11 @@ const emptyHealthSafety: HealthSafetyScreening = {
   kidneyDetails: [],
   diabetesDetails: [],
   heartDetails: [],
+  respiratoryDetails: [],
   neurologicalDetails: [],
   boneJointDetails: [],
+  digestiveDetails: [],
+  recentSurgeryDetails: [],
   urgentFlags: [],
 }
 
@@ -115,6 +118,7 @@ const emptyNutrition: NutritionContext = {
   baseOptions: [],
   renalOptions: [],
   diabetesOptions: [],
+  dietType: [],
 }
 
 const emptyGoals: CoachingGoals = { goals: [] }
@@ -159,8 +163,11 @@ export function IntakeForm({ initialPathway, region, plan, sourcePage, onPathway
   const [sponsor, setSponsor] = useState<SponsorDetails>(emptySponsor)
   const [general, setGeneral] = useState<GeneralEnquiryDetails>(emptyGeneral)
   const [honeypot, setHoneypot] = useState("")
+  const [consent, setConsent] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [submitted, setSubmitted] = useState(false)
+  const [submitError, setSubmitError] = useState<string | null>(null)
+  const lastSubmissionRef = useRef(0)
 
   const steps = useMemo(() => {
     if (!pathway) return ["pathway"]
@@ -190,17 +197,25 @@ export function IntakeForm({ initialPathway, region, plan, sourcePage, onPathway
   const showKidney = health.categories.includes("kidney_renal")
   const showDiabetes = health.categories.includes("diabetes_metabolic")
   const showHeart = health.categories.includes("heart_bp")
+  const showRespiratory = health.categories.includes("respiratory")
   const showNeuro = health.categories.includes("neurological")
   const showBoneJoint = health.categories.includes("bone_joint_pain")
+  const showDigestive = health.categories.includes("digestive")
+  const showRecentSurgery = health.categories.includes("recent_surgery")
 
   async function handleSubmit() {
-    if (!pathway) return
+    if (!pathway || !consent) return
     if (honeypot.trim().length > 0) {
       // Silently drop bot submissions without revealing the honeypot to the user.
       setSubmitted(true)
       return
     }
+    // Guard against accidental double-clicks / double form-submits.
+    const now = Date.now()
+    if (isSubmitting || now - lastSubmissionRef.current < 5000) return
+    lastSubmissionRef.current = now
 
+    setSubmitError(null)
     setIsSubmitting(true)
     try {
       const payload: IntakeFormPayload = {
@@ -209,6 +224,8 @@ export function IntakeForm({ initialPathway, region, plan, sourcePage, onPathway
         region,
         plan,
         sourcePage,
+        consent,
+        submittedAt: new Date().toISOString(),
       }
       if (PERSONAL_TRACK_PATHWAYS.includes(pathway)) {
         payload.adaptiveTrainingProfile = training
@@ -231,28 +248,28 @@ export function IntakeForm({ initialPathway, region, plan, sourcePage, onPathway
         body: JSON.stringify(payload),
       })
 
+      if (res.status === 429) {
+        throw new Error("Too many submissions. Please wait a moment and try again.")
+      }
       if (!res.ok) {
         throw new Error("Submission failed")
       }
 
       setSubmitted(true)
     } catch (error) {
-      toast.error("Something went wrong sending your enquiry. Please try again, or email hello@strentor.com directly.")
+      const message =
+        error instanceof Error && error.message.includes("Too many submissions")
+          ? error.message
+          : "Something went wrong sending your enquiry. Please try again, or email hello@strentor.com directly."
+      setSubmitError(message)
+      toast.error(message)
     } finally {
       setIsSubmitting(false)
     }
   }
 
   if (submitted) {
-    return (
-      <div className="rounded-2xl border border-[#C9A96A]/30 bg-[#C9A96A]/5 p-8 text-center">
-        <CheckCircle2 className="mx-auto h-12 w-12 text-[#C9A96A]" />
-        <h3 className="mt-4 text-xl font-bold text-foreground">Thank you — we've received your enquiry</h3>
-        <p className="mt-2 text-muted-foreground">
-          A member of the STRENTOR team will be in touch shortly at the email you provided.
-        </p>
-      </div>
-    )
+    return <SuccessMessage />
   }
 
   return (
@@ -519,6 +536,11 @@ export function IntakeForm({ initialPathway, region, plan, sourcePage, onPathway
                     { value: "fistula_precautions", label: "Fistula or access precautions" },
                     { value: "dialysis_schedule", label: "Dialysis schedule" },
                     { value: "doctor_clearance_status", label: "Doctor clearance status" },
+                    { value: "fatigue_after_dialysis", label: "Fatigue after dialysis" },
+                    { value: "blood_pressure_concerns", label: "Blood pressure concerns" },
+                    { value: "anaemia", label: "Anaemia" },
+                    { value: "cramping", label: "Cramping" },
+                    { value: "fluid_management_concerns", label: "Fluid-management concerns" },
                   ]}
                   selected={health.kidneyDetails}
                   onToggle={(v) => setHealth({ ...health, kidneyDetails: toggleValue(health.kidneyDetails, v) })}
@@ -541,6 +563,8 @@ export function IntakeForm({ initialPathway, region, plan, sourcePage, onPathway
                     { value: "frequent_highs", label: "Frequent high blood sugar" },
                     { value: "glucose_monitor", label: "Glucose monitor use" },
                     { value: "workout_glucose_risk", label: "Workout glucose risks" },
+                    { value: "diabetic_neuropathy", label: "Neuropathy" },
+                    { value: "foot_care_concerns", label: "Foot-care concerns" },
                   ]}
                   selected={health.diabetesDetails}
                   onToggle={(v) => setHealth({ ...health, diabetesDetails: toggleValue(health.diabetesDetails, v) })}
@@ -565,6 +589,25 @@ export function IntakeForm({ initialPathway, region, plan, sourcePage, onPathway
                   ]}
                   selected={health.heartDetails}
                   onToggle={(v) => setHealth({ ...health, heartDetails: toggleValue(health.heartDetails, v) })}
+                />
+              </div>
+            </div>
+          )}
+
+          {showRespiratory && (
+            <div className="mt-6">
+              <Label>Respiratory details</Label>
+              <div className="mt-3">
+                <CheckboxGroup
+                  options={[
+                    { value: "asthma", label: "Asthma" },
+                    { value: "copd", label: "COPD" },
+                    { value: "breathing_limitation", label: "Breathing limitation" },
+                    { value: "low_oxygen", label: "Low oxygen levels" },
+                    { value: "respiratory_support", label: "Uses respiratory support (e.g. inhaler, oxygen)" },
+                  ]}
+                  selected={health.respiratoryDetails}
+                  onToggle={(v) => setHealth({ ...health, respiratoryDetails: toggleValue(health.respiratoryDetails, v) })}
                 />
               </div>
             </div>
@@ -609,6 +652,45 @@ export function IntakeForm({ initialPathway, region, plan, sourcePage, onPathway
                   ]}
                   selected={health.boneJointDetails}
                   onToggle={(v) => setHealth({ ...health, boneJointDetails: toggleValue(health.boneJointDetails, v) })}
+                />
+              </div>
+            </div>
+          )}
+
+          {showDigestive && (
+            <div className="mt-6">
+              <Label>Digestive details</Label>
+              <div className="mt-3">
+                <CheckboxGroup
+                  options={[
+                    { value: "ibs", label: "Irritable bowel syndrome (IBS)" },
+                    { value: "acid_reflux", label: "Acid reflux / GERD" },
+                    { value: "food_intolerance", label: "Food intolerance" },
+                    { value: "bowel_management", label: "Bowel management routine" },
+                    { value: "digestive_medication", label: "Digestive medication" },
+                  ]}
+                  selected={health.digestiveDetails}
+                  onToggle={(v) => setHealth({ ...health, digestiveDetails: toggleValue(health.digestiveDetails, v) })}
+                />
+              </div>
+            </div>
+          )}
+
+          {showRecentSurgery && (
+            <div className="mt-6">
+              <Label>Recent surgery details</Label>
+              <div className="mt-3">
+                <CheckboxGroup
+                  options={[
+                    { value: "within_6_weeks", label: "Surgery within the last 6 weeks" },
+                    { value: "orthopedic_surgery", label: "Orthopedic / joint surgery" },
+                    { value: "abdominal_surgery", label: "Abdominal surgery" },
+                    { value: "cardiac_surgery", label: "Cardiac surgery" },
+                    { value: "medical_clearance_received", label: "Medical clearance already received" },
+                    { value: "medical_clearance_pending", label: "Medical clearance still pending" },
+                  ]}
+                  selected={health.recentSurgeryDetails}
+                  onToggle={(v) => setHealth({ ...health, recentSurgeryDetails: toggleValue(health.recentSurgeryDetails, v) })}
                 />
               </div>
             </div>
@@ -661,6 +743,27 @@ export function IntakeForm({ initialPathway, region, plan, sourcePage, onPathway
               selected={nutrition.baseOptions}
               onToggle={(v) => setNutrition({ ...nutrition, baseOptions: toggleValue(nutrition.baseOptions, v) })}
             />
+          </div>
+
+          <div className="mt-6">
+            <Label>Diet type</Label>
+            <div className="mt-3">
+              <CheckboxGroup
+                options={[
+                  { value: "vegetarian", label: "Vegetarian" },
+                  { value: "eggetarian", label: "Eggetarian" },
+                  { value: "non_vegetarian", label: "Non-vegetarian" },
+                  { value: "vegan", label: "Vegan" },
+                  { value: "mixed_diet", label: "Mixed diet" },
+                  { value: "religious_cultural_preference", label: "Religious / cultural food preference" },
+                  { value: "food_allergy", label: "Food allergy" },
+                  { value: "food_intolerance", label: "Food intolerance" },
+                  { value: "other", label: "Other" },
+                ]}
+                selected={nutrition.dietType}
+                onToggle={(v) => setNutrition({ ...nutrition, dietType: toggleValue(nutrition.dietType, v) })}
+              />
+            </div>
           </div>
 
           {showKidney && (
@@ -927,14 +1030,21 @@ export function IntakeForm({ initialPathway, region, plan, sourcePage, onPathway
           <p className="mt-1 text-sm text-muted-foreground">
             You're submitting a <strong>{pathway ? PATHWAY_LABELS[pathway] : ""}</strong> as {contact.fullName || "—"} ({contact.email || "—"}).
           </p>
-          <p className="mt-4 text-xs text-muted-foreground">
-            By submitting, you agree to be contacted by STRENTOR regarding your enquiry. See our{" "}
-            <a href="/privacy-policy" className="underline hover:text-[#C9A96A]">Privacy Policy</a>.
-          </p>
+          <div className="mt-6">
+            <label className="flex items-start gap-3 text-sm">
+              <Checkbox checked={consent} onCheckedChange={(checked) => setConsent(checked === true)} />
+              <span>
+                I agree to be contacted by STRENTOR regarding this enquiry and consent to the information above
+                being used for that purpose. See our{" "}
+                <a href="/privacy-policy" className="underline hover:text-[#C9A96A]">Privacy Policy</a>.
+              </span>
+            </label>
+          </div>
+          {submitError && <ErrorSummary message={submitError} />}
           <div className="mt-8 flex justify-between">
             <Button variant="outline" onClick={goBack} disabled={isSubmitting}>Back</Button>
-            <Button onClick={handleSubmit} disabled={isSubmitting}>
-              {isSubmitting ? <Loader2 className="h-4 w-4 animate-spin" /> : "Submit Enquiry"}
+            <Button onClick={handleSubmit} disabled={isSubmitting || !consent}>
+              {isSubmitting ? <LoadingState label="Submitting…" /> : "Submit Enquiry"}
             </Button>
           </div>
         </div>
