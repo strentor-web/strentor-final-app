@@ -10,6 +10,82 @@ datasource db {
   schemas   = ["public"]
 }
 
+// STRENTOR Adaptive Transformation Academy — readiness assessment engine.
+// See App Builder Requirement Document section 9 (pathway logic) and
+// section 12 (core schema). Scoring/pathway rules are deterministic and
+// enforced in app code, not here.
+model assessments {
+  id                     String                   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  user_id                String                   @db.Uuid
+  total_score            Int
+  red_flag_exists        Boolean                  @default(false)
+  pathway_result         AssessmentPathway
+  human_review_required  Boolean                  @default(false)
+  corporate_interest     Boolean                  @default(false)
+  elite_interest         Boolean                  @default(false)
+  submitted_at           DateTime                 @default(now())
+  users_profile          users_profile            @relation("AssessmentUser", fields: [user_id], references: [id], onDelete: NoAction, map: "Assessment_userId_fkey")
+  assessment_answers     assessment_answers[]
+  pathway_recommendations pathway_recommendations[]
+
+  @@index([user_id], map: "Assessment_userId_idx")
+  @@schema("public")
+}
+
+model assessment_answers {
+  id            String      @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  assessment_id String      @db.Uuid
+  question_key  String
+  answer_value  String
+  score_value   Int         @default(0)
+  is_red_flag   Boolean     @default(false)
+  notes         String?
+  assessments   assessments @relation(fields: [assessment_id], references: [id], onDelete: Cascade, map: "AssessmentAnswer_assessmentId_fkey")
+
+  @@index([assessment_id], map: "AssessmentAnswer_assessmentId_idx")
+  @@schema("public")
+}
+
+model pathway_recommendations {
+  id                           String            @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  user_id                      String            @db.Uuid
+  assessment_id                String            @db.Uuid
+  pathway                      AssessmentPathway
+  reason                       String
+  cta_type                     String
+  automatic_progression_allowed Boolean          @default(true)
+  created_at                   DateTime          @default(now())
+  users_profile                users_profile     @relation("PathwayRecommendationUser", fields: [user_id], references: [id], onDelete: NoAction, map: "PathwayRecommendation_userId_fkey")
+  assessments                  assessments       @relation(fields: [assessment_id], references: [id], onDelete: Cascade, map: "PathwayRecommendation_assessmentId_fkey")
+
+  @@index([user_id], map: "PathwayRecommendation_userId_idx")
+  @@schema("public")
+}
+
+// Deterministic, rule-based safety triage. Never populated by generative AI —
+// see App Builder Requirement Document section 6.3 (red flag workflow).
+model safety_flags {
+  id                    String             @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  user_id               String             @db.Uuid
+  source_type           String
+  source_id             String
+  symptom_type          String
+  severity              SafetyFlagSeverity @default(MEDIUM)
+  message               String
+  status                SafetyFlagStatus   @default(OPEN)
+  human_review_required Boolean            @default(true)
+  assigned_to_id        String?            @db.Uuid
+  admin_notes           String?
+  created_at            DateTime           @default(now())
+  resolved_at           DateTime?
+  users_profile         users_profile      @relation("SafetyFlagUser", fields: [user_id], references: [id], onDelete: NoAction, map: "SafetyFlag_userId_fkey")
+  assigned_to           users_profile?     @relation("SafetyFlagAssignedTo", fields: [assigned_to_id], references: [id], onDelete: SetNull, map: "SafetyFlag_assignedToId_fkey")
+
+  @@index([user_id], map: "SafetyFlag_userId_idx")
+  @@index([status, severity], map: "SafetyFlag_status_severity_idx")
+  @@schema("public")
+}
+
 model calculator_sessions {
   id            String         @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   user_id       String         @db.Uuid
@@ -188,6 +264,10 @@ model users_profile {
   country                                                   country?                  
   phone                                                     String?
   onboarding_completed                                      DateTime?
+  assessments_as_user                                       assessments[]              @relation("AssessmentUser")
+  pathway_recommendations                                   pathway_recommendations[]  @relation("PathwayRecommendationUser")
+  safety_flags_as_user                                      safety_flags[]             @relation("SafetyFlagUser")
+  safety_flags_assigned                                     safety_flags[]             @relation("SafetyFlagAssignedTo")
   calculator_sessions                                       calculator_sessions[]
   client_max_lifts                                          client_max_lifts[]
   exercise_logs                                             exercise_logs[]
@@ -500,6 +580,33 @@ enum HeightUnit {
 enum ExerciseType {
   WEIGHT_BASED    // Traditional exercises with weight (bench press, squats, etc.)
   REPS_BASED      // Bodyweight exercises (pushups, pull-ups, etc.)
+
+  @@schema("public")
+}
+
+enum AssessmentPathway {
+  START_STRONG
+  START_STRONG_CAUTION
+  BUILD_STRENGTH
+  LIVE_LIMITLESS
+  CORPORATE_INCLUSIVE_WELLNESS
+  CONSULT_PROFESSIONAL
+
+  @@schema("public")
+}
+
+enum SafetyFlagSeverity {
+  LOW
+  MEDIUM
+  HIGH
+
+  @@schema("public")
+}
+
+enum SafetyFlagStatus {
+  OPEN
+  IN_REVIEW
+  RESOLVED
 
   @@schema("public")
 }

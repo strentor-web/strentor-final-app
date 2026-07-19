@@ -103,12 +103,19 @@ export default function Home() {
                 <Link href="/sponsor-a-seat">Sponsor a Seat</Link>
               </Button>
             </div>
-            <div className="mt-6">
+            <div className="mt-6 flex flex-col items-center gap-2 sm:flex-row sm:justify-center sm:gap-6 md:justify-start">
               <Link
                 href="/programs"
                 className="group inline-flex items-center gap-1 font-semibold text-[#C9A96A] transition-colors hover:text-[#C9A96A]/80"
               >
                 Explore the Program
+                <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+              </Link>
+              <Link
+                href="/start-here"
+                className="group inline-flex items-center gap-1 font-semibold text-gray-300 transition-colors hover:text-white"
+              >
+                Not sure where to start?
                 <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
               </Link>
             </div>
