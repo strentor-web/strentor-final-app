@@ -144,21 +144,21 @@ export default function CommunityPage() {
                     <p className="mt-1 text-muted-foreground">{space.description}</p>
                   </div>
                   {space.external ? (
-                    <a
-                      href={space.href}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex w-fit items-center gap-1 font-semibold text-[#C9A96A] transition-colors hover:text-[#C9A96A]/80"
+                    <Button
+                      asChild
+                      className="w-fit rounded-full bg-[#C9A96A] px-6 transition-transform hover:scale-105 hover:bg-[#C9A96A]/90"
                     >
-                      {space.cta} →
-                    </a>
+                      <a href={space.href} target="_blank" rel="noopener noreferrer">
+                        {space.cta}
+                      </a>
+                    </Button>
                   ) : (
-                    <Link
-                      href={space.href}
-                      className="inline-flex w-fit items-center gap-1 font-semibold text-[#C9A96A] transition-colors hover:text-[#C9A96A]/80"
+                    <Button
+                      asChild
+                      className="w-fit rounded-full bg-[#C9A96A] px-6 transition-transform hover:scale-105 hover:bg-[#C9A96A]/90"
                     >
-                      {space.cta} →
-                    </Link>
+                      <Link href={space.href}>{space.cta}</Link>
+                    </Button>
                   )}
                 </div>
               </HoverLift>
