@@ -3,6 +3,7 @@
 import Header from "@/components/landing/Header"
 import Footer from "@/components/landing/Footer"
 import { Button } from "@/components/ui/button"
+import { TestimonialSubmitForm } from "@/components/forms/TestimonialSubmitForm"
 import Link from "next/link"
 import {
   Users,
@@ -165,6 +166,13 @@ export default function CommunityPage() {
             </ScrollReveal>
           ))}
         </StaggerGroup>
+      </section>
+
+      {/* Share Your Story */}
+      <section className="container mx-auto px-4 py-16">
+        <ScrollReveal className="mx-auto max-w-xl">
+          <TestimonialSubmitForm />
+        </ScrollReveal>
       </section>
 
       {/* Final CTA */}

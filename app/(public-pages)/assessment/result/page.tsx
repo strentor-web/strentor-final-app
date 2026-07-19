@@ -6,6 +6,7 @@ import Link from "next/link"
 import Header from "@/components/landing/Header"
 import Footer from "@/components/landing/Footer"
 import { Button } from "@/components/ui/button"
+import { DiscoveryCallButton } from "@/components/forms/DiscoveryCallButton"
 import { ScrollReveal } from "@/components/motion/ScrollReveal"
 import { AlertTriangle, CheckCircle2 } from "lucide-react"
 import {
@@ -96,9 +97,9 @@ function AssessmentResultContent() {
             <Link href={destination.href}>{destination.label}</Link>
           </Button>
           {!data.automaticProgressionAllowed && (
-            <Button asChild variant="outline" className="h-12 rounded-full border-[#C9A96A] px-8 text-[#C9A96A] hover:bg-[#C9A96A]/10">
-              <Link href="/contact">Book a Discovery Call</Link>
-            </Button>
+            <DiscoveryCallButton className="h-12 rounded-full border-[#C9A96A] px-8 text-[#C9A96A] hover:bg-[#C9A96A]/10">
+              Book a Discovery Call
+            </DiscoveryCallButton>
           )}
         </div>
 

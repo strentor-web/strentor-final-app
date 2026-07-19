@@ -131,6 +131,73 @@ model weekly_checkins {
   @@schema("public")
 }
 
+model coaching_calls {
+  id                String        @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  user_id           String        @db.Uuid
+  call_type         String        @default("discovery")
+  booking_time      DateTime?
+  status            String        @default("requested")
+  call_link         String?
+  notes             String?
+  outcome           String?
+  conversion_status String?
+  created_at        DateTime      @default(now())
+  users_profile     users_profile @relation(fields: [user_id], references: [id], onDelete: NoAction, map: "CoachingCall_userId_fkey")
+
+  @@index([user_id], map: "CoachingCall_userId_idx")
+  @@schema("public")
+}
+
+model testimonials {
+  id                String              @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  user_id           String              @db.Uuid
+  name_display      String
+  program_type      String?
+  testimonial_text  String
+  media_url         String?
+  approval_status   TestimonialStatus   @default(PENDING)
+  published_at      DateTime?
+  created_at        DateTime            @default(now())
+  users_profile     users_profile       @relation(fields: [user_id], references: [id], onDelete: NoAction, map: "Testimonial_userId_fkey")
+
+  @@index([approval_status], map: "Testimonial_approvalStatus_idx")
+  @@schema("public")
+}
+
+// Audit trail for every triggered email/reminder/access change/safety
+// notification — see App Builder Requirement Document section 13.
+model automation_events {
+  id              String        @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  user_id         String?       @db.Uuid
+  event_type      String
+  trigger_source  String
+  payload_summary String?
+  status          String        @default("sent")
+  sent_at         DateTime      @default(now())
+  error_message   String?
+  users_profile   users_profile? @relation(fields: [user_id], references: [id], onDelete: SetNull, map: "AutomationEvent_userId_fkey")
+
+  @@index([user_id], map: "AutomationEvent_userId_idx")
+  @@index([event_type], map: "AutomationEvent_eventType_idx")
+  @@schema("public")
+}
+
+model admin_notes {
+  id             String        @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  user_id        String        @db.Uuid
+  related_type   String
+  related_id     String
+  note           String
+  visibility     String        @default("internal")
+  created_by_id  String        @db.Uuid
+  created_at     DateTime      @default(now())
+  users_profile  users_profile @relation("AdminNoteSubject", fields: [user_id], references: [id], onDelete: NoAction, map: "AdminNote_userId_fkey")
+  created_by     users_profile @relation("AdminNoteAuthor", fields: [created_by_id], references: [id], onDelete: NoAction, map: "AdminNote_createdById_fkey")
+
+  @@index([user_id, related_type], map: "AdminNote_userId_relatedType_idx")
+  @@schema("public")
+}
+
 model calculator_sessions {
   id            String         @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   user_id       String         @db.Uuid
@@ -315,6 +382,11 @@ model users_profile {
   safety_flags_assigned                                     safety_flags[]             @relation("SafetyFlagAssignedTo")
   pain_fatigue_logs                                         pain_fatigue_logs[]
   weekly_checkins                                           weekly_checkins[]
+  coaching_calls                                            coaching_calls[]
+  testimonials                                               testimonials[]
+  automation_events                                         automation_events[]
+  admin_notes_as_subject                                    admin_notes[]              @relation("AdminNoteSubject")
+  admin_notes_authored                                      admin_notes[]              @relation("AdminNoteAuthor")
   calculator_sessions                                       calculator_sessions[]
   client_max_lifts                                          client_max_lifts[]
   exercise_logs                                             exercise_logs[]
@@ -661,6 +733,14 @@ enum SafetyFlagStatus {
 enum CoachReviewStatus {
   PENDING
   REVIEWED
+
+  @@schema("public")
+}
+
+enum TestimonialStatus {
+  PENDING
+  APPROVED
+  REJECTED
 
   @@schema("public")
 }

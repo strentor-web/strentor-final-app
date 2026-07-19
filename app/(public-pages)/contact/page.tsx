@@ -6,6 +6,7 @@ import { Mail, Globe, Clock } from "lucide-react"
 import Header from "@/components/landing/Header"
 import Footer from "@/components/landing/Footer"
 import { DynamicContactEmail } from "@/components/forms/DynamicContactEmail"
+import { DiscoveryCallButton } from "@/components/forms/DiscoveryCallButton"
 import { IntakeForm } from "@/components/forms/intake/IntakeForm"
 import { EnquiryPathway, PATHWAY_LABELS } from "@/types/intake"
 import { useRegion } from "@/hooks/useRegion"
@@ -138,6 +139,20 @@ function ContactContent() {
             <ScrollReveal>
               <HoverLift>
                 <DynamicContactEmail pathway={pathway} />
+              </HoverLift>
+            </ScrollReveal>
+
+            <ScrollReveal>
+              <HoverLift>
+                <div className="rounded-2xl border border-[#C9A96A]/30 bg-[#C9A96A]/5 p-6">
+                  <h3 className="text-lg font-bold text-card-foreground">Prefer to talk live?</h3>
+                  <p className="mt-1 text-sm text-muted-foreground">
+                    Book a discovery call and speak with a coach directly.
+                  </p>
+                  <DiscoveryCallButton className="mt-4 h-11 w-full rounded-full bg-[#C9A96A] text-black hover:bg-[#C9A96A]/90" variant="default">
+                    Book a Discovery Call
+                  </DiscoveryCallButton>
+                </div>
               </HoverLift>
             </ScrollReveal>
           </StaggerGroup>
