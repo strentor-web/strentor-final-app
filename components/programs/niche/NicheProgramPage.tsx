@@ -9,7 +9,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion"
-import { ShieldAlert, ArrowRight, Check } from "lucide-react"
+import { ShieldAlert, Check } from "lucide-react"
 import Link from "next/link"
 
 export interface NicheFaq {
@@ -169,14 +169,9 @@ export function NicheProgramPage({
           </h2>
           <div className="mx-auto flex max-w-3xl flex-wrap justify-center gap-4">
             {relatedLinks.map((link) => (
-              <Link
-                key={link.href}
-                href={link.href}
-                className="group inline-flex items-center gap-1 rounded-full border border-border px-5 py-2 text-sm font-semibold text-foreground transition-colors hover:border-[#C9A96A] hover:text-[#C9A96A]"
-              >
-                {link.label}
-                <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
-              </Link>
+              <Button key={link.href} asChild className="rounded-full bg-[#C9A96A] px-6 hover:bg-[#C9A96A]/90 text-primary-foreground">
+                <Link href={link.href}>{link.label}</Link>
+              </Button>
             ))}
           </div>
         </section>
