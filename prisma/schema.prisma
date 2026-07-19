@@ -86,6 +86,51 @@ model safety_flags {
   @@schema("public")
 }
 
+// Body-check tracker. Any symptom in `symptoms` that overlaps the app's
+// red-flag list sets red_flag_detected = true and creates a safety_flags
+// row — see App Builder Requirement Document section 11.
+model pain_fatigue_logs {
+  id                String        @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  user_id           String        @db.Uuid
+  date              DateTime      @default(now()) @db.Date
+  pain_level        Int
+  fatigue_level     Int
+  energy_level      Int
+  mood_level        Int
+  soreness_level    Int?
+  symptoms          String[]      @default([])
+  notes             String?
+  red_flag_detected Boolean       @default(false)
+  created_at        DateTime      @default(now())
+  users_profile     users_profile @relation(fields: [user_id], references: [id], onDelete: NoAction, map: "PainFatigueLog_userId_fkey")
+
+  @@index([user_id, date], map: "PainFatigueLog_userId_date_idx")
+  @@schema("public")
+}
+
+model weekly_checkins {
+  id                    String                @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  user_id               String                @db.Uuid
+  week_start            DateTime              @db.Date
+  wins                  String?
+  barriers              String?
+  pain_summary          String?
+  energy_summary        String?
+  mood_summary          String?
+  habit_consistency     String?
+  support_needed        Boolean               @default(false)
+  support_needed_details String?
+  red_flag_detected     Boolean               @default(false)
+  coach_review_status   CoachReviewStatus     @default(PENDING)
+  admin_notes           String?
+  created_at            DateTime              @default(now())
+  users_profile         users_profile         @relation(fields: [user_id], references: [id], onDelete: NoAction, map: "WeeklyCheckin_userId_fkey")
+
+  @@unique([user_id, week_start], map: "WeeklyCheckin_userId_weekStart_key")
+  @@index([user_id, week_start], map: "WeeklyCheckin_userId_weekStart_idx")
+  @@schema("public")
+}
+
 model calculator_sessions {
   id            String         @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   user_id       String         @db.Uuid
@@ -268,6 +313,8 @@ model users_profile {
   pathway_recommendations                                   pathway_recommendations[]  @relation("PathwayRecommendationUser")
   safety_flags_as_user                                      safety_flags[]             @relation("SafetyFlagUser")
   safety_flags_assigned                                     safety_flags[]             @relation("SafetyFlagAssignedTo")
+  pain_fatigue_logs                                         pain_fatigue_logs[]
+  weekly_checkins                                           weekly_checkins[]
   calculator_sessions                                       calculator_sessions[]
   client_max_lifts                                          client_max_lifts[]
   exercise_logs                                             exercise_logs[]
@@ -607,6 +654,13 @@ enum SafetyFlagStatus {
   OPEN
   IN_REVIEW
   RESOLVED
+
+  @@schema("public")
+}
+
+enum CoachReviewStatus {
+  PENDING
+  REVIEWED
 
   @@schema("public")
 }

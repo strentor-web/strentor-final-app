@@ -24,8 +24,18 @@ import { NoSubscriptionCard } from "@/components/dashboard/NoSubscriptionCard";
 import { NoWorkoutPlanCard } from "@/components/dashboard/NoWorkoutPlanCard";
 import { ActiveSubscriptionCard } from "@/components/dashboard/ActiveSubscriptionCard";
 import { ExercisePRCarousel } from "@/components/dashboard/ExercisePRCarousel";
+import { CommandCenter } from "@/components/dashboard/CommandCenter";
 import { Suspense } from "react";
 import { validateServerRole } from "@/lib/server-role-validation";
+import prisma from "@/utils/prisma/prismaClient";
+
+function startOfWeek(date: Date): string {
+  const d = new Date(Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate()));
+  const day = d.getUTCDay();
+  const diff = (day + 6) % 7;
+  d.setUTCDate(d.getUTCDate() - diff);
+  return d.toISOString().slice(0, 10);
+}
 
 export const metadata: Metadata = {
   title: "Dashboard - Strentor",
@@ -44,17 +54,30 @@ export default async function DashboardPage() {
     { data: userPRs },
     { data: weightLogs },
     { uniqueExercises, allMaxLifts },
+    latestAssessment,
+    currentWeekCheckin,
   ] = await Promise.all([
     getActiveSubscriptions({}),
     getClientCurrentWorkoutPlan({}),
     getUserLastFivePRs({}),
     getUserWeightLogs({}),
     getMaxLiftsData(),
+    prisma.assessments.findFirst({
+      where: { user_id: user.id },
+      orderBy: { submitted_at: "desc" },
+      include: { pathway_recommendations: true },
+    }),
+    prisma.weekly_checkins.findUnique({
+      where: { user_id_week_start: { user_id: user.id, week_start: new Date(startOfWeek(new Date())) } },
+    }),
   ]);
 
   // Determine states
   const hasActiveSubscriptions = activeSubscriptions && activeSubscriptions.length > 0;
   const hasWorkoutPlan = workoutPlan && !workoutPlanError;
+  const primaryRecommendation = latestAssessment?.pathway_recommendations.find(
+    (rec) => rec.pathway === latestAssessment.pathway_result
+  );
 
   return (
     <div className="container py-8 space-y-8">
@@ -69,6 +92,13 @@ export default async function DashboardPage() {
           </p>
         </div>
       </div>
+
+      {/* Command Center */}
+      <CommandCenter
+        pathway={latestAssessment?.pathway_result ?? null}
+        pathwayReason={primaryRecommendation?.reason ?? null}
+        weeklyReflectionCompleted={!!currentWeekCheckin}
+      />
 
       {/* Subscription Status */}
       <div className="grid grid-cols-1 gap-6 mb-8">

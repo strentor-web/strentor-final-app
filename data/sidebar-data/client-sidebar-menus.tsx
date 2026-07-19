@@ -8,11 +8,11 @@ import {
   Calculator,
   Settings,
 
-  LayoutDashboard, 
-  Dumbbell, 
-  LineChart, 
-  
-  
+  LayoutDashboard,
+  Dumbbell,
+  LineChart,
+  HeartPulse,
+  ClipboardCheck,
 
 } from "lucide-react";
 
@@ -39,6 +39,16 @@ export const clientSidebarMenus = {
       title: "Personal Records",
       url: "/personal-records",
       icon: LineChart,
+    },
+    {
+      title: "Body Check",
+      url: "/tracker",
+      icon: HeartPulse,
+    },
+    {
+      title: "Weekly Reflection",
+      url: "/check-in",
+      icon: ClipboardCheck,
     },
     {
       title: "Calculators",
