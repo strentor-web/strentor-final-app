@@ -84,7 +84,7 @@ export default function PartnerWithUsPage() {
                     Option
                   </th>
                   <th className="px-6 py-4 text-sm font-bold uppercase tracking-wide text-muted-foreground">
-                    Price Range
+                    Price
                   </th>
                 </tr>
               </thead>
@@ -92,7 +92,7 @@ export default function PartnerWithUsPage() {
                 {partnerPricingOptions.map((option) => (
                   <tr key={option.id} className="border-b border-border last:border-b-0">
                     <td className="px-6 py-4 font-semibold text-card-foreground">{option.label}</td>
-                    <td className="px-6 py-4 text-[#C9A96A] font-semibold">{option.priceRange}</td>
+                    <td className="px-6 py-4 text-[#C9A96A] font-semibold">{option.price}</td>
                   </tr>
                 ))}
               </tbody>

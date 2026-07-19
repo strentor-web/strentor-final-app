@@ -176,7 +176,7 @@ export default function ProgramsPage() {
             <TableHeader>
               <TableRow className="hover:bg-transparent">
                 <TableHead className="text-foreground">Access Tier</TableHead>
-                <TableHead className="text-foreground">Contribution Range (INR)</TableHead>
+                <TableHead className="text-foreground">Contribution (INR)</TableHead>
                 <TableHead className="text-foreground">Who It's For</TableHead>
               </TableRow>
             </TableHeader>
@@ -184,7 +184,7 @@ export default function ProgramsPage() {
               {accessTiers.map((tier) => (
                 <TableRow key={tier.id}>
                   <TableCell className="font-semibold text-card-foreground">{tier.name}</TableCell>
-                  <TableCell className="text-[#C9A96A]">{tier.priceRange}</TableCell>
+                  <TableCell className="text-[#C9A96A]">{tier.price}</TableCell>
                   <TableCell className="text-muted-foreground">{tier.whoItsFor}</TableCell>
                 </TableRow>
               ))}

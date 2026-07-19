@@ -1,7 +1,7 @@
 export interface AccessTier {
   id: string;
   name: string;
-  priceRange: string;
+  price: string;
   whoItsFor: string;
 }
 
@@ -9,37 +9,37 @@ export interface AccessTier {
 // access is priced on a sliding, need-based scale rather than a fixed fee.
 // Final tier is assigned by the STRENTOR team after reviewing an application,
 // not self-selected at checkout.
-export const PROGRAM_TRUE_VALUE = "₹45,000 – ₹75,000";
+export const PROGRAM_TRUE_VALUE = "₹74,999";
 
 export const accessTiers: AccessTier[] = [
   {
     id: "fully_sponsored",
     name: "Fully Sponsored Seat",
-    priceRange: "₹0 – ₹999",
+    price: "₹999",
     whoItsFor: "100% sponsored by donors / partners",
   },
   {
     id: "assisted",
     name: "Assisted Seat",
-    priceRange: "₹3,000 – ₹7,900",
+    price: "₹7,999",
     whoItsFor: "Partial support based on need",
   },
   {
     id: "contributor",
     name: "Contributor Seat",
-    priceRange: "₹9,000 – ₹14,900",
+    price: "₹14,999",
     whoItsFor: "Can contribute partially",
   },
   {
     id: "pay_it_forward",
     name: "Pay-It-Forward Seat",
-    priceRange: "₹21,000 – ₹40,000",
+    price: "₹39,999",
     whoItsFor: "Support our mission + someone else",
   },
   {
     id: "full_support",
     name: "Full Support Seat",
-    priceRange: "₹45,000 – ₹75,000",
+    price: "₹74,999",
     whoItsFor: "Full program value (self-supported)",
   },
 ];

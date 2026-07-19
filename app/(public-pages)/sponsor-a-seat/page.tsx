@@ -82,7 +82,7 @@ export default function SponsorASeatPage() {
                   <tr className="border border-border bg-muted/30">
                     <th className="px-4 py-3 font-bold text-foreground sm:px-6">Option</th>
                     <th className="px-4 py-3 font-bold text-foreground sm:px-6">
-                      Contribution Range (INR)
+                      Contribution (INR)
                     </th>
                   </tr>
                 </thead>
@@ -93,7 +93,7 @@ export default function SponsorASeatPage() {
                         {option.label}
                       </td>
                       <td className="px-4 py-3 text-[#C9A96A] font-semibold sm:px-6">
-                        {option.contributionRange}
+                        {option.contribution}
                       </td>
                     </tr>
                   ))}
