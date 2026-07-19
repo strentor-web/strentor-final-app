@@ -11,28 +11,21 @@ import {
   RadioGroup,
   RadioGroupItem,
 } from "@/components/ui/radio-group"
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select"
 import { ErrorSummary, LoadingState, SuccessMessage } from "@/components/forms/intake/IntakeFormFeedback"
 import {
-  AdaptiveTrainingProfile,
+  AdaptiveSpecialistNotes,
+  CoachingContext,
   ContactDetails,
-  CoachingGoals,
   CorporateDetails,
   EnquiryPathway,
   GeneralEnquiryDetails,
-  HealthCategory,
-  HealthSafetyScreening,
+  GoalsIdentity,
+  HealthBoundaries,
   IntakeFormPayload,
-  NutritionContext,
+  MovementProfile,
   PATHWAY_LABELS,
   PERSONAL_TRACK_PATHWAYS,
-  PrimaryTrainingContext,
+  RecoveryNutritionProfile,
   ReferralDetails,
   SponsorDetails,
 } from "@/types/intake"
@@ -75,22 +68,38 @@ function CheckboxGroup({
   )
 }
 
+function RadioRow({
+  label,
+  value,
+  onChange,
+  options,
+}: {
+  label: string
+  value: string | undefined
+  onChange: (value: string) => void
+  options: { value: string; label: string }[]
+}) {
+  return (
+    <div>
+      <Label>{label}</Label>
+      <RadioGroup className="mt-3 flex flex-wrap gap-3" value={value} onValueChange={onChange}>
+        {options.map((option) => (
+          <label
+            key={option.value}
+            className="flex items-center gap-2 rounded-lg border border-border bg-background px-3 py-2 text-sm cursor-pointer hover:border-[#C9A96A]"
+          >
+            <RadioGroupItem value={option.value} />
+            <span>{option.label}</span>
+          </label>
+        ))}
+      </RadioGroup>
+    </div>
+  )
+}
+
 function toggleValue(list: string[], value: string): string[] {
   return list.includes(value) ? list.filter((v) => v !== value) : [...list, value]
 }
-
-const HEALTH_CATEGORY_OPTIONS: { value: HealthCategory; label: string }[] = [
-  { value: "kidney_renal", label: "Kidney / renal health" },
-  { value: "diabetes_metabolic", label: "Diabetes / metabolic health" },
-  { value: "heart_bp", label: "Heart health / blood pressure" },
-  { value: "respiratory", label: "Respiratory health" },
-  { value: "neurological", label: "Neurological health" },
-  { value: "bone_joint_pain", label: "Bone, joint, or pain concern" },
-  { value: "digestive", label: "Digestive health / food tolerance" },
-  { value: "recent_surgery", label: "Recent surgery / medical clearance" },
-  { value: "none_known", label: "None known" },
-  { value: "other", label: "Other" },
-]
 
 const emptyContact: ContactDetails = {
   fullName: "",
@@ -98,37 +107,23 @@ const emptyContact: ContactDetails = {
   phone: "",
   city: "",
   country: "",
+  preferredContactMethod: [],
 }
 
-const emptyTrainingProfile: AdaptiveTrainingProfile = {
-  wheelchairDetails: [],
-  spinaBifidaDetails: [],
-  wheelchairConsiderations: [],
-  limitedWalkingDetails: [],
-  generalFitnessDetails: [],
+const emptyCoachingContext: CoachingContext = {
+  primaryFocus: [],
+  supportNeeded: [],
 }
 
-const emptyHealthSafety: HealthSafetyScreening = {
-  categories: [],
-  kidneyDetails: [],
-  diabetesDetails: [],
-  heartDetails: [],
-  respiratoryDetails: [],
-  neurologicalDetails: [],
-  boneJointDetails: [],
-  digestiveDetails: [],
-  recentSurgeryDetails: [],
-  urgentFlags: [],
-}
+const emptyMovementProfile: MovementProfile = {}
 
-const emptyNutrition: NutritionContext = {
-  baseOptions: [],
-  renalOptions: [],
-  diabetesOptions: [],
-  dietType: [],
-}
+const emptyHealthBoundaries: HealthBoundaries = {}
 
-const emptyGoals: CoachingGoals = { goals: [] }
+const emptyRecoveryNutrition: RecoveryNutritionProfile = {}
+
+const emptyAdaptiveSpecialistNotes: AdaptiveSpecialistNotes = {}
+
+const emptyGoalsIdentity: GoalsIdentity = {}
 
 const emptyCorporate: CorporateDetails = { organizationName: "", role: "" }
 
@@ -161,10 +156,14 @@ export function IntakeForm({ initialPathway, region, plan, sourcePage, onPathway
   // e.g. arriving from /corporate shouldn't re-ask what's already known.
   const [stepIndex, setStepIndex] = useState(initialPathway ? 1 : 0)
   const [contact, setContact] = useState<ContactDetails>(emptyContact)
-  const [training, setTraining] = useState<AdaptiveTrainingProfile>(emptyTrainingProfile)
-  const [health, setHealth] = useState<HealthSafetyScreening>(emptyHealthSafety)
-  const [nutrition, setNutrition] = useState<NutritionContext>(emptyNutrition)
-  const [goals, setGoals] = useState<CoachingGoals>(emptyGoals)
+  const [coachingContext, setCoachingContext] = useState<CoachingContext>(emptyCoachingContext)
+  const [movementProfile, setMovementProfile] = useState<MovementProfile>(emptyMovementProfile)
+  const [healthBoundaries, setHealthBoundaries] = useState<HealthBoundaries>(emptyHealthBoundaries)
+  const [recoveryNutrition, setRecoveryNutrition] = useState<RecoveryNutritionProfile>(emptyRecoveryNutrition)
+  const [adaptiveSpecialistNotes, setAdaptiveSpecialistNotes] = useState<AdaptiveSpecialistNotes>(emptyAdaptiveSpecialistNotes)
+  const [goalsIdentity, setGoalsIdentity] = useState<GoalsIdentity>(emptyGoalsIdentity)
+  const [signatureName, setSignatureName] = useState("")
+  const [acknowledged, setAcknowledged] = useState(false)
   const [corporate, setCorporate] = useState<CorporateDetails>(emptyCorporate)
   const [referral, setReferral] = useState<ReferralDetails>(emptyReferral)
   const [sponsor, setSponsor] = useState<SponsorDetails>(emptySponsor)
@@ -183,12 +182,23 @@ export function IntakeForm({ initialPathway, region, plan, sourcePage, onPathway
     if (pathway === "sponsor") return ["pathway", "contact", "sponsor", "review"]
     if (pathway === "general") return ["pathway", "contact", "general", "review"]
     if (PERSONAL_TRACK_PATHWAYS.includes(pathway)) {
-      return ["pathway", "contact", "training", "health", "nutrition", "goals", "review"]
+      return [
+        "pathway",
+        "contact",
+        "coachingContext",
+        "movementProfile",
+        "healthBoundaries",
+        "recoveryNutrition",
+        "adaptiveSpecialist",
+        "goalsIdentity",
+        "review",
+      ]
     }
     return ["pathway"]
   }, [pathway])
 
   const currentStep = steps[stepIndex]
+  const isPersonalTrack = !!pathway && PERSONAL_TRACK_PATHWAYS.includes(pathway)
 
   const goNext = () => setStepIndex((i) => Math.min(i + 1, steps.length - 1))
   const goBack = () => setStepIndex((i) => Math.max(i - 1, 0))
@@ -201,17 +211,8 @@ export function IntakeForm({ initialPathway, region, plan, sourcePage, onPathway
   const contactValid =
     contact.fullName.trim() && contact.email.trim() && contact.phone.trim() && contact.city.trim() && contact.country.trim()
 
-  const showKidney = health.categories.includes("kidney_renal")
-  const showDiabetes = health.categories.includes("diabetes_metabolic")
-  const showHeart = health.categories.includes("heart_bp")
-  const showRespiratory = health.categories.includes("respiratory")
-  const showNeuro = health.categories.includes("neurological")
-  const showBoneJoint = health.categories.includes("bone_joint_pain")
-  const showDigestive = health.categories.includes("digestive")
-  const showRecentSurgery = health.categories.includes("recent_surgery")
-
   async function handleSubmit() {
-    if (!pathway || !consent) return
+    if (!pathway || !consent || !acknowledged) return
     if (honeypot.trim().length > 0) {
       // Silently drop bot submissions without revealing the honeypot to the user.
       setSubmitted(true)
@@ -234,11 +235,14 @@ export function IntakeForm({ initialPathway, region, plan, sourcePage, onPathway
         consent,
         submittedAt: new Date().toISOString(),
       }
-      if (PERSONAL_TRACK_PATHWAYS.includes(pathway)) {
-        payload.adaptiveTrainingProfile = training
-        payload.healthSafety = health
-        payload.nutrition = nutrition
-        payload.goals = goals
+      if (isPersonalTrack) {
+        payload.coachingContext = coachingContext
+        payload.movementProfile = movementProfile
+        payload.healthBoundaries = healthBoundaries
+        payload.recoveryNutrition = recoveryNutrition
+        payload.adaptiveSpecialistNotes = adaptiveSpecialistNotes
+        payload.goalsIdentity = goalsIdentity
+        payload.signatureName = signatureName
       } else if (pathway === "corporate") {
         payload.corporate = corporate
       } else if (pathway === "referral") {
@@ -313,16 +317,41 @@ export function IntakeForm({ initialPathway, region, plan, sourcePage, onPathway
 
       {currentStep === "contact" && (
         <div>
-          <h2 className="text-xl font-bold text-card-foreground">Your contact details</h2>
+          <h2 className="text-xl font-bold text-card-foreground">
+            {isPersonalTrack ? "Personal and contact details" : "Your contact details"}
+          </h2>
+          {isPersonalTrack && (
+            <p className="mt-1 text-sm text-muted-foreground">
+              Write &quot;Unknown&quot; instead of guessing when you are unsure.
+            </p>
+          )}
           <div className="mt-6 grid gap-4 sm:grid-cols-2 text-left">
             <div className="sm:col-span-2">
               <Label htmlFor="fullName">Full name</Label>
               <Input id="fullName" value={contact.fullName} onChange={(e) => setContact({ ...contact, fullName: e.target.value })} />
             </div>
+            {isPersonalTrack && (
+              <div className="sm:col-span-2">
+                <Label htmlFor="preferredName">Preferred name (optional)</Label>
+                <Input id="preferredName" value={contact.preferredName || ""} onChange={(e) => setContact({ ...contact, preferredName: e.target.value })} />
+              </div>
+            )}
             <div>
-              <Label htmlFor="age">Age (optional)</Label>
-              <Input id="age" type="number" min={0} max={120} value={contact.age || ""} onChange={(e) => setContact({ ...contact, age: e.target.value })} />
+              <Label htmlFor="age">{isPersonalTrack ? "Age / date of birth" : "Age (optional)"}</Label>
+              <Input id="age" value={contact.age || ""} onChange={(e) => setContact({ ...contact, age: e.target.value })} />
             </div>
+            {isPersonalTrack && (
+              <>
+                <div>
+                  <Label htmlFor="height">Height</Label>
+                  <Input id="height" value={contact.height || ""} onChange={(e) => setContact({ ...contact, height: e.target.value })} />
+                </div>
+                <div>
+                  <Label htmlFor="weight">Current weight</Label>
+                  <Input id="weight" value={contact.weight || ""} onChange={(e) => setContact({ ...contact, weight: e.target.value })} />
+                </div>
+              </>
+            )}
             <div>
               <Label htmlFor="email">Email</Label>
               <Input id="email" type="email" value={contact.email} onChange={(e) => setContact({ ...contact, email: e.target.value })} />
@@ -339,15 +368,48 @@ export function IntakeForm({ initialPathway, region, plan, sourcePage, onPathway
               <Label htmlFor="country">Country</Label>
               <Input id="country" value={contact.country} onChange={(e) => setContact({ ...contact, country: e.target.value })} />
             </div>
-            <div className="sm:col-span-2">
-              <Label htmlFor="socialUrl">Social or professional profile (optional)</Label>
-              <Input
-                id="socialUrl"
-                placeholder="https://..."
-                value={contact.socialUrl || ""}
-                onChange={(e) => setContact({ ...contact, socialUrl: e.target.value })}
-              />
-            </div>
+            {isPersonalTrack && (
+              <div className="sm:col-span-2">
+                <Label htmlFor="emergencyContact">Emergency contact</Label>
+                <Input
+                  id="emergencyContact"
+                  placeholder="Name and phone number"
+                  value={contact.emergencyContact || ""}
+                  onChange={(e) => setContact({ ...contact, emergencyContact: e.target.value })}
+                />
+              </div>
+            )}
+            {!isPersonalTrack && (
+              <div className="sm:col-span-2">
+                <Label htmlFor="socialUrl">Social or professional profile (optional)</Label>
+                <Input
+                  id="socialUrl"
+                  placeholder="https://..."
+                  value={contact.socialUrl || ""}
+                  onChange={(e) => setContact({ ...contact, socialUrl: e.target.value })}
+                />
+              </div>
+            )}
+            {isPersonalTrack && (
+              <div className="sm:col-span-2">
+                <Label>Preferred contact method</Label>
+                <div className="mt-3">
+                  <CheckboxGroup
+                    options={[
+                      { value: "whatsapp", label: "WhatsApp" },
+                      { value: "email", label: "Email" },
+                      { value: "call", label: "Call" },
+                      { value: "instagram_dm", label: "Instagram DM" },
+                      { value: "linkedin_dm", label: "LinkedIn DM" },
+                    ]}
+                    selected={contact.preferredContactMethod || []}
+                    onToggle={(v) =>
+                      setContact({ ...contact, preferredContactMethod: toggleValue(contact.preferredContactMethod || [], v) })
+                    }
+                  />
+                </div>
+              </div>
+            )}
           </div>
           <div className="mt-8 flex justify-between">
             <Button variant="outline" onClick={goBack}>Back</Button>
@@ -356,194 +418,93 @@ export function IntakeForm({ initialPathway, region, plan, sourcePage, onPathway
         </div>
       )}
 
-      {currentStep === "training" && (
+      {currentStep === "coachingContext" && (
         <div className="text-left">
-          <h2 className="text-xl font-bold text-card-foreground">Adaptive Training Profile</h2>
-          <p className="mt-1 text-sm text-muted-foreground">This helps us understand your training context.</p>
-
-          <div className="mt-6">
-            <Label>Primary training context</Label>
-            <RadioGroup
-              className="mt-3 grid gap-3 sm:grid-cols-2"
-              value={training.primaryContext}
-              onValueChange={(v) => setTraining({ ...training, primaryContext: v as PrimaryTrainingContext })}
-            >
-              {[
-                { value: "wheelchair_user", label: "Wheelchair user" },
-                { value: "limited_walking", label: "Limited walking or assisted mobility" },
-                { value: "general_fitness", label: "General fitness and transformation" },
-                { value: "other_consideration", label: "Other physical or health consideration" },
-              ].map((opt) => (
-                <label key={opt.value} className="flex items-center gap-2 rounded-lg border border-border bg-background p-3 text-sm cursor-pointer hover:border-[#C9A96A]">
-                  <RadioGroupItem value={opt.value} />
-                  <span>{opt.label}</span>
-                </label>
-              ))}
-            </RadioGroup>
-          </div>
-
-          {training.primaryContext === "wheelchair_user" && (
-            <div className="mt-6 space-y-6">
-              <div className="grid gap-4 sm:grid-cols-3">
-                <div>
-                  <Label>Years using a wheelchair</Label>
-                  <Select value={training.wheelchairYears} onValueChange={(v) => setTraining({ ...training, wheelchairYears: v })}>
-                    <SelectTrigger className="mt-2"><SelectValue placeholder="Select" /></SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="less_than_1">Less than 1 year</SelectItem>
-                      <SelectItem value="1_to_5">1–5 years</SelectItem>
-                      <SelectItem value="5_to_10">5–10 years</SelectItem>
-                      <SelectItem value="10_plus">10+ years</SelectItem>
-                      <SelectItem value="since_birth">Since birth</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-                <div>
-                  <Label>Upper body function level</Label>
-                  <Select value={training.upperBodyFunctionLevel} onValueChange={(v) => setTraining({ ...training, upperBodyFunctionLevel: v })}>
-                    <SelectTrigger className="mt-2"><SelectValue placeholder="Select" /></SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="full_function">Full function</SelectItem>
-                      <SelectItem value="mostly_functional">Mostly functional, some limitations</SelectItem>
-                      <SelectItem value="significantly_limited">Significantly limited</SelectItem>
-                      <SelectItem value="not_sure">Not sure</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-                <div>
-                  <Label>Require assistance for transfers?</Label>
-                  <Select value={training.requiresTransferAssistance} onValueChange={(v) => setTraining({ ...training, requiresTransferAssistance: v })}>
-                    <SelectTrigger className="mt-2"><SelectValue placeholder="Select" /></SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="no">No, fully independent</SelectItem>
-                      <SelectItem value="sometimes">Sometimes</SelectItem>
-                      <SelectItem value="yes">Yes, usually</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-              </div>
-              <div>
-                <Label>Wheelchair use details</Label>
-                <div className="mt-3">
-                  <CheckboxGroup
-                    options={[
-                      { value: "manual_wheelchair", label: "Manual wheelchair user" },
-                      { value: "power_wheelchair", label: "Power wheelchair user" },
-                      { value: "paraplegia", label: "Paraplegia" },
-                      { value: "quadriplegia", label: "Quadriplegia / Tetraplegia" },
-                      { value: "spina_bifida", label: "Spina Bifida" },
-                      { value: "spinal_cord_injury", label: "Spinal cord injury" },
-                      { value: "transfer_assistance", label: "Transfer assistance needed" },
-                      { value: "upper_body_dominant", label: "Upper-body dominant training" },
-                      { value: "pressure_sore_risk", label: "Pressure sore risk" },
-                      { value: "shoulder_strain", label: "Shoulder strain from transfers or wheelchair use" },
-                    ]}
-                    selected={training.wheelchairDetails}
-                    onToggle={(v) => setTraining({ ...training, wheelchairDetails: toggleValue(training.wheelchairDetails, v) })}
-                  />
-                </div>
-              </div>
-
-              {training.wheelchairDetails.includes("spina_bifida") && (
-                <div>
-                  <Label>Spina Bifida — additional details</Label>
-                  <div className="mt-3">
-                    <CheckboxGroup
-                      options={[
-                        { value: "hydrocephalus_shunt", label: "Hydrocephalus or shunt history" },
-                        { value: "bladder_bowel_routine", label: "Bladder or bowel routine considerations" },
-                        { value: "reduced_sensation", label: "Reduced sensation" },
-                        { value: "latex_allergy", label: "Latex allergy" },
-                        { value: "tethered_cord", label: "Tethered cord history" },
-                        { value: "surgery_history", label: "Relevant surgery history" },
-                        { value: "doctor_restrictions", label: "Doctor-advised restrictions" },
-                      ]}
-                      selected={training.spinaBifidaDetails}
-                      onToggle={(v) => setTraining({ ...training, spinaBifidaDetails: toggleValue(training.spinaBifidaDetails, v) })}
-                    />
-                  </div>
-                </div>
-              )}
-
-              <div>
-                <Label>Wheelchair considerations</Label>
-                <div className="mt-3">
-                  <CheckboxGroup
-                    options={[
-                      { value: "transfer_ability", label: "Transfer ability" },
-                      { value: "shoulder_pain", label: "Shoulder pain" },
-                      { value: "propulsion_strain", label: "Propulsion strain" },
-                      { value: "skin_pressure", label: "Skin pressure concerns" },
-                      { value: "seating_concerns", label: "Seating concerns" },
-                      { value: "assistance_required", label: "Assistance required" },
-                      { value: "fistula_arm", label: "Fistula arm or access limitations" },
-                    ]}
-                    selected={training.wheelchairConsiderations}
-                    onToggle={(v) => setTraining({ ...training, wheelchairConsiderations: toggleValue(training.wheelchairConsiderations, v) })}
-                  />
-                </div>
-              </div>
-            </div>
-          )}
-
-          {training.primaryContext === "limited_walking" && (
-            <div className="mt-6">
-              <Label>Details</Label>
+          <h2 className="text-xl font-bold text-card-foreground">Coaching context and goals</h2>
+          <div className="mt-6 space-y-6">
+            <div>
+              <Label>Primary coaching focus</Label>
               <div className="mt-3">
                 <CheckboxGroup
                   options={[
-                    { value: "cane_walker_crutches", label: "Uses cane, walker, or crutches" },
-                    { value: "limited_distance", label: "Limited walking distance" },
-                    { value: "balance_risk", label: "Balance risk" },
-                    { value: "fall_risk", label: "Fall risk" },
-                    { value: "cerebral_palsy", label: "Cerebral palsy" },
-                    { value: "stroke_history", label: "Stroke history" },
-                    { value: "multiple_sclerosis", label: "Multiple sclerosis" },
-                    { value: "amputation", label: "Amputation" },
-                    { value: "limb_difference", label: "Limb difference" },
-                    { value: "arthritis", label: "Arthritis" },
-                    { value: "joint_limitation", label: "Joint limitation" },
+                    { value: "strength", label: "Strength" },
+                    { value: "fat_loss", label: "Fat loss" },
+                    { value: "energy", label: "Energy" },
+                    { value: "confidence", label: "Confidence" },
+                    { value: "routine_discipline", label: "Routine discipline" },
+                    { value: "mixed", label: "Mixed" },
                   ]}
-                  selected={training.limitedWalkingDetails}
-                  onToggle={(v) => setTraining({ ...training, limitedWalkingDetails: toggleValue(training.limitedWalkingDetails, v) })}
+                  selected={coachingContext.primaryFocus}
+                  onToggle={(v) => setCoachingContext({ ...coachingContext, primaryFocus: toggleValue(coachingContext.primaryFocus, v) })}
                 />
               </div>
             </div>
-          )}
-
-          {training.primaryContext === "general_fitness" && (
-            <div className="mt-6">
-              <Label>Details</Label>
+            <RadioRow
+              label="Current training experience"
+              value={coachingContext.trainingExperience}
+              onChange={(v) => setCoachingContext({ ...coachingContext, trainingExperience: v })}
+              options={[
+                { value: "beginner", label: "Beginner" },
+                { value: "restarting", label: "Restarting" },
+                { value: "intermediate", label: "Intermediate" },
+                { value: "experienced", label: "Experienced" },
+              ]}
+            />
+            <RadioRow
+              label="Movement context"
+              value={coachingContext.movementContext}
+              onChange={(v) => setCoachingContext({ ...coachingContext, movementContext: v })}
+              options={[
+                { value: "wheelchair_seated", label: "Wheelchair / seated" },
+                { value: "standing_walking", label: "Standing / walking" },
+                { value: "mixed_mobility", label: "Mixed mobility" },
+                { value: "prefer_to_explain", label: "Prefer to explain" },
+              ]}
+            />
+            <RadioRow
+              label="Preferred coaching format"
+              value={coachingContext.coachingFormat}
+              onChange={(v) => setCoachingContext({ ...coachingContext, coachingFormat: v })}
+              options={[
+                { value: "online", label: "Online" },
+                { value: "hybrid", label: "Hybrid" },
+                { value: "in_person_where_available", label: "In-person where available" },
+                { value: "unsure", label: "Unsure" },
+              ]}
+            />
+            <div>
+              <Label>Support needed</Label>
               <div className="mt-3">
                 <CheckboxGroup
                   options={[
-                    { value: "beginner", label: "Beginner" },
-                    { value: "returning_after_gap", label: "Returning after a long gap" },
-                    { value: "currently_active", label: "Currently active" },
-                    { value: "low_stamina", label: "Low stamina" },
-                    { value: "high_fatigue", label: "High fatigue" },
-                    { value: "chronic_pain", label: "Chronic pain" },
-                    { value: "fat_loss_goal", label: "Fat-loss goal" },
-                    { value: "muscle_gain_goal", label: "Muscle-gain goal" },
+                    { value: "accountability", label: "Accountability" },
+                    { value: "exercise_guidance", label: "Exercise guidance" },
+                    { value: "routine_design", label: "Routine design" },
+                    { value: "confidence_support", label: "Confidence support" },
+                    { value: "safety_boundaries", label: "Safety boundaries" },
                   ]}
-                  selected={training.generalFitnessDetails}
-                  onToggle={(v) => setTraining({ ...training, generalFitnessDetails: toggleValue(training.generalFitnessDetails, v) })}
+                  selected={coachingContext.supportNeeded}
+                  onToggle={(v) => setCoachingContext({ ...coachingContext, supportNeeded: toggleValue(coachingContext.supportNeeded, v) })}
                 />
               </div>
             </div>
-          )}
-
-          {training.primaryContext === "other_consideration" && (
-            <div className="mt-6">
-              <Label htmlFor="otherDescription">Tell us more</Label>
+            <div>
+              <Label htmlFor="successVision">What would make the next 8–12 weeks successful?</Label>
               <Textarea
-                id="otherDescription"
-                value={training.otherDescription || ""}
-                onChange={(e) => setTraining({ ...training, otherDescription: e.target.value })}
+                id="successVision"
+                value={coachingContext.successVision || ""}
+                onChange={(e) => setCoachingContext({ ...coachingContext, successVision: e.target.value })}
               />
             </div>
-          )}
-
+            <div>
+              <Label htmlFor="biggestBarrier">Biggest barrier right now</Label>
+              <Textarea
+                id="biggestBarrier"
+                value={coachingContext.biggestBarrier || ""}
+                onChange={(e) => setCoachingContext({ ...coachingContext, biggestBarrier: e.target.value })}
+              />
+            </div>
+          </div>
           <div className="mt-8 flex justify-between">
             <Button variant="outline" onClick={goBack}>Back</Button>
             <Button onClick={goNext}>Continue</Button>
@@ -551,220 +512,206 @@ export function IntakeForm({ initialPathway, region, plan, sourcePage, onPathway
         </div>
       )}
 
-      {currentStep === "health" && (
+      {currentStep === "movementProfile" && (
         <div className="text-left">
-          <h2 className="text-xl font-bold text-card-foreground">Health &amp; Safety Screening</h2>
-          <p className="mt-1 text-sm text-muted-foreground">
-            This is not a diagnosis — it just helps us coach you safely. STRENTOR is fitness coaching, not medical care.
-          </p>
-
-          <div className="mt-6">
-            <Label>Relevant health categories</Label>
-            <div className="mt-3">
-              <CheckboxGroup
-                options={HEALTH_CATEGORY_OPTIONS}
-                selected={health.categories}
-                onToggle={(v) => setHealth({ ...health, categories: toggleValue(health.categories, v) as HealthCategory[] })}
+          <h2 className="text-xl font-bold text-card-foreground">Movement, mobility, pain, and daily function</h2>
+          <div className="mt-6 space-y-6">
+            <RadioRow
+              label="Typical daily movement"
+              value={movementProfile.dailyMovement}
+              onChange={(v) => setMovementProfile({ ...movementProfile, dailyMovement: v })}
+              options={[
+                { value: "mostly_seated", label: "Mostly seated" },
+                { value: "mixed_sitting_standing", label: "Mixed sitting/standing" },
+                { value: "mostly_standing_walking", label: "Mostly standing/walking" },
+                { value: "other", label: "Other" },
+              ]}
+            />
+            <RadioRow
+              label="Transfer or position-change difficulty"
+              value={movementProfile.transferDifficulty}
+              onChange={(v) => setMovementProfile({ ...movementProfile, transferDifficulty: v })}
+              options={[
+                { value: "no", label: "No" },
+                { value: "sometimes", label: "Sometimes" },
+                { value: "yes", label: "Yes" },
+                { value: "not_applicable", label: "Not applicable" },
+              ]}
+            />
+            <RadioRow
+              label="Shoulder / neck / back pain"
+              value={movementProfile.shoulderNeckBackPain}
+              onChange={(v) => setMovementProfile({ ...movementProfile, shoulderNeckBackPain: v })}
+              options={[
+                { value: "none", label: "None" },
+                { value: "mild", label: "Mild" },
+                { value: "moderate", label: "Moderate" },
+                { value: "severe", label: "Severe" },
+              ]}
+            />
+            <RadioRow
+              label="Balance or fall concern"
+              value={movementProfile.balanceFallConcern}
+              onChange={(v) => setMovementProfile({ ...movementProfile, balanceFallConcern: v })}
+              options={[
+                { value: "no", label: "No" },
+                { value: "sometimes", label: "Sometimes" },
+                { value: "yes", label: "Yes" },
+                { value: "not_applicable", label: "Not applicable" },
+              ]}
+            />
+            <RadioRow
+              label="Typical day fatigue"
+              value={movementProfile.fatigueLevel}
+              onChange={(v) => setMovementProfile({ ...movementProfile, fatigueLevel: v })}
+              options={[
+                { value: "low", label: "Low" },
+                { value: "moderate", label: "Moderate" },
+                { value: "high", label: "High" },
+                { value: "variable", label: "Variable" },
+              ]}
+            />
+            <RadioRow
+              label="Pain triggers known"
+              value={movementProfile.painTriggersKnown}
+              onChange={(v) => setMovementProfile({ ...movementProfile, painTriggersKnown: v })}
+              options={[
+                { value: "no", label: "No" },
+                { value: "yes", label: "Yes — describe below" },
+              ]}
+            />
+            <RadioRow
+              label="Assistive device / support used"
+              value={movementProfile.assistiveDevice}
+              onChange={(v) => setMovementProfile({ ...movementProfile, assistiveDevice: v })}
+              options={[
+                { value: "none", label: "None" },
+                { value: "manual_chair", label: "Manual chair" },
+                { value: "power_chair", label: "Power chair" },
+                { value: "walker_cane", label: "Walker/cane" },
+                { value: "other", label: "Other" },
+              ]}
+            />
+            <RadioRow
+              label="Caregiver / family support involved"
+              value={movementProfile.caregiverSupport}
+              onChange={(v) => setMovementProfile({ ...movementProfile, caregiverSupport: v })}
+              options={[
+                { value: "no", label: "No" },
+                { value: "yes", label: "Yes" },
+                { value: "sometimes", label: "Sometimes" },
+              ]}
+            />
+            <div>
+              <Label htmlFor="painTriggerDescription">Movements, positions, or exercises that usually trigger pain or fatigue</Label>
+              <Textarea
+                id="painTriggerDescription"
+                value={movementProfile.painTriggerDescription || ""}
+                onChange={(e) => setMovementProfile({ ...movementProfile, painTriggerDescription: e.target.value })}
               />
             </div>
           </div>
+          <div className="mt-8 flex justify-between">
+            <Button variant="outline" onClick={goBack}>Back</Button>
+            <Button onClick={goNext}>Continue</Button>
+          </div>
+        </div>
+      )}
 
-          {showKidney && (
-            <div className="mt-6">
-              <Label>Kidney / renal details</Label>
-              <div className="mt-3">
-                <CheckboxGroup
-                  options={[
-                    { value: "ckd", label: "Chronic Kidney Disease" },
-                    { value: "dialysis", label: "Dialysis" },
-                    { value: "transplant_history", label: "Kidney transplant history" },
-                    { value: "fluid_restriction", label: "Fluid restriction" },
-                    { value: "potassium_restriction", label: "Potassium restriction" },
-                    { value: "phosphorus_restriction", label: "Phosphorus restriction" },
-                    { value: "renal_diet_guidance", label: "Renal diet guidance" },
-                    { value: "fistula_precautions", label: "Fistula or access precautions" },
-                    { value: "dialysis_schedule", label: "Dialysis schedule" },
-                    { value: "doctor_clearance_status", label: "Doctor clearance status" },
-                    { value: "fatigue_after_dialysis", label: "Fatigue after dialysis" },
-                    { value: "blood_pressure_concerns", label: "Blood pressure concerns" },
-                    { value: "anaemia", label: "Anaemia" },
-                    { value: "cramping", label: "Cramping" },
-                    { value: "fluid_management_concerns", label: "Fluid-management concerns" },
-                  ]}
-                  selected={health.kidneyDetails}
-                  onToggle={(v) => setHealth({ ...health, kidneyDetails: toggleValue(health.kidneyDetails, v) })}
-                />
-              </div>
+      {currentStep === "healthBoundaries" && (
+        <div className="text-left">
+          <h2 className="text-xl font-bold text-card-foreground">Health boundaries and care-team guidance</h2>
+          <p className="mt-1 text-sm text-muted-foreground">
+            This is not a diagnosis — it just helps us coach you safely. STRENTOR is educational and
+            lifestyle-focused coaching, and does not replace medical care, physiotherapy, renal guidance,
+            emergency treatment, or professional clinical advice.
+          </p>
+          <div className="mt-6 space-y-6">
+            <RadioRow
+              label="Any medical condition that affects training?"
+              value={healthBoundaries.medicalConditionAffectsTraining}
+              onChange={(v) => setHealthBoundaries({ ...healthBoundaries, medicalConditionAffectsTraining: v })}
+              options={[
+                { value: "no", label: "No" },
+                { value: "yes", label: "Yes" },
+                { value: "unsure", label: "Unsure" },
+              ]}
+            />
+            <RadioRow
+              label="Medical clearance recommended or required?"
+              value={healthBoundaries.medicalClearance}
+              onChange={(v) => setHealthBoundaries({ ...healthBoundaries, medicalClearance: v })}
+              options={[
+                { value: "no", label: "No" },
+                { value: "yes", label: "Yes" },
+                { value: "unsure", label: "Unsure" },
+              ]}
+            />
+            <RadioRow
+              label="Blood pressure / heart / breathing / blood sugar concerns"
+              value={healthBoundaries.cardioMetabolicConcerns}
+              onChange={(v) => setHealthBoundaries({ ...healthBoundaries, cardioMetabolicConcerns: v })}
+              options={[
+                { value: "no", label: "No" },
+                { value: "yes", label: "Yes" },
+                { value: "unsure", label: "Unsure" },
+              ]}
+            />
+            <RadioRow
+              label="Kidney, bladder, dialysis, or fluid/diet instructions"
+              value={healthBoundaries.kidneyBladderConcerns}
+              onChange={(v) => setHealthBoundaries({ ...healthBoundaries, kidneyBladderConcerns: v })}
+              options={[
+                { value: "no", label: "No" },
+                { value: "yes", label: "Yes" },
+                { value: "not_applicable", label: "Not applicable" },
+              ]}
+            />
+            <RadioRow
+              label="Current wound, skin breakdown, swelling, or infection concern"
+              value={healthBoundaries.woundSkinConcern}
+              onChange={(v) => setHealthBoundaries({ ...healthBoundaries, woundSkinConcern: v })}
+              options={[
+                { value: "no", label: "No" },
+                { value: "yes", label: "Yes" },
+              ]}
+            />
+            <RadioRow
+              label="Medication / supplement considerations"
+              value={healthBoundaries.medicationConsiderations}
+              onChange={(v) => setHealthBoundaries({ ...healthBoundaries, medicationConsiderations: v })}
+              options={[
+                { value: "no", label: "No" },
+                { value: "yes", label: "Yes" },
+                { value: "unsure", label: "Unsure" },
+              ]}
+            />
+            <RadioRow
+              label="Allergy or sensitivity relevant to training equipment"
+              value={healthBoundaries.allergyConsiderations}
+              onChange={(v) => setHealthBoundaries({ ...healthBoundaries, allergyConsiderations: v })}
+              options={[
+                { value: "no", label: "No" },
+                { value: "yes", label: "Yes" },
+                { value: "unsure", label: "Unsure" },
+              ]}
+            />
+            <div>
+              <Label htmlFor="careTeamRestrictions">Current restrictions or instructions from your medical/clinical team</Label>
+              <Textarea
+                id="careTeamRestrictions"
+                value={healthBoundaries.careTeamRestrictions || ""}
+                onChange={(e) => setHealthBoundaries({ ...healthBoundaries, careTeamRestrictions: e.target.value })}
+              />
             </div>
-          )}
-
-          {showDiabetes && (
-            <div className="mt-6">
-              <Label>Diabetes details</Label>
-              <div className="mt-3">
-                <CheckboxGroup
-                  options={[
-                    { value: "type1", label: "Type 1 diabetes" },
-                    { value: "type2", label: "Type 2 diabetes" },
-                    { value: "insulin", label: "Insulin use" },
-                    { value: "medication", label: "Medication use" },
-                    { value: "frequent_lows", label: "Frequent low blood sugar" },
-                    { value: "frequent_highs", label: "Frequent high blood sugar" },
-                    { value: "glucose_monitor", label: "Glucose monitor use" },
-                    { value: "workout_glucose_risk", label: "Workout glucose risks" },
-                    { value: "diabetic_neuropathy", label: "Neuropathy" },
-                    { value: "foot_care_concerns", label: "Foot-care concerns" },
-                  ]}
-                  selected={health.diabetesDetails}
-                  onToggle={(v) => setHealth({ ...health, diabetesDetails: toggleValue(health.diabetesDetails, v) })}
-                />
-              </div>
-            </div>
-          )}
-
-          {showHeart && (
-            <div className="mt-6">
-              <Label>Heart / blood pressure details</Label>
-              <div className="mt-3">
-                <CheckboxGroup
-                  options={[
-                    { value: "hypertension", label: "Hypertension" },
-                    { value: "heart_condition", label: "Heart condition" },
-                    { value: "high_cholesterol", label: "High cholesterol" },
-                    { value: "chest_pain_history", label: "Chest pain history" },
-                    { value: "blood_thinner", label: "Blood thinner" },
-                    { value: "cardiac_medication", label: "Cardiac medication" },
-                    { value: "exercise_clearance", label: "Exercise clearance" },
-                  ]}
-                  selected={health.heartDetails}
-                  onToggle={(v) => setHealth({ ...health, heartDetails: toggleValue(health.heartDetails, v) })}
-                />
-              </div>
-            </div>
-          )}
-
-          {showRespiratory && (
-            <div className="mt-6">
-              <Label>Respiratory details</Label>
-              <div className="mt-3">
-                <CheckboxGroup
-                  options={[
-                    { value: "asthma", label: "Asthma" },
-                    { value: "copd", label: "COPD" },
-                    { value: "breathing_limitation", label: "Breathing limitation" },
-                    { value: "low_oxygen", label: "Low oxygen levels" },
-                    { value: "respiratory_support", label: "Uses respiratory support (e.g. inhaler, oxygen)" },
-                  ]}
-                  selected={health.respiratoryDetails}
-                  onToggle={(v) => setHealth({ ...health, respiratoryDetails: toggleValue(health.respiratoryDetails, v) })}
-                />
-              </div>
-            </div>
-          )}
-
-          {showNeuro && (
-            <div className="mt-6">
-              <Label>Neurological details</Label>
-              <div className="mt-3">
-                <CheckboxGroup
-                  options={[
-                    { value: "seizure_history", label: "Seizure history" },
-                    { value: "neuropathy", label: "Neuropathy" },
-                    { value: "spasticity", label: "Spasticity" },
-                    { value: "nerve_pain", label: "Nerve pain" },
-                    { value: "tingling", label: "Tingling" },
-                    { value: "numbness", label: "Numbness" },
-                    { value: "hydrocephalus", label: "Hydrocephalus" },
-                    { value: "shunt_history", label: "Shunt history" },
-                  ]}
-                  selected={health.neurologicalDetails}
-                  onToggle={(v) => setHealth({ ...health, neurologicalDetails: toggleValue(health.neurologicalDetails, v) })}
-                />
-              </div>
-            </div>
-          )}
-
-          {showBoneJoint && (
-            <div className="mt-6">
-              <Label>Bone / joint / pain details</Label>
-              <div className="mt-3">
-                <CheckboxGroup
-                  options={[
-                    { value: "frozen_shoulder", label: "Frozen shoulder" },
-                    { value: "shoulder_pain", label: "Shoulder pain" },
-                    { value: "back_pain", label: "Back pain" },
-                    { value: "joint_pain", label: "Joint pain" },
-                    { value: "arthritis", label: "Arthritis" },
-                    { value: "osteoporosis", label: "Osteoporosis" },
-                    { value: "recent_fracture", label: "Recent fracture" },
-                    { value: "movement_restrictions", label: "Movement restrictions" },
-                  ]}
-                  selected={health.boneJointDetails}
-                  onToggle={(v) => setHealth({ ...health, boneJointDetails: toggleValue(health.boneJointDetails, v) })}
-                />
-              </div>
-            </div>
-          )}
-
-          {showDigestive && (
-            <div className="mt-6">
-              <Label>Digestive details</Label>
-              <div className="mt-3">
-                <CheckboxGroup
-                  options={[
-                    { value: "ibs", label: "Irritable bowel syndrome (IBS)" },
-                    { value: "acid_reflux", label: "Acid reflux / GERD" },
-                    { value: "food_intolerance", label: "Food intolerance" },
-                    { value: "bowel_management", label: "Bowel management routine" },
-                    { value: "digestive_medication", label: "Digestive medication" },
-                  ]}
-                  selected={health.digestiveDetails}
-                  onToggle={(v) => setHealth({ ...health, digestiveDetails: toggleValue(health.digestiveDetails, v) })}
-                />
-              </div>
-            </div>
-          )}
-
-          {showRecentSurgery && (
-            <div className="mt-6">
-              <Label>Recent surgery details</Label>
-              <div className="mt-3">
-                <CheckboxGroup
-                  options={[
-                    { value: "within_6_weeks", label: "Surgery within the last 6 weeks" },
-                    { value: "orthopedic_surgery", label: "Orthopedic / joint surgery" },
-                    { value: "abdominal_surgery", label: "Abdominal surgery" },
-                    { value: "cardiac_surgery", label: "Cardiac surgery" },
-                    { value: "medical_clearance_received", label: "Medical clearance already received" },
-                    { value: "medical_clearance_pending", label: "Medical clearance still pending" },
-                  ]}
-                  selected={health.recentSurgeryDetails}
-                  onToggle={(v) => setHealth({ ...health, recentSurgeryDetails: toggleValue(health.recentSurgeryDetails, v) })}
-                />
-              </div>
-            </div>
-          )}
+          </div>
 
           <div className="mt-6 rounded-lg border border-destructive/30 bg-destructive/5 p-4">
-            <Label className="text-destructive">Urgent safety flags</Label>
-            <p className="mt-1 text-xs text-muted-foreground">Please flag any of the following that apply to you right now.</p>
-            <div className="mt-3">
-              <CheckboxGroup
-                options={[
-                  { value: "chest_pain_activity", label: "Chest pain during activity" },
-                  { value: "dizziness_fainting", label: "Dizziness, fainting, or blackouts" },
-                  { value: "unexplained_breathlessness", label: "Unexplained breathlessness" },
-                  { value: "open_wound", label: "Open pressure sore or wound" },
-                  { value: "recent_surgery_no_clearance", label: "Recent surgery without clearance" },
-                  { value: "uncontrolled_bp", label: "Uncontrolled blood pressure" },
-                  { value: "uncontrolled_sugar", label: "Uncontrolled blood sugar" },
-                  { value: "severe_new_pain", label: "Severe new pain" },
-                  { value: "none", label: "None of these" },
-                ]}
-                selected={health.urgentFlags}
-                onToggle={(v) => setHealth({ ...health, urgentFlags: toggleValue(health.urgentFlags, v) })}
-              />
-            </div>
+            <p className="text-sm text-destructive">
+              Pause coaching and seek medical help for chest pain, severe breathlessness, fainting, new
+              weakness/numbness, fever, sudden severe headache, open wound, major swelling, or any symptom
+              your care team treats as urgent.
+            </p>
           </div>
 
           <div className="mt-8 flex justify-between">
@@ -774,91 +721,96 @@ export function IntakeForm({ initialPathway, region, plan, sourcePage, onPathway
         </div>
       )}
 
-      {currentStep === "nutrition" && (
+      {currentStep === "recoveryNutrition" && (
         <div className="text-left">
-          <h2 className="text-xl font-bold text-card-foreground">Nutrition &amp; Diet Context</h2>
-          <div className="mt-6">
-            <CheckboxGroup
+          <h2 className="text-xl font-bold text-card-foreground">Recovery, nutrition, and lifestyle routine</h2>
+          <div className="mt-6 space-y-6">
+            <RadioRow
+              label="Sleep quality"
+              value={recoveryNutrition.sleepQuality}
+              onChange={(v) => setRecoveryNutrition({ ...recoveryNutrition, sleepQuality: v })}
               options={[
-                { value: "fat_loss", label: "Fat-loss nutrition support" },
-                { value: "muscle_gain", label: "Muscle-gain nutrition support" },
-                { value: "healthy_weight_gain", label: "Healthy weight-gain support" },
-                { value: "protein_planning", label: "Protein planning" },
-                { value: "meal_timing", label: "Meal timing" },
-                { value: "appetite_improvement", label: "Appetite improvement" },
-                { value: "food_restriction_management", label: "Food restriction management" },
-                { value: "no_support_needed", label: "No nutrition support needed" },
+                { value: "poor", label: "Poor" },
+                { value: "fair", label: "Fair" },
+                { value: "good", label: "Good" },
+                { value: "variable", label: "Variable" },
               ]}
-              selected={nutrition.baseOptions}
-              onToggle={(v) => setNutrition({ ...nutrition, baseOptions: toggleValue(nutrition.baseOptions, v) })}
             />
-          </div>
-
-          <div className="mt-6">
-            <Label>Diet type</Label>
-            <div className="mt-3">
-              <CheckboxGroup
-                options={[
-                  { value: "vegetarian", label: "Vegetarian" },
-                  { value: "eggetarian", label: "Eggetarian" },
-                  { value: "non_vegetarian", label: "Non-vegetarian" },
-                  { value: "vegan", label: "Vegan" },
-                  { value: "mixed_diet", label: "Mixed diet" },
-                  { value: "religious_cultural_preference", label: "Religious / cultural food preference" },
-                  { value: "food_allergy", label: "Food allergy" },
-                  { value: "food_intolerance", label: "Food intolerance" },
-                  { value: "other", label: "Other" },
-                ]}
-                selected={nutrition.dietType}
-                onToggle={(v) => setNutrition({ ...nutrition, dietType: toggleValue(nutrition.dietType, v) })}
+            <RadioRow
+              label="Current meal pattern"
+              value={recoveryNutrition.mealPattern}
+              onChange={(v) => setRecoveryNutrition({ ...recoveryNutrition, mealPattern: v })}
+              options={[
+                { value: "1_to_2_meals", label: "1–2 meals" },
+                { value: "3_meals", label: "3 meals" },
+                { value: "4_plus_eating_events", label: "4+ eating events" },
+                { value: "irregular", label: "Irregular" },
+              ]}
+            />
+            <RadioRow
+              label="Appetite"
+              value={recoveryNutrition.appetite}
+              onChange={(v) => setRecoveryNutrition({ ...recoveryNutrition, appetite: v })}
+              options={[
+                { value: "low", label: "Low" },
+                { value: "medium", label: "Medium" },
+                { value: "high", label: "High" },
+                { value: "variable", label: "Variable" },
+              ]}
+            />
+            <RadioRow
+              label="Hydration or fluid instructions"
+              value={recoveryNutrition.hydrationInstructions}
+              onChange={(v) => setRecoveryNutrition({ ...recoveryNutrition, hydrationInstructions: v })}
+              options={[
+                { value: "none", label: "None" },
+                { value: "medical_instruction", label: "Medical instruction" },
+                { value: "unsure", label: "Unsure" },
+              ]}
+            />
+            <RadioRow
+              label="Diet instructions from care team"
+              value={recoveryNutrition.dietInstructions}
+              onChange={(v) => setRecoveryNutrition({ ...recoveryNutrition, dietInstructions: v })}
+              options={[
+                { value: "none", label: "None" },
+                { value: "renal", label: "Renal" },
+                { value: "diabetes", label: "Diabetes" },
+                { value: "weight_loss", label: "Weight loss" },
+                { value: "other", label: "Other" },
+              ]}
+            />
+            <RadioRow
+              label="Current supplements / sports drinks / electrolyte products"
+              value={recoveryNutrition.supplementsUsed}
+              onChange={(v) => setRecoveryNutrition({ ...recoveryNutrition, supplementsUsed: v })}
+              options={[
+                { value: "no", label: "No" },
+                { value: "yes", label: "Yes — list below" },
+              ]}
+            />
+            <RadioRow
+              label="Routine consistency"
+              value={recoveryNutrition.routineConsistency}
+              onChange={(v) => setRecoveryNutrition({ ...recoveryNutrition, routineConsistency: v })}
+              options={[
+                { value: "strong", label: "Strong" },
+                { value: "average", label: "Average" },
+                { value: "difficult_right_now", label: "Difficult right now" },
+              ]}
+            />
+            <div>
+              <Label htmlFor="supplementsDescription">Current supplements, sports drinks, electrolyte products, or diet instructions</Label>
+              <Textarea
+                id="supplementsDescription"
+                value={recoveryNutrition.supplementsDescription || ""}
+                onChange={(e) => setRecoveryNutrition({ ...recoveryNutrition, supplementsDescription: e.target.value })}
               />
             </div>
           </div>
-
-          {showKidney && (
-            <div className="mt-6">
-              <Label>Renal-aware nutrition</Label>
-              <div className="mt-3">
-                <CheckboxGroup
-                  options={[
-                    { value: "renal_aware", label: "Renal-aware nutrition" },
-                    { value: "fluid_restriction_planning", label: "Fluid restriction planning" },
-                    { value: "potassium_awareness", label: "Potassium awareness" },
-                    { value: "phosphorus_awareness", label: "Phosphorus awareness" },
-                    { value: "renal_protein_guidance", label: "Renal protein guidance" },
-                    { value: "dialysis_protein_requirement", label: "Dialysis protein requirement" },
-                    { value: "existing_dietitian_instructions", label: "Existing renal dietitian instructions" },
-                  ]}
-                  selected={nutrition.renalOptions}
-                  onToggle={(v) => setNutrition({ ...nutrition, renalOptions: toggleValue(nutrition.renalOptions, v) })}
-                />
-              </div>
-            </div>
-          )}
-
-          {showDiabetes && (
-            <div className="mt-6">
-              <Label>Diabetes-friendly nutrition</Label>
-              <div className="mt-3">
-                <CheckboxGroup
-                  options={[
-                    { value: "diabetes_friendly", label: "Diabetes-friendly nutrition" },
-                    { value: "carb_management", label: "Carbohydrate management" },
-                    { value: "blood_sugar_timing", label: "Blood sugar timing around workouts" },
-                    { value: "hypoglycemia_risk", label: "Hypoglycemia risk" },
-                    { value: "insulin_timing", label: "Insulin timing context" },
-                  ]}
-                  selected={nutrition.diabetesOptions}
-                  onToggle={(v) => setNutrition({ ...nutrition, diabetesOptions: toggleValue(nutrition.diabetesOptions, v) })}
-                />
-              </div>
-            </div>
-          )}
-
           <p className="mt-6 text-xs text-muted-foreground">
             STRENTOR nutrition guidance does not replace a renal dietitian, doctor, or clinical nutrition professional.
           </p>
-
           <div className="mt-8 flex justify-between">
             <Button variant="outline" onClick={goBack}>Back</Button>
             <Button onClick={goNext}>Continue</Button>
@@ -866,31 +818,111 @@ export function IntakeForm({ initialPathway, region, plan, sourcePage, onPathway
         </div>
       )}
 
-      {currentStep === "goals" && (
+      {currentStep === "adaptiveSpecialist" && (
         <div className="text-left">
-          <h2 className="text-xl font-bold text-card-foreground">Coaching Goals &amp; Readiness</h2>
-          <div className="mt-6">
-            <CheckboxGroup
+          <h2 className="text-xl font-bold text-card-foreground">Optional adaptive specialist notes</h2>
+          <p className="mt-1 text-sm text-muted-foreground">
+            Complete this section only if it applies. It helps STRENTOR set safer coaching boundaries for
+            seated, wheelchair, chronic-condition, or medically complex clients. You can skip straight to
+            Continue if none of this applies to you.
+          </p>
+          <div className="mt-6 space-y-6">
+            <RadioRow
+              label="Pressure injury history or skin-check routine"
+              value={adaptiveSpecialistNotes.pressureInjuryHistory}
+              onChange={(v) => setAdaptiveSpecialistNotes({ ...adaptiveSpecialistNotes, pressureInjuryHistory: v })}
               options={[
-                { value: "strength", label: "Build strength" },
-                { value: "confidence", label: "Build confidence" },
-                { value: "discipline", label: "Build discipline and routine" },
-                { value: "fat_loss", label: "Fat loss" },
-                { value: "muscle_gain", label: "Muscle gain" },
-                { value: "general_health", label: "General health and energy" },
+                { value: "not_applicable", label: "Not applicable" },
+                { value: "no_concern", label: "No concern" },
+                { value: "yes_explain", label: "Yes — explain" },
               ]}
-              selected={goals.goals}
-              onToggle={(v) => setGoals({ ...goals, goals: toggleValue(goals.goals, v) })}
+            />
+            <RadioRow
+              label="Reduced sensation in legs, feet, or sitting areas"
+              value={adaptiveSpecialistNotes.reducedSensation}
+              onChange={(v) => setAdaptiveSpecialistNotes({ ...adaptiveSpecialistNotes, reducedSensation: v })}
+              options={[
+                { value: "not_applicable", label: "Not applicable" },
+                { value: "no", label: "No" },
+                { value: "yes", label: "Yes" },
+                { value: "unsure", label: "Unsure" },
+              ]}
+            />
+            <RadioRow
+              label="Catheter, bladder, bowel, or UTI routine affects training"
+              value={adaptiveSpecialistNotes.catheterBladderBowelRoutine}
+              onChange={(v) => setAdaptiveSpecialistNotes({ ...adaptiveSpecialistNotes, catheterBladderBowelRoutine: v })}
+              options={[
+                { value: "not_applicable", label: "Not applicable" },
+                { value: "no", label: "No" },
+                { value: "yes", label: "Yes" },
+              ]}
+            />
+            <RadioRow
+              label="Dialysis / CKD / renal instructions affect training"
+              value={adaptiveSpecialistNotes.dialysisCkdInstructions}
+              onChange={(v) => setAdaptiveSpecialistNotes({ ...adaptiveSpecialistNotes, dialysisCkdInstructions: v })}
+              options={[
+                { value: "not_applicable", label: "Not applicable" },
+                { value: "no", label: "No" },
+                { value: "yes", label: "Yes" },
+              ]}
+            />
+            <RadioRow
+              label="Neurological or shunt-related monitoring needed"
+              value={adaptiveSpecialistNotes.neurologicalShuntMonitoring}
+              onChange={(v) => setAdaptiveSpecialistNotes({ ...adaptiveSpecialistNotes, neurologicalShuntMonitoring: v })}
+              options={[
+                { value: "not_applicable", label: "Not applicable" },
+                { value: "no", label: "No" },
+                { value: "yes", label: "Yes" },
+                { value: "unsure", label: "Unsure" },
+              ]}
             />
           </div>
-          <div className="mt-6">
-            <Label htmlFor="additionalContext">Additional context (optional)</Label>
-            <Textarea
-              id="additionalContext"
-              value={goals.additionalContext || ""}
-              onChange={(e) => setGoals({ ...goals, additionalContext: e.target.value })}
-              placeholder="Anything else you'd like us to know before your Fit Assessment."
-            />
+          <div className="mt-8 flex justify-between">
+            <Button variant="outline" onClick={goBack}>Back</Button>
+            <Button onClick={goNext}>Continue</Button>
+          </div>
+        </div>
+      )}
+
+      {currentStep === "goalsIdentity" && (
+        <div className="text-left">
+          <h2 className="text-xl font-bold text-card-foreground">Goals, identity, and coaching fit</h2>
+          <div className="mt-6 space-y-6">
+            <div>
+              <Label htmlFor="topOutcomes">Top 3 outcomes you want from coaching</Label>
+              <Textarea
+                id="topOutcomes"
+                value={goalsIdentity.topOutcomes || ""}
+                onChange={(e) => setGoalsIdentity({ ...goalsIdentity, topOutcomes: e.target.value })}
+              />
+            </div>
+            <div>
+              <Label htmlFor="whatToKnow">What should STRENTOR know about your body, confidence, routine, or support needs?</Label>
+              <Textarea
+                id="whatToKnow"
+                value={goalsIdentity.whatToKnow || ""}
+                onChange={(e) => setGoalsIdentity({ ...goalsIdentity, whatToKnow: e.target.value })}
+              />
+            </div>
+            <div>
+              <Label htmlFor="coachingStyle">What coaching style helps you perform best?</Label>
+              <Textarea
+                id="coachingStyle"
+                value={goalsIdentity.coachingStyle || ""}
+                onChange={(e) => setGoalsIdentity({ ...goalsIdentity, coachingStyle: e.target.value })}
+              />
+            </div>
+            <div>
+              <Label htmlFor="whatNotToPush">Anything you do not want pushed, rushed, or ignored?</Label>
+              <Textarea
+                id="whatNotToPush"
+                value={goalsIdentity.whatNotToPush || ""}
+                onChange={(e) => setGoalsIdentity({ ...goalsIdentity, whatNotToPush: e.target.value })}
+              />
+            </div>
           </div>
           <div className="mt-8 flex justify-between">
             <Button variant="outline" onClick={goBack}>Back</Button>
@@ -1075,10 +1107,40 @@ export function IntakeForm({ initialPathway, region, plan, sourcePage, onPathway
 
       {currentStep === "review" && (
         <div className="text-left">
-          <h2 className="text-xl font-bold text-card-foreground">Review &amp; submit</h2>
+          <h2 className="text-xl font-bold text-card-foreground">
+            {isPersonalTrack ? "Consent and acknowledgement" : "Review & submit"}
+          </h2>
           <p className="mt-1 text-sm text-muted-foreground">
             You're submitting a <strong>{pathway ? PATHWAY_LABELS[pathway] : ""}</strong> as {contact.fullName || "—"} ({contact.email || "—"}).
           </p>
+
+          {isPersonalTrack && (
+            <div className="mt-6 space-y-2 rounded-lg border border-border bg-background p-4 text-sm text-muted-foreground">
+              <p>• I understand STRENTOR coaching is educational and lifestyle-focused; it does not diagnose, treat, prescribe, or replace medical care.</p>
+              <p>• I will follow restrictions, medication, fluid, diet, and safety instructions from my medical/clinical team.</p>
+              <p>• I will report pain, fatigue, skin issues, dizziness, breathlessness, fever, swelling, or new symptoms before training.</p>
+              <p>• I understand the coach may pause, modify, or refer out when safety boundaries are unclear.</p>
+            </div>
+          )}
+
+          {isPersonalTrack && (
+            <div className="mt-6">
+              <label className="flex items-start gap-3 text-sm">
+                <Checkbox checked={acknowledged} onCheckedChange={(checked) => setAcknowledged(checked === true)} />
+                <span>I have read and agree to the acknowledgements above.</span>
+              </label>
+              <div className="mt-4">
+                <Label htmlFor="signatureName">Type your full name to sign</Label>
+                <Input
+                  id="signatureName"
+                  value={signatureName}
+                  onChange={(e) => setSignatureName(e.target.value)}
+                  placeholder="Full legal name"
+                />
+              </div>
+            </div>
+          )}
+
           <div className="mt-6">
             <label className="flex items-start gap-3 text-sm">
               <Checkbox checked={consent} onCheckedChange={(checked) => setConsent(checked === true)} />
@@ -1092,7 +1154,10 @@ export function IntakeForm({ initialPathway, region, plan, sourcePage, onPathway
           {submitError && <ErrorSummary message={submitError} />}
           <div className="mt-8 flex justify-between">
             <Button variant="outline" onClick={goBack} disabled={isSubmitting}>Back</Button>
-            <Button onClick={handleSubmit} disabled={isSubmitting || !consent}>
+            <Button
+              onClick={handleSubmit}
+              disabled={isSubmitting || !consent || (isPersonalTrack && (!acknowledged || !signatureName.trim()))}
+            >
               {isSubmitting ? <LoadingState label="Submitting…" /> : "Submit Enquiry"}
             </Button>
           </div>

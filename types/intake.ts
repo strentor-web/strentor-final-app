@@ -19,8 +19,9 @@ export const PATHWAY_LABELS: Record<EnquiryPathway, string> = {
   general: "General enquiry",
 };
 
-// Pathways that go through the full personal-coaching intake (Adaptive Training
-// Profile, Health & Safety, Nutrition, Goals, Additional Context).
+// Pathways that go through the full STRENTOR Adaptive Strength Intake Form
+// (coaching context, movement profile, health boundaries, recovery &
+// nutrition, optional adaptive specialist notes, goals & identity).
 export const PERSONAL_TRACK_PATHWAYS: EnquiryPathway[] = [
   "personal",
   "family",
@@ -37,65 +38,78 @@ export interface ContactDetails {
   country: string;
   socialPlatform?: string;
   socialUrl?: string;
+  // Extra fields from the STRENTOR Adaptive Strength Intake Form (Section 1)
+  // — only collected on the personal-coaching track.
+  preferredName?: string;
+  height?: string;
+  weight?: string;
+  emergencyContact?: string;
+  preferredContactMethod?: string[];
 }
 
-export type PrimaryTrainingContext =
-  | "wheelchair_user"
-  | "limited_walking"
-  | "general_fitness"
-  | "other_consideration";
-
-export interface AdaptiveTrainingProfile {
-  primaryContext?: PrimaryTrainingContext;
-  wheelchairYears?: string;
-  upperBodyFunctionLevel?: string;
-  requiresTransferAssistance?: string;
-  wheelchairDetails: string[];
-  spinaBifidaDetails: string[];
-  wheelchairConsiderations: string[];
-  limitedWalkingDetails: string[];
-  generalFitnessDetails: string[];
-  otherDescription?: string;
+// Section 2 — Coaching context and goals
+export interface CoachingContext {
+  primaryFocus: string[];
+  trainingExperience?: string;
+  movementContext?: string;
+  coachingFormat?: string;
+  supportNeeded: string[];
+  successVision?: string;
+  biggestBarrier?: string;
 }
 
-export type HealthCategory =
-  | "kidney_renal"
-  | "diabetes_metabolic"
-  | "heart_bp"
-  | "respiratory"
-  | "neurological"
-  | "bone_joint_pain"
-  | "digestive"
-  | "recent_surgery"
-  | "none_known"
-  | "other";
-
-export interface HealthSafetyScreening {
-  categories: HealthCategory[];
-  kidneyDetails: string[];
-  diabetesDetails: string[];
-  heartDetails: string[];
-  respiratoryDetails: string[];
-  neurologicalDetails: string[];
-  boneJointDetails: string[];
-  digestiveDetails: string[];
-  recentSurgeryDetails: string[];
-  otherHealthDescription?: string;
-  urgentFlags: string[];
+// Section 3 — Movement, mobility, pain, and daily function
+export interface MovementProfile {
+  dailyMovement?: string;
+  transferDifficulty?: string;
+  shoulderNeckBackPain?: string;
+  balanceFallConcern?: string;
+  fatigueLevel?: string;
+  painTriggersKnown?: string;
+  assistiveDevice?: string;
+  caregiverSupport?: string;
+  painTriggerDescription?: string;
 }
 
-export interface NutritionContext {
-  baseOptions: string[];
-  renalOptions: string[];
-  diabetesOptions: string[];
-  dietType: string[];
+// Section 4 — Health boundaries and care-team guidance
+export interface HealthBoundaries {
+  medicalConditionAffectsTraining?: string;
+  medicalClearance?: string;
+  cardioMetabolicConcerns?: string;
+  kidneyBladderConcerns?: string;
+  woundSkinConcern?: string;
+  medicationConsiderations?: string;
+  allergyConsiderations?: string;
+  careTeamRestrictions?: string;
 }
 
-export interface CoachingGoals {
-  goals: string[];
-  confidenceLevel?: string;
-  consistency?: string;
-  additionalContext?: string;
+// Section 5 — Recovery, nutrition, and lifestyle routine
+export interface RecoveryNutritionProfile {
+  sleepQuality?: string;
+  mealPattern?: string;
+  appetite?: string;
+  hydrationInstructions?: string;
+  dietInstructions?: string;
+  supplementsUsed?: string;
+  routineConsistency?: string;
+  supplementsDescription?: string;
+}
+
+// Section 6 — Optional adaptive specialist notes
+export interface AdaptiveSpecialistNotes {
+  pressureInjuryHistory?: string;
+  reducedSensation?: string;
+  catheterBladderBowelRoutine?: string;
+  dialysisCkdInstructions?: string;
+  neurologicalShuntMonitoring?: string;
+}
+
+// Section 7 — Goals, identity, and coaching fit
+export interface GoalsIdentity {
+  topOutcomes?: string;
+  whatToKnow?: string;
+  coachingStyle?: string;
+  whatNotToPush?: string;
 }
 
 export interface CorporateDetails {
@@ -139,10 +153,14 @@ export interface GeneralEnquiryDetails {
 export interface IntakeFormPayload {
   pathway: EnquiryPathway;
   contact: ContactDetails;
-  adaptiveTrainingProfile?: AdaptiveTrainingProfile;
-  healthSafety?: HealthSafetyScreening;
-  nutrition?: NutritionContext;
-  goals?: CoachingGoals;
+  coachingContext?: CoachingContext;
+  movementProfile?: MovementProfile;
+  healthBoundaries?: HealthBoundaries;
+  recoveryNutrition?: RecoveryNutritionProfile;
+  adaptiveSpecialistNotes?: AdaptiveSpecialistNotes;
+  goalsIdentity?: GoalsIdentity;
+  /** Typed e-signature (full name) for Section 8 — Consent and acknowledgement. */
+  signatureName?: string;
   corporate?: CorporateDetails;
   referral?: ReferralDetails;
   sponsor?: SponsorDetails;

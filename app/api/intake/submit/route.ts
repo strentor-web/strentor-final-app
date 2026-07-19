@@ -19,6 +19,11 @@ const contactSchema = z.object({
   country: z.string().trim().min(1).max(100),
   socialPlatform: z.string().trim().max(100).optional(),
   socialUrl: z.string().trim().max(500).optional(),
+  preferredName: z.string().trim().max(200).optional(),
+  height: z.string().trim().max(50).optional(),
+  weight: z.string().trim().max(50).optional(),
+  emergencyContact: z.string().trim().max(200).optional(),
+  preferredContactMethod: z.array(z.string()).optional(),
 });
 
 const payloadSchema = z.object({
@@ -33,10 +38,13 @@ const payloadSchema = z.object({
     "general",
   ]),
   contact: contactSchema,
-  adaptiveTrainingProfile: z.any().optional(),
-  healthSafety: z.any().optional(),
-  nutrition: z.any().optional(),
-  goals: z.any().optional(),
+  coachingContext: z.any().optional(),
+  movementProfile: z.any().optional(),
+  healthBoundaries: z.any().optional(),
+  recoveryNutrition: z.any().optional(),
+  adaptiveSpecialistNotes: z.any().optional(),
+  goalsIdentity: z.any().optional(),
+  signatureName: z.string().trim().max(200).optional(),
   corporate: z.any().optional(),
   referral: z.any().optional(),
   sponsor: z.any().optional(),
@@ -93,14 +101,34 @@ function isDuplicateSubmission(key: string): boolean {
   return last !== undefined && now - last < DUPLICATE_WINDOW_MS;
 }
 
-function classifyReviewLevel(healthSafety: any): "standard_fit_review" | "strentor_safety_review_needed" | "medical_clearance_likely_needed" {
-  const urgentFlags: string[] = healthSafety?.urgentFlags || [];
-  const hasUrgent = urgentFlags.some((flag) => flag !== "none");
-  if (hasUrgent) return "medical_clearance_likely_needed";
+function classifyReviewLevel(
+  healthBoundaries: any,
+  movementProfile: any
+): "standard_fit_review" | "strentor_safety_review_needed" | "medical_clearance_likely_needed" {
+  const clearanceFlags = [
+    healthBoundaries?.medicalConditionAffectsTraining,
+    healthBoundaries?.medicalClearance,
+    healthBoundaries?.cardioMetabolicConcerns,
+    healthBoundaries?.kidneyBladderConcerns,
+    healthBoundaries?.woundSkinConcern,
+  ];
+  if (clearanceFlags.some((flag) => flag === "yes")) return "medical_clearance_likely_needed";
 
-  const categories: string[] = healthSafety?.categories || [];
-  const hasCategory = categories.some((c) => c !== "none_known");
-  if (hasCategory) return "strentor_safety_review_needed";
+  const safetyFlags = [
+    healthBoundaries?.medicationConsiderations,
+    healthBoundaries?.allergyConsiderations,
+    movementProfile?.balanceFallConcern,
+    movementProfile?.painTriggersKnown,
+    movementProfile?.transferDifficulty,
+  ];
+  if (safetyFlags.some((flag) => flag === "yes")) return "strentor_safety_review_needed";
+
+  const unsureFlags = [
+    healthBoundaries?.medicalConditionAffectsTraining,
+    healthBoundaries?.medicalClearance,
+    healthBoundaries?.cardioMetabolicConcerns,
+  ];
+  if (unsureFlags.some((flag) => flag === "unsure")) return "strentor_safety_review_needed";
 
   return "standard_fit_review";
 }
@@ -157,17 +185,20 @@ export async function POST(request: NextRequest) {
 
   const primaryEmail = PATHWAY_PRIMARY_EMAIL[pathway];
   const ccEmails = PATHWAY_CC[pathway];
-  const reviewLevel = classifyReviewLevel(data.healthSafety);
+  const reviewLevel = classifyReviewLevel(data.healthBoundaries, data.movementProfile);
 
   const html = `
     <div style="font-family: Arial, sans-serif; max-width: 640px; color: #111;">
       <h2 style="color:#C9A96A;">New ${escapeHtml(PATHWAY_LABELS[pathway])}</h2>
       <p style="color:#666;font-size:13px;">Internal review level: <strong>${reviewLevel}</strong></p>
       ${renderSection("Contact", contact)}
-      ${renderSection("Adaptive Training Profile", data.adaptiveTrainingProfile)}
-      ${renderSection("Health & Safety Screening", data.healthSafety)}
-      ${renderSection("Nutrition Context", data.nutrition)}
-      ${renderSection("Goals", data.goals)}
+      ${renderSection("Coaching Context & Goals", data.coachingContext)}
+      ${renderSection("Movement Profile", data.movementProfile)}
+      ${renderSection("Health Boundaries", data.healthBoundaries)}
+      ${renderSection("Recovery & Nutrition", data.recoveryNutrition)}
+      ${renderSection("Adaptive Specialist Notes", data.adaptiveSpecialistNotes)}
+      ${renderSection("Goals & Identity", data.goalsIdentity)}
+      ${renderSection("Signature", data.signatureName ? { signatureName: data.signatureName } : undefined)}
       ${renderSection("Corporate / CSR / NGO", data.corporate)}
       ${renderSection("Professional Referral", data.referral)}
       ${renderSection("Pay It Forward Sponsor", data.sponsor)}
