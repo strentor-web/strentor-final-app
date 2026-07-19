@@ -183,9 +183,11 @@ export default function ProgramsPage() {
             Access-Based Pricing
           </h2>
           <p className="mt-4 text-lg text-muted-foreground">
-            The 12-week program has a true value of {PROGRAM_TRUE_VALUE} per participant. Through
-            sponsors, donors and partners, eligible participants may receive fully sponsored or
-            subsidized access.
+            Sessions are priced at ₹999 each, with a minimum commitment of 3 sessions per week for
+            at least 3 months (36 sessions) — a true value of {PROGRAM_TRUE_VALUE} per participant.
+            The contribution below is what you pay toward that block; through sponsors, donors and
+            partners, eligible participants may receive fully sponsored or subsidized access, and
+            higher tiers help sponsor a seat for someone else.
           </p>
         </ScrollReveal>
 
@@ -194,7 +196,7 @@ export default function ProgramsPage() {
             <TableHeader>
               <TableRow className="hover:bg-transparent">
                 <TableHead className="text-foreground">Access Tier</TableHead>
-                <TableHead className="text-foreground">Contribution (INR)</TableHead>
+                <TableHead className="text-foreground">Min. Contribution (INR)</TableHead>
                 <TableHead className="text-foreground">Who It's For</TableHead>
               </TableRow>
             </TableHeader>
@@ -208,6 +210,10 @@ export default function ProgramsPage() {
               ))}
             </TableBody>
           </Table>
+          <p className="border-t border-border px-4 py-3 text-xs text-muted-foreground sm:px-6">
+            Contribution is your minimum share of a 3x/week, 3-month (36-session) block at
+            ₹999/session — STRENTOR's sponsor network covers the remainder for subsidized tiers.
+          </p>
         </ScrollReveal>
       </section>
 
