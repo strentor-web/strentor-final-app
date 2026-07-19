@@ -30,6 +30,7 @@ export const PERSONAL_TRACK_PATHWAYS: EnquiryPathway[] = [
 
 export interface ContactDetails {
   fullName: string;
+  age?: string;
   email: string;
   phone: string;
   city: string;
@@ -46,6 +47,9 @@ export type PrimaryTrainingContext =
 
 export interface AdaptiveTrainingProfile {
   primaryContext?: PrimaryTrainingContext;
+  wheelchairYears?: string;
+  upperBodyFunctionLevel?: string;
+  requiresTransferAssistance?: string;
   wheelchairDetails: string[];
   spinaBifidaDetails: string[];
   wheelchairConsiderations: string[];

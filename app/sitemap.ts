@@ -25,34 +25,28 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.5,
     },
     {
-      url: `${siteUrl}/coaching`,
+      url: `${siteUrl}/apply-for-access`,
       lastModified: now,
       changeFrequency: "monthly",
       priority: 0.9,
     },
     {
-      url: `${siteUrl}/plans-pricing`,
+      url: `${siteUrl}/sponsor-a-seat`,
       lastModified: now,
       changeFrequency: "monthly",
       priority: 0.9,
     },
     {
-      url: `${siteUrl}/corporate`,
+      url: `${siteUrl}/impact`,
       lastModified: now,
       changeFrequency: "monthly",
       priority: 0.7,
     },
     {
-      url: `${siteUrl}/resources`,
+      url: `${siteUrl}/partner-with-us`,
       lastModified: now,
       changeFrequency: "monthly",
-      priority: 0.6,
-    },
-    {
-      url: `${siteUrl}/pay-it-forward`,
-      lastModified: now,
-      changeFrequency: "monthly",
-      priority: 0.6,
+      priority: 0.7,
     },
     {
       url: `${siteUrl}/contact`,
@@ -64,7 +58,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       url: `${siteUrl}/programs`,
       lastModified: now,
       changeFrequency: "monthly",
-      priority: 0.8,
+      priority: 0.9,
     },
     {
       url: `${siteUrl}/programs/fitness-training`,

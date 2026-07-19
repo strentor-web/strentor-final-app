@@ -1,8 +1,8 @@
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: "Our Programs",
-  description: "Meet the certified experts behind Strentor's fitness programs, led by a national-level para powerlifter dedicated to inclusive coaching.",
+  title: "The 12-Week Program",
+  description: "The 12-Week STRENTOR Holistic Strength Program builds seated strength, nutrition habits, mindset and resilience — with access-based pricing so sponsors and donors can help subsidize participants' seats.",
   alternates: {
     canonical: "/programs",
   },

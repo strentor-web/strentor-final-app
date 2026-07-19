@@ -11,6 +11,13 @@ import {
   RadioGroup,
   RadioGroupItem,
 } from "@/components/ui/radio-group"
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
 import { ErrorSummary, LoadingState, SuccessMessage } from "@/components/forms/intake/IntakeFormFeedback"
 import {
   AdaptiveTrainingProfile,
@@ -313,6 +320,10 @@ export function IntakeForm({ initialPathway, region, plan, sourcePage, onPathway
               <Input id="fullName" value={contact.fullName} onChange={(e) => setContact({ ...contact, fullName: e.target.value })} />
             </div>
             <div>
+              <Label htmlFor="age">Age (optional)</Label>
+              <Input id="age" type="number" min={0} max={120} value={contact.age || ""} onChange={(e) => setContact({ ...contact, age: e.target.value })} />
+            </div>
+            <div>
               <Label htmlFor="email">Email</Label>
               <Input id="email" type="email" value={contact.email} onChange={(e) => setContact({ ...contact, email: e.target.value })} />
             </div>
@@ -373,6 +384,44 @@ export function IntakeForm({ initialPathway, region, plan, sourcePage, onPathway
 
           {training.primaryContext === "wheelchair_user" && (
             <div className="mt-6 space-y-6">
+              <div className="grid gap-4 sm:grid-cols-3">
+                <div>
+                  <Label>Years using a wheelchair</Label>
+                  <Select value={training.wheelchairYears} onValueChange={(v) => setTraining({ ...training, wheelchairYears: v })}>
+                    <SelectTrigger className="mt-2"><SelectValue placeholder="Select" /></SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="less_than_1">Less than 1 year</SelectItem>
+                      <SelectItem value="1_to_5">1–5 years</SelectItem>
+                      <SelectItem value="5_to_10">5–10 years</SelectItem>
+                      <SelectItem value="10_plus">10+ years</SelectItem>
+                      <SelectItem value="since_birth">Since birth</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div>
+                  <Label>Upper body function level</Label>
+                  <Select value={training.upperBodyFunctionLevel} onValueChange={(v) => setTraining({ ...training, upperBodyFunctionLevel: v })}>
+                    <SelectTrigger className="mt-2"><SelectValue placeholder="Select" /></SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="full_function">Full function</SelectItem>
+                      <SelectItem value="mostly_functional">Mostly functional, some limitations</SelectItem>
+                      <SelectItem value="significantly_limited">Significantly limited</SelectItem>
+                      <SelectItem value="not_sure">Not sure</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div>
+                  <Label>Require assistance for transfers?</Label>
+                  <Select value={training.requiresTransferAssistance} onValueChange={(v) => setTraining({ ...training, requiresTransferAssistance: v })}>
+                    <SelectTrigger className="mt-2"><SelectValue placeholder="Select" /></SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="no">No, fully independent</SelectItem>
+                      <SelectItem value="sometimes">Sometimes</SelectItem>
+                      <SelectItem value="yes">Yes, usually</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+              </div>
               <div>
                 <Label>Wheelchair use details</Label>
                 <div className="mt-3">

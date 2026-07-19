@@ -12,6 +12,7 @@ const PATHWAY_CC: Partial<Record<EnquiryPathway, string[]>> = {
 
 const contactSchema = z.object({
   fullName: z.string().trim().min(1).max(200),
+  age: z.string().trim().max(10).optional(),
   email: z.string().trim().email().max(200),
   phone: z.string().trim().min(1).max(50),
   city: z.string().trim().min(1).max(100),

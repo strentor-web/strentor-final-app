@@ -8,12 +8,14 @@ import Link from "next/link"
 
 const navLinks = [
   { href: "/", label: "Home" },
+  { href: "/apply-for-access", label: "Apply for Access" },
+  { href: "/sponsor-a-seat", label: "Sponsor a Seat" },
+  { href: "/programs", label: "Programs" },
+  { href: "/impact", label: "Impact" },
+  { href: "/partner-with-us", label: "Partner With Us" },
   { href: "/about", label: "About" },
-  { href: "/coaching", label: "Coaching" },
-  { href: "/plans-pricing", label: "Plans" },
-  { href: "/corporate", label: "Corporate / CSR" },
-  { href: "/resources", label: "Resources" },
-  { href: "/pay-it-forward", label: "Pay It Forward" },
+  { href: "/community", label: "Community" },
+  { href: "/contact", label: "Contact" },
 ];
 
 export default function Header() {
@@ -63,7 +65,7 @@ export default function Header() {
               asChild
               className="hidden lg:inline-flex shadow-2xl h-10 rounded-full bg-strentor-red hover:bg-strentor-red/80 text-primary-foreground"
             >
-              <Link href="/contact">Book Fit Assessment</Link>
+              <Link href="/apply-for-access">Apply Now</Link>
             </Button>
           </div>
         </div>
@@ -81,7 +83,7 @@ export default function Header() {
               </Link>
             ))}
             <Button asChild className="shadow-2xl h-10 rounded-full bg-strentor-red hover:bg-strentor-red/80 text-primary-foreground">
-              <Link href="/contact">Book Fit Assessment</Link>
+              <Link href="/apply-for-access">Apply Now</Link>
             </Button>
           </nav>
         )}

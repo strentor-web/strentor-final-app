@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
   title: "Community",
-  description: "Join Strentor's WhatsApp community for updates, motivation, and support on your fitness journey.",
+  description: "Join the STRENTOR community — WhatsApp, Telegram, live sessions, and resources for support, accountability, and growth on your fitness journey.",
   alternates: {
     canonical: "/community",
   },

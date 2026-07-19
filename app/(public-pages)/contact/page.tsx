@@ -2,12 +2,37 @@
 
 import { Suspense, useState } from "react"
 import { useSearchParams } from "next/navigation"
+import { Mail, Globe, Clock } from "lucide-react"
 import Header from "@/components/landing/Header"
 import Footer from "@/components/landing/Footer"
 import { DynamicContactEmail } from "@/components/forms/DynamicContactEmail"
 import { IntakeForm } from "@/components/forms/intake/IntakeForm"
 import { EnquiryPathway, PATHWAY_LABELS } from "@/types/intake"
 import { useRegion } from "@/hooks/useRegion"
+
+const CONTACT_INFO_BLOCKS = [
+  {
+    icon: Mail,
+    label: "Email",
+    content: (
+      <a href="mailto:adityamandan@strentor.com" className="text-[#C9A96A] hover:underline">
+        adityamandan@strentor.com
+      </a>
+    ),
+  },
+  {
+    icon: Globe,
+    label: "Website",
+    content: <span className="text-muted-foreground">www.strentor.com</span>,
+  },
+  {
+    icon: Clock,
+    label: "Response Time",
+    content: (
+      <span className="text-muted-foreground">We typically respond within 24–48 hours.</span>
+    ),
+  },
+]
 
 const VALID_PATHWAYS = Object.keys(PATHWAY_LABELS) as EnquiryPathway[]
 
@@ -49,10 +74,10 @@ const HERO_COPY: Partial<Record<EnquiryPathway, { title: React.ReactNode; subtit
 const DEFAULT_HERO_COPY = {
   title: (
     <>
-      Book Your <span className="text-[#C9A96A]">Fit Assessment</span>
+      Get In <span className="text-[#C9A96A]">Touch</span>
     </>
   ),
-  subtitle: "Tell us a little about your situation and we'll route you to the right person on the STRENTOR team.",
+  subtitle: "We're here to help you take the next step.",
 }
 
 function ContactContent() {
@@ -89,14 +114,37 @@ function ContactContent() {
 
       <div className="container mx-auto px-4 py-16">
         <div className="mx-auto grid max-w-5xl gap-8 lg:grid-cols-[1fr_1.4fr] lg:items-start">
-          <DynamicContactEmail pathway={pathway} />
-          <IntakeForm
-            initialPathway={initialPathway}
-            region={region}
-            plan={planParam}
-            sourcePage="/contact"
-            onPathwayChange={setPathway}
-          />
+          <div className="space-y-6">
+            {CONTACT_INFO_BLOCKS.map((block) => (
+              <div
+                key={block.label}
+                className="flex gap-4 rounded-2xl border border-border bg-card p-6"
+              >
+                <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-[#C9A96A]">
+                  <block.icon className="h-5 w-5 text-strentor-black" />
+                </div>
+                <div>
+                  <h3 className="text-lg font-bold text-card-foreground">{block.label}</h3>
+                  <p className="mt-1 text-sm">{block.content}</p>
+                </div>
+              </div>
+            ))}
+
+            <DynamicContactEmail pathway={pathway} />
+          </div>
+
+          <div>
+            <h2 className="text-2xl font-bold font-display text-foreground">Send Us A Message</h2>
+            <div className="mt-6">
+              <IntakeForm
+                initialPathway={initialPathway}
+                region={region}
+                plan={planParam}
+                sourcePage="/contact"
+                onPathwayChange={setPathway}
+              />
+            </div>
+          </div>
         </div>
       </div>
 
