@@ -23,7 +23,17 @@ import {
   ArrowRight,
   HandHeart,
 } from "lucide-react"
+import dynamic from "next/dynamic"
 import { accessTiers, PROGRAM_TRUE_VALUE } from "@/config/accessTiers"
+import { ScrollReveal, StaggerGroup } from "@/components/motion/ScrollReveal"
+import { HoverLift } from "@/components/motion/HoverLift"
+
+// @react-three/fiber has import-time side effects that crash Next.js's
+// server-side prerender pass, so it must only ever load in the browser.
+const ProgramWheel3D = dynamic(
+  () => import("@/components/three/ProgramWheel3D").then((mod) => mod.ProgramWheel3D),
+  { ssr: false }
+)
 
 const pillars = [
   {
@@ -101,20 +111,24 @@ export default function ProgramsPage() {
 
       {/* Wheel of Focus */}
       <section className="container mx-auto px-4 py-16 md:py-24">
-        <div className="mx-auto max-w-xl text-center">
+        <ScrollReveal className="mx-auto max-w-xl text-center">
           <h2 className="text-3xl font-bold font-display text-foreground sm:text-4xl">
             One Program, Six Pillars
           </h2>
           <p className="mt-4 text-lg text-muted-foreground">
             Every week of the 12-week program touches all six pillars of holistic strength.
           </p>
-        </div>
+        </ScrollReveal>
 
-        <div className="mt-12 flex justify-center">
+        <ScrollReveal delay={0.1} className="mt-12 flex justify-center">
           <div className="relative h-64 w-64 sm:h-80 sm:w-80">
             <div
               className="h-full w-full rounded-full shadow-2xl ring-1 ring-[#C9A96A]/30"
               style={{ background: wheelGradient }}
+            />
+            <ProgramWheel3D
+              segments={pillars.map((p) => ({ color: p.color }))}
+              className="absolute inset-0"
             />
             <div className="absolute inset-0 flex items-center justify-center">
               <div className="flex h-24 w-24 items-center justify-center rounded-full bg-black shadow-lg ring-4 ring-black sm:h-28 sm:w-28">
@@ -128,39 +142,40 @@ export default function ProgramsPage() {
               </div>
             </div>
           </div>
-        </div>
+        </ScrollReveal>
       </section>
 
       {/* Pillar cards */}
       <section className="bg-muted/30 py-16">
         <div className="container mx-auto px-4">
-          <div className="mx-auto grid max-w-5xl gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          <StaggerGroup className="mx-auto grid max-w-5xl gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {pillars.map((pillar) => {
               const Icon = pillar.icon
               return (
-                <div
-                  key={pillar.title}
-                  className="flex gap-4 rounded-2xl border border-border bg-card p-6 shadow-sm"
-                >
-                  <div
-                    className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-[#C9A96A]"
+                <ScrollReveal key={pillar.title}>
+                  <HoverLift
+                    className="flex gap-4 rounded-2xl border border-border bg-card p-6 shadow-sm transition-colors hover:border-[#C9A96A]/40"
                   >
-                    <Icon className="h-5 w-5 text-strentor-black" />
-                  </div>
-                  <div>
-                    <h3 className="text-lg font-bold text-card-foreground">{pillar.title}</h3>
-                    <p className="mt-1 text-muted-foreground">{pillar.description}</p>
-                  </div>
-                </div>
+                    <div
+                      className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-[#C9A96A]"
+                    >
+                      <Icon className="h-5 w-5 text-strentor-black" />
+                    </div>
+                    <div>
+                      <h3 className="text-lg font-bold text-card-foreground">{pillar.title}</h3>
+                      <p className="mt-1 text-muted-foreground">{pillar.description}</p>
+                    </div>
+                  </HoverLift>
+                </ScrollReveal>
               )
             })}
-          </div>
+          </StaggerGroup>
         </div>
       </section>
 
       {/* Access-Based Pricing */}
       <section className="container mx-auto px-4 py-16 md:py-24">
-        <div className="mx-auto max-w-3xl text-center">
+        <ScrollReveal className="mx-auto max-w-3xl text-center">
           <h2 className="text-3xl font-bold font-display text-foreground sm:text-4xl">
             Access-Based Pricing
           </h2>
@@ -169,9 +184,9 @@ export default function ProgramsPage() {
             sponsors, donors and partners, eligible participants may receive fully sponsored or
             subsidized access.
           </p>
-        </div>
+        </ScrollReveal>
 
-        <div className="mx-auto mt-10 max-w-4xl overflow-hidden rounded-2xl border border-border bg-card">
+        <ScrollReveal delay={0.1} className="mx-auto mt-10 max-w-4xl overflow-hidden rounded-2xl border border-border bg-card">
           <Table>
             <TableHeader>
               <TableRow className="hover:bg-transparent">
@@ -190,13 +205,13 @@ export default function ProgramsPage() {
               ))}
             </TableBody>
           </Table>
-        </div>
+        </ScrollReveal>
       </section>
 
       {/* Final CTA */}
       <section className="relative bg-black py-20">
         <div className="absolute inset-0 bg-gradient-to-br from-[#C9A96A]/10 via-black to-black" />
-        <div className="container relative mx-auto px-4 text-center">
+        <ScrollReveal className="container relative mx-auto px-4 text-center">
           <h2 className="text-3xl font-bold font-display text-white sm:text-4xl">
             Not sure which access tier fits you?
           </h2>
@@ -222,7 +237,7 @@ export default function ProgramsPage() {
               </Link>
             </Button>
           </div>
-        </div>
+        </ScrollReveal>
       </section>
 
       <Footer />

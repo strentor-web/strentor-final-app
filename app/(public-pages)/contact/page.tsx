@@ -9,6 +9,8 @@ import { DynamicContactEmail } from "@/components/forms/DynamicContactEmail"
 import { IntakeForm } from "@/components/forms/intake/IntakeForm"
 import { EnquiryPathway, PATHWAY_LABELS } from "@/types/intake"
 import { useRegion } from "@/hooks/useRegion"
+import { ScrollReveal, StaggerGroup } from "@/components/motion/ScrollReveal"
+import { HoverLift } from "@/components/motion/HoverLift"
 
 const CONTACT_INFO_BLOCKS = [
   {
@@ -100,51 +102,60 @@ function ContactContent() {
       <div className="relative bg-black py-20 md:py-28">
         <div className="absolute inset-0 bg-gradient-to-br from-[#C9A96A]/10 via-black to-black" />
         <div className="container relative mx-auto px-4 text-center">
-          <span className="text-sm font-bold uppercase tracking-widest text-[#C9A96A]">
-            Get In Touch
-          </span>
-          <h1 className="mt-4 text-4xl font-bold font-display text-white sm:text-5xl">
-            {heroCopy.title}
-          </h1>
-          <p className="mx-auto mt-6 max-w-2xl text-lg text-gray-300">
-            {heroCopy.subtitle}
-          </p>
+          <ScrollReveal direction="none">
+            <span className="text-sm font-bold uppercase tracking-widest text-[#C9A96A]">
+              Get In Touch
+            </span>
+            <h1 className="mt-4 text-4xl font-bold font-display text-white sm:text-5xl">
+              {heroCopy.title}
+            </h1>
+            <p className="mx-auto mt-6 max-w-2xl text-lg text-gray-300">
+              {heroCopy.subtitle}
+            </p>
+          </ScrollReveal>
         </div>
       </div>
 
       <div className="container mx-auto px-4 py-16">
         <div className="mx-auto grid max-w-5xl gap-8 lg:grid-cols-[1fr_1.4fr] lg:items-start">
-          <div className="space-y-6">
+          <StaggerGroup className="space-y-6">
             {CONTACT_INFO_BLOCKS.map((block) => (
-              <div
-                key={block.label}
-                className="flex gap-4 rounded-2xl border border-border bg-card p-6"
-              >
-                <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-[#C9A96A]">
-                  <block.icon className="h-5 w-5 text-strentor-black" />
-                </div>
-                <div>
-                  <h3 className="text-lg font-bold text-card-foreground">{block.label}</h3>
-                  <p className="mt-1 text-sm">{block.content}</p>
-                </div>
-              </div>
+              <ScrollReveal key={block.label}>
+                <HoverLift>
+                  <div className="flex gap-4 rounded-2xl border border-border bg-card p-6">
+                    <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-[#C9A96A]">
+                      <block.icon className="h-5 w-5 text-strentor-black" />
+                    </div>
+                    <div>
+                      <h3 className="text-lg font-bold text-card-foreground">{block.label}</h3>
+                      <p className="mt-1 text-sm">{block.content}</p>
+                    </div>
+                  </div>
+                </HoverLift>
+              </ScrollReveal>
             ))}
 
-            <DynamicContactEmail pathway={pathway} />
-          </div>
+            <ScrollReveal>
+              <HoverLift>
+                <DynamicContactEmail pathway={pathway} />
+              </HoverLift>
+            </ScrollReveal>
+          </StaggerGroup>
 
-          <div>
-            <h2 className="text-2xl font-bold font-display text-foreground">Send Us A Message</h2>
-            <div className="mt-6">
-              <IntakeForm
-                initialPathway={initialPathway}
-                region={region}
-                plan={planParam}
-                sourcePage="/contact"
-                onPathwayChange={setPathway}
-              />
+          <ScrollReveal direction="left">
+            <div>
+              <h2 className="text-2xl font-bold font-display text-foreground">Send Us A Message</h2>
+              <div className="mt-6">
+                <IntakeForm
+                  initialPathway={initialPathway}
+                  region={region}
+                  plan={planParam}
+                  sourcePage="/contact"
+                  onPathwayChange={setPathway}
+                />
+              </div>
             </div>
-          </div>
+          </ScrollReveal>
         </div>
       </div>
 

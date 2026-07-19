@@ -5,6 +5,8 @@ import Footer from "@/components/landing/Footer"
 import { IntakeForm } from "@/components/forms/intake/IntakeForm"
 import { sponsorshipOptions } from "@/config/sponsorshipOptions"
 import { HeartHandshake, ChartLine, ShieldCheck, FileCheck2 } from "lucide-react"
+import { ScrollReveal, StaggerGroup } from "@/components/motion/ScrollReveal"
+import { HoverLift } from "@/components/motion/HoverLift"
 
 const impactPoints = [
   {
@@ -38,15 +40,17 @@ export default function SponsorASeatPage() {
       <div className="relative bg-black py-24 md:py-32">
         <div className="absolute inset-0 bg-gradient-to-br from-[#C9A96A]/10 via-black to-black" />
         <div className="container relative mx-auto px-4 text-center">
-          <span className="text-sm font-bold uppercase tracking-widest text-[#C9A96A]">
-            Sponsorship
-          </span>
-          <h1 className="mt-4 text-4xl font-bold font-display text-white sm:text-5xl md:text-6xl">
-            Sponsor Strength. Sponsor a <span className="text-[#C9A96A]">STRENTOR Seat.</span>
-          </h1>
-          <p className="mx-auto mt-6 max-w-2xl text-lg text-gray-300 md:text-xl">
-            Your support can fund holistic coaching for a wheelchair user and change a life.
-          </p>
+          <ScrollReveal direction="none" duration={0.6}>
+            <span className="text-sm font-bold uppercase tracking-widest text-[#C9A96A]">
+              Sponsorship
+            </span>
+            <h1 className="mt-4 text-4xl font-bold font-display text-white sm:text-5xl md:text-6xl">
+              Sponsor Strength. Sponsor a <span className="text-[#C9A96A]">STRENTOR Seat.</span>
+            </h1>
+            <p className="mx-auto mt-6 max-w-2xl text-lg text-gray-300 md:text-xl">
+              Your support can fund holistic coaching for a wheelchair user and change a life.
+            </p>
+          </ScrollReveal>
         </div>
       </div>
 
@@ -54,25 +58,26 @@ export default function SponsorASeatPage() {
       <section className="container mx-auto px-4 py-16">
         <div className="mx-auto grid max-w-6xl gap-10 lg:grid-cols-2 lg:items-start">
           {/* Left: impact points */}
-          <div className="space-y-6">
+          <StaggerGroup className="space-y-6">
             {impactPoints.map((point) => (
-              <div
-                key={point.title}
-                className="flex gap-4 rounded-2xl border border-border bg-card p-6 shadow-sm"
-              >
-                <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-[#C9A96A]">
-                  <point.icon className="h-5 w-5 text-strentor-black" />
-                </div>
-                <div>
-                  <h3 className="text-lg font-bold text-card-foreground">{point.title}</h3>
-                  <p className="mt-1 text-muted-foreground">{point.description}</p>
-                </div>
-              </div>
+              <ScrollReveal key={point.title} direction="up">
+                <HoverLift>
+                  <div className="flex gap-4 rounded-2xl border border-border bg-card p-6 shadow-sm">
+                    <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-[#C9A96A]">
+                      <point.icon className="h-5 w-5 text-strentor-black" />
+                    </div>
+                    <div>
+                      <h3 className="text-lg font-bold text-card-foreground">{point.title}</h3>
+                      <p className="mt-1 text-muted-foreground">{point.description}</p>
+                    </div>
+                  </div>
+                </HoverLift>
+              </ScrollReveal>
             ))}
-          </div>
+          </StaggerGroup>
 
           {/* Right: sponsorship options table */}
-          <div>
+          <ScrollReveal direction="up">
             <h2 className="text-2xl font-bold font-display text-foreground sm:text-3xl">
               Sponsorship Options
             </h2>
@@ -100,21 +105,21 @@ export default function SponsorASeatPage() {
                 </tbody>
               </table>
             </div>
-          </div>
+          </ScrollReveal>
         </div>
       </section>
 
       {/* Form band */}
       <section className="bg-muted/30 py-16">
         <div className="container mx-auto px-4">
-          <div className="mx-auto max-w-3xl text-center">
+          <ScrollReveal direction="up" className="mx-auto max-w-3xl text-center">
             <h2 className="text-3xl font-bold font-display text-foreground sm:text-4xl">
               Ready to sponsor a seat?
             </h2>
             <p className="mt-4 text-lg text-muted-foreground">
               Fill out the form and our team will connect with you.
             </p>
-          </div>
+          </ScrollReveal>
           <div className="mx-auto mt-10 max-w-3xl">
             <IntakeForm initialPathway="sponsor" sourcePage="/sponsor-a-seat" />
           </div>
