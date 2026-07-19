@@ -206,14 +206,14 @@ export default function OverallAnalytics({ planId }: OverallAnalyticsProps) {
   }, {} as Record<string, typeof data.planPRs>);
 
   const bodyPartColors: Record<string, string> = {
-    CHEST: "bg-red-100 text-red-800",
-    BACK: "bg-blue-100 text-blue-800", 
-    SHOULDERS: "bg-yellow-100 text-yellow-800",
-    BICEPS: "bg-purple-100 text-purple-800",
-    TRICEPS: "bg-pink-100 text-pink-800",
-    LEGS: "bg-green-100 text-green-800",
-    CORE: "bg-orange-100 text-orange-800",
-    CARDIO: "bg-indigo-100 text-indigo-800",
+    CHEST: "bg-[#C9A96A] text-black",
+    BACK: "bg-[#B8935A] text-black",
+    SHOULDERS: "bg-[#C9C0B4] text-black",
+    BICEPS: "bg-[#EDE0C8] text-[#0A0A0A]",
+    TRICEPS: "bg-[#C9A96A]/40 text-[#0A0A0A]",
+    LEGS: "bg-[#B8935A]/40 text-[#0A0A0A]",
+    CORE: "bg-[#0A0A0A] text-[#EDE0C8]",
+    CARDIO: "bg-[#0A0A0A]/70 text-[#EDE0C8]",
     FULL_BODY: "bg-muted text-muted-foreground",
   };
 
@@ -238,7 +238,7 @@ export default function OverallAnalytics({ planId }: OverallAnalyticsProps) {
           {Object.keys(prsByBodyPart).length > 0 && (
             <div className="mb-6">
               <h4 className="text-sm font-medium mb-3 flex items-center gap-2">
-                <Trophy className="h-4 w-4 text-yellow-600" />
+                <Trophy className="h-4 w-4 text-[#C9A96A]" />
                 Personal Records by Body Part
               </h4>
               <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">

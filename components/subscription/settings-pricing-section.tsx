@@ -471,7 +471,7 @@ Are you sure you want to proceed with this downgrade?`;
       return `${baseClasses} bg-strentor-orange hover:bg-strentor-orange/90`;
     }
     if (plan.buttonState === 'resume_subscription') {
-      return `${baseClasses} bg-blue-500 hover:bg-blue-600`;
+      return `${baseClasses} bg-[#C9A96A] hover:bg-[#C9A96A]/90`;
     }
     return `${baseClasses} bg-strentor-red hover:bg-strentor-red/80`;
   };

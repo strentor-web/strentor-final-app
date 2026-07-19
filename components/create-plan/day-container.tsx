@@ -64,7 +64,7 @@ export function DayContainer({weekNumber, dayNumber}: {weekNumber: number, dayNu
               dispatch({ type: "RENAME_DAY", week: weekNumber, day: dayNumber, newName: e.target.value })
             }
             placeholder="Day title"
-            className="w-full max-w-md h-10 text-center text-base font-medium border-border focus:border-blue-500"
+            className="w-full max-w-md h-10 text-center text-base font-medium border-border focus:border-[#C9A96A]"
           />
         </CardTitle>
       </CardHeader>

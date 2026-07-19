@@ -79,7 +79,7 @@ export function BMRCalculator({
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <Activity className="w-5 h-5 text-green-600" />
+              <Activity className="w-5 h-5 text-[#C9A96A]" />
               Your BMR & TDEE
             </CardTitle>
           </CardHeader>
@@ -122,27 +122,27 @@ export function BMRCalculator({
             </div>
 
             {/* BMR Result */}
-            <div className="text-center p-6 bg-green-50 rounded-lg border-2 border-green-200">
-              <div className="text-3xl font-bold text-green-600 mb-2">
+            <div className="text-center p-6 bg-[#C9A96A]/10 rounded-lg border-2 border-[#C9A96A]/30">
+              <div className="text-3xl font-bold text-[#C9A96A] mb-2">
                 {bmr.toFixed(0)} calories
               </div>
-              <div className="text-sm text-green-700">
+              <div className="text-sm text-[#B8935A]">
                 Basal Metabolic Rate (BMR)
               </div>
-              <div className="text-xs text-green-600 mt-1">
+              <div className="text-xs text-[#C9A96A] mt-1">
                 Calories burned at rest
               </div>
             </div>
 
             {/* TDEE Result */}
-            <div className="text-center p-6 bg-blue-50 rounded-lg border-2 border-blue-200">
-              <div className="text-3xl font-bold text-blue-600 mb-2">
+            <div className="text-center p-6 bg-[#B8935A]/10 rounded-lg border-2 border-[#B8935A]/30">
+              <div className="text-3xl font-bold text-[#B8935A] mb-2">
                 {tdee.toFixed(0)} calories
               </div>
-              <div className="text-sm text-blue-700">
+              <div className="text-sm text-[#8a6d3b]">
                 Total Daily Energy Expenditure (TDEE)
               </div>
-              <div className="text-xs text-blue-600 mt-1">
+              <div className="text-xs text-[#B8935A] mt-1">
                 Daily calorie needs with activity
               </div>
             </div>
@@ -175,28 +175,28 @@ export function BMRCalculator({
               </div>
               
               <div className="grid grid-cols-3 gap-3">
-                <div className="text-center p-3 bg-red-50 rounded-lg">
-                  <div className="text-lg font-bold text-red-600">
+                <div className="text-center p-3 bg-[#C9C0B4]/10 rounded-lg">
+                  <div className="text-lg font-bold text-[#8a8072]">
                     {(tdee - 500).toFixed(0)}
                   </div>
-                  <div className="text-xs text-red-700">Weight Loss</div>
-                  <div className="text-xs text-red-600">-500 cal</div>
+                  <div className="text-xs text-[#8a8072]">Weight Loss</div>
+                  <div className="text-xs text-[#8a8072]">-500 cal</div>
                 </div>
-                
-                <div className="text-center p-3 bg-blue-50 rounded-lg">
-                  <div className="text-lg font-bold text-blue-600">
+
+                <div className="text-center p-3 bg-[#C9A96A]/10 rounded-lg">
+                  <div className="text-lg font-bold text-[#C9A96A]">
                     {tdee.toFixed(0)}
                   </div>
-                  <div className="text-xs text-blue-700">Maintenance</div>
-                  <div className="text-xs text-blue-600">Current TDEE</div>
+                  <div className="text-xs text-[#8a6d3b]">Maintenance</div>
+                  <div className="text-xs text-[#C9A96A]">Current TDEE</div>
                 </div>
-                
-                <div className="text-center p-3 bg-green-50 rounded-lg">
-                  <div className="text-lg font-bold text-green-600">
+
+                <div className="text-center p-3 bg-[#B8935A]/10 rounded-lg">
+                  <div className="text-lg font-bold text-[#B8935A]">
                     {(tdee + 500).toFixed(0)}
                   </div>
-                  <div className="text-xs text-green-700">Weight Gain</div>
-                  <div className="text-xs text-green-600">+500 cal</div>
+                  <div className="text-xs text-[#8a6d3b]">Weight Gain</div>
+                  <div className="text-xs text-[#B8935A]">+500 cal</div>
                 </div>
               </div>
             </div>
@@ -219,7 +219,7 @@ export function BMRCalculator({
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <Calculator className="w-5 h-5 text-blue-600" />
+              <Calculator className="w-5 h-5 text-[#C9A96A]" />
               Mifflin-St Jeor Equation
             </CardTitle>
           </CardHeader>
@@ -229,16 +229,16 @@ export function BMRCalculator({
             </div>
 
             <div className="space-y-3">
-              <div className="p-3 bg-blue-50 rounded-lg">
-                <div className="font-semibold text-blue-800 mb-1">For Men:</div>
-                <div className="text-sm text-blue-700">
+              <div className="p-3 bg-[#C9A96A]/10 rounded-lg">
+                <div className="font-semibold text-[#7a5f35] mb-1">For Men:</div>
+                <div className="text-sm text-[#B8935A]">
                   BMR = 10×Weight + 6.25×Height - 5×Age + 5
                 </div>
               </div>
 
-              <div className="p-3 bg-pink-50 rounded-lg">
-                <div className="font-semibold text-pink-800 mb-1">For Women:</div>
-                <div className="text-sm text-pink-700">
+              <div className="p-3 bg-[#EDE0C8]/20 rounded-lg">
+                <div className="font-semibold text-[#8a6d3b] mb-1">For Women:</div>
+                <div className="text-sm text-[#8a6d3b]">
                   BMR = 10×Weight + 6.25×Height - 5×Age - 161
                 </div>
               </div>
@@ -278,19 +278,19 @@ export function BMRCalculator({
                 <span><strong>Sedentary (1.2):</strong> Little to no exercise</span>
               </div>
               <div className="flex items-center gap-2">
-                <div className="w-3 h-3 bg-blue-500 rounded-full"></div>
+                <div className="w-3 h-3 bg-[#C9C0B4] rounded-full"></div>
                 <span><strong>Lightly Active (1.375):</strong> Light exercise 1-3 days/week</span>
               </div>
               <div className="flex items-center gap-2">
-                <div className="w-3 h-3 bg-green-500 rounded-full"></div>
+                <div className="w-3 h-3 bg-[#C9A96A] rounded-full"></div>
                 <span><strong>Moderately Active (1.55):</strong> Moderate exercise 3-5 days/week</span>
               </div>
               <div className="flex items-center gap-2">
-                <div className="w-3 h-3 bg-orange-500 rounded-full"></div>
+                <div className="w-3 h-3 bg-[#B8935A] rounded-full"></div>
                 <span><strong>Very Active (1.725):</strong> Heavy exercise 6-7 days/week</span>
               </div>
               <div className="flex items-center gap-2">
-                <div className="w-3 h-3 bg-red-500 rounded-full"></div>
+                <div className="w-3 h-3 bg-[#0A0A0A] rounded-full"></div>
                 <span><strong>Extra Active (1.9):</strong> Very heavy exercise, physical job</span>
               </div>
             </div>

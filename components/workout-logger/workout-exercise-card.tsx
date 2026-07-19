@@ -232,7 +232,7 @@ export function WorkoutExerciseCard({ exercise, onSaveSet, isSaving, isPastDeadl
             {exercise.bodyPart}
           </Badge>
           {exercise.isRepsBased && (
-            <Badge variant="outline" className="text-xs bg-blue-50 text-blue-700 border-blue-200">
+            <Badge variant="outline" className="text-xs bg-[#C9A96A]/10 text-[#C9A96A] border-[#C9A96A]/30">
               🏃 Reps-based
             </Badge>
           )}
@@ -241,7 +241,7 @@ export function WorkoutExerciseCard({ exercise, onSaveSet, isSaving, isPastDeadl
               variant="ghost"
               size="sm"
               onClick={() => setShowInstructions(!showInstructions)}
-              className="h-6 px-2 bg-blue-50 hover:bg-blue-100 text-blue-700 rounded-md"
+              className="h-6 px-2 bg-[#C9A96A]/10 hover:bg-[#C9A96A]/20 text-[#C9A96A] rounded-md"
               title="View trainer notes"
             >
               <Info className="h-3 w-3" />
@@ -252,10 +252,10 @@ export function WorkoutExerciseCard({ exercise, onSaveSet, isSaving, isPastDeadl
               variant="ghost"
               size="sm"
               onClick={() => setShowYoutube(true)}
-              className="h-6 px-2 bg-red-600 hover:bg-red-700 text-white rounded-md"
+              className="h-6 px-2 bg-[#C9A96A] hover:bg-[#C9A96A]/90 text-black rounded-md"
               title="Watch YouTube tutorial"
             >
-              <Play className="h-3 w-3 fill-white" />
+              <Play className="h-3 w-3 fill-black" />
             </Button>
           )}
         </div>
@@ -287,11 +287,11 @@ export function WorkoutExerciseCard({ exercise, onSaveSet, isSaving, isPastDeadl
                   <TooltipContent>
                     <p>The Rate of Perceived Exertion (RPE) scale is a 1–10 rating system that helps measure how hard exercise feels based on effort</p>
                     <div className="text-sm text-muted-foreground">
-                      <p className="text-blue-400">1-3: Warm-up, no burn &#40;Very Easy&#41;</p>
-                      <p className="text-cyan-400">4-6: Light pump, could go much further &#40;Easy&#41;</p>
-                      <p className="text-strentor-green">7-8: Strong pump, muscles working hard, can push another 2-3 reps &#40;Moderate&#41;</p>
-                      <p className="text-strentor-orange">9: Near failure, strong burn, can push another rep &#40;Hard&#41;</p>
-                      <p className="text-strentor-red">10: Absolute failure, can&apos;t complete another rep &#40;Very Hard&#41;</p>
+                      <p className="text-muted-foreground">1-3: Warm-up, no burn &#40;Very Easy&#41;</p>
+                      <p className="text-[#C9C0B4]">4-6: Light pump, could go much further &#40;Easy&#41;</p>
+                      <p className="text-[#B8935A]">7-8: Strong pump, muscles working hard, can push another 2-3 reps &#40;Moderate&#41;</p>
+                      <p className="text-[#C9A96A]">9: Near failure, strong burn, can push another rep &#40;Hard&#41;</p>
+                      <p className="text-[#C9A96A] font-bold">10: Absolute failure, can&apos;t complete another rep &#40;Very Hard&#41;</p>
                     </div>
                   </TooltipContent>
                 </Tooltip></span>
@@ -314,7 +314,7 @@ export function WorkoutExerciseCard({ exercise, onSaveSet, isSaving, isPastDeadl
                 isCompleted && !isEditing
                   ? 'bg-green-50 border-green-200' 
                   : hasInputs || isEditing
-                    ? 'bg-blue-50 border-blue-200' 
+                    ? 'bg-[#C9A96A]/10 border-[#C9A96A]/30'
                     : 'bg-muted border-border'
               }`}
             >

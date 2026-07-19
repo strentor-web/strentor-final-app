@@ -40,7 +40,7 @@ export function LBMCalculator({
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <Activity className="w-5 h-5 text-green-600" />
+              <Activity className="w-5 h-5 text-[#C9A96A]" />
               Your Lean Body Mass
             </CardTitle>
           </CardHeader>
@@ -75,11 +75,11 @@ export function LBMCalculator({
             </div>
 
             {/* Lean Body Mass Result */}
-            <div className="text-center p-6 bg-green-50 rounded-lg border-2 border-green-200">
-              <div className="text-3xl font-bold text-green-600 mb-2">
+            <div className="text-center p-6 bg-[#C9A96A]/10 rounded-lg border-2 border-[#C9A96A]/30">
+              <div className="text-3xl font-bold text-[#C9A96A] mb-2">
                 {leanBodyMass.toFixed(1)} kg
               </div>
-              <div className="text-sm text-green-700">
+              <div className="text-sm text-[#B8935A]">
                 Lean Body Mass (Boer Formula)
               </div>
             </div>
@@ -91,23 +91,23 @@ export function LBMCalculator({
               </div>
               
               <div className="grid grid-cols-2 gap-4">
-                <div className="text-center p-4 bg-green-50 rounded-lg">
-                  <div className="text-lg font-bold text-green-600">
+                <div className="text-center p-4 bg-[#C9A96A]/10 rounded-lg">
+                  <div className="text-lg font-bold text-[#C9A96A]">
                     {leanBodyMass.toFixed(1)} kg
                   </div>
-                  <div className="text-xs text-green-700">Lean Mass</div>
+                  <div className="text-xs text-[#B8935A]">Lean Mass</div>
                 </div>
-                
-                <div className="text-center p-4 bg-orange-50 rounded-lg">
-                  <div className="text-lg font-bold text-orange-600">
+
+                <div className="text-center p-4 bg-[#C9C0B4]/15 rounded-lg">
+                  <div className="text-lg font-bold text-[#8a8072]">
                     {bodyFatWeight.toFixed(1)} kg
                   </div>
-                  <div className="text-xs text-orange-700">Fat Mass</div>
+                  <div className="text-xs text-[#8a8072]">Fat Mass</div>
                 </div>
               </div>
 
-              <div className="text-center p-3 bg-blue-50 rounded-lg">
-                <div className="text-sm text-blue-700">
+              <div className="text-center p-3 bg-[#EDE0C8]/20 rounded-lg">
+                <div className="text-sm text-[#8a6d3b]">
                   Body Fat Percentage: <span className="font-semibold">{bodyFatPercentage.toFixed(1)}%</span>
                 </div>
               </div>
@@ -131,7 +131,7 @@ export function LBMCalculator({
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <Calculator className="w-5 h-5 text-blue-600" />
+              <Calculator className="w-5 h-5 text-[#C9A96A]" />
               Boer Formula
             </CardTitle>
           </CardHeader>
@@ -141,16 +141,16 @@ export function LBMCalculator({
             </div>
 
             <div className="space-y-3">
-              <div className="p-3 bg-blue-50 rounded-lg">
-                <div className="font-semibold text-blue-800 mb-1">For Men:</div>
-                <div className="text-sm text-blue-700">
+              <div className="p-3 bg-[#C9A96A]/10 rounded-lg">
+                <div className="font-semibold text-[#7a5f35] mb-1">For Men:</div>
+                <div className="text-sm text-[#B8935A]">
                   LBM = 0.407 × Weight + 0.267 × Height - 19.2
                 </div>
               </div>
 
-              <div className="p-3 bg-pink-50 rounded-lg">
-                <div className="font-semibold text-pink-800 mb-1">For Women:</div>
-                <div className="text-sm text-pink-700">
+              <div className="p-3 bg-[#EDE0C8]/20 rounded-lg">
+                <div className="font-semibold text-[#8a6d3b] mb-1">For Women:</div>
+                <div className="text-sm text-[#8a6d3b]">
                   LBM = 0.252 × Weight + 0.473 × Height - 48.3
                 </div>
               </div>
@@ -189,11 +189,11 @@ export function LBMCalculator({
           <CardContent className="space-y-3 text-sm text-muted-foreground">
             <div className="space-y-2">
               <div className="flex items-center gap-2">
-                <div className="w-3 h-3 bg-green-500 rounded-full"></div>
+                <div className="w-3 h-3 bg-[#C9A96A] rounded-full"></div>
                 <span><strong>Lean Mass:</strong> Muscles, bones, organs, water</span>
               </div>
               <div className="flex items-center gap-2">
-                <div className="w-3 h-3 bg-orange-500 rounded-full"></div>
+                <div className="w-3 h-3 bg-[#C9C0B4] rounded-full"></div>
                 <span><strong>Fat Mass:</strong> Essential and storage fat</span>
               </div>
             </div>

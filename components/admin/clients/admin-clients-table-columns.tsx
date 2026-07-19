@@ -13,8 +13,8 @@ interface UseAdminClientColumnsProps {
 }
 
 export const categoryColors: Record<string, string> = {
-  FITNESS: "bg-blue-100 text-blue-800",
-  ALL_IN_ONE: "bg-orange-100 text-orange-800",
+  FITNESS: "bg-[#C9A96A]/10 text-[#C9A96A]",
+  ALL_IN_ONE: "bg-[#C9C0B4]/15 text-[#8a8072]",
 };
 
 export const useAdminClientColumns = ({ 
@@ -85,7 +85,7 @@ export const useAdminClientColumns = ({
           <Button
             variant="outline"
             size="sm"
-            className="h-8 px-3 bg-blue-600 text-white hover:bg-blue-700 border-blue-600"
+            className="h-8 px-3 bg-[#C9A96A] text-black hover:bg-[#C9A96A]/90 border-[#C9A96A]"
             onClick={() => onAssignTrainer(client, 'FITNESS')}
           >
             <Plus className="h-3 w-3 mr-1" />

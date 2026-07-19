@@ -200,7 +200,7 @@ export default function WeeklyAnalytics({ planId, weekNumber }: WeeklyAnalyticsP
                     Reps: {data.reps}
                   </p>
                   {data.isPR && (
-                    <p className="text-sm font-bold text-yellow-600">
+                    <p className="text-sm font-bold text-[#C9A96A]">
                       🏆 New PR! ({data.reps} reps)
                     </p>
                   )}
@@ -218,7 +218,7 @@ export default function WeeklyAnalytics({ planId, weekNumber }: WeeklyAnalyticsP
                     ORM: {data.orm} kg
                   </p>
                   {data.isPR && (
-                    <p className="text-sm font-bold text-yellow-600">
+                    <p className="text-sm font-bold text-[#C9A96A]">
                       🏆 New PR!
                     </p>
                   )}
@@ -265,7 +265,7 @@ export default function WeeklyAnalytics({ planId, weekNumber }: WeeklyAnalyticsP
           {data.prsAchieved.length > 0 && (
             <div className="mb-6">
               <h4 className="text-sm font-medium mb-3 flex items-center gap-2">
-                <Trophy className="h-4 w-4 text-yellow-600" />
+                <Trophy className="h-4 w-4 text-[#C9A96A]" />
                 Personal Records Achieved This Week
               </h4>
               <div className="flex flex-wrap gap-2">
@@ -273,7 +273,7 @@ export default function WeeklyAnalytics({ planId, weekNumber }: WeeklyAnalyticsP
                   <Badge
                     key={pr.exerciseId}
                     variant="secondary"
-                    className="bg-yellow-100 text-yellow-800 hover:bg-yellow-200"
+                    className="bg-[#C9A96A]/15 text-[#8a6d3b] hover:bg-[#C9A96A]/25"
                   >
                     {pr.exerciseName}: {'newRepsPR' in pr && pr.newRepsPR ? `${pr.newRepsPR} reps` : `${pr.newPR} kg`}
                     {pr.improvement && (
@@ -435,7 +435,7 @@ export default function WeeklyAnalytics({ planId, weekNumber }: WeeklyAnalyticsP
                         !entry.isCompleted
                           ? "#e5e7eb" // Gray for incomplete
                           : entry.isPR
-                          ? "#fbbf24" // Gold for PR
+                          ? "#C9A96A" // Brand gold for PR
                           : "#ef4444" // Red for completed
                       }
                     />
@@ -479,9 +479,9 @@ export default function WeeklyAnalytics({ planId, weekNumber }: WeeklyAnalyticsP
                           {dayVideo ? (
                             <Badge 
                               variant="outline" 
-                              className={dayVideo.reviewedAt 
-                                ? "text-green-600 border-green-600" 
-                                : "text-blue-600 border-blue-600"
+                              className={dayVideo.reviewedAt
+                                ? "text-green-600 border-green-600"
+                                : "text-[#C9A96A] border-[#C9A96A]"
                               }
                             >
                               {dayVideo.reviewedAt ? (
@@ -497,7 +497,7 @@ export default function WeeklyAnalytics({ planId, weekNumber }: WeeklyAnalyticsP
                               )}
                             </Badge>
                           ) : (
-                            <Badge variant="outline" className="text-orange-500 border-orange-500">
+                            <Badge variant="outline" className="text-[#B8935A] border-[#B8935A]">
                               <Clock className="h-3 w-3 mr-1" />
                               No Video
                             </Badge>
@@ -544,7 +544,7 @@ export default function WeeklyAnalytics({ planId, weekNumber }: WeeklyAnalyticsP
                             </div>
                             
                             {dayVideo.trainerNotes && (
-                              <div className="text-xs text-blue-600 bg-blue-50 p-2 rounded">
+                              <div className="text-xs text-[#C9A96A] bg-[#C9A96A]/10 p-2 rounded">
                                 <strong>Trainer Notes:</strong> {dayVideo.trainerNotes}
                               </div>
                             )}
@@ -574,7 +574,7 @@ export default function WeeklyAnalytics({ planId, weekNumber }: WeeklyAnalyticsP
               <span>Completed</span>
             </div>
             <div className="flex items-center gap-2">
-              <div className="w-3 h-3 bg-yellow-400 rounded"></div>
+              <div className="w-3 h-3 bg-[#C9A96A] rounded"></div>
               <span>Personal Record</span>
             </div>
             <div className="flex items-center gap-2">
@@ -585,13 +585,13 @@ export default function WeeklyAnalytics({ planId, weekNumber }: WeeklyAnalyticsP
 
           {/* Exercise PRs Details */}
           {exercisePRs.length > 0 && (
-            <div className="mt-6 p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
-              <h4 className="font-medium text-yellow-800 mb-2 flex items-center gap-2">
+            <div className="mt-6 p-4 bg-[#C9A96A]/10 border border-[#C9A96A]/30 rounded-lg">
+              <h4 className="font-medium text-[#8a6d3b] mb-2 flex items-center gap-2">
                 <Trophy className="h-4 w-4" />
                 PR Details for {currentExercise.exerciseName}
               </h4>
               {exercisePRs.map((pr) => (
-                <div key={pr.exerciseId} className="text-sm text-yellow-700">
+                <div key={pr.exerciseId} className="text-sm text-[#8a6d3b]">
                   {'isRepsBased' in currentExercise && currentExercise.isRepsBased ? (
                     // For reps-based exercises, show reps PR
                     <>

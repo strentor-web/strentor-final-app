@@ -161,7 +161,7 @@ export function WeekAndDaySelector({ isMobile = false, onDaySelect }: WeekAndDay
                       className={cn(
                         "w-full rounded-md transition-colors flex items-center justify-between",
                         isSelected
-                          ? "bg-blue-100 text-blue-900 font-medium"
+                          ? "bg-[#C9A96A]/15 text-[#C9A96A] font-medium"
                           : "hover:bg-muted"
                       )}
                     >

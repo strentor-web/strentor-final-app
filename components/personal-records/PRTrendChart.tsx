@@ -178,11 +178,11 @@ export function PRTrendChart({
                   tickFormatter={(value) => `${value}`}
                 />
                 <Tooltip
-                  contentStyle={{ 
-                    background: "rgba(255, 189, 34, 0.6)", 
-                    border: "1px solid rgba(255, 189, 34, 0.9)",
+                  contentStyle={{
+                    background: "rgba(201, 169, 106, 0.6)",
+                    border: "1px solid rgba(201, 169, 106, 0.9)",
                     borderRadius: "8px",
-                    boxShadow: "0 4px 12px rgba(255, 189, 34, 0.3)",
+                    boxShadow: "0 4px 12px rgba(201, 169, 106, 0.3)",
                     backdropFilter: "blur(8px)"
                   }}
                   labelStyle={{ 
@@ -207,9 +207,9 @@ export function PRTrendChart({
                 <Area
                   dataKey="value"
                   type="natural"
-                  fill="rgba(255, 189, 34, 0.2)"
+                  fill="rgba(201, 169, 106, 0.2)"
                   fillOpacity={0.3}
-                  stroke="rgba(255, 189, 34, 0.8)"
+                  stroke="rgba(201, 169, 106, 0.8)"
                   strokeWidth={2}
                 />
               </AreaChart>

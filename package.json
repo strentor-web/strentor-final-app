@@ -70,6 +70,7 @@
     "resend": "^6.17.2",
     "sonner": "^2.0.6",
     "swr": "^2.3.4",
+    "three": "^0.169.0",
     "uuid": "^11.1.0",
     "zod": "^3.25.76"
   },
@@ -78,6 +79,7 @@
     "@types/node": "^22.10.2",
     "@types/react": "^19.0.2",
     "@types/react-dom": "19.0.2",
+    "@types/three": "^0.169.0",
     "postcss": "8.4.49",
     "prisma": "^6.16.1",
     "tailwind-merge": "^2.5.2",

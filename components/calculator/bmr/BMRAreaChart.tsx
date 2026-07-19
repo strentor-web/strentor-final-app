@@ -47,10 +47,10 @@ export default function BMRAreaChart({ data }: BMRAreaChartProps) {
             day: 'numeric' 
           })}</p>
           <div className="mt-2 space-y-1">
-            <p className="text-blue-600">
+            <p className="text-[#C9A96A]">
               <span className="font-medium">BMR:</span> {data.bmr} calories/day
             </p>
-            <p className="text-green-600">
+            <p className="text-[#8a8072]">
               <span className="font-medium">Daily Calories:</span> {data.dailyCalories} calories
             </p>
             <p className="text-muted-foreground">
@@ -87,12 +87,12 @@ export default function BMRAreaChart({ data }: BMRAreaChartProps) {
         <AreaChart data={chartData} margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
           <defs>
             <linearGradient id="colorBMR" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="5%" stopColor="#3b82f6" stopOpacity={0.8}/>
-              <stop offset="95%" stopColor="#3b82f6" stopOpacity={0.1}/>
+              <stop offset="5%" stopColor="#C9A96A" stopOpacity={0.8}/>
+              <stop offset="95%" stopColor="#C9A96A" stopOpacity={0.1}/>
             </linearGradient>
             <linearGradient id="colorDailyCalories" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="5%" stopColor="#10b981" stopOpacity={0.8}/>
-              <stop offset="95%" stopColor="#10b981" stopOpacity={0.1}/>
+              <stop offset="5%" stopColor="#C9C0B4" stopOpacity={0.8}/>
+              <stop offset="95%" stopColor="#C9C0B4" stopOpacity={0.1}/>
             </linearGradient>
           </defs>
           
@@ -120,17 +120,17 @@ export default function BMRAreaChart({ data }: BMRAreaChartProps) {
           <Area
             type="monotone"
             dataKey="bmr"
-            stroke="#3b82f6"
+            stroke="#C9A96A"
             strokeWidth={2}
             fillOpacity={1}
             fill="url(#colorBMR)"
             name="BMR"
           />
-          
+
           <Area
             type="monotone"
             dataKey="dailyCalories"
-            stroke="#10b981"
+            stroke="#C9C0B4"
             strokeWidth={2}
             fillOpacity={1}
             fill="url(#colorDailyCalories)"
@@ -142,11 +142,11 @@ export default function BMRAreaChart({ data }: BMRAreaChartProps) {
       {/* Legend */}
       <div className="flex justify-center mt-4 space-x-6">
         <div className="flex items-center space-x-2">
-          <div className="w-4 h-4 bg-blue-500 rounded"></div>
+          <div className="w-4 h-4 bg-[#C9A96A] rounded"></div>
           <span className="text-sm text-muted-foreground">BMR (Basal Metabolic Rate)</span>
         </div>
         <div className="flex items-center space-x-2">
-          <div className="w-4 h-4 bg-green-500 rounded"></div>
+          <div className="w-4 h-4 bg-[#C9C0B4] rounded"></div>
           <span className="text-sm text-muted-foreground">Daily Calories (with activity)</span>
         </div>
       </div>

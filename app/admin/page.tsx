@@ -91,7 +91,7 @@ export default async function AdminPage() {
                       ? "text-green-500"
                       : stat.changeType === "negative"
                       ? "text-red-500"
-                      : "text-blue-500"
+                      : "text-muted-foreground"
                   }`}
                 >
                   {stat.change}

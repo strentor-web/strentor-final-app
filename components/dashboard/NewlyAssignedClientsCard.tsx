@@ -16,9 +16,9 @@ export function NewlyAssignedClientsCard({ clients }: NewlyAssignedClientsCardPr
   const getCategoryColor = (category: string | null) => {
     switch (category) {
       case "FITNESS":
-        return "bg-blue-100 text-blue-800 border-blue-200";
+        return "bg-[#C9A96A]/10 text-[#C9A96A] border-[#C9A96A]/30";
       case "ALL_IN_ONE":
-        return "bg-orange-100 text-orange-800 border-orange-200";
+        return "bg-[#C9C0B4]/15 text-[#8a8072] border-[#C9C0B4]/40";
       default:
         return "bg-muted text-muted-foreground border-border";
     }
@@ -34,7 +34,7 @@ export function NewlyAssignedClientsCard({ clients }: NewlyAssignedClientsCardPr
           </p>
         </div>
         <Link href="/fitness/plans/create">
-          <Button className="bg-red-600 hover:bg-red-700 text-white">
+          <Button className="bg-[#C9A96A] hover:bg-[#C9A96A]/90 text-black">
             <Plus className="mr-2 h-4 w-4" />
             Create Plan
           </Button>
@@ -50,8 +50,8 @@ export function NewlyAssignedClientsCard({ clients }: NewlyAssignedClientsCardPr
               >
                 <div className="flex items-center space-x-4">
                   <div className="flex-shrink-0">
-                    <div className="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
-                      <User className="h-5 w-5 text-blue-600" />
+                    <div className="w-10 h-10 bg-[#C9A96A]/15 rounded-full flex items-center justify-center">
+                      <User className="h-5 w-5 text-[#C9A96A]" />
                     </div>
                   </div>
                   <div className="space-y-1">

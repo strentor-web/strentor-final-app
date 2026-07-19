@@ -72,7 +72,7 @@ export default async function TrainerDashboard() {
                     ? "text-green-500"
                     : stat.changeType === "negative"
                     ? "text-red-500"
-                    : "text-blue-500"
+                    : "text-muted-foreground"
                 }`}
               >
                 {stat.change}
@@ -121,7 +121,7 @@ export default async function TrainerDashboard() {
                         <ul className="text-sm space-y-1">
                           {workout.exercises.slice(0, 3).map((exercise, i) => (
                             <li key={i} className="flex items-center gap-1">
-                              <span className="w-1 h-1 bg-blue-500 rounded-full"></span>
+                              <span className="w-1 h-1 bg-[#C9A96A] rounded-full"></span>
                               {exercise}
                             </li>
                           ))}
@@ -163,10 +163,10 @@ export default async function TrainerDashboard() {
                         {activity.exerciseName}
                       </p>
                       <div className="flex gap-2 mt-1">
-                        <Badge variant="outline" className="bg-green-50">
+                        <Badge variant="outline" className="bg-[#C9A96A]/10 text-[#C9A96A] border-[#C9A96A]/30">
                           {activity.weight}kg
                         </Badge>
-                        <Badge variant="outline" className="bg-blue-50">
+                        <Badge variant="outline" className="bg-[#C9C0B4]/15 text-[#8a8072] border-[#C9C0B4]/40">
                           {activity.reps} reps
                         </Badge>
                       </div>
@@ -202,7 +202,7 @@ export default async function TrainerDashboard() {
                     <div className="flex items-center justify-between">
                       <div>
                         <div className="flex items-center gap-2">
-                          <User className="h-4 w-4 text-blue-500" />
+                          <User className="h-4 w-4 text-[#C9A96A]" />
                           <p className="font-medium">{plan.clientName}</p>
                         </div>
                         <p className="text-sm text-muted-foreground mt-1">
@@ -291,7 +291,7 @@ export default async function TrainerDashboard() {
                     >
                       <td className="py-4 px-4">
                         <div className="flex items-center gap-2">
-                          <User className="h-4 w-4 text-blue-500" />
+                          <User className="h-4 w-4 text-[#C9A96A]" />
                           <span className="font-medium text-foreground">{pr.clientName}</span>
                         </div>
                       </td>

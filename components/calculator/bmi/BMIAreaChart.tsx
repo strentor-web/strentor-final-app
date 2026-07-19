@@ -68,9 +68,9 @@ export function BMIAreaChart({ data }: { data: { date: string, bmi: number }[] }
                 tickFormatter={(value) => value}
               />
               <Tooltip
-                contentStyle={{ background: "#fff3e0", border: "1px solid #ffa726" }}
-                labelStyle={{ color: "#ff9800" }}
-                itemStyle={{ color: "#ff9800" }}
+                contentStyle={{ background: "#f5efe3", border: "1px solid #C9A96A" }}
+                labelStyle={{ color: "#C9A96A" }}
+                itemStyle={{ color: "#C9A96A" }}
                 formatter={(value: any) => [`BMI: ${value}`, ""]}
                 labelFormatter={(label) => {
                   const d = new Date(label);
@@ -80,9 +80,9 @@ export function BMIAreaChart({ data }: { data: { date: string, bmi: number }[] }
               <Area
                 dataKey="bmi"
                 type="natural"
-                fill="#ff9800"
+                fill="#C9A96A"
                 fillOpacity={0.4}
-                stroke="#ff9800"
+                stroke="#C9A96A"
                 strokeWidth={2}
               />
             </AreaChart>

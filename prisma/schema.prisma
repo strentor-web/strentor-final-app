@@ -10,6 +10,238 @@ datasource db {
   schemas   = ["public"]
 }
 
+// STRENTOR Adaptive Transformation Academy — readiness assessment engine.
+// See App Builder Requirement Document section 9 (pathway logic) and
+// section 12 (core schema). Scoring/pathway rules are deterministic and
+// enforced in app code, not here.
+model assessments {
+  id                     String                   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  user_id                String                   @db.Uuid
+  total_score            Int
+  red_flag_exists        Boolean                  @default(false)
+  pathway_result         AssessmentPathway
+  human_review_required  Boolean                  @default(false)
+  corporate_interest     Boolean                  @default(false)
+  elite_interest         Boolean                  @default(false)
+  submitted_at           DateTime                 @default(now())
+  users_profile          users_profile            @relation("AssessmentUser", fields: [user_id], references: [id], onDelete: NoAction, map: "Assessment_userId_fkey")
+  assessment_answers     assessment_answers[]
+  pathway_recommendations pathway_recommendations[]
+
+  @@index([user_id], map: "Assessment_userId_idx")
+  @@schema("public")
+}
+
+model assessment_answers {
+  id            String      @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  assessment_id String      @db.Uuid
+  question_key  String
+  answer_value  String
+  score_value   Int         @default(0)
+  is_red_flag   Boolean     @default(false)
+  notes         String?
+  assessments   assessments @relation(fields: [assessment_id], references: [id], onDelete: Cascade, map: "AssessmentAnswer_assessmentId_fkey")
+
+  @@index([assessment_id], map: "AssessmentAnswer_assessmentId_idx")
+  @@schema("public")
+}
+
+model pathway_recommendations {
+  id                           String            @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  user_id                      String            @db.Uuid
+  assessment_id                String            @db.Uuid
+  pathway                      AssessmentPathway
+  reason                       String
+  cta_type                     String
+  automatic_progression_allowed Boolean          @default(true)
+  created_at                   DateTime          @default(now())
+  users_profile                users_profile     @relation("PathwayRecommendationUser", fields: [user_id], references: [id], onDelete: NoAction, map: "PathwayRecommendation_userId_fkey")
+  assessments                  assessments       @relation(fields: [assessment_id], references: [id], onDelete: Cascade, map: "PathwayRecommendation_assessmentId_fkey")
+
+  @@index([user_id], map: "PathwayRecommendation_userId_idx")
+  @@schema("public")
+}
+
+// Deterministic, rule-based safety triage. Never populated by generative AI —
+// see App Builder Requirement Document section 6.3 (red flag workflow).
+model safety_flags {
+  id                    String             @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  user_id               String             @db.Uuid
+  source_type           String
+  source_id             String
+  symptom_type          String
+  severity              SafetyFlagSeverity @default(MEDIUM)
+  message               String
+  status                SafetyFlagStatus   @default(OPEN)
+  human_review_required Boolean            @default(true)
+  assigned_to_id        String?            @db.Uuid
+  admin_notes           String?
+  created_at            DateTime           @default(now())
+  resolved_at           DateTime?
+  users_profile         users_profile      @relation("SafetyFlagUser", fields: [user_id], references: [id], onDelete: NoAction, map: "SafetyFlag_userId_fkey")
+  assigned_to           users_profile?     @relation("SafetyFlagAssignedTo", fields: [assigned_to_id], references: [id], onDelete: SetNull, map: "SafetyFlag_assignedToId_fkey")
+
+  @@index([user_id], map: "SafetyFlag_userId_idx")
+  @@index([status, severity], map: "SafetyFlag_status_severity_idx")
+  @@schema("public")
+}
+
+// Body-check tracker. Any symptom in `symptoms` that overlaps the app's
+// red-flag list sets red_flag_detected = true and creates a safety_flags
+// row — see App Builder Requirement Document section 11.
+model pain_fatigue_logs {
+  id                String        @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  user_id           String        @db.Uuid
+  date              DateTime      @default(now()) @db.Date
+  pain_level        Int
+  fatigue_level     Int
+  energy_level      Int
+  mood_level        Int
+  soreness_level    Int?
+  symptoms          String[]      @default([])
+  notes             String?
+  red_flag_detected Boolean       @default(false)
+  created_at        DateTime      @default(now())
+  users_profile     users_profile @relation(fields: [user_id], references: [id], onDelete: NoAction, map: "PainFatigueLog_userId_fkey")
+
+  @@index([user_id, date], map: "PainFatigueLog_userId_date_idx")
+  @@schema("public")
+}
+
+model weekly_checkins {
+  id                    String                @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  user_id               String                @db.Uuid
+  week_start            DateTime              @db.Date
+  wins                  String?
+  barriers              String?
+  pain_summary          String?
+  energy_summary        String?
+  mood_summary          String?
+  habit_consistency     String?
+  support_needed        Boolean               @default(false)
+  support_needed_details String?
+  red_flag_detected     Boolean               @default(false)
+  coach_review_status   CoachReviewStatus     @default(PENDING)
+  admin_notes           String?
+  created_at            DateTime              @default(now())
+  users_profile         users_profile         @relation(fields: [user_id], references: [id], onDelete: NoAction, map: "WeeklyCheckin_userId_fkey")
+
+  @@unique([user_id, week_start], map: "WeeklyCheckin_userId_weekStart_key")
+  @@index([user_id, week_start], map: "WeeklyCheckin_userId_weekStart_idx")
+  @@schema("public")
+}
+
+model coaching_calls {
+  id                String        @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  user_id           String        @db.Uuid
+  call_type         String        @default("discovery")
+  booking_time      DateTime?
+  status            String        @default("requested")
+  call_link         String?
+  notes             String?
+  outcome           String?
+  conversion_status String?
+  created_at        DateTime      @default(now())
+  users_profile     users_profile @relation(fields: [user_id], references: [id], onDelete: NoAction, map: "CoachingCall_userId_fkey")
+
+  @@index([user_id], map: "CoachingCall_userId_idx")
+  @@schema("public")
+}
+
+model testimonials {
+  id                String              @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  user_id           String              @db.Uuid
+  name_display      String
+  program_type      String?
+  testimonial_text  String
+  media_url         String?
+  approval_status   TestimonialStatus   @default(PENDING)
+  published_at      DateTime?
+  created_at        DateTime            @default(now())
+  users_profile     users_profile       @relation(fields: [user_id], references: [id], onDelete: NoAction, map: "Testimonial_userId_fkey")
+
+  @@index([approval_status], map: "Testimonial_approvalStatus_idx")
+  @@schema("public")
+}
+
+// Audit trail for every triggered email/reminder/access change/safety
+// notification — see App Builder Requirement Document section 13.
+model automation_events {
+  id              String        @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  user_id         String?       @db.Uuid
+  event_type      String
+  trigger_source  String
+  payload_summary String?
+  status          String        @default("sent")
+  sent_at         DateTime      @default(now())
+  error_message   String?
+  users_profile   users_profile? @relation(fields: [user_id], references: [id], onDelete: SetNull, map: "AutomationEvent_userId_fkey")
+
+  @@index([user_id], map: "AutomationEvent_userId_idx")
+  @@index([event_type], map: "AutomationEvent_eventType_idx")
+  @@schema("public")
+}
+
+model admin_notes {
+  id             String        @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  user_id        String        @db.Uuid
+  related_type   String
+  related_id     String
+  note           String
+  visibility     String        @default("internal")
+  created_by_id  String        @db.Uuid
+  created_at     DateTime      @default(now())
+  users_profile  users_profile @relation("AdminNoteSubject", fields: [user_id], references: [id], onDelete: NoAction, map: "AdminNote_userId_fkey")
+  created_by     users_profile @relation("AdminNoteAuthor", fields: [created_by_id], references: [id], onDelete: NoAction, map: "AdminNote_createdById_fkey")
+
+  @@index([user_id, related_type], map: "AdminNote_userId_relatedType_idx")
+  @@schema("public")
+}
+
+model corporate_groups {
+  id             String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  company_name   String
+  contact_person String
+  contact_email  String
+  plan_type      String?
+  member_limit   Int?
+  status         String   @default("active")
+  created_at     DateTime @default(now())
+
+  @@schema("public")
+}
+
+model corporate_inquiries {
+  id             String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  company_name   String
+  contact_name   String
+  email          String
+  phone          String?
+  employee_count String?
+  message        String?
+  status         String   @default("new")
+  created_at     DateTime @default(now())
+
+  @@schema("public")
+}
+
+model mentorship_applications {
+  id                 String                     @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  user_id            String                     @db.Uuid
+  goals              String
+  current_challenges String?
+  desired_support    String?
+  readiness_score    Int?
+  status             MentorshipApplicationStatus @default(PENDING)
+  reviewed_by_id     String?                    @db.Uuid
+  submitted_at       DateTime                   @default(now())
+  users_profile      users_profile              @relation("MentorshipApplicant", fields: [user_id], references: [id], onDelete: NoAction, map: "MentorshipApplication_userId_fkey")
+  reviewed_by        users_profile?             @relation("MentorshipReviewer", fields: [reviewed_by_id], references: [id], onDelete: SetNull, map: "MentorshipApplication_reviewedById_fkey")
+
+  @@index([user_id], map: "MentorshipApplication_userId_idx")
+  @@schema("public")
+}
+
 model calculator_sessions {
   id            String         @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   user_id       String         @db.Uuid
@@ -188,6 +420,19 @@ model users_profile {
   country                                                   country?                  
   phone                                                     String?
   onboarding_completed                                      DateTime?
+  assessments_as_user                                       assessments[]              @relation("AssessmentUser")
+  pathway_recommendations                                   pathway_recommendations[]  @relation("PathwayRecommendationUser")
+  safety_flags_as_user                                      safety_flags[]             @relation("SafetyFlagUser")
+  safety_flags_assigned                                     safety_flags[]             @relation("SafetyFlagAssignedTo")
+  pain_fatigue_logs                                         pain_fatigue_logs[]
+  weekly_checkins                                           weekly_checkins[]
+  coaching_calls                                            coaching_calls[]
+  testimonials                                               testimonials[]
+  automation_events                                         automation_events[]
+  admin_notes_as_subject                                    admin_notes[]              @relation("AdminNoteSubject")
+  admin_notes_authored                                      admin_notes[]              @relation("AdminNoteAuthor")
+  mentorship_applications_as_applicant                      mentorship_applications[]  @relation("MentorshipApplicant")
+  mentorship_applications_reviewed                          mentorship_applications[]  @relation("MentorshipReviewer")
   calculator_sessions                                       calculator_sessions[]
   client_max_lifts                                          client_max_lifts[]
   exercise_logs                                             exercise_logs[]
@@ -500,6 +745,56 @@ enum HeightUnit {
 enum ExerciseType {
   WEIGHT_BASED    // Traditional exercises with weight (bench press, squats, etc.)
   REPS_BASED      // Bodyweight exercises (pushups, pull-ups, etc.)
+
+  @@schema("public")
+}
+
+enum AssessmentPathway {
+  START_STRONG
+  START_STRONG_CAUTION
+  BUILD_STRENGTH
+  LIVE_LIMITLESS
+  CORPORATE_INCLUSIVE_WELLNESS
+  CONSULT_PROFESSIONAL
+
+  @@schema("public")
+}
+
+enum SafetyFlagSeverity {
+  LOW
+  MEDIUM
+  HIGH
+
+  @@schema("public")
+}
+
+enum SafetyFlagStatus {
+  OPEN
+  IN_REVIEW
+  RESOLVED
+
+  @@schema("public")
+}
+
+enum CoachReviewStatus {
+  PENDING
+  REVIEWED
+
+  @@schema("public")
+}
+
+enum TestimonialStatus {
+  PENDING
+  APPROVED
+  REJECTED
+
+  @@schema("public")
+}
+
+enum MentorshipApplicationStatus {
+  PENDING
+  APPROVED
+  DECLINED
 
   @@schema("public")
 }

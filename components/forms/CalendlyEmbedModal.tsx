@@ -13,6 +13,7 @@ interface CalendlyEmbedModalProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   userEmail: string;
+  onScheduled?: (eventUri: string) => void;
 }
 
 declare global {
@@ -28,16 +29,35 @@ declare global {
   }
 }
 
-export const CalendlyEmbedModal: React.FC<CalendlyEmbedModalProps> = ({ 
-  open, 
-  onOpenChange, 
-  userEmail 
+export const CalendlyEmbedModal: React.FC<CalendlyEmbedModalProps> = ({
+  open,
+  onOpenChange,
+  userEmail,
+  onScheduled,
 }) => {
   const embedRef = useRef<HTMLDivElement>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [isInitialized, setIsInitialized] = useState(false);
   const [hasError, setHasError] = useState(false);
   const initializationRef = useRef<boolean>(false);
+
+  // Calendly posts a `calendly.event_scheduled` message to the parent
+  // window once a booking is confirmed inside the embedded widget.
+  useEffect(() => {
+    if (!open) return;
+
+    function handleMessage(event: MessageEvent) {
+      if (event.origin !== "https://calendly.com") return;
+      const data = event.data;
+      if (data?.event === "calendly.event_scheduled") {
+        const eventUri: string = data?.payload?.event?.uri || "";
+        onScheduled?.(eventUri);
+      }
+    }
+
+    window.addEventListener("message", handleMessage);
+    return () => window.removeEventListener("message", handleMessage);
+  }, [open, onScheduled]);
 
   useEffect(() => {
     // Manage body scroll when modal opens/closes

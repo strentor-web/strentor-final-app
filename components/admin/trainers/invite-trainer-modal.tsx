@@ -203,8 +203,8 @@ export function InviteTrainerModal({
           </div>
 
           {/* Info Message */}
-          <div className="bg-blue-50 border border-blue-200 rounded-md p-3">
-            <p className="text-sm text-blue-800">
+          <div className="bg-[#C9C0B4]/10 border border-[#C9C0B4]/30 rounded-md p-3">
+            <p className="text-sm text-foreground">
               An invitation email will be sent to the trainer with instructions to join the platform.
             </p>
           </div>

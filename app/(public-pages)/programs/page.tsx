@@ -1,177 +1,243 @@
 "use client"
-import { Card, CardContent } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
-import { Button } from "@/components/ui/button"
+
+import { useEffect, useState } from "react"
 import Image from "next/image"
 import Link from "next/link"
-import { Star, Check, ArrowRight } from 'lucide-react'
-import Header from '@/components/landing/Header';
+import Header from "@/components/landing/Header"
 import Footer from "@/components/landing/Footer"
+import { Button } from "@/components/ui/button"
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table"
+import {
+  Dumbbell,
+  Apple,
+  Brain,
+  Users,
+  ShieldCheck,
+  Compass,
+} from "lucide-react"
+import { accessTiers, PROGRAM_TRUE_VALUE } from "@/config/accessTiers"
+import { ScrollReveal, StaggerGroup } from "@/components/motion/ScrollReveal"
+import { HoverLift } from "@/components/motion/HoverLift"
+import { ProgramWheel3D } from "@/components/three/ProgramWheel3DLazy"
 
-const offerLadder = [
+const pillars = [
   {
-    name: "7-Day Starter Kit",
-    description: "A safe, structured first experience of STRENTOR coaching, from ₹1,999.",
-    href: "/programs/starter-kit",
+    title: "Seated Strength Training",
+    description: "Adaptive upper-body strength training built for seated function.",
+    icon: Dumbbell,
+    color: "#C9A96A",
   },
   {
-    name: "8-Week Flagship Transformation",
-    description: "Our core coached program — strength, nutrition and mindset across four phases.",
-    href: "/programs/flagship-transformation",
+    title: "Nutrition Guidance",
+    description: "Practical nutrition strategies that support energy and recovery.",
+    icon: Apple,
+    color: "#B8935A",
   },
   {
-    name: "12-Week Elite Mentorship",
-    description: "High-touch, deeply personalized mentorship with direct founder access.",
-    href: "/programs/elite-mentorship",
+    title: "Mindset & Resilience",
+    description: "Build confidence and a stronger, more resilient mindset.",
+    icon: Brain,
+    color: "#C9C0B4",
   },
   {
-    name: "Strength Circle Membership",
-    description: "Ongoing group coaching, community and accountability, month to month.",
-    href: "/programs/membership",
+    title: "Weekly Accountability",
+    description: "Weekly check-ins to keep you consistent and on track.",
+    icon: Users,
+    color: "#EDE0C8",
+  },
+  {
+    title: "Safety-Aware Progression",
+    description: "Program design that respects safety, health needs, and body limits.",
+    icon: ShieldCheck,
+    color: "#8A7554",
+  },
+  {
+    title: "Purpose & Direction",
+    description: "Training with a clear sense of purpose and where it's leading.",
+    icon: Compass,
+    color: "#3A3A38",
   },
 ]
 
-export default function TeamPage() {
-  const teamMembers = [
-    {
-      name: "Aditya Mandan",
-      role: "Fitness and Nutrition Coaching",
-      image: "/Aditya-transparent.png",
-      qualifications: [
-        "National-level Para Powerlifter",
-        "Certified Fitness Trainer (Level 2, PEPT) and Nutrition Consultant",
-      ],
-      offerings: [
-        "Tailored Fitness Programs: From fat loss to powerlifting",
-        "Holistic Transformation: Integrating physical, mental, and emotional well-being",
-        "Inclusive Approach: Accessible and empowering fitness for everyone",
-      ],
-      link: "/programs/fitness-training",
-    },
-  ]
+// Conic-gradient wheel built from on-brand tonal variants only —
+// gold / deep gold / silver / champagne / bronze / charcoal.
+const wheelGradient = `conic-gradient(${pillars
+  .map((p, i) => `${p.color} ${(i * 100) / pillars.length}% ${((i + 1) * 100) / pillars.length}%`)
+  .join(", ")})`
+
+export default function ProgramsPage() {
+  const [show3DWheel, setShow3DWheel] = useState(false)
+
+  useEffect(() => {
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches
+    if (!reducedMotion) setShow3DWheel(true)
+  }, [])
 
   return (
     <div className="min-h-screen bg-background">
-      <Header/>
-      <div className="relative h-[40vh] bg-black mb-16">
-        <Image
-          src="https://images.unsplash.com/photo-1593810450967-f9c42742e326?q=80&w=2070"
-          alt="Team collaboration"
-          fill
-          className="object-cover opacity-30"
-          priority
-        />
-        <div className="absolute inset-0 flex flex-col items-center justify-center px-4 text-center">
-          <h1 className="text-5xl md:text-7xl font-bold font-display text-white mb-6">
-            Our <span className="text-[#C9A96A]">Programs</span>
+      <Header />
+
+      {/* Hero */}
+      <div className="relative bg-black py-24 md:py-32">
+        <div className="absolute inset-0 bg-gradient-to-br from-[#C9A96A]/10 via-black to-black" />
+        <div className="container relative mx-auto px-4 text-center">
+          <span className="text-sm font-bold uppercase tracking-widest text-[#C9A96A]">
+            The STRENTOR Program
+          </span>
+          <h1 className="mt-4 text-4xl font-bold font-display text-white sm:text-5xl md:text-6xl">
+            The 12-Week <span className="text-[#C9A96A]">STRENTOR</span> Holistic Strength Program
           </h1>
-          <p className="text-xl md:text-2xl text-gray-200 max-w-3xl">
-            Experts dedicated to your holistic transformation
+          <p className="mx-auto mt-6 max-w-2xl text-lg text-gray-300 md:text-xl">
+            A complete system to build seated strength, confidence, discipline, resilience and
+            daily fitness habits.
           </p>
+          <div className="mt-8">
+            <Button asChild className="h-14 rounded-full bg-[#C9A96A] px-8 hover:bg-[#C9A96A]/90">
+              <Link href="/apply-for-access">
+                Apply for Access
+              </Link>
+            </Button>
+          </div>
         </div>
       </div>
 
-      <div className="container mx-auto px-4 py-8">
-        <div className="space-y-16">
-          {teamMembers.map((member, index) => (
-            <Card
-              key={index}
-              id={member.name.toLowerCase().replace(/\s+/g, "")} // Generate IDs like "anishajhunjhunwala"
-              className="overflow-hidden border-none shadow-xl"
-            >
-              <CardContent className="p-0">
-                <div className="grid md:grid-cols-2 gap-6">
-                  <div className="p-8 space-y-6 order-2 md:order-none">
-                    <div>
-                      <h2 className="text-4xl font-bold text-foreground mb-2">
-                        {member.name}
-                      </h2>
-                      <Badge className="bg-[#B8935A] text-black text-md font-semibold">
-                        {member.role}
-                      </Badge>
-                      <div className="mt-8 space-y-20">
-                        <div>
-                          <h3 className="text-lg font-semibold text-[#C9C0B4] mb-4">
-                            Qualifications
-                          </h3>
-                          <ul className="space-y-3 text-muted-foreground font-bold">
-                            {member.qualifications.map((qual, idx) => (
-                              <li key={idx} className="flex items-start">
-                                <Star className="h-5 w-5 text-[#B8935A] mt-1 mr-3 flex-shrink-0" />
-                                <span>{qual}</span>
-                              </li>
-                            ))}
-                          </ul>
-                        </div>
-                        <div>
-                          <h3 className="text-lg font-semibold text-[#C9A96A] mb-4">
-                            What We Offer
-                          </h3>
-                          <ul className="space-y-3 text-muted-foreground font-bold">
-                            {member.offerings.map((offer, idx) => (
-                              <li key={idx} className="flex items-start">
-                                <Check className="h-5 w-5 text-[#C9A96A] mt-1 mr-3 flex-shrink-0" />
-                                <span>{offer}</span>
-                              </li>
-                            ))}
-                          </ul>
-                        </div>
-                      </div>
-                      <div className="mt-8">
-                        <Button
-                          className="bg-[#C9A96A] hover:bg-[#C9A96A]/90 text-primary-foreground rounded-full px-8 py-6 group"
-                          onClick={() => member.link ? window.location.href = member.link : null}
-                        >
-                          Find Out More <span className="group-hover:translate-x-1 transition-transform inline-block ml-1">→</span>
-                        </Button>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="relative h-[600px] bg-muted order-1 md:order-none">
-                    <Image
-                      src={member.image}
-                      alt={`${member.name} - ${member.role}`}
-                      fill
-                      className="object-cover object-top"
-                    />
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
-      </div>
+      {/* Wheel of Focus */}
+      <section className="container mx-auto px-4 py-16 md:py-24">
+        <ScrollReveal className="mx-auto max-w-xl text-center">
+          <h2 className="text-3xl font-bold font-display text-foreground sm:text-4xl">
+            One Program, Six Pillars
+          </h2>
+          <p className="mt-4 text-lg text-muted-foreground">
+            Every week of the 12-week program touches all six pillars of holistic strength.
+          </p>
+        </ScrollReveal>
 
-      {/* Offer Ladder */}
-      <div className="container mx-auto px-4 py-16">
-        <h2 className="text-center text-3xl font-bold font-display text-foreground sm:text-4xl mb-2">
-          Choose Your Path
-        </h2>
-        <p className="text-center text-muted-foreground max-w-2xl mx-auto mb-10">
-          Every STRENTOR program is built for wheelchair-first adaptive training. Start wherever makes sense for you.
-        </p>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 max-w-4xl mx-auto">
-          {offerLadder.map((offer) => (
-            <div
-              key={offer.href}
-              className="flex flex-col justify-between rounded-2xl border border-border bg-card p-6 shadow-sm transition-colors hover:border-[#C9A96A]"
-            >
-              <div>
-                <h3 className="text-lg font-bold text-card-foreground">{offer.name}</h3>
-                <p className="mt-2 text-sm text-muted-foreground">{offer.description}</p>
+        <ScrollReveal delay={0.1} className="mt-12 flex justify-center">
+          <div className="relative h-64 w-64 sm:h-80 sm:w-80">
+            {show3DWheel ? (
+              <ProgramWheel3D
+                segments={pillars.map((p) => ({ color: p.color }))}
+                className="absolute inset-0"
+                onError={() => setShow3DWheel(false)}
+              />
+            ) : (
+              <div
+                className="h-full w-full rounded-full shadow-2xl ring-1 ring-[#C9A96A]/30"
+                style={{ background: wheelGradient }}
+              />
+            )}
+            <div className="absolute inset-0 flex items-center justify-center">
+              <div className="flex h-24 w-24 items-center justify-center rounded-full bg-black shadow-lg ring-4 ring-black sm:h-28 sm:w-28">
+                <Image
+                  src="/strentor-icon.png"
+                  alt="STRENTOR"
+                  width={56}
+                  height={56}
+                  className="h-12 w-12 object-contain sm:h-14 sm:w-14"
+                />
               </div>
-              <Button asChild className="mt-4 w-fit bg-[#C9A96A] hover:bg-[#C9A96A]/90 text-primary-foreground">
-                <Link href={offer.href}>
-                  Learn more
-                  <ArrowRight className="ml-1 h-4 w-4" />
-                </Link>
-              </Button>
             </div>
-          ))}
-        </div>
-      </div>
+          </div>
+        </ScrollReveal>
+      </section>
 
-      <Footer/>
+      {/* Pillar cards */}
+      <section className="bg-muted/30 py-16">
+        <div className="container mx-auto px-4">
+          <StaggerGroup className="mx-auto grid max-w-5xl gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {pillars.map((pillar) => {
+              const Icon = pillar.icon
+              return (
+                <ScrollReveal key={pillar.title}>
+                  <HoverLift
+                    className="flex gap-4 rounded-2xl border border-border bg-card p-6 shadow-sm transition-colors hover:border-[#C9A96A]/40"
+                  >
+                    <div
+                      className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-[#C9A96A]"
+                    >
+                      <Icon className="h-5 w-5 text-strentor-black" />
+                    </div>
+                    <div>
+                      <h3 className="text-lg font-bold text-card-foreground">{pillar.title}</h3>
+                      <p className="mt-1 text-muted-foreground">{pillar.description}</p>
+                    </div>
+                  </HoverLift>
+                </ScrollReveal>
+              )
+            })}
+          </StaggerGroup>
+        </div>
+      </section>
+
+      {/* Access-Based Pricing */}
+      <section className="container mx-auto px-4 py-16 md:py-24">
+        <ScrollReveal className="mx-auto max-w-3xl text-center">
+          <h2 className="text-3xl font-bold font-display text-foreground sm:text-4xl">
+            Access-Based Pricing
+          </h2>
+          <p className="mt-4 text-lg text-muted-foreground">
+            The 12-week program has a true value of {PROGRAM_TRUE_VALUE} per participant. Through
+            sponsors, donors and partners, eligible participants may receive fully sponsored or
+            subsidized access.
+          </p>
+        </ScrollReveal>
+
+        <ScrollReveal delay={0.1} className="mx-auto mt-10 max-w-4xl overflow-hidden rounded-2xl border border-border bg-card">
+          <Table>
+            <TableHeader>
+              <TableRow className="hover:bg-transparent">
+                <TableHead className="text-foreground">Access Tier</TableHead>
+                <TableHead className="text-foreground">Contribution (INR)</TableHead>
+                <TableHead className="text-foreground">Who It's For</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {accessTiers.map((tier) => (
+                <TableRow key={tier.id}>
+                  <TableCell className="font-semibold text-card-foreground">{tier.name}</TableCell>
+                  <TableCell className="text-[#C9A96A]">{tier.price}</TableCell>
+                  <TableCell className="text-muted-foreground">{tier.whoItsFor}</TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </ScrollReveal>
+      </section>
+
+      {/* Final CTA */}
+      <section className="relative bg-black py-20">
+        <div className="absolute inset-0 bg-gradient-to-br from-[#C9A96A]/10 via-black to-black" />
+        <ScrollReveal className="container relative mx-auto px-4 text-center">
+          <h2 className="text-3xl font-bold font-display text-white sm:text-4xl">
+            Not sure which access tier fits you?
+          </h2>
+          <p className="mx-auto mt-4 max-w-xl text-lg text-gray-300">
+            Apply and our team will match you to the right seat, or sponsor a seat for someone
+            who needs it.
+          </p>
+          <div className="mt-8 flex flex-col items-center justify-center gap-4 sm:flex-row">
+            <Button asChild className="h-14 rounded-full bg-[#C9A96A] px-8 hover:bg-[#C9A96A]/90">
+              <Link href="/apply-for-access">Apply for Access</Link>
+            </Button>
+            <Button
+              asChild
+              variant="outline"
+              className="h-14 rounded-full border-[#C9A96A] px-8 text-[#C9A96A] hover:bg-[#C9A96A]/10"
+            >
+              <Link href="/sponsor-a-seat">Sponsor a Seat</Link>
+            </Button>
+          </div>
+        </ScrollReveal>
+      </section>
+
+      <Footer />
     </div>
   )
 }

@@ -55,7 +55,7 @@ export function RecentSalesCard({ recentSubscriptions }: RecentSalesCardProps) {
           <Button
             variant="ghost"
             size="sm"
-            className="h-6 px-2 text-blue-600 hover:text-blue-700 hover:bg-blue-50"
+            className="h-6 px-2 text-[#C9A96A] hover:text-[#C9A96A]/80 hover:bg-[#C9A96A]/10"
             onClick={() => handleAssignTrainer(subscription)}
           >
             <Plus className="h-3 w-3 mr-1" />
@@ -80,7 +80,7 @@ export function RecentSalesCard({ recentSubscriptions }: RecentSalesCardProps) {
           <Button
             variant="ghost"
             size="sm"
-            className="h-5 px-2 text-blue-600 hover:text-blue-700 hover:bg-blue-50 mt-1"
+            className="h-5 px-2 text-[#C9A96A] hover:text-[#C9A96A]/80 hover:bg-[#C9A96A]/10 mt-1"
             onClick={() => handleAssignTrainer(subscription)}
           >
             <Plus className="h-3 w-3 mr-1" />
@@ -112,7 +112,7 @@ export function RecentSalesCard({ recentSubscriptions }: RecentSalesCardProps) {
             <Button
               variant="ghost"
               size="sm"
-              className="h-6 px-2 text-blue-600 hover:text-blue-700 hover:bg-blue-50"
+              className="h-6 px-2 text-[#C9A96A] hover:text-[#C9A96A]/80 hover:bg-[#C9A96A]/10"
               onClick={() => handleAssignTrainer(subscription)}
             >
               <Plus className="h-3 w-3 mr-1" />

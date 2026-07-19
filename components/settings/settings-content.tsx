@@ -116,8 +116,8 @@ export function SettingsContent({ user }: SettingsContentProps) {
   const tabButtonClass = (tabValue: string) => cn(
     "inline-flex items-center justify-center px-6 py-3 text-sm font-medium transition-all cursor-pointer",
     "border-b-2 border-transparent rounded-none bg-transparent",
-    activeTab === tabValue 
-      ? "border-red-500 text-red-600"
+    activeTab === tabValue
+      ? "border-[#C9A96A] text-[#C9A96A]"
       : "text-muted-foreground hover:text-foreground"
   );
 
@@ -127,7 +127,7 @@ export function SettingsContent({ user }: SettingsContentProps) {
       <div className="w-full">
         <div className="flex justify-center items-center py-12">
           <div className="flex flex-col items-center gap-4">
-            <div className="animate-spin h-8 w-8 border-4 border-border border-t-red-600 rounded-full" />
+            <div className="animate-spin h-8 w-8 border-4 border-border border-t-[#C9A96A] rounded-full" />
             <p className="text-sm text-muted-foreground">Loading settings...</p>
           </div>
         </div>
@@ -144,7 +144,7 @@ export function SettingsContent({ user }: SettingsContentProps) {
             <p className="text-sm text-destructive mb-4">{error}</p>
             <button 
               onClick={() => window.location.reload()} 
-              className="text-sm text-blue-600 hover:underline"
+              className="text-sm text-[#C9A96A] hover:underline"
             >
               Try again
             </button>

@@ -9,7 +9,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion"
-import { ShieldAlert, ArrowRight, Check, HandCoins, Users, Building2, ClipboardCheck } from "lucide-react"
+import { ShieldAlert, Check, HandCoins, Users, Building2, ClipboardCheck } from "lucide-react"
 import Link from "next/link"
 
 const sponsorshipFormats = [
@@ -279,13 +279,9 @@ export default function PayItForwardPage() {
             commitment — can set up a corporate sponsorship pool with Strentor.
             Visit our corporate page to see how companies partner with us.
           </p>
-          <Link
-            href="/corporate"
-            className="group mt-6 inline-flex items-center gap-1 rounded-full border border-border px-5 py-2 text-sm font-semibold text-foreground transition-colors hover:border-[#C9A96A] hover:text-[#C9A96A]"
-          >
-            Explore Corporate Partnerships
-            <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
-          </Link>
+          <Button asChild className="mt-6 rounded-full bg-[#C9A96A] px-8 hover:bg-[#C9A96A]/90 text-primary-foreground">
+            <Link href="/partner-with-us">Explore Corporate Partnerships</Link>
+          </Button>
         </div>
       </section>
 

@@ -16,17 +16,17 @@ import { format } from "date-fns";
 
 // Category colors for badges
 export const categoryColors: Record<WorkoutCategory, string> = {
-  HYPERTROPHY: "bg-blue-100 text-blue-800",
-  STRENGTH: "bg-green-100 text-green-800", 
-  DELOAD: "bg-yellow-100 text-yellow-800",
-  RELOAD: "bg-red-100 text-red-800",
-  ENDURANCE: "bg-purple-100 text-purple-800",
+  HYPERTROPHY: "bg-[#C9A96A]/15 text-[#C9A96A]",
+  STRENGTH: "bg-[#B8935A]/15 text-[#B8935A]",
+  DELOAD: "bg-[#C9C0B4]/20 text-foreground",
+  RELOAD: "bg-[#0A0A0A]/10 text-foreground border border-[#0A0A0A]/20",
+  ENDURANCE: "bg-[#EDE0C8]/30 text-[#B8935A]",
 };
 
 // Status colors for badges
 export const statusColors: Record<string, string> = {
   active: "bg-green-100 text-green-800",
-  upcoming: "bg-blue-100 text-blue-800",
+  upcoming: "bg-[#C9C0B4]/20 text-foreground",
   previous: "bg-muted text-muted-foreground",
 };
 
