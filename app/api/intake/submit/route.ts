@@ -3,6 +3,7 @@ import { z } from "zod";
 import { sendIntakeNotification } from "@/utils/email/resend";
 import { PATHWAY_PRIMARY_EMAIL } from "@/utils/intake-routing";
 import { PATHWAY_LABELS, EnquiryPathway } from "@/types/intake";
+import prisma from "@/utils/prisma/prismaClient";
 
 // Internal CC routing — deliberately not exported/shared with client code.
 const PATHWAY_CC: Partial<Record<EnquiryPathway, string[]>> = {
@@ -186,6 +187,32 @@ export async function POST(request: NextRequest) {
   const primaryEmail = PATHWAY_PRIMARY_EMAIL[pathway];
   const ccEmails = PATHWAY_CC[pathway];
   const reviewLevel = classifyReviewLevel(data.healthBoundaries, data.movementProfile);
+
+  if (pathway === "corporate" && data.corporate) {
+    try {
+      const corporateMessageParts = [
+        data.corporate.role ? `Role: ${data.corporate.role}` : null,
+        data.corporate.programObjective ? `Objective: ${data.corporate.programObjective}` : null,
+        data.corporate.budgetRange ? `Budget: ${data.corporate.budgetRange}` : null,
+        data.corporate.preferredFormat ? `Preferred format: ${data.corporate.preferredFormat}` : null,
+        data.corporate.timeline ? `Timeline: ${data.corporate.timeline}` : null,
+        data.corporate.additionalContext,
+      ].filter(Boolean);
+
+      await prisma.corporate_inquiries.create({
+        data: {
+          company_name: data.corporate.organizationName || "Unknown",
+          contact_name: contact.fullName,
+          email: contact.email,
+          phone: contact.phone,
+          employee_count: data.corporate.audienceSize,
+          message: corporateMessageParts.join(" | ") || undefined,
+        },
+      });
+    } catch (error) {
+      console.error("Failed to record corporate inquiry:", error);
+    }
+  }
 
   const html = `
     <div style="font-family: Arial, sans-serif; max-width: 640px; color: #111;">

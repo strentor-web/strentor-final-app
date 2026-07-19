@@ -67,6 +67,12 @@ const adminNavItems = [
     isActive: false,
   },
   {
+    title: "Corporate",
+    url: "/admin/corporate",
+    icon: GraduationCap,
+    isActive: false,
+  },
+  {
     title: "Settings",
     url: "/admin/settings",
     icon: Settings,

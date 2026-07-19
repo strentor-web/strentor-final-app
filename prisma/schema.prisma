@@ -198,6 +198,50 @@ model admin_notes {
   @@schema("public")
 }
 
+model corporate_groups {
+  id             String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  company_name   String
+  contact_person String
+  contact_email  String
+  plan_type      String?
+  member_limit   Int?
+  status         String   @default("active")
+  created_at     DateTime @default(now())
+
+  @@schema("public")
+}
+
+model corporate_inquiries {
+  id             String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  company_name   String
+  contact_name   String
+  email          String
+  phone          String?
+  employee_count String?
+  message        String?
+  status         String   @default("new")
+  created_at     DateTime @default(now())
+
+  @@schema("public")
+}
+
+model mentorship_applications {
+  id                 String                     @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  user_id            String                     @db.Uuid
+  goals              String
+  current_challenges String?
+  desired_support    String?
+  readiness_score    Int?
+  status             MentorshipApplicationStatus @default(PENDING)
+  reviewed_by_id     String?                    @db.Uuid
+  submitted_at       DateTime                   @default(now())
+  users_profile      users_profile              @relation("MentorshipApplicant", fields: [user_id], references: [id], onDelete: NoAction, map: "MentorshipApplication_userId_fkey")
+  reviewed_by        users_profile?             @relation("MentorshipReviewer", fields: [reviewed_by_id], references: [id], onDelete: SetNull, map: "MentorshipApplication_reviewedById_fkey")
+
+  @@index([user_id], map: "MentorshipApplication_userId_idx")
+  @@schema("public")
+}
+
 model calculator_sessions {
   id            String         @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   user_id       String         @db.Uuid
@@ -387,6 +431,8 @@ model users_profile {
   automation_events                                         automation_events[]
   admin_notes_as_subject                                    admin_notes[]              @relation("AdminNoteSubject")
   admin_notes_authored                                      admin_notes[]              @relation("AdminNoteAuthor")
+  mentorship_applications_as_applicant                      mentorship_applications[]  @relation("MentorshipApplicant")
+  mentorship_applications_reviewed                          mentorship_applications[]  @relation("MentorshipReviewer")
   calculator_sessions                                       calculator_sessions[]
   client_max_lifts                                          client_max_lifts[]
   exercise_logs                                             exercise_logs[]
@@ -741,6 +787,14 @@ enum TestimonialStatus {
   PENDING
   APPROVED
   REJECTED
+
+  @@schema("public")
+}
+
+enum MentorshipApplicationStatus {
+  PENDING
+  APPROVED
+  DECLINED
 
   @@schema("public")
 }

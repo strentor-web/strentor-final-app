@@ -141,6 +141,21 @@ export async function POST(request: NextRequest) {
     },
   });
 
+  // Elite Mentorship interest with no safety concerns doubles as a
+  // lightweight application — see App Builder Requirement Document
+  // section 9.1 ("If user selects Elite Mentorship and no red flags,
+  // show Elite CTA") and the mentorship_applications table (section 12).
+  if (result.showEliteCta) {
+    await prisma.mentorship_applications.create({
+      data: {
+        user_id: user.id,
+        goals: "Interested in Elite Mentorship (submitted via Readiness Assessment).",
+        readiness_score: result.totalScore,
+        status: "PENDING",
+      },
+    });
+  }
+
   if (result.redFlagExists) {
     const symptomLabels = redFlags
       .filter((f) => f !== "none")
