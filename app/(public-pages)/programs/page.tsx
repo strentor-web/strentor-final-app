@@ -23,17 +23,10 @@ import {
   ArrowRight,
   HandHeart,
 } from "lucide-react"
-import dynamic from "next/dynamic"
 import { accessTiers, PROGRAM_TRUE_VALUE } from "@/config/accessTiers"
 import { ScrollReveal, StaggerGroup } from "@/components/motion/ScrollReveal"
 import { HoverLift } from "@/components/motion/HoverLift"
-
-// @react-three/fiber has import-time side effects that crash Next.js's
-// server-side prerender pass, so it must only ever load in the browser.
-const ProgramWheel3D = dynamic(
-  () => import("@/components/three/ProgramWheel3D").then((mod) => mod.ProgramWheel3D),
-  { ssr: false }
-)
+import { ProgramWheel3D } from "@/components/three/ProgramWheel3DLazy"
 
 const pillars = [
   {
