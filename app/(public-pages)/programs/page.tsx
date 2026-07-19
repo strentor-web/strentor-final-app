@@ -183,11 +183,10 @@ export default function ProgramsPage() {
             Access-Based Pricing
           </h2>
           <p className="mt-4 text-lg text-muted-foreground">
-            Sessions are priced at ₹999 each, with a minimum commitment of 3 sessions per week for
-            at least 3 months (36 sessions) — a true value of {PROGRAM_TRUE_VALUE} per participant.
-            The contribution below is what you pay toward that block; through sponsors, donors and
-            partners, eligible participants may receive fully sponsored or subsidized access, and
-            higher tiers help sponsor a seat for someone else.
+            The 12-week program (minimum 3 sessions per week for at least 3 months) has one true
+            value: {PROGRAM_TRUE_VALUE} per participant. A seat is either fully sponsored by
+            donors and partners, or self-funded — and self-funded participants can choose to pay
+            it forward by sponsoring a full seat for someone else too.
           </p>
         </ScrollReveal>
 
@@ -196,7 +195,7 @@ export default function ProgramsPage() {
             <TableHeader>
               <TableRow className="hover:bg-transparent">
                 <TableHead className="text-foreground">Access Tier</TableHead>
-                <TableHead className="text-foreground">Min. Contribution (INR)</TableHead>
+                <TableHead className="text-foreground">Contribution (INR)</TableHead>
                 <TableHead className="text-foreground">Who It's For</TableHead>
               </TableRow>
             </TableHeader>
@@ -210,10 +209,6 @@ export default function ProgramsPage() {
               ))}
             </TableBody>
           </Table>
-          <p className="border-t border-border px-4 py-3 text-xs text-muted-foreground sm:px-6">
-            Contribution is your minimum share of a 3x/week, 3-month (36-session) block at
-            ₹999/session — STRENTOR's sponsor network covers the remainder for subsidized tiers.
-          </p>
         </ScrollReveal>
       </section>
 
