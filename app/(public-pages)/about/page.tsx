@@ -5,7 +5,7 @@ import Footer from "@/components/landing/Footer"
 import { Button } from "@/components/ui/button"
 import Image from "next/image"
 import Link from "next/link"
-import { Check, ArrowRight } from "lucide-react"
+import { Check } from "lucide-react"
 import { ScrollReveal, StaggerGroup } from "@/components/motion/ScrollReveal"
 import { HoverLift } from "@/components/motion/HoverLift"
 
@@ -92,10 +92,7 @@ export default function AboutPage() {
               asChild
               className="h-14 rounded-full bg-[#C9A96A] px-8 transition-transform hover:scale-105 hover:bg-[#C9A96A]/90"
             >
-              <Link href="/apply-for-access">
-                Apply for Access
-                <ArrowRight className="ml-1 h-4 w-4" />
-              </Link>
+              <Link href="/apply-for-access">Apply for Access</Link>
             </Button>
             <Button
               asChild

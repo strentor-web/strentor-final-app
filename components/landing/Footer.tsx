@@ -2,22 +2,10 @@
 import Link from "next/link";
 import Image from "next/image";
 import { Facebook, Linkedin, Instagram, Youtube, Mail, Globe } from "lucide-react";
-import { Button } from "@/components/ui/button";
 
 export default function Footer() {
   return (
     <footer className="w-full border-t border-border bg-background/5 backdrop-blur-lg">
-      <div className="container mx-auto px-4 py-10 text-center border-b border-border">
-        <p className="text-lg font-semibold text-foreground mb-4">Ready to begin your strength journey?</p>
-        <div className="flex flex-wrap items-center justify-center gap-3">
-          <Button asChild className="h-12 px-8 rounded-full bg-strentor-red hover:bg-strentor-red/80 text-primary-foreground">
-            <Link href="/apply-for-access">Apply for Access</Link>
-          </Button>
-          <Button asChild variant="outline" className="h-12 px-8 rounded-full">
-            <Link href="/sponsor-a-seat">Sponsor a Seat</Link>
-          </Button>
-        </div>
-      </div>
       <div className="container mx-auto px-4 py-12 grid gap-8 sm:grid-cols-4 text-center sm:text-left">
         {/* Brand */}
         <div className="space-y-3">

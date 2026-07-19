@@ -1,5 +1,6 @@
 "use client"
 
+import { useEffect, useState } from "react"
 import Image from "next/image"
 import Link from "next/link"
 import Header from "@/components/landing/Header"
@@ -20,8 +21,6 @@ import {
   Users,
   ShieldCheck,
   Compass,
-  ArrowRight,
-  HandHeart,
 } from "lucide-react"
 import { accessTiers, PROGRAM_TRUE_VALUE } from "@/config/accessTiers"
 import { ScrollReveal, StaggerGroup } from "@/components/motion/ScrollReveal"
@@ -74,6 +73,13 @@ const wheelGradient = `conic-gradient(${pillars
   .join(", ")})`
 
 export default function ProgramsPage() {
+  const [show3DWheel, setShow3DWheel] = useState(false)
+
+  useEffect(() => {
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches
+    if (!reducedMotion) setShow3DWheel(true)
+  }, [])
+
   return (
     <div className="min-h-screen bg-background">
       <Header />
@@ -115,14 +121,18 @@ export default function ProgramsPage() {
 
         <ScrollReveal delay={0.1} className="mt-12 flex justify-center">
           <div className="relative h-64 w-64 sm:h-80 sm:w-80">
-            <div
-              className="h-full w-full rounded-full shadow-2xl ring-1 ring-[#C9A96A]/30"
-              style={{ background: wheelGradient }}
-            />
-            <ProgramWheel3D
-              segments={pillars.map((p) => ({ color: p.color }))}
-              className="absolute inset-0"
-            />
+            {show3DWheel ? (
+              <ProgramWheel3D
+                segments={pillars.map((p) => ({ color: p.color }))}
+                className="absolute inset-0"
+                onError={() => setShow3DWheel(false)}
+              />
+            ) : (
+              <div
+                className="h-full w-full rounded-full shadow-2xl ring-1 ring-[#C9A96A]/30"
+                style={{ background: wheelGradient }}
+              />
+            )}
             <div className="absolute inset-0 flex items-center justify-center">
               <div className="flex h-24 w-24 items-center justify-center rounded-full bg-black shadow-lg ring-4 ring-black sm:h-28 sm:w-28">
                 <Image
@@ -214,20 +224,14 @@ export default function ProgramsPage() {
           </p>
           <div className="mt-8 flex flex-col items-center justify-center gap-4 sm:flex-row">
             <Button asChild className="h-14 rounded-full bg-[#C9A96A] px-8 hover:bg-[#C9A96A]/90">
-              <Link href="/apply-for-access">
-                Apply for Access
-                <ArrowRight className="ml-1 h-4 w-4" />
-              </Link>
+              <Link href="/apply-for-access">Apply for Access</Link>
             </Button>
             <Button
               asChild
               variant="outline"
               className="h-14 rounded-full border-[#C9A96A] px-8 text-[#C9A96A] hover:bg-[#C9A96A]/10"
             >
-              <Link href="/sponsor-a-seat">
-                <HandHeart className="mr-1 h-4 w-4" />
-                Sponsor a Seat
-              </Link>
+              <Link href="/sponsor-a-seat">Sponsor a Seat</Link>
             </Button>
           </div>
         </ScrollReveal>

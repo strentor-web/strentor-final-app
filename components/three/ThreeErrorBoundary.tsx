@@ -4,6 +4,8 @@ import { Component, ReactNode } from "react"
 
 interface Props {
   children: ReactNode
+  /** Called once if the 3D subtree throws, so a caller can swap in a static fallback. */
+  onError?: () => void
 }
 
 interface State {
@@ -25,6 +27,7 @@ export class ThreeErrorBoundary extends Component<Props, State> {
 
   componentDidCatch(error: unknown) {
     console.error("3D layer failed to render; degrading gracefully.", error)
+    this.props.onError?.()
   }
 
   render() {

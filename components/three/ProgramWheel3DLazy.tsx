@@ -9,10 +9,11 @@ const ProgramWheel3DInner = dynamic(
   { ssr: false }
 )
 
-export function ProgramWheel3D(props: { segments: WheelSegmentSpec[]; className?: string }) {
+export function ProgramWheel3D(props: { segments: WheelSegmentSpec[]; className?: string; onError?: () => void }) {
+  const { onError, ...rest } = props
   return (
-    <ThreeErrorBoundary>
-      <ProgramWheel3DInner {...props} />
+    <ThreeErrorBoundary onError={onError}>
+      <ProgramWheel3DInner {...rest} />
     </ThreeErrorBoundary>
   )
 }
