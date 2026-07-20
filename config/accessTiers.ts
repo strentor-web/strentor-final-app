@@ -5,11 +5,13 @@ export interface AccessTier {
   whoItsFor: string;
 }
 
-// The 12-Week STRENTOR Holistic Strength Program is binary: a seat is either
-// fully sponsored by donors/partners, or self-funded at the program's true
-// value. Pay-It-Forward is a self-funded seat that also sponsors one more
-// full seat for someone else. Tier is assigned by the STRENTOR team after
-// reviewing an application, not self-selected at checkout.
+// The 12-Week STRENTOR Holistic Strength Program is binary for applicants:
+// a seat is either fully sponsored by donors/partners, or self-funded at
+// the program's true value. Pay-It-Forward is a separate, standalone
+// sponsorship action — someone funds a full seat for another person
+// without needing to sign up for the program themselves. Tier is assigned
+// by the STRENTOR team after reviewing an application, not self-selected
+// at checkout.
 export const PROGRAM_TRUE_VALUE = "₹74,999";
 
 export const accessTiers: AccessTier[] = [
@@ -28,7 +30,7 @@ export const accessTiers: AccessTier[] = [
   {
     id: "pay_it_forward",
     name: "Pay-It-Forward Seat",
-    price: "₹1,49,999",
-    whoItsFor: "Your own seat, plus a full seat sponsored for someone else",
+    price: "₹74,999",
+    whoItsFor: "Sponsor a full seat for someone else — no sign-up needed for yourself",
   },
 ];

@@ -185,8 +185,8 @@ export default function ProgramsPage() {
           <p className="mt-4 text-lg text-muted-foreground">
             The 12-week program (minimum 3 sessions per week for at least 3 months) has one true
             value: {PROGRAM_TRUE_VALUE} per participant. A seat is either fully sponsored by
-            donors and partners, or self-funded — and self-funded participants can choose to pay
-            it forward by sponsoring a full seat for someone else too.
+            donors and partners, or self-funded. Anyone can also pay it forward — sponsoring a
+            full seat for someone else — without needing to sign up for the program themselves.
           </p>
         </ScrollReveal>
 
