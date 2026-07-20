@@ -7,6 +7,10 @@
     {
       "path": "/api/cron/cleanup-orphaned-subscriptions",
       "schedule": "0 4 * * *"
+    },
+    {
+      "path": "/api/cron/supabase-keep-alive",
+      "schedule": "0 2 * * *"
     }
   ]
 }
