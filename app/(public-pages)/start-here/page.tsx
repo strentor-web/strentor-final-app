@@ -44,10 +44,10 @@ const journey = [
   },
   {
     number: 5,
-    title: "7-Day Starter Kit or Program",
-    description: "Begin with a low-friction starter sequence or the full 12-week program, based on your pathway.",
-    href: "/programs",
-    cta: "See Programs",
+    title: "Apply for Your Seat",
+    description: "Apply for a fully sponsored, self-funded, or pay-it-forward seat in the 12-week program.",
+    href: "/apply-for-access",
+    cta: "Apply for Access",
   },
   {
     number: 6,
@@ -58,8 +58,8 @@ const journey = [
   },
   {
     number: 7,
-    title: "Discovery Call & Upgrade Path",
-    description: "When you're ready for more support, book a call or explore Elite Mentorship and Corporate Wellness.",
+    title: "Discovery Call & Ongoing Coaching",
+    description: "When you're ready for more support, book a call to set up ongoing coaching — 3 to 5 sessions a week, billed monthly or at a discount for longer commitments.",
     href: "/contact",
     cta: "Book a Call",
   },
