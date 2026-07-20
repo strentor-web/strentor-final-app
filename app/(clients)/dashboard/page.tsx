@@ -47,7 +47,10 @@ export default async function DashboardPage() {
   // Validate user authentication and CLIENT role
   const { user } = await validateServerRole(['CLIENT']);
 
-  // Parallel loading for better performance with caching strategy
+  // Parallel loading for better performance with caching strategy.
+  // The Academy queries (assessments, weekly_checkins) are wrapped so a
+  // not-yet-migrated table degrades the Command Center gracefully instead
+  // of crashing the entire dashboard.
   const [
     { data: activeSubscriptions, error: subscriptionError },
     { data: workoutPlan, error: workoutPlanError },
@@ -62,14 +65,24 @@ export default async function DashboardPage() {
     getUserLastFivePRs({}),
     getUserWeightLogs({}),
     getMaxLiftsData(),
-    prisma.assessments.findFirst({
-      where: { user_id: user.id },
-      orderBy: { submitted_at: "desc" },
-      include: { pathway_recommendations: true },
-    }),
-    prisma.weekly_checkins.findUnique({
-      where: { user_id_week_start: { user_id: user.id, week_start: new Date(startOfWeek(new Date())) } },
-    }),
+    prisma.assessments
+      .findFirst({
+        where: { user_id: user.id },
+        orderBy: { submitted_at: "desc" },
+        include: { pathway_recommendations: true },
+      })
+      .catch((error) => {
+        console.error("Failed to load latest assessment:", error);
+        return null;
+      }),
+    prisma.weekly_checkins
+      .findUnique({
+        where: { user_id_week_start: { user_id: user.id, week_start: new Date(startOfWeek(new Date())) } },
+      })
+      .catch((error) => {
+        console.error("Failed to load current week check-in:", error);
+        return null;
+      }),
   ]);
 
   // Determine states
