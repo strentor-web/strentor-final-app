@@ -10,6 +10,33 @@ datasource db {
   schemas   = ["public"]
 }
 
+// Safety-net record for every intake form submission (/apply-for-access,
+// /sponsor-a-seat, /partner-with-us, /contact — all pathways), so a
+// submission survives even if the notification email bounces, lands in
+// spam, or Resend has an outage. The full per-pathway payload varies in
+// shape, so it's stored as JSON alongside a few flat, filterable fields
+// for the admin queue. Corporate submissions also get a specialized row
+// in corporate_inquiries; this table is the universal fallback.
+model intake_submissions {
+  id            String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  pathway       String
+  full_name     String
+  email         String
+  phone         String
+  city          String?
+  country       String?
+  review_level  String   @default("standard_fit_review")
+  status        String   @default("new")
+  source_page   String?
+  payload       Json
+  created_at    DateTime @default(now())
+
+  @@index([pathway], map: "IntakeSubmission_pathway_idx")
+  @@index([status], map: "IntakeSubmission_status_idx")
+  @@index([review_level], map: "IntakeSubmission_reviewLevel_idx")
+  @@schema("public")
+}
+
 // STRENTOR Adaptive Transformation Academy — readiness assessment engine.
 // See App Builder Requirement Document section 9 (pathway logic) and
 // section 12 (core schema). Scoring/pathway rules are deterministic and

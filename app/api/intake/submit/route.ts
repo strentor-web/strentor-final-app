@@ -214,6 +214,27 @@ export async function POST(request: NextRequest) {
     }
   }
 
+  // Universal safety net: every pathway gets a DB record, independent of
+  // whether the notification email below succeeds. Non-fatal on failure —
+  // the email is still the primary channel, this is the fallback.
+  try {
+    await prisma.intake_submissions.create({
+      data: {
+        pathway,
+        full_name: contact.fullName,
+        email: contact.email,
+        phone: contact.phone,
+        city: contact.city,
+        country: contact.country,
+        review_level: reviewLevel,
+        source_page: data.sourcePage,
+        payload: data,
+      },
+    });
+  } catch (error) {
+    console.error("Failed to record intake submission:", error);
+  }
+
   const html = `
     <div style="font-family: Arial, sans-serif; max-width: 640px; color: #111;">
       <h2 style="color:#C9A96A;">New ${escapeHtml(PATHWAY_LABELS[pathway])}</h2>
