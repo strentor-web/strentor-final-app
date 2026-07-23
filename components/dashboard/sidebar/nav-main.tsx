@@ -27,6 +27,8 @@ interface NavMainProps {
     title: string;
     url: string;
     icon: LucideIcon;
+    disabled?: boolean;
+    badge?: string;
     items?: {
       title: string;
       url: string;

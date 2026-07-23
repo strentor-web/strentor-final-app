@@ -13,6 +13,7 @@ import {
   LineChart,
   HeartPulse,
   ClipboardCheck,
+  Bot,
 
 } from "lucide-react";
 
@@ -49,6 +50,13 @@ export const clientSidebarMenus = {
       title: "Weekly Reflection",
       url: "/check-in",
       icon: ClipboardCheck,
+    },
+    {
+      title: "AI Trainer",
+      url: "/programs/ai-coaching",
+      icon: Bot,
+      disabled: true,
+      badge: "Soon",
     },
     {
       title: "Calculators",

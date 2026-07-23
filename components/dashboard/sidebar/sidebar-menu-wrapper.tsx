@@ -40,6 +40,8 @@ type Props = {
     title: string;
     url: string;
     icon: LucideIcon;
+    disabled?: boolean;
+    badge?: string;
     items?: {
       title: string;
       url: string;
@@ -88,6 +90,16 @@ export function SidebarMenuWrapper({ item }: Props) {
                   <span className="text-sm text-balance">{item.title}</span>
                 </SidebarMenuButton>
               </CollapsibleTrigger>
+            ) : item.disabled ? (
+              <SidebarMenuButton
+                disabled
+                aria-disabled="true"
+                className="cursor-not-allowed opacity-50 hover:bg-transparent"
+                aria-label={`${item.title} — coming soon`}
+              >
+                <item.icon strokeWidth={1.8} aria-hidden="true" />
+                <span className="text-sm text-balance">{item.title}</span>
+              </SidebarMenuButton>
             ) : (
               <SidebarMenuButton
                 asChild
@@ -128,6 +140,23 @@ export function SidebarMenuWrapper({ item }: Props) {
                     aria-hidden="true"
                   />
                   <span className="text-sm text-balance">{item.title}</span>
+                </div>
+              ) : item.disabled ? (
+                <div
+                  aria-disabled="true"
+                  className="flex cursor-not-allowed items-center gap-2 border-b px-4 pb-2 opacity-50"
+                >
+                  <item.icon
+                    className="size-4"
+                    strokeWidth={1.8}
+                    aria-hidden="true"
+                  />
+                  <span className="text-sm text-balance">{item.title}</span>
+                  {item.badge && (
+                    <span className="ml-auto rounded-full bg-muted px-1.5 py-0.5 text-[10px] font-medium text-muted-foreground">
+                      {item.badge}
+                    </span>
+                  )}
                 </div>
               ) : (
                 <Link
@@ -174,6 +203,22 @@ export function SidebarMenuWrapper({ item }: Props) {
             <span>{item.title}</span>
           </SidebarMenuButton>
         </CollapsibleTrigger>
+      ) : item.disabled ? (
+        <SidebarMenuButton
+          disabled
+          aria-disabled="true"
+          tooltip={`${item.title} — coming soon`}
+          className="cursor-not-allowed opacity-50 hover:bg-transparent"
+          aria-label={`${item.title} — coming soon`}
+        >
+          <item.icon strokeWidth={1.8} aria-hidden="true" />
+          <span>{item.title}</span>
+          {item.badge && (
+            <span className="ml-auto rounded-full bg-muted px-1.5 py-0.5 text-[10px] font-medium text-muted-foreground">
+              {item.badge}
+            </span>
+          )}
+        </SidebarMenuButton>
       ) : (
         <SidebarMenuButton
           asChild
