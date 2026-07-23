@@ -13,6 +13,7 @@ import {
 import Header from "@/components/landing/Header";
 import Footer from "@/components/landing/Footer";
 import WhatsAppButton from "@/components/landing/WhatsAppButton";
+import Pricing from "@/components/landing/Pricing";
 import { Button } from "@/components/ui/button";
 import { FloatingLogoScene } from "@/components/three/FloatingLogoSceneLazy";
 import { ScrollReveal, StaggerGroup } from "@/components/motion/ScrollReveal";
@@ -182,6 +183,11 @@ export default function Home() {
           </StaggerGroup>
         </div>
       </section>
+
+      {/* Fitness Plan Pricing */}
+      <ScrollReveal>
+        <Pricing />
+      </ScrollReveal>
 
       {/* Final CTA */}
       <section className="relative overflow-hidden bg-black py-20">
