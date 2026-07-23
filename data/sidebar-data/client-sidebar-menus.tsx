@@ -1,5 +1,5 @@
 import {
- 
+  type LucideIcon,
   LifeBuoy,
   Send,
   Frame,
@@ -17,7 +17,23 @@ import {
 
 } from "lucide-react";
 
-export const clientSidebarMenus = {
+export interface ClientNavItem {
+  title: string;
+  url: string;
+  icon: LucideIcon;
+  isActive?: boolean;
+  disabled?: boolean;
+  badge?: string;
+  /** Gates this item on an active SubscriptionCategory (see prisma schema). */
+  requiredCategory?: "FITNESS" | "ALL_IN_ONE" | "AI_COACHING";
+}
+
+export const clientSidebarMenus: {
+  user: { name: string; email: string; avatar: string };
+  navMain: ClientNavItem[];
+  navSecondary: { title: string; url: string; icon: LucideIcon }[];
+  workspaces: { name: string; url: string; icon: LucideIcon }[];
+} = {
   user: {
     name: "James",
     email: "james@example.com",
@@ -55,7 +71,11 @@ export const clientSidebarMenus = {
       title: "AI Trainer",
       url: "/programs/ai-coaching",
       icon: Bot,
-      disabled: true,
+      // Live only once the client has an active AI_COACHING subscription —
+      // resolved dynamically in app-sidebar-client.tsx. "Soon" reflects that
+      // the AI trainer backend itself isn't built yet (Phase 2), independent
+      // of subscription status.
+      requiredCategory: "AI_COACHING",
       badge: "Soon",
     },
     {

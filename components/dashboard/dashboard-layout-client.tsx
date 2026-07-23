@@ -16,6 +16,7 @@ import { DashboardSkeleton } from "./dashboard-skeleton";
  */
 type Props = {
   children: React.ReactNode;
+  activeSubscriptionCategories?: string[];
 };
 
 /**
@@ -28,7 +29,7 @@ type Props = {
  * @param {Props} props - Component props
  * @param {React.ReactNode} props.children - Content to render in the main area
  */
-function DashboardLayoutWrapper({ children }: Props) {
+function DashboardLayoutWrapper({ children, activeSubscriptionCategories = [] }: Props) {
   const isClient = useIsClient();
 
   // Get sidebar open state from localStorage, with fallback to true
@@ -45,7 +46,7 @@ function DashboardLayoutWrapper({ children }: Props) {
 
   return (
     <SidebarProvider defaultOpen={false}>
-      <AppSidebar id="main-sidebar" />
+      <AppSidebar id="main-sidebar" activeSubscriptionCategories={activeSubscriptionCategories} />
       <SidebarInset
         className="flex flex-col md:peer-data-[variant=inset]:peer-data-[state=collapsed]:ml-0"
         role="main"
