@@ -235,6 +235,12 @@ export default function ProgramsPage() {
               <Link href="/sponsor-a-seat">Sponsor a Seat</Link>
             </Button>
           </div>
+          <p className="mt-6 text-sm text-gray-400">
+            Prefer something lower-commitment?{" "}
+            <Link href="/programs/ai-coaching" className="text-[#C9A96A] hover:underline">
+              Explore STRENTOR AI Coaching
+            </Link>
+          </p>
         </ScrollReveal>
       </section>
 

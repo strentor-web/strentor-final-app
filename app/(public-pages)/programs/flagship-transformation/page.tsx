@@ -58,6 +58,7 @@ export default function FlagshipTransformationPage() {
       disclaimer="STRENTOR provides fitness and nutrition coaching, not medical treatment or physiotherapy. Please consult your physician before beginning any new exercise program, especially if you have an existing health condition."
       relatedLinks={[
         { label: "7-Day Starter Kit", href: "/programs/starter-kit" },
+        { label: "STRENTOR AI Coaching", href: "/programs/ai-coaching" },
         { label: "Elite Mentorship", href: "/programs/elite-mentorship" },
         { label: "Membership", href: "/programs/membership" },
         { label: "Wheelchair Fitness Coaching in India", href: "/programs/wheelchair-fitness-coaching-india" },

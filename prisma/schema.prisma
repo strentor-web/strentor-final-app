@@ -667,6 +667,7 @@ enum PlanType {
 enum SubscriptionCategory {
   FITNESS
   ALL_IN_ONE
+  AI_COACHING
 
   @@schema("public")
 }

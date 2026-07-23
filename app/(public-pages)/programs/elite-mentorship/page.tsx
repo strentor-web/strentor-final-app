@@ -59,6 +59,7 @@ export default function EliteMentorshipPage() {
       relatedLinks={[
         { label: "8-Week Flagship Transformation", href: "/programs/flagship-transformation" },
         { label: "7-Day Starter Kit", href: "/programs/starter-kit" },
+        { label: "STRENTOR AI Coaching", href: "/programs/ai-coaching" },
         { label: "Membership", href: "/programs/membership" },
         { label: "Wheelchair Fitness Coaching in India", href: "/programs/wheelchair-fitness-coaching-india" },
       ]}

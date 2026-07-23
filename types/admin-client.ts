@@ -1,4 +1,4 @@
-export type SubscriptionCategory = "FITNESS" | "ALL_IN_ONE";
+export type SubscriptionCategory = "FITNESS" | "ALL_IN_ONE" | "AI_COACHING";
 
 export interface AdminClientPlan {
   id: string;
