@@ -8,22 +8,19 @@ import { BadgeCheck, Minus, Plus } from "lucide-react";
 import Image from "next/image";
 import { PricingHeader } from "@/components/subscription/PricingHeader";
 import { useRouter } from "next/navigation";
-
-const MIN_SESSIONS_PER_WEEK = 3;
-const MAX_SESSIONS_PER_WEEK = 5;
-const DEFAULT_SESSIONS_PER_WEEK = 3;
-const WEEKS_PER_MONTH = 4;
+import {
+  MIN_SESSIONS_PER_WEEK,
+  MAX_SESSIONS_PER_WEEK,
+  DEFAULT_SESSIONS_PER_WEEK,
+  WEEKS_PER_MONTH,
+  RATE_PER_SESSION,
+  billingOptions,
+  getLifetimePrice,
+} from "@/utils/pricing/sessionPricing";
 
 const trainingModes = [
-  { label: "Trainer-Led", value: "ONLINE" as const, ratePerSession: 1000 },
-  { label: "Self-Paced", value: "SELF_PACED" as const, ratePerSession: 500 },
-];
-
-const billingOptions = [
-  { label: "Monthly", value: 1, discount: 0 },
-  { label: "Quarterly", value: 3, discount: 10 },
-  { label: "Semi-Annual", value: 6, discount: 20 },
-  { label: "Annual", value: 12, discount: 30 },
+  { label: "Trainer-Led", value: "ONLINE" as const, ratePerSession: RATE_PER_SESSION.ONLINE },
+  { label: "Self-Paced", value: "SELF_PACED" as const, ratePerSession: RATE_PER_SESSION.SELF_PACED },
 ];
 
 const cycleLabelText = (months: number) =>
@@ -83,6 +80,7 @@ export default function FitnessPricing() {
   const totalSessions = sessionsPerWeek * weeksInCycle;
   const originalPrice = totalSessions * selectedMode.ratePerSession;
   const discountedPrice = Math.round(originalPrice * (1 - selectedOption.discount / 100));
+  const lifetimePrice = getLifetimePrice(sessionsPerWeek, trainingMode);
 
   const adjustSessionsPerWeek = (delta: number) => {
     setSessionsPerWeek((prev) => Math.min(MAX_SESSIONS_PER_WEEK, Math.max(MIN_SESSIONS_PER_WEEK, prev + delta)));
@@ -166,6 +164,15 @@ export default function FitnessPricing() {
             </button>
           </div>
         </div>
+
+        {/* Lifetime Membership note */}
+        {lifetimePrice !== undefined && (
+          <p className="mx-auto mt-6 max-w-md text-center text-sm text-muted-foreground">
+            Or pay once and lock in this rate for life:{" "}
+            <span className="font-semibold text-primary">₹{lifetimePrice.toLocaleString()}</span>{" "}
+            — no further billing, ever.
+          </p>
+        )}
 
         {/* Single Fitness Card - Centered */}
         <div className="flex justify-center mt-10">

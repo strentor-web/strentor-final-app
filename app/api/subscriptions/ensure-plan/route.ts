@@ -2,34 +2,16 @@ import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@/utils/supabase/server';
 import Razorpay from 'razorpay';
 import prisma from '@/utils/prisma/prismaClient';
-
-const WEEKS_PER_MONTH = 4;
-const MIN_SESSIONS_PER_WEEK = 3;
-const MAX_SESSIONS_PER_WEEK = 5;
-
-const RATE_PER_SESSION: Record<string, number> = {
-  ONLINE: 1000,
-  SELF_PACED: 500,
-};
-
-const PLAN_TYPE_LABELS: Record<string, string> = {
-  ONLINE: 'Trainer-Led',
-  SELF_PACED: 'Self-Paced',
-};
-
-const CYCLE_DISCOUNTS: Record<number, number> = {
-  1: 0,
-  3: 10,
-  6: 20,
-  12: 30,
-};
-
-const CYCLE_LABELS: Record<number, string> = {
-  1: 'monthly',
-  3: 'quarterly',
-  6: 'semi_annual',
-  12: 'annual',
-};
+import {
+  WEEKS_PER_MONTH,
+  MIN_SESSIONS_PER_WEEK,
+  MAX_SESSIONS_PER_WEEK,
+  RATE_PER_SESSION,
+  PLAN_TYPE_LABELS,
+  CYCLE_DISCOUNTS,
+  CYCLE_LABELS,
+  TrainingPlanType,
+} from '@/utils/pricing/sessionPricing';
 
 function getRazorpayPeriod(months: number): { period: 'monthly' | 'yearly'; interval: number } {
   if (months === 12) {
@@ -111,10 +93,10 @@ export async function POST(request: NextRequest) {
     const weeksInCycle = billingCycle * WEEKS_PER_MONTH;
     const totalSessions = sessionsPerWeek * weeksInCycle;
     const discount = CYCLE_DISCOUNTS[billingCycle];
-    const originalAmount = totalSessions * RATE_PER_SESSION[planType];
+    const originalAmount = totalSessions * RATE_PER_SESSION[planType as TrainingPlanType];
     const discountedAmount = Math.round(originalAmount * (1 - discount / 100));
     const cycleLabel = CYCLE_LABELS[billingCycle];
-    const planName = `Fitness ${PLAN_TYPE_LABELS[planType]} — ${sessionsPerWeek}/week (${cycleLabel})`;
+    const planName = `Fitness ${PLAN_TYPE_LABELS[planType as TrainingPlanType]} — ${sessionsPerWeek}/week (${cycleLabel})`;
 
     const { period, interval } = getRazorpayPeriod(billingCycle);
 

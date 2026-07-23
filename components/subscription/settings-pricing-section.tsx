@@ -27,22 +27,22 @@ import { cancelSubscription } from '@/actions/subscriptions/cancel-subscription.
 import { useAction } from '@/hooks/useAction';
 import { toast } from 'sonner';
 import { getUserSubscriptions } from '@/actions/subscriptions/get-user-subscriptions';
+import { LifetimeCheckoutButton } from './LifetimeCheckoutButton';
+import {
+  MIN_SESSIONS_PER_WEEK,
+  MAX_SESSIONS_PER_WEEK,
+  DEFAULT_SESSIONS_PER_WEEK,
+  billingOptions,
+  CYCLE_DISCOUNTS,
+  LIFETIME_BILLING_CYCLE,
+  LIFETIME_PRICES,
+  TrainingPlanType,
+} from '@/utils/pricing/sessionPricing';
 
 interface SettingsPricingSectionProps {
   userId: string;
   onSubscriptionSuccess?: () => void;
 }
-
-const billingOptions = [
-  { label: "Monthly", value: 1, discount: 0 },
-  { label: "Quarterly", value: 3, discount: 10 },
-  { label: "Semi-Annual", value: 6, discount: 20 },
-  { label: "Annual", value: 12, discount: 30 },
-];
-
-const MIN_SESSIONS_PER_WEEK = 3;
-const MAX_SESSIONS_PER_WEEK = 5;
-const DEFAULT_SESSIONS_PER_WEEK = 3;
 
 const trainingModes = [
   { label: "Trainer-Led", value: "ONLINE" as const },
@@ -585,6 +585,57 @@ Are you sure you want to proceed with this downgrade?`;
         <p className="text-center text-sm text-muted-foreground">Preparing pricing options…</p>
       )}
 
+      {/* Lifetime Membership — one-time purchase, only offered to new
+          Fitness subscribers (locked out once any Fitness plan, recurring
+          or lifetime, is active — see hasFitnessSubscription above). */}
+      {!hasFitnessSubscription && (
+        <div className="mx-auto max-w-4xl">
+          <div className="rounded-2xl border border-[#C9A96A]/40 bg-[#C9A96A]/5 p-6">
+            <div className="text-center">
+              <h3 className="text-lg font-bold text-foreground">Lifetime Membership</h3>
+              <p className="mt-1 text-sm text-muted-foreground">
+                Pay once, train at {effectiveSessionsPerWeek} sessions/week forever — no further billing, ever.
+              </p>
+            </div>
+            <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-3">
+              {[MIN_SESSIONS_PER_WEEK, 4, MAX_SESSIONS_PER_WEEK].map((weekCount) => {
+                const price = LIFETIME_PRICES[trainingMode as TrainingPlanType]?.[weekCount];
+                if (price === undefined) return null;
+                return (
+                  <div
+                    key={weekCount}
+                    className={`flex flex-col items-center gap-3 rounded-xl border bg-background p-4 ${
+                      weekCount === sessionsPerWeek ? 'border-[#C9A96A]' : 'border-border'
+                    }`}
+                  >
+                    <p className="text-sm font-medium text-muted-foreground">{weekCount} sessions/week</p>
+                    <p className="text-2xl font-bold text-primary">₹{price.toLocaleString()}</p>
+                    <LifetimeCheckoutButton
+                      sessionsPerWeek={weekCount}
+                      planType={trainingMode as TrainingPlanType}
+                      className="w-full"
+                      onSuccess={handleSubscriptionSuccess}
+                    />
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Active lifetime membership confirmation — lockedFitnessPlan only
+          ever has billing_cycle === LIFETIME_BILLING_CYCLE for a purchased
+          Lifetime plan; recurring plans always use 1/3/6/12. */}
+      {lockedFitnessPlan?.billing_cycle === LIFETIME_BILLING_CYCLE && (
+        <div className="mx-auto max-w-2xl rounded-2xl border border-[#C9A96A]/40 bg-[#C9A96A]/5 p-6 text-center">
+          <h3 className="text-lg font-bold text-foreground">Lifetime Membership Active</h3>
+          <p className="mt-1 text-sm text-muted-foreground">
+            {lockedFitnessPlan.sessions_per_week} sessions/week, locked in for life — no further billing.
+          </p>
+        </div>
+      )}
+
       {/* Single Grid Layout - No Category Grouping */}
       <div className={`grid ${getGridLayout(filteredPlans.length)} gap-4`}>
         {filteredPlans
@@ -620,7 +671,7 @@ Are you sure you want to proceed with this downgrade?`;
                   <div className="flex items-baseline gap-2">
                     {/* Calculate original price based on billing cycle discount */}
                     {(() => {
-                      const discountPercentage = plan.billing_cycle === 1 ? 0 : plan.billing_cycle === 3 ? 10 : plan.billing_cycle === 6 ? 20 : 30;
+                      const discountPercentage = CYCLE_DISCOUNTS[plan.billing_cycle] ?? 0;
                       const hasDiscount = discountPercentage > 0;
                       const originalPrice = hasDiscount
                         ? Math.round(plan.price / (1 - discountPercentage / 100))

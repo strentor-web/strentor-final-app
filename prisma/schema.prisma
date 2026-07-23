@@ -371,6 +371,28 @@ model starter_kit_purchases {
   @@schema("public")
 }
 
+// Audit trail for Lifetime Membership one-time purchases (Razorpay Orders
+// API, not a recurring Subscription/Plan). On verified payment, a real
+// subscription_plans row (billing_cycle = LIFETIME_BILLING_CYCLE sentinel,
+// see utils/pricing/sessionPricing.ts) and an ACTIVE, never-expiring
+// user_subscriptions row are created — this table exists purely to track
+// the order/payment lifecycle, mirroring starter_kit_purchases.
+model lifetime_membership_purchases {
+  id                  String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  user_id             String   @db.Uuid
+  plan_id             String   @db.Uuid
+  sessions_per_week   Int
+  plan_type           PlanType
+  razorpay_order_id   String
+  razorpay_payment_id String?
+  amount              Decimal  @db.Decimal(10, 2)
+  status              String   @default("PENDING")
+  created_at          DateTime @default(now())
+  updated_at          DateTime @updatedAt
+
+  @@schema("public")
+}
+
 model trainer_clients {
   id                                                      String        @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   trainer_id                                              String        @db.Uuid
