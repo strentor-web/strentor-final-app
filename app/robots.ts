@@ -30,7 +30,6 @@ const disallowedPaths = [
   "/transformation/",
   "/calculator",
   "/calculator/",
-  "/pricing",
   "/unauthorized",
   "/sign-in",
   "/sign-up",
