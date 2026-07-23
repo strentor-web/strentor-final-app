@@ -115,6 +115,8 @@ export interface GoalsIdentity {
 export interface CorporateDetails {
   organizationName: string;
   role: string;
+  /** Which Workshop & Pilot Program Options (INR) tier the enquiry is about — see config/partnerPricing.ts. */
+  interestedOption?: string;
   organizationWebsite?: string;
   audienceSize?: string;
   programObjective?: string;

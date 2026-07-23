@@ -12,6 +12,7 @@ import {
   RadioGroupItem,
 } from "@/components/ui/radio-group"
 import { ErrorSummary, LoadingState, SuccessMessage } from "@/components/forms/intake/IntakeFormFeedback"
+import { partnerPricingOptions } from "@/config/partnerPricing"
 import {
   AdaptiveSpecialistNotes,
   CoachingContext,
@@ -935,6 +936,17 @@ export function IntakeForm({ initialPathway, region, plan, sourcePage, onPathway
         <div className="text-left">
           <h2 className="text-xl font-bold text-card-foreground">Corporate / CSR / NGO Details</h2>
           <div className="mt-6 grid gap-4 sm:grid-cols-2">
+            <div className="sm:col-span-2">
+              <RadioRow
+                label="Which option are you interested in?"
+                value={corporate.interestedOption}
+                onChange={(v) => setCorporate({ ...corporate, interestedOption: v })}
+                options={partnerPricingOptions.map((option) => ({
+                  value: option.id,
+                  label: `${option.label} — ${option.price}`,
+                }))}
+              />
+            </div>
             <div className="sm:col-span-2">
               <Label htmlFor="orgName">Organization name</Label>
               <Input id="orgName" value={corporate.organizationName} onChange={(e) => setCorporate({ ...corporate, organizationName: e.target.value })} />

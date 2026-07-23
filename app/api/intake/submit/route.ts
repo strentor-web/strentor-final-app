@@ -3,6 +3,7 @@ import { z } from "zod";
 import { sendIntakeNotification } from "@/utils/email/resend";
 import { PATHWAY_PRIMARY_EMAIL } from "@/utils/intake-routing";
 import { PATHWAY_LABELS, EnquiryPathway } from "@/types/intake";
+import { partnerPricingOptions } from "@/config/partnerPricing";
 import prisma from "@/utils/prisma/prismaClient";
 
 // Internal CC routing — deliberately not exported/shared with client code.
@@ -134,6 +135,12 @@ function classifyReviewLevel(
   return "standard_fit_review";
 }
 
+function resolveInterestedOptionLabel(optionId: string | undefined): string | undefined {
+  if (!optionId) return undefined;
+  const option = partnerPricingOptions.find((o) => o.id === optionId);
+  return option ? `${option.label} (${option.price})` : optionId;
+}
+
 function escapeHtml(value: string): string {
   return value
     .replace(/&/g, "&amp;")
@@ -188,9 +195,13 @@ export async function POST(request: NextRequest) {
   const ccEmails = PATHWAY_CC[pathway];
   const reviewLevel = classifyReviewLevel(data.healthBoundaries, data.movementProfile);
 
+  const interestedOptionLabel =
+    pathway === "corporate" ? resolveInterestedOptionLabel(data.corporate?.interestedOption) : undefined;
+
   if (pathway === "corporate" && data.corporate) {
     try {
       const corporateMessageParts = [
+        interestedOptionLabel ? `Interested in: ${interestedOptionLabel}` : null,
         data.corporate.role ? `Role: ${data.corporate.role}` : null,
         data.corporate.programObjective ? `Objective: ${data.corporate.programObjective}` : null,
         data.corporate.budgetRange ? `Budget: ${data.corporate.budgetRange}` : null,
@@ -247,7 +258,12 @@ export async function POST(request: NextRequest) {
       ${renderSection("Adaptive Specialist Notes", data.adaptiveSpecialistNotes)}
       ${renderSection("Goals & Identity", data.goalsIdentity)}
       ${renderSection("Signature", data.signatureName ? { signatureName: data.signatureName } : undefined)}
-      ${renderSection("Corporate / CSR / NGO", data.corporate)}
+      ${renderSection(
+        "Corporate / CSR / NGO",
+        data.corporate
+          ? { ...data.corporate, interestedOption: interestedOptionLabel ?? data.corporate.interestedOption }
+          : undefined
+      )}
       ${renderSection("Professional Referral", data.referral)}
       ${renderSection("Pay It Forward Sponsor", data.sponsor)}
       ${renderSection("General Enquiry", data.general)}
