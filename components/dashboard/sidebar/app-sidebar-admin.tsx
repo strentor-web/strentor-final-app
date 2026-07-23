@@ -4,7 +4,7 @@
 import * as React from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { ChevronDown, Users, Shield, LayoutDashboard, Settings, GraduationCap, AlertTriangle, Inbox } from "lucide-react";
+import { ChevronDown, Users, Shield, LayoutDashboard, Settings, GraduationCap, AlertTriangle, Inbox, UserSearch } from "lucide-react";
 import Image from "next/image";
 
 // Internal components
@@ -52,6 +52,12 @@ const adminNavItems = [
     title: "Intake Submissions",
     url: "/admin/intake",
     icon: Inbox,
+    isActive: false,
+  },
+  {
+    title: "Checkout Recovery",
+    url: "/admin/checkout-recovery",
+    icon: UserSearch,
     isActive: false,
   },
   {

@@ -71,7 +71,13 @@ export default function Pricing() {
   const router = useRouter();
 
   const handleGetStarted = () => {
-    router.push('/sign-in');
+    router.push(
+      `/checkout?tier=recurring&sessionsPerWeek=${sessionsPerWeek}&planType=${trainingMode}&billingCycle=${selectedCycle}`
+    );
+  };
+
+  const handleGetLifetime = () => {
+    router.push(`/checkout?tier=lifetime&sessionsPerWeek=${sessionsPerWeek}&planType=${trainingMode}`);
   };
 
   const toggleExpansion = (category: string) => {
@@ -189,7 +195,14 @@ export default function Pricing() {
           <p className="mx-auto mt-6 max-w-md text-center text-sm text-muted-foreground">
             Or pay once and lock in this rate for life:{" "}
             <span className="font-semibold text-primary">₹{lifetimePrice.toLocaleString()}</span>{" "}
-            — no further billing, ever.
+            — no further billing, ever.{" "}
+            <button
+              type="button"
+              onClick={handleGetLifetime}
+              className="font-semibold text-[#C9A96A] underline hover:text-[#C9A96A]/80"
+            >
+              Get Lifetime Access
+            </button>
           </p>
         )}
 

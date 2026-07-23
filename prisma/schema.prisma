@@ -393,6 +393,44 @@ model lifetime_membership_purchases {
   @@schema("public")
 }
 
+// Captures every pre-signup checkout attempt on /checkout, the moment
+// contact details are submitted — independent of whether account creation,
+// order creation, or payment ever succeeds. Lets ops follow up on drop-off
+// at any stage instead of only ever seeing completed purchases.
+model checkout_attempts {
+  id                String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  full_name         String
+  email             String
+  phone             String
+  sessions_per_week Int
+  plan_type         PlanType
+  tier              String // "recurring" | "lifetime"
+  billing_cycle     Int? // months; null for lifetime
+  payment_provider  String   @default("razorpay")
+  status            String   @default("started") // started | existing_account | account_created | order_created | paid | failed
+  user_id           String?  @db.Uuid
+  created_at        DateTime @default(now())
+  updated_at        DateTime @updatedAt
+
+  @@index([email], map: "CheckoutAttempt_email_idx")
+  @@index([status], map: "CheckoutAttempt_status_idx")
+  @@schema("public")
+}
+
+// Server-side mirror of the onboarding wizard's localStorage autosave, so
+// ops can see (and follow up on) accounts that started onboarding but never
+// finished — localStorage alone is invisible to anyone but the user.
+model onboarding_drafts {
+  id         String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  user_id    String   @unique @db.Uuid
+  form_data  Json
+  last_step  Int      @default(1)
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  @@schema("public")
+}
+
 model trainer_clients {
   id                                                      String        @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   trainer_id                                              String        @db.Uuid

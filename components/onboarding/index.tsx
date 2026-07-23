@@ -74,6 +74,31 @@ export default function OnboardingWizard({ userEmail, userName }: OnboardingWiza
     return () => subscription.unsubscribe()
   }, [methods, setSavedData])
 
+  // Server-side mirror of the localStorage autosave above, so ops can see
+  // (and follow up on) accounts that started onboarding but never finished
+  // — localStorage alone is invisible to anyone but the user. Debounced and
+  // best-effort: never blocks the form on failure.
+  useEffect(() => {
+    let timeoutId: number | undefined
+    const subscription = methods.watch((data) => {
+      if (!(data.name || data.country || data.phone || data.weight || data.height)) return
+      if (timeoutId) window.clearTimeout(timeoutId)
+      timeoutId = window.setTimeout(() => {
+        fetch('/api/onboarding/save-draft', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ formData: data, step: activeStep }),
+        }).catch((error) => {
+          console.error('Failed to save onboarding draft:', error)
+        })
+      }, 1500)
+    })
+    return () => {
+      subscription.unsubscribe()
+      if (timeoutId) window.clearTimeout(timeoutId)
+    }
+  }, [methods, activeStep])
+
   // Save current step to localStorage
   useEffect(() => {
     setSavedStep(activeStep)
@@ -141,7 +166,8 @@ export default function OnboardingWizard({ userEmail, userName }: OnboardingWiza
         // Clear localStorage on success
         setSavedData({})
         setSavedStep(1)
-        
+        fetch('/api/onboarding/save-draft', { method: 'DELETE' }).catch(() => {})
+
         toast.success('Welcome to Strentor! Your profile is now complete.')
         router.push('/')
       } else {

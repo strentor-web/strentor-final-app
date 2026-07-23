@@ -71,7 +71,13 @@ export default function FitnessPricing() {
   const router = useRouter();
 
   const handleGetStarted = () => {
-    router.push('/sign-up');
+    router.push(
+      `/checkout?tier=recurring&sessionsPerWeek=${sessionsPerWeek}&planType=${trainingMode}&billingCycle=${selectedCycle}`
+    );
+  };
+
+  const handleGetLifetime = () => {
+    router.push(`/checkout?tier=lifetime&sessionsPerWeek=${sessionsPerWeek}&planType=${trainingMode}`);
   };
 
   const selectedOption = billingOptions.find((option) => option.value === selectedCycle) ?? billingOptions[0];
@@ -170,7 +176,14 @@ export default function FitnessPricing() {
           <p className="mx-auto mt-6 max-w-md text-center text-sm text-muted-foreground">
             Or pay once and lock in this rate for life:{" "}
             <span className="font-semibold text-primary">₹{lifetimePrice.toLocaleString()}</span>{" "}
-            — no further billing, ever.
+            — no further billing, ever.{" "}
+            <button
+              type="button"
+              onClick={handleGetLifetime}
+              className="font-semibold text-primary underline hover:text-primary/80"
+            >
+              Get Lifetime Access
+            </button>
           </p>
         )}
 
