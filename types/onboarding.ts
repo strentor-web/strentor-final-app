@@ -88,7 +88,21 @@ export const onboardingSchema = z.object({
     .max(150, "Hip measurement must be less than 150cm")
     .optional()
     .or(z.literal('')),
-  
+
+  // Step 4: Safety Check — not a diagnosis, just helps a coach train
+  // someone safely from day one. See components/onboarding/steps/SafetyCheckStep.tsx.
+  medicalConditionAffectsTraining: z.enum(["no", "yes", "unsure"], {
+    required_error: "Please answer this question",
+  }),
+  medicalClearance: z.enum(["no", "yes", "unsure"], {
+    required_error: "Please answer this question",
+  }),
+  redFlags: z.array(z.string()).default([]),
+  additionalSafetyNotes: z.string().max(2000).optional(),
+  safetyAcknowledged: z.boolean().refine((val) => val === true, {
+    message: "Please confirm you understand the safety guidelines",
+  }),
+
 })
 
 export type OnboardingData = z.infer<typeof onboardingSchema>

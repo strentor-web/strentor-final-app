@@ -17,6 +17,7 @@ import { ONBOARDING_FORM_KEYS, ONBOARDING_STEPS } from './constants/onboarding-c
 import BasicInfoStep from './steps/BasicInfoStep'
 import BodyMetricsStep from './steps/BodyMetricsStep'
 import MeasurementsStep from './steps/MeasurementsStep'
+import SafetyCheckStep from './steps/SafetyCheckStep'
 import ReviewStep from './steps/ReviewStep'
 import StepperIndicator from './shared/stepper-indicator'
 
@@ -45,6 +46,7 @@ export default function OnboardingWizard({ userEmail, userName }: OnboardingWiza
       activityLevel: 'SEDENTARY',
       country: '', // Will be set by user selection
       phone: '', // Optional field
+      redFlags: [],
       ...savedData // Load saved data
     }
   })
@@ -205,8 +207,10 @@ export default function OnboardingWizard({ userEmail, userName }: OnboardingWiza
       case 3:
         return <MeasurementsStep />
       case 4:
+        return <SafetyCheckStep />
+      case 5:
         return (
-          <ReviewStep 
+          <ReviewStep
             onConfirmationChange={handleConfirmationChange}
             isConfirmed={isConfirmed}
           />

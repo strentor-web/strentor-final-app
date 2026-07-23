@@ -507,6 +507,14 @@ model users_profile {
   country                                                   country?                  
   phone                                                     String?
   onboarding_completed                                      DateTime?
+  // Safety Check step of onboarding — see components/onboarding/steps/SafetyCheckStep.tsx.
+  // Persisted regardless of answer so a coach can see the check was done,
+  // not only when something was flagged (that goes to safety_flags too).
+  safety_medical_condition                                  String?
+  safety_medical_clearance                                  String?
+  safety_red_flags                                          Json?
+  safety_notes                                              String?
+  safety_check_completed_at                                 DateTime?
   assessments_as_user                                       assessments[]              @relation("AssessmentUser")
   pathway_recommendations                                   pathway_recommendations[]  @relation("PathwayRecommendationUser")
   safety_flags_as_user                                      safety_flags[]             @relation("SafetyFlagUser")
