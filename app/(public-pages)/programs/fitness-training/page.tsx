@@ -1,5 +1,6 @@
 "use client"
 
+import { Suspense } from "react"
 import Header from '@/components/landing/Header'
 import Banner from '@/components/programs/fitness/Banner'
 import Footer from "@/components/landing/Footer"
@@ -21,7 +22,9 @@ export default function FitnessPage() {
       <SpecializedCoaching />
       <Transformations />
       <FitnessTestimonials />
-      <FitnessPricing />
+      <Suspense>
+        <FitnessPricing />
+      </Suspense>
       <Banner />
       <Footer />
     </div>

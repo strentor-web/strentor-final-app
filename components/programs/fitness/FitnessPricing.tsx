@@ -8,19 +8,21 @@ import { BadgeCheck, Minus, Plus } from "lucide-react";
 import Image from "next/image";
 import { PricingHeader } from "@/components/subscription/PricingHeader";
 import { useRouter } from "next/navigation";
+import { useCountryTier } from "@/hooks/useCountryTier";
+import { CURRENCY_SYMBOLS } from "@/utils/pppPricing";
 import {
   MIN_SESSIONS_PER_WEEK,
   MAX_SESSIONS_PER_WEEK,
   DEFAULT_SESSIONS_PER_WEEK,
   WEEKS_PER_MONTH,
-  RATE_PER_SESSION,
   billingOptions,
-  getLifetimePrice,
+  calculateCyclePriceForCountry,
+  getLifetimePriceForCountry,
 } from "@/utils/pricing/sessionPricing";
 
 const trainingModes = [
-  { label: "Trainer-Led", value: "ONLINE" as const, ratePerSession: RATE_PER_SESSION.ONLINE },
-  { label: "Self-Paced", value: "SELF_PACED" as const, ratePerSession: RATE_PER_SESSION.SELF_PACED },
+  { label: "Trainer-Led", value: "ONLINE" as const },
+  { label: "Self-Paced", value: "SELF_PACED" as const },
 ];
 
 const cycleLabelText = (months: number) =>
@@ -80,13 +82,18 @@ export default function FitnessPricing() {
     router.push(`/checkout?tier=lifetime&sessionsPerWeek=${sessionsPerWeek}&planType=${trainingMode}`);
   };
 
+  // PPP-tier pricing (see utils/pppPricing.ts) — shows the visitor their
+  // own region's price, in their own currency, before they ever reach
+  // checkout (which independently recomputes the same way).
+  const { countryCode } = useCountryTier();
   const selectedOption = billingOptions.find((option) => option.value === selectedCycle) ?? billingOptions[0];
-  const selectedMode = trainingModes.find((mode) => mode.value === trainingMode) ?? trainingModes[0];
+  const { totalSessions, originalAmount: originalPrice, discountedAmount: discountedPrice, currency } =
+    calculateCyclePriceForCountry(sessionsPerWeek, selectedOption.value, trainingMode, countryCode);
   const weeksInCycle = selectedOption.value * WEEKS_PER_MONTH;
-  const totalSessions = sessionsPerWeek * weeksInCycle;
-  const originalPrice = totalSessions * selectedMode.ratePerSession;
-  const discountedPrice = Math.round(originalPrice * (1 - selectedOption.discount / 100));
-  const lifetimePrice = getLifetimePrice(sessionsPerWeek, trainingMode);
+  const currencySymbol = CURRENCY_SYMBOLS[currency];
+  const pricePerSession = Math.round(originalPrice / totalSessions);
+  const lifetime = getLifetimePriceForCountry(sessionsPerWeek, trainingMode, countryCode);
+  const lifetimePrice = lifetime?.amount;
 
   const adjustSessionsPerWeek = (delta: number) => {
     setSessionsPerWeek((prev) => Math.min(MAX_SESSIONS_PER_WEEK, Math.max(MIN_SESSIONS_PER_WEEK, prev + delta)));
@@ -132,7 +139,10 @@ export default function FitnessPricing() {
               </button>
             ))}
           </div>
-          <p className="text-xs text-muted-foreground">₹{selectedMode.ratePerSession.toLocaleString()} per session</p>
+          <p className="text-xs text-muted-foreground">
+            {currencySymbol}
+            {pricePerSession.toLocaleString()} per session
+          </p>
         </div>
 
         {/* Sessions Per Week Selector */}
@@ -175,7 +185,10 @@ export default function FitnessPricing() {
         {lifetimePrice !== undefined && (
           <p className="mx-auto mt-6 max-w-md text-center text-sm text-muted-foreground">
             Or pay once and lock in this rate for life:{" "}
-            <span className="font-semibold text-primary">₹{lifetimePrice.toLocaleString()}</span>{" "}
+            <span className="font-semibold text-primary">
+              {currencySymbol}
+              {lifetimePrice.toLocaleString()}
+            </span>{" "}
             — no further billing, ever.{" "}
             <button
               type="button"
@@ -207,11 +220,13 @@ export default function FitnessPricing() {
                   <div className="flex items-baseline gap-2">
                     {selectedOption.discount > 0 && (
                       <span className="text-lg font-medium text-muted-foreground line-through">
-                        ₹{originalPrice.toLocaleString()}
+                        {currencySymbol}
+                        {originalPrice.toLocaleString()}
                       </span>
                     )}
                     <span className="text-4xl font-medium text-primary">
-                      ₹{discountedPrice.toLocaleString()}
+                      {currencySymbol}
+                      {discountedPrice.toLocaleString()}
                     </span>
                   </div>
                   <p className="text-sm font-medium text-muted-foreground mt-2">

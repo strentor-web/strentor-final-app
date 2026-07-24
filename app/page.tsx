@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Suspense } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import {
@@ -186,7 +187,9 @@ export default function Home() {
 
       {/* Fitness Plan Pricing */}
       <ScrollReveal>
-        <Pricing />
+        <Suspense>
+          <Pricing />
+        </Suspense>
       </ScrollReveal>
 
       {/* Final CTA */}

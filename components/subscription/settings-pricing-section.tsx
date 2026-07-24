@@ -35,9 +35,15 @@ import {
   billingOptions,
   CYCLE_DISCOUNTS,
   LIFETIME_BILLING_CYCLE,
-  LIFETIME_PRICES,
+  getLifetimePriceForCountry,
   TrainingPlanType,
 } from '@/utils/pricing/sessionPricing';
+import { CURRENCY_SYMBOLS } from '@/utils/pppPricing';
+
+// Settings is a Razorpay-only, authenticated management surface — every
+// user reaching it pays in INR, so pricing here always uses India's PPP
+// tier rather than detecting a visitor region.
+const SETTINGS_COUNTRY = 'IN';
 
 interface SettingsPricingSectionProps {
   userId: string;
@@ -599,8 +605,8 @@ Are you sure you want to proceed with this downgrade?`;
             </div>
             <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-3">
               {[MIN_SESSIONS_PER_WEEK, 4, MAX_SESSIONS_PER_WEEK].map((weekCount) => {
-                const price = LIFETIME_PRICES[trainingMode as TrainingPlanType]?.[weekCount];
-                if (price === undefined) return null;
+                const lifetime = getLifetimePriceForCountry(weekCount, trainingMode as TrainingPlanType, SETTINGS_COUNTRY);
+                if (lifetime === undefined) return null;
                 return (
                   <div
                     key={weekCount}
@@ -609,7 +615,10 @@ Are you sure you want to proceed with this downgrade?`;
                     }`}
                   >
                     <p className="text-sm font-medium text-muted-foreground">{weekCount} sessions/week</p>
-                    <p className="text-2xl font-bold text-primary">₹{price.toLocaleString()}</p>
+                    <p className="text-2xl font-bold text-primary">
+                      {CURRENCY_SYMBOLS[lifetime.currency]}
+                      {lifetime.amount.toLocaleString()}
+                    </p>
                     <LifetimeCheckoutButton
                       sessionsPerWeek={weekCount}
                       planType={trainingMode as TrainingPlanType}

@@ -1,8 +1,14 @@
 "use client"
 
+import { Suspense } from "react"
 import { NicheProgramPage } from "@/components/programs/niche/NicheProgramPage"
+import { useCountryTier } from "@/hooks/useCountryTier"
+import { regionalPlans, formatRegionalPlanPrice } from "@/config/regionalPlans"
 
-export default function EliteMentorshipPage() {
+const plan = regionalPlans.find((p) => p.id === "elite-mentorship")!
+
+function EliteMentorshipContent() {
+  const { countryCode } = useCountryTier()
   return (
     <NicheProgramPage
       eyebrow="STRENTOR's premium mentorship"
@@ -10,7 +16,7 @@ export default function EliteMentorshipPage() {
       title="Elite Adaptive"
       titleAccent="Transformation Mentorship"
       subtitle="A 12-week, high-touch mentorship for wheelchair users who want intensive, deeply personalized transformation — with direct founder access and priority support."
-      priceRange="₹99,999–₹2,49,999"
+      priceRange={formatRegionalPlanPrice(plan, countryCode)}
       intro={{
         heading: "For clients who want everything, personalized",
         paragraphs: [
@@ -64,5 +70,13 @@ export default function EliteMentorshipPage() {
         { label: "Wheelchair Fitness Coaching in India", href: "/programs/wheelchair-fitness-coaching-india" },
       ]}
     />
+  )
+}
+
+export default function EliteMentorshipPage() {
+  return (
+    <Suspense>
+      <EliteMentorshipContent />
+    </Suspense>
   )
 }

@@ -4,13 +4,22 @@
 // landing/Pricing.tsx, settings-pricing-section.tsx, and
 // app/api/subscriptions/ensure-plan/route.ts — a change to one wouldn't
 // reach the others. Import from here instead of redeclaring these values.
+//
+// Every price is derived from ONE canonical USD (Tier 1 / full price) base
+// — RATE_PER_SESSION_USD / LIFETIME_PRICES_USD below — run through the
+// PPP-tier + currency conversion in utils/pppPricing.ts for whichever
+// country is asking. There is no separately hand-set India/INR price table
+// any more: India is just another country in that tier system (Tier 3).
+
+import {
+  getPppMultiplier,
+  getCurrencyForCountry,
+  convertFromUsd,
+  roundNicely,
+  PppCurrency,
+} from "@/utils/pppPricing";
 
 export type TrainingPlanType = "ONLINE" | "SELF_PACED";
-
-export const RATE_PER_SESSION: Record<TrainingPlanType, number> = {
-  ONLINE: 1000,
-  SELF_PACED: 500,
-};
 
 export const PLAN_TYPE_LABELS: Record<TrainingPlanType, string> = {
   ONLINE: "Trainer-Led",
@@ -52,54 +61,19 @@ export interface CyclePriceBreakdown {
   discountedAmount: number;
 }
 
-export function calculateCyclePrice(
-  sessionsPerWeek: number,
-  billingCycleMonths: number,
-  planType: TrainingPlanType
-): CyclePriceBreakdown {
-  const discount = CYCLE_DISCOUNTS[billingCycleMonths] ?? 0;
-  const totalSessions = sessionsPerWeek * billingCycleMonths * WEEKS_PER_MONTH;
-  const originalAmount = totalSessions * RATE_PER_SESSION[planType];
-  const discountedAmount = Math.round(originalAmount * (1 - discount / 100));
-  return { totalSessions, originalAmount, discountedAmount };
-}
-
-// Lifetime Membership — a one-time payment (Razorpay Order, not a recurring
-// Subscription/Plan), priced at 3 years of the Annual (30%-off) rate for
-// that sessions/week + training-mode combo, then no further billing ever.
-// Fixed, hand-rounded price points rather than a live formula off
-// RATE_PER_SESSION, since a "locked forever" price shouldn't silently
-// shift if the base per-session rate ever changes.
-export const LIFETIME_YEARS_EQUIVALENT = 3;
-
-export const LIFETIME_PRICES: Record<TrainingPlanType, Record<number, number>> = {
-  ONLINE: {
-    3: 299999,
-    4: 399999,
-    5: 499999,
-  },
-  SELF_PACED: {
-    3: 149999,
-    4: 199999,
-    5: 249999,
-  },
-};
-
-export function getLifetimePrice(sessionsPerWeek: number, planType: TrainingPlanType): number | undefined {
-  return LIFETIME_PRICES[planType]?.[sessionsPerWeek];
-}
-
 // Sentinel billing_cycle value for Lifetime subscription_plans rows. Never
 // matches a real recurring cycle (1/3/6/12), so Lifetime rows are
 // automatically excluded from every recurring-billing-cycle tab/filter
 // without needing any changes to that matrix-rendering code.
 export const LIFETIME_BILLING_CYCLE = 0;
 export const LIFETIME_BILLING_PERIOD = "lifetime";
+export const LIFETIME_YEARS_EQUIVALENT = 3;
 
-// USD pricing for PayPal (international / non-Indian customers). Fixed,
-// hand-picked price points — not a live currency conversion off the INR
-// rates above — matching the existing precedent in config/regionalPlans.ts
-// of illustrative per-region prices rather than raw FX math.
+// ---------------------------------------------------------------------------
+// Canonical USD (Tier 1 / full price) base rates. Every other price on the
+// site — every country, every currency — is derived from these two tables.
+// ---------------------------------------------------------------------------
+
 export const RATE_PER_SESSION_USD: Record<TrainingPlanType, number> = {
   ONLINE: 12,
   SELF_PACED: 6,
@@ -117,6 +91,11 @@ export function calculateCyclePriceUSD(
   return { totalSessions, originalAmount, discountedAmount };
 }
 
+// Lifetime Membership — a one-time payment, priced at 3 years of the
+// Annual (30%-off) rate for that sessions/week + training-mode combo, then
+// no further billing ever. Fixed, hand-rounded price points rather than a
+// live formula off RATE_PER_SESSION_USD, since a "locked forever" price
+// shouldn't silently shift if the base per-session rate ever changes.
 export const LIFETIME_PRICES_USD: Record<TrainingPlanType, Record<number, number>> = {
   ONLINE: {
     3: 3599,
@@ -134,9 +113,13 @@ export function getLifetimePriceUSD(sessionsPerWeek: number, planType: TrainingP
   return LIFETIME_PRICES_USD[planType]?.[sessionsPerWeek];
 }
 
-// PPP-tier-adjusted USD pricing (see utils/pppPricing.ts) — applies a
-// tier multiplier to the base USD price above, then rounds to a clean
-// "…9"-ending number to match the hand-picked LIFETIME_PRICES_USD style.
+// ---------------------------------------------------------------------------
+// PPP-tier-adjusted USD pricing (see utils/pppPricing.ts) — the USD base
+// times a country's tier multiplier, still in USD. This is what a PayPal
+// charge actually settles as, even for countries (like the UAE) whose
+// display currency below isn't USD.
+// ---------------------------------------------------------------------------
+
 function roundToNiceUsd(amount: number): number {
   return Math.max(1, Math.round(amount / 10) * 10 - 1);
 }
@@ -161,4 +144,52 @@ export function getLifetimePriceUSDForTier(
 ): number | undefined {
   const base = getLifetimePriceUSD(sessionsPerWeek, planType);
   return base === undefined ? undefined : roundToNiceUsd(base * multiplier);
+}
+
+// ---------------------------------------------------------------------------
+// Country-aware display/settlement pricing — the USD-tier price above,
+// converted into that country's own currency (INR for India, AED for the
+// UAE, USD for everyone else) and re-rounded to a clean figure in that
+// currency. India's result here is also its real Razorpay settlement
+// amount, not just a display conversion.
+// ---------------------------------------------------------------------------
+
+export interface CountryCyclePrice extends CyclePriceBreakdown {
+  currency: PppCurrency;
+}
+
+export function calculateCyclePriceForCountry(
+  sessionsPerWeek: number,
+  billingCycleMonths: number,
+  planType: TrainingPlanType,
+  countryCode: string | null | undefined
+): CountryCyclePrice {
+  const multiplier = getPppMultiplier(countryCode);
+  const currency = getCurrencyForCountry(countryCode);
+  const usd = calculateCyclePriceUSDForTier(sessionsPerWeek, billingCycleMonths, planType, multiplier);
+
+  if (currency === "USD") {
+    return { ...usd, currency };
+  }
+
+  return {
+    totalSessions: usd.totalSessions,
+    originalAmount: Math.round(convertFromUsd(usd.originalAmount, currency)),
+    discountedAmount: roundNicely(convertFromUsd(usd.discountedAmount, currency)),
+    currency,
+  };
+}
+
+export function getLifetimePriceForCountry(
+  sessionsPerWeek: number,
+  planType: TrainingPlanType,
+  countryCode: string | null | undefined
+): { amount: number; currency: PppCurrency } | undefined {
+  const multiplier = getPppMultiplier(countryCode);
+  const currency = getCurrencyForCountry(countryCode);
+  const usdAmount = getLifetimePriceUSDForTier(sessionsPerWeek, planType, multiplier);
+  if (usdAmount === undefined) return undefined;
+
+  const amount = currency === "USD" ? usdAmount : roundNicely(convertFromUsd(usdAmount, currency));
+  return { amount, currency };
 }

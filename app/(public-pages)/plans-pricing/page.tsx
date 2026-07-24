@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button"
 import { ShieldAlert, Check } from "lucide-react"
 import { useRegion } from "@/hooks/useRegion"
 import { REGIONS, REGION_CONFIG, RegionCode } from "@/utils/region"
-import { regionalPlans } from "@/config/regionalPlans"
+import { regionalPlans, formatRegionalPlanPrice } from "@/config/regionalPlans"
 
 function RegionSwitcher({ region, setRegion }: { region: RegionCode; setRegion: (r: RegionCode) => void }) {
   return (
@@ -78,7 +78,7 @@ function PlansContent() {
                 <h3 className="mt-2 text-lg font-bold text-card-foreground">{plan.name}</h3>
                 <p className="mt-1 text-sm text-muted-foreground">{plan.positioning}</p>
                 <p className="mt-4 text-2xl font-bold text-foreground">
-                  {plan.price[region]}
+                  {formatRegionalPlanPrice(plan, region)}
                 </p>
                 <p className="mt-3 text-sm text-muted-foreground">{plan.description}</p>
                 <ul className="mt-4 space-y-2">

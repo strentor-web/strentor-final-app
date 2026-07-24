@@ -2,14 +2,16 @@ import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@/utils/supabase/server';
 import Razorpay from 'razorpay';
 import prisma from '@/utils/prisma/prismaClient';
+import { getPppTier } from '@/utils/pppPricing';
 import {
   WEEKS_PER_MONTH,
   MIN_SESSIONS_PER_WEEK,
   MAX_SESSIONS_PER_WEEK,
-  RATE_PER_SESSION,
+  RATE_PER_SESSION_USD,
   PLAN_TYPE_LABELS,
   CYCLE_DISCOUNTS,
   CYCLE_LABELS,
+  calculateCyclePriceForCountry,
   TrainingPlanType,
 } from '@/utils/pricing/sessionPricing';
 
@@ -19,6 +21,11 @@ function getRazorpayPeriod(months: number): { period: 'monthly' | 'yearly'; inte
   }
   return { period: 'monthly', interval: months };
 }
+
+// Razorpay only ever serves Indian customers — this route always prices in
+// INR at India's PPP tier (see utils/pppPricing.ts), derived from the same
+// USD base every other country's price comes from.
+const RAZORPAY_COUNTRY = 'IN';
 
 // Finds an existing FITNESS plan matching the requested sessions-per-week +
 // billing-cycle combination, or provisions a new Razorpay Plan (and the
@@ -49,7 +56,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    if (!(planType in RATE_PER_SESSION)) {
+    if (!(planType in RATE_PER_SESSION_USD)) {
       return NextResponse.json(
         { error: 'planType must be one of ONLINE or SELF_PACED' },
         { status: 400 }
@@ -63,12 +70,19 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
+    // pricing_tier discriminates this PPP-priced generation of rows from
+    // any pre-PPP row (pricing_tier NULL) that may already exist for this
+    // same combo — a Razorpay Plan's billed amount is fixed forever once
+    // created, so an old row must never be silently reused at a new price.
+    const tier = getPppTier(RAZORPAY_COUNTRY);
+
     const existingPlan = await prisma.subscription_plans.findFirst({
       where: {
         category: 'FITNESS',
         billing_cycle: billingCycle,
         sessions_per_week: sessionsPerWeek,
         plan_type: planType,
+        pricing_tier: tier,
         is_active: true,
       },
     });
@@ -90,11 +104,13 @@ export async function POST(request: NextRequest) {
       key_secret: process.env.RAZORPAY_KEY_SECRET,
     });
 
+    const { totalSessions, discountedAmount } = calculateCyclePriceForCountry(
+      sessionsPerWeek,
+      billingCycle,
+      planType as TrainingPlanType,
+      RAZORPAY_COUNTRY
+    );
     const weeksInCycle = billingCycle * WEEKS_PER_MONTH;
-    const totalSessions = sessionsPerWeek * weeksInCycle;
-    const discount = CYCLE_DISCOUNTS[billingCycle];
-    const originalAmount = totalSessions * RATE_PER_SESSION[planType as TrainingPlanType];
-    const discountedAmount = Math.round(originalAmount * (1 - discount / 100));
     const cycleLabel = CYCLE_LABELS[billingCycle];
     const planName = `Fitness ${PLAN_TYPE_LABELS[planType as TrainingPlanType]} — ${sessionsPerWeek}/week (${cycleLabel})`;
 
@@ -122,6 +138,7 @@ export async function POST(request: NextRequest) {
         category: 'FITNESS',
         plan_type: planType,
         price: discountedAmount,
+        pricing_tier: tier,
         razorpay_plan_id: razorpayPlan.id,
         billing_period: cycleLabel,
         billing_cycle: billingCycle,

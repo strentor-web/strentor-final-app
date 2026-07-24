@@ -13,17 +13,16 @@ import { RecurringCheckoutButton } from "@/components/subscription/RecurringChec
 import { LifetimeCheckoutButton } from "@/components/subscription/LifetimeCheckoutButton";
 import { PaypalLifetimeButton } from "@/components/subscription/PaypalLifetimeButton";
 import { PaypalRecurringButton } from "@/components/subscription/PaypalRecurringButton";
-import { useRegion } from "@/hooks/useRegion";
 import { useCountryTier } from "@/hooks/useCountryTier";
-import { usdToAed } from "@/utils/pppPricing";
+import { CURRENCY_SYMBOLS, getPppMultiplier } from "@/utils/pppPricing";
 import {
   MIN_SESSIONS_PER_WEEK,
   MAX_SESSIONS_PER_WEEK,
   DEFAULT_SESSIONS_PER_WEEK,
   billingOptions,
-  calculateCyclePrice,
+  calculateCyclePriceForCountry,
   calculateCyclePriceUSDForTier,
-  getLifetimePrice,
+  getLifetimePriceForCountry,
   getLifetimePriceUSDForTier,
   TrainingPlanType,
 } from "@/utils/pricing/sessionPricing";
@@ -53,26 +52,23 @@ export default function CheckoutPageClient() {
   const [tier, setTier] = useState<Tier>(searchParams.get("tier") === "lifetime" ? "lifetime" : "recurring");
   const [billingCycle, setBillingCycle] = useState(parseIntParam(searchParams.get("billingCycle"), 3));
 
-  // Razorpay is the default/primary for Indian customers (INR); PayPal is
-  // for non-Indian customers (USD). useRegion() detects the visitor's
-  // region (URL param -> saved preference -> browser locale/timezone) so
-  // this defaults sensibly, but the toggle below always lets them override.
-  const { region } = useRegion();
+  // Every price on the site — including which payment provider serves a
+  // customer — is driven by the same country detection (see
+  // utils/pppPricing.ts): Razorpay only ever serves India (INR); PayPal
+  // serves everyone else, at that country's PPP-tier USD price. The toggle
+  // below always lets a visitor override the default.
+  const { countryCode } = useCountryTier();
   const [paymentProvider, setPaymentProvider] = useState<PaymentProvider>("razorpay");
   const [providerTouched, setProviderTouched] = useState(false);
   useEffect(() => {
     if (!providerTouched) {
-      setPaymentProvider(region === "IN" ? "razorpay" : "paypal");
+      setPaymentProvider(countryCode === "IN" ? "razorpay" : "paypal");
     }
-  }, [region, providerTouched]);
+  }, [countryCode, providerTouched]);
 
   const [stage, setStage] = useState<"form" | "starting" | "ready">("form");
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // PPP-tier-adjusted USD pricing for the PayPal path (see
-  // utils/pppPricing.ts) — India stays on its own separately-set INR
-  // pricing via Razorpay, untouched by this.
-  const { countryCode, multiplier } = useCountryTier();
   const isAe = countryCode === "AE";
 
   const adjustSessionsPerWeek = (delta: number) => {
@@ -81,13 +77,23 @@ export default function CheckoutPageClient() {
 
   const selectedBillingOption = billingOptions.find((o) => o.value === billingCycle) ?? billingOptions[1];
   const isPaypal = paymentProvider === "paypal";
-  const recurringPrice = isPaypal
-    ? calculateCyclePriceUSDForTier(sessionsPerWeek, selectedBillingOption.value, planType, multiplier)
-    : calculateCyclePrice(sessionsPerWeek, selectedBillingOption.value, planType);
-  const lifetimePrice = isPaypal
-    ? getLifetimePriceUSDForTier(sessionsPerWeek, planType, multiplier)
-    : getLifetimePrice(sessionsPerWeek, planType);
-  const currencySymbol = isPaypal ? "$" : "₹";
+  // Razorpay only ever serves India, so its price is always India's tier
+  // (independent of whatever country was actually detected — e.g. someone
+  // manually switching the toggle to Razorpay).
+  const recurringPrice = calculateCyclePriceForCountry(
+    sessionsPerWeek,
+    selectedBillingOption.value,
+    planType,
+    isPaypal ? countryCode : "IN"
+  );
+  const lifetime = getLifetimePriceForCountry(sessionsPerWeek, planType, isPaypal ? countryCode : "IN");
+  const lifetimePrice = lifetime?.amount;
+  const currencySymbol = CURRENCY_SYMBOLS[recurringPrice.currency];
+  // The actual PayPal charge is always USD, even for AE (whose display
+  // currency above is AED) — PayPal doesn't settle in AED.
+  const multiplier = getPppMultiplier(countryCode);
+  const recurringUsdCharge = calculateCyclePriceUSDForTier(sessionsPerWeek, selectedBillingOption.value, planType, multiplier);
+  const lifetimeUsdCharge = getLifetimePriceUSDForTier(sessionsPerWeek, planType, multiplier);
 
   const contactValid = fullName.trim() && email.trim() && phone.trim();
 
@@ -250,27 +256,29 @@ export default function CheckoutPageClient() {
               {tier === "recurring" ? (
                 <>
                   <p className="text-2xl font-bold text-primary">
-                    {isAe ? `AED ${usdToAed(recurringPrice.discountedAmount).toLocaleString()}` : `${currencySymbol}${recurringPrice.discountedAmount.toLocaleString()}`}
+                    {currencySymbol}
+                    {recurringPrice.discountedAmount.toLocaleString()}
                   </p>
                   <p className="mt-1 text-xs text-muted-foreground">
                     {recurringPrice.totalSessions} sessions ({sessionsPerWeek}/week) · {selectedBillingOption.label}
                     {selectedBillingOption.discount > 0 && ` · ${selectedBillingOption.discount}% off`}
                   </p>
-                  {isAe && (
+                  {isPaypal && isAe && (
                     <p className="mt-1 text-xs text-muted-foreground">
-                      Charged as ${recurringPrice.discountedAmount.toLocaleString()} USD via PayPal (AED is shown for reference — PayPal doesn't settle in AED)
+                      Charged as ${recurringUsdCharge.discountedAmount.toLocaleString()} USD via PayPal (AED is shown for reference — PayPal doesn't settle in AED)
                     </p>
                   )}
                 </>
               ) : lifetimePrice !== undefined ? (
                 <>
                   <p className="text-2xl font-bold text-primary">
-                    {isAe ? `AED ${usdToAed(lifetimePrice).toLocaleString()}` : `${currencySymbol}${lifetimePrice.toLocaleString()}`}
+                    {currencySymbol}
+                    {lifetimePrice.toLocaleString()}
                   </p>
                   <p className="mt-1 text-xs text-muted-foreground">One-time payment — no further billing, ever</p>
-                  {isAe && (
+                  {isPaypal && isAe && lifetimeUsdCharge !== undefined && (
                     <p className="mt-1 text-xs text-muted-foreground">
-                      Charged as ${lifetimePrice.toLocaleString()} USD via PayPal (AED is shown for reference — PayPal doesn't settle in AED)
+                      Charged as ${lifetimeUsdCharge.toLocaleString()} USD via PayPal (AED is shown for reference — PayPal doesn't settle in AED)
                     </p>
                   )}
                 </>

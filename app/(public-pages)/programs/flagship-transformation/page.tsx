@@ -1,8 +1,14 @@
 "use client"
 
+import { Suspense } from "react"
 import { NicheProgramPage } from "@/components/programs/niche/NicheProgramPage"
+import { useCountryTier } from "@/hooks/useCountryTier"
+import { regionalPlans, formatRegionalPlanPrice } from "@/config/regionalPlans"
 
-export default function FlagshipTransformationPage() {
+const plan = regionalPlans.find((p) => p.id === "flagship-transformation")!
+
+function FlagshipTransformationContent() {
+  const { countryCode } = useCountryTier()
   return (
     <NicheProgramPage
       eyebrow="STRENTOR's flagship program"
@@ -10,7 +16,7 @@ export default function FlagshipTransformationPage() {
       title="8-Week Adaptive Strength"
       titleAccent="& Mindset Transformation"
       subtitle="A structured, four-phase transformation for wheelchair users — building strength, nutrition habits, and mindset together, so progress lasts well beyond week eight."
-      priceRange="₹39,999–₹74,999"
+      priceRange={formatRegionalPlanPrice(plan, countryCode)}
       intro={{
         heading: "A method, not just a workout plan",
         paragraphs: [
@@ -64,5 +70,13 @@ export default function FlagshipTransformationPage() {
         { label: "Wheelchair Fitness Coaching in India", href: "/programs/wheelchair-fitness-coaching-india" },
       ]}
     />
+  )
+}
+
+export default function FlagshipTransformationPage() {
+  return (
+    <Suspense>
+      <FlagshipTransformationContent />
+    </Suspense>
   )
 }

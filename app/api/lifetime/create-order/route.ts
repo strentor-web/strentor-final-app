@@ -2,15 +2,21 @@ import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@/utils/supabase/server';
 import Razorpay from 'razorpay';
 import prisma from '@/utils/prisma/prismaClient';
+import { getPppTier } from '@/utils/pppPricing';
 import {
   MIN_SESSIONS_PER_WEEK,
   MAX_SESSIONS_PER_WEEK,
   PLAN_TYPE_LABELS,
-  LIFETIME_PRICES,
+  getLifetimePriceForCountry,
   LIFETIME_BILLING_CYCLE,
   LIFETIME_BILLING_PERIOD,
   TrainingPlanType,
 } from '@/utils/pricing/sessionPricing';
+
+// Razorpay only ever serves Indian customers — this route always prices in
+// INR at India's PPP tier (see utils/pppPricing.ts), derived from the same
+// USD base every other country's price comes from.
+const RAZORPAY_COUNTRY = 'IN';
 
 // Lifetime Membership — a one-time Razorpay Order (not a recurring
 // Subscription/Plan). This route provisions/reuses the backing
@@ -37,10 +43,12 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'planType must be one of ONLINE or SELF_PACED' }, { status: 400 });
     }
 
-    const price = LIFETIME_PRICES[planType as TrainingPlanType]?.[sessionsPerWeek];
-    if (price === undefined) {
+    const tier = getPppTier(RAZORPAY_COUNTRY);
+    const lifetimePrice = getLifetimePriceForCountry(sessionsPerWeek, planType as TrainingPlanType, RAZORPAY_COUNTRY);
+    if (lifetimePrice === undefined) {
       return NextResponse.json({ error: 'No Lifetime price configured for this combination' }, { status: 400 });
     }
+    const price = lifetimePrice.amount;
 
     const supabase = await createClient();
     const { data: { user }, error: userError } = await supabase.auth.getUser();
@@ -87,15 +95,17 @@ export async function POST(request: NextRequest) {
     const planName = `Fitness Lifetime ${PLAN_TYPE_LABELS[planType as TrainingPlanType]} — ${sessionsPerWeek}/week`;
 
     // Reuse the shared subscription_plans row for this (planType,
-    // sessionsPerWeek) combo if one was already provisioned by an earlier
-    // purchase attempt; otherwise create it. razorpay_plan_id is a
-    // placeholder — Lifetime has no real recurring Razorpay Plan behind it.
+    // sessionsPerWeek, tier) combo if one was already provisioned by an
+    // earlier purchase attempt at the same PPP tier; otherwise create it.
+    // razorpay_plan_id is a placeholder — Lifetime has no real recurring
+    // Razorpay Plan behind it.
     let plan = await prisma.subscription_plans.findFirst({
       where: {
         category: 'FITNESS',
         billing_cycle: LIFETIME_BILLING_CYCLE,
         sessions_per_week: sessionsPerWeek,
         plan_type: planType,
+        pricing_tier: tier,
         is_active: true,
       },
     });
@@ -107,7 +117,8 @@ export async function POST(request: NextRequest) {
           category: 'FITNESS',
           plan_type: planType,
           price,
-          razorpay_plan_id: `lifetime_${planType}_${sessionsPerWeek}pw`,
+          pricing_tier: tier,
+          razorpay_plan_id: `lifetime_${planType}_${sessionsPerWeek}pw_tier${tier}`,
           billing_period: LIFETIME_BILLING_PERIOD,
           billing_cycle: LIFETIME_BILLING_CYCLE,
           sessions_per_week: sessionsPerWeek,

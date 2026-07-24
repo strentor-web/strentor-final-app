@@ -1,4 +1,4 @@
-import { RegionCode } from "@/utils/region";
+import { getPppMultiplier, getCurrencyForCountry, convertFromUsd, roundNicely, CURRENCY_SYMBOLS, PppCurrency } from "@/utils/pppPricing";
 
 export interface RegionalPlan {
   id: string;
@@ -8,11 +8,16 @@ export interface RegionalPlan {
   description: string;
   features: string[];
   href: string;
-  price: Record<RegionCode, string>;
+  // Canonical USD (Tier 1 / full price) base — a single number for a flat
+  // price, or [min, max] for a range. Every displayed price is derived
+  // from this via the same PPP-tier + currency system used everywhere
+  // else on the site (see utils/pppPricing.ts). Not a live checkout —
+  // these are marketing/comparison pages — so treat the numbers as
+  // illustrative starting points, per the disclaimer shown alongside them.
+  basePriceUSD: number | [number, number];
+  suffix?: string;
 }
 
-// Fixed, illustrative PPP-style price points per region — not a live currency
-// conversion. Review and adjust these to your actual desired regional pricing.
 export const regionalPlans: RegionalPlan[] = [
   {
     id: "starter-kit",
@@ -28,7 +33,7 @@ export const regionalPlans: RegionalPlan[] = [
       "Direct access to a STRENTOR coach",
     ],
     href: "/programs/starter-kit",
-    price: { IN: "₹1,999", SG: "S$99", AE: "AED 249", US: "$49" },
+    basePriceUSD: 49,
   },
   {
     id: "flagship-transformation",
@@ -44,7 +49,7 @@ export const regionalPlans: RegionalPlan[] = [
       "Progress tracking and check-ins",
     ],
     href: "/programs/flagship-transformation",
-    price: { IN: "₹39,999–₹74,999", SG: "S$1,299–S$2,499", AE: "AED 3,499–6,499", US: "$799–$1,499" },
+    basePriceUSD: [799, 1499],
   },
   {
     id: "elite-mentorship",
@@ -60,7 +65,7 @@ export const regionalPlans: RegionalPlan[] = [
       "Ongoing mindset and discipline coaching",
     ],
     href: "/programs/elite-mentorship",
-    price: { IN: "₹99,999–₹2,49,999", SG: "S$3,499–S$7,999", AE: "AED 8,999–19,999", US: "$1,999–$4,999" },
+    basePriceUSD: [1999, 4999],
   },
   {
     id: "membership",
@@ -76,6 +81,37 @@ export const regionalPlans: RegionalPlan[] = [
       "Move up or down tiers anytime",
     ],
     href: "/programs/membership",
-    price: { IN: "₹2,999–₹9,999/mo", SG: "S$99–S$299/mo", AE: "AED 249–749/mo", US: "$59–$179/mo" },
+    basePriceUSD: [59, 179],
+    suffix: "/mo",
   },
 ];
+
+// Renders a plan's basePriceUSD for a given country: a PPP-tier multiplier
+// applied to the USD base, converted into that country's currency
+// (config/regionalPlans.ts's own SGD mapping — see the comment on
+// getCurrencyForCountry for why the live checkout doesn't use SGD).
+function currencyForRegionalDisplay(countryCode: string | null | undefined): PppCurrency {
+  if (countryCode?.toUpperCase() === "SG") return "SGD";
+  return getCurrencyForCountry(countryCode);
+}
+
+export function formatRegionalPlanPrice(plan: RegionalPlan, countryCode: string | null | undefined): string {
+  const multiplier = getPppMultiplier(countryCode);
+  const currency = currencyForRegionalDisplay(countryCode);
+  const symbol = CURRENCY_SYMBOLS[currency];
+
+  const toDisplay = (usd: number) => {
+    const tiered = usd * multiplier;
+    const converted = currency === "USD" ? tiered : convertFromUsd(tiered, currency);
+    return roundNicely(converted).toLocaleString();
+  };
+
+  const suffix = plan.suffix ?? "";
+
+  if (Array.isArray(plan.basePriceUSD)) {
+    const [min, max] = plan.basePriceUSD;
+    return `${symbol}${toDisplay(min)}–${symbol}${toDisplay(max)}${suffix}`;
+  }
+
+  return `${symbol}${toDisplay(plan.basePriceUSD)}${suffix}`;
+}
