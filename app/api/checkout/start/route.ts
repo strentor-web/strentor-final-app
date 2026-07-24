@@ -50,15 +50,6 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: "billingCycle is required for a recurring plan" }, { status: 400 });
   }
 
-  // PayPal is not wired up yet — no live credentials configured. Fail
-  // clearly rather than silently falling through to Razorpay.
-  if (data.paymentProvider === "paypal") {
-    return NextResponse.json(
-      { error: "PayPal checkout isn't available yet — please pay with Razorpay for now." },
-      { status: 400 }
-    );
-  }
-
   // Record the attempt immediately, best-effort, before anything else can
   // fail — this is what makes drop-off at any later stage still visible.
   let attemptId: string | null = null;

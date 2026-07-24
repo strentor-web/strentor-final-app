@@ -95,3 +95,41 @@ export function getLifetimePrice(sessionsPerWeek: number, planType: TrainingPlan
 // without needing any changes to that matrix-rendering code.
 export const LIFETIME_BILLING_CYCLE = 0;
 export const LIFETIME_BILLING_PERIOD = "lifetime";
+
+// USD pricing for PayPal (international / non-Indian customers). Fixed,
+// hand-picked price points — not a live currency conversion off the INR
+// rates above — matching the existing precedent in config/regionalPlans.ts
+// of illustrative per-region prices rather than raw FX math.
+export const RATE_PER_SESSION_USD: Record<TrainingPlanType, number> = {
+  ONLINE: 12,
+  SELF_PACED: 6,
+};
+
+export function calculateCyclePriceUSD(
+  sessionsPerWeek: number,
+  billingCycleMonths: number,
+  planType: TrainingPlanType
+): CyclePriceBreakdown {
+  const discount = CYCLE_DISCOUNTS[billingCycleMonths] ?? 0;
+  const totalSessions = sessionsPerWeek * billingCycleMonths * WEEKS_PER_MONTH;
+  const originalAmount = totalSessions * RATE_PER_SESSION_USD[planType];
+  const discountedAmount = Math.round(originalAmount * (1 - discount / 100));
+  return { totalSessions, originalAmount, discountedAmount };
+}
+
+export const LIFETIME_PRICES_USD: Record<TrainingPlanType, Record<number, number>> = {
+  ONLINE: {
+    3: 3599,
+    4: 4799,
+    5: 5999,
+  },
+  SELF_PACED: {
+    3: 1799,
+    4: 2399,
+    5: 2999,
+  },
+};
+
+export function getLifetimePriceUSD(sessionsPerWeek: number, planType: TrainingPlanType): number | undefined {
+  return LIFETIME_PRICES_USD[planType]?.[sessionsPerWeek];
+}

@@ -353,6 +353,12 @@ model subscription_plans {
   billing_cycle      Int                  @default(1)
   is_active          Boolean?              @default(true)
   sessions_per_week  Int?
+  // Currency this row's price is denominated in. Razorpay-backed rows are
+  // always INR; PayPal-backed rows (see paypal_plan_id) get their own
+  // parallel rows priced in USD, rather than reusing the same row for two
+  // currencies.
+  currency           String               @default("INR")
+  paypal_plan_id     String?
   user_subscriptions user_subscriptions[]
 
   @@schema("public")
@@ -383,8 +389,12 @@ model lifetime_membership_purchases {
   plan_id             String   @db.Uuid
   sessions_per_week   Int
   plan_type           PlanType
-  razorpay_order_id   String
-  razorpay_payment_id String?
+  payment_provider    String   @default("razorpay") // "razorpay" | "paypal"
+  currency            String   @default("INR")
+  // Razorpay Order ID or PayPal Order ID, depending on payment_provider.
+  provider_order_id   String
+  // Razorpay Payment ID or PayPal Capture ID, depending on payment_provider.
+  provider_payment_id String?
   amount              Decimal  @db.Decimal(10, 2)
   status              String   @default("PENDING")
   created_at          DateTime @default(now())
@@ -467,6 +477,7 @@ model user_subscriptions {
   end_date                 DateTime?
   payment_status           PaymentStatus?      @default(PENDING)
   razorpay_subscription_id String?
+  paypal_subscription_id   String?
   current_start            DateTime?
   current_end              DateTime?
   next_charge_at           DateTime?

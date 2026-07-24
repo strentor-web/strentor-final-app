@@ -1,21 +1,20 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@/utils/supabase/server';
-import Razorpay from 'razorpay';
 import prisma from '@/utils/prisma/prismaClient';
+import { createPaypalOrder } from '@/utils/paypal';
 import {
   MIN_SESSIONS_PER_WEEK,
   MAX_SESSIONS_PER_WEEK,
   PLAN_TYPE_LABELS,
-  LIFETIME_PRICES,
+  LIFETIME_PRICES_USD,
   LIFETIME_BILLING_CYCLE,
   LIFETIME_BILLING_PERIOD,
   TrainingPlanType,
 } from '@/utils/pricing/sessionPricing';
 
-// Lifetime Membership — a one-time Razorpay Order (not a recurring
-// Subscription/Plan). This route provisions/reuses the backing
-// subscription_plans row and creates the Order; /api/lifetime/verify-payment
-// confirms payment and activates the membership.
+// PayPal equivalent of /api/lifetime/create-order — same one-time Lifetime
+// Membership product, priced in USD for non-Indian customers, paid via a
+// PayPal Order (Orders API) instead of a Razorpay Order.
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
@@ -37,7 +36,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'planType must be one of ONLINE or SELF_PACED' }, { status: 400 });
     }
 
-    const price = LIFETIME_PRICES[planType as TrainingPlanType]?.[sessionsPerWeek];
+    const price = LIFETIME_PRICES_USD[planType as TrainingPlanType]?.[sessionsPerWeek];
     if (price === undefined) {
       return NextResponse.json({ error: 'No Lifetime price configured for this combination' }, { status: 400 });
     }
@@ -49,8 +48,6 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    // Lifetime is a Fitness membership — a user can only ever hold one
-    // Fitness relationship (recurring or lifetime) at a time.
     const existingFitnessSubscription = await prisma.user_subscriptions.findFirst({
       where: {
         user_id: user.id,
@@ -66,36 +63,23 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const userData = await prisma.users_profile.findUnique({
-      where: { id: user.id },
-      select: { email: true, name: true, phone: true },
-    });
-
-    if (!userData) {
-      return NextResponse.json({ error: 'User details not found' }, { status: 404 });
-    }
-
-    if (!process.env.RAZORPAY_KEY_ID || !process.env.RAZORPAY_KEY_SECRET) {
+    if (!process.env.PAYPAL_CLIENT_ID || !process.env.PAYPAL_CLIENT_SECRET) {
       return NextResponse.json({ error: 'Payment provider not configured' }, { status: 500 });
     }
 
-    const razorpay = new Razorpay({
-      key_id: process.env.RAZORPAY_KEY_ID,
-      key_secret: process.env.RAZORPAY_KEY_SECRET,
-    });
-
-    const planName = `Fitness Lifetime ${PLAN_TYPE_LABELS[planType as TrainingPlanType]} — ${sessionsPerWeek}/week`;
+    const planName = `Fitness Lifetime ${PLAN_TYPE_LABELS[planType as TrainingPlanType]} — ${sessionsPerWeek}/week (USD)`;
 
     // Reuse the shared subscription_plans row for this (planType,
     // sessionsPerWeek) combo if one was already provisioned by an earlier
-    // purchase attempt; otherwise create it. razorpay_plan_id is a
-    // placeholder — Lifetime has no real recurring Razorpay Plan behind it.
+    // PayPal purchase attempt; currency='USD' keeps this distinct from the
+    // INR row the Razorpay path uses for the same sessions/week + planType.
     let plan = await prisma.subscription_plans.findFirst({
       where: {
         category: 'FITNESS',
         billing_cycle: LIFETIME_BILLING_CYCLE,
         sessions_per_week: sessionsPerWeek,
         plan_type: planType,
+        currency: 'USD',
         is_active: true,
       },
     });
@@ -107,7 +91,11 @@ export async function POST(request: NextRequest) {
           category: 'FITNESS',
           plan_type: planType,
           price,
-          razorpay_plan_id: `lifetime_${planType}_${sessionsPerWeek}pw`,
+          currency: 'USD',
+          // razorpay_plan_id is NOT NULL in the schema but unused for
+          // PayPal-priced rows — a placeholder keeps this row consistent
+          // with every other subscription_plans row.
+          razorpay_plan_id: `paypal_lifetime_${planType}_${sessionsPerWeek}pw`,
           billing_period: LIFETIME_BILLING_PERIOD,
           billing_cycle: LIFETIME_BILLING_CYCLE,
           sessions_per_week: sessionsPerWeek,
@@ -116,15 +104,14 @@ export async function POST(request: NextRequest) {
       });
     }
 
-    const order = await razorpay.orders.create({
-      amount: price * 100, // paise
-      currency: 'INR',
-      notes: {
-        user_id: user.id,
-        product: 'lifetime_membership',
-        sessions_per_week: sessionsPerWeek,
-        plan_type: planType,
-      },
+    const origin = request.nextUrl.origin;
+
+    const order = await createPaypalOrder({
+      amount: price,
+      description: `${planName} — one-time payment, no further billing`,
+      customId: user.id,
+      returnUrl: `${origin}/checkout`,
+      cancelUrl: `${origin}/checkout`,
     });
 
     await prisma.lifetime_membership_purchases.create({
@@ -133,8 +120,8 @@ export async function POST(request: NextRequest) {
         plan_id: plan.id,
         sessions_per_week: sessionsPerWeek,
         plan_type: planType,
-        payment_provider: 'razorpay',
-        currency: 'INR',
+        payment_provider: 'paypal',
+        currency: 'USD',
         provider_order_id: order.id,
         amount: price,
         status: 'PENDING',
@@ -143,22 +130,11 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json({
       orderId: order.id,
-      key: process.env.RAZORPAY_KEY_ID,
-      amount: price * 100,
-      currency: 'INR',
-      name: 'STRENTOR Lifetime Membership',
-      description: `${planName} — one-time payment, no further billing`,
-      prefill: {
-        name: userData.name,
-        email: userData.email,
-        ...(userData.phone && { contact: userData.phone }),
-      },
-      notes: {
-        user_id: user.id,
-      },
+      amount: price,
+      currency: 'USD',
     });
   } catch (error) {
-    console.error('Lifetime membership order creation error:', error);
+    console.error('PayPal lifetime membership order creation error:', error);
     return NextResponse.json({ error: 'Failed to create order' }, { status: 500 });
   }
 }

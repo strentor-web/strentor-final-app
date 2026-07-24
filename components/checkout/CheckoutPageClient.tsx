@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { toast } from "sonner";
 import Header from "@/components/landing/Header";
@@ -11,17 +11,23 @@ import { Label } from "@/components/ui/label";
 import { Minus, Plus, Check } from "lucide-react";
 import { RecurringCheckoutButton } from "@/components/subscription/RecurringCheckoutButton";
 import { LifetimeCheckoutButton } from "@/components/subscription/LifetimeCheckoutButton";
+import { PaypalLifetimeButton } from "@/components/subscription/PaypalLifetimeButton";
+import { PaypalRecurringButton } from "@/components/subscription/PaypalRecurringButton";
+import { useRegion } from "@/hooks/useRegion";
 import {
   MIN_SESSIONS_PER_WEEK,
   MAX_SESSIONS_PER_WEEK,
   DEFAULT_SESSIONS_PER_WEEK,
   billingOptions,
   calculateCyclePrice,
+  calculateCyclePriceUSD,
   getLifetimePrice,
+  getLifetimePriceUSD,
   TrainingPlanType,
 } from "@/utils/pricing/sessionPricing";
 
 type Tier = "recurring" | "lifetime";
+type PaymentProvider = "razorpay" | "paypal";
 
 function parseIntParam(value: string | null, fallback: number): number {
   const parsed = value ? parseInt(value, 10) : NaN;
@@ -44,7 +50,19 @@ export default function CheckoutPageClient() {
   );
   const [tier, setTier] = useState<Tier>(searchParams.get("tier") === "lifetime" ? "lifetime" : "recurring");
   const [billingCycle, setBillingCycle] = useState(parseIntParam(searchParams.get("billingCycle"), 3));
-  const [paymentProvider] = useState<"razorpay">("razorpay");
+
+  // Razorpay is the default/primary for Indian customers (INR); PayPal is
+  // for non-Indian customers (USD). useRegion() detects the visitor's
+  // region (URL param -> saved preference -> browser locale/timezone) so
+  // this defaults sensibly, but the toggle below always lets them override.
+  const { region } = useRegion();
+  const [paymentProvider, setPaymentProvider] = useState<PaymentProvider>("razorpay");
+  const [providerTouched, setProviderTouched] = useState(false);
+  useEffect(() => {
+    if (!providerTouched) {
+      setPaymentProvider(region === "IN" ? "razorpay" : "paypal");
+    }
+  }, [region, providerTouched]);
 
   const [stage, setStage] = useState<"form" | "starting" | "ready">("form");
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -54,8 +72,12 @@ export default function CheckoutPageClient() {
   };
 
   const selectedBillingOption = billingOptions.find((o) => o.value === billingCycle) ?? billingOptions[1];
-  const recurringPrice = calculateCyclePrice(sessionsPerWeek, selectedBillingOption.value, planType);
-  const lifetimePrice = getLifetimePrice(sessionsPerWeek, planType);
+  const isPaypal = paymentProvider === "paypal";
+  const recurringPrice = isPaypal
+    ? calculateCyclePriceUSD(sessionsPerWeek, selectedBillingOption.value, planType)
+    : calculateCyclePrice(sessionsPerWeek, selectedBillingOption.value, planType);
+  const lifetimePrice = isPaypal ? getLifetimePriceUSD(sessionsPerWeek, planType) : getLifetimePrice(sessionsPerWeek, planType);
+  const currencySymbol = isPaypal ? "$" : "₹";
 
   const contactValid = fullName.trim() && email.trim() && phone.trim();
 
@@ -217,7 +239,10 @@ export default function CheckoutPageClient() {
             <div className="rounded-xl border border-[#C9A96A]/40 bg-[#C9A96A]/5 p-4 text-center">
               {tier === "recurring" ? (
                 <>
-                  <p className="text-2xl font-bold text-primary">₹{recurringPrice.discountedAmount.toLocaleString()}</p>
+                  <p className="text-2xl font-bold text-primary">
+                    {currencySymbol}
+                    {recurringPrice.discountedAmount.toLocaleString()}
+                  </p>
                   <p className="mt-1 text-xs text-muted-foreground">
                     {recurringPrice.totalSessions} sessions ({sessionsPerWeek}/week) · {selectedBillingOption.label}
                     {selectedBillingOption.discount > 0 && ` · ${selectedBillingOption.discount}% off`}
@@ -225,7 +250,10 @@ export default function CheckoutPageClient() {
                 </>
               ) : lifetimePrice !== undefined ? (
                 <>
-                  <p className="text-2xl font-bold text-primary">₹{lifetimePrice.toLocaleString()}</p>
+                  <p className="text-2xl font-bold text-primary">
+                    {currencySymbol}
+                    {lifetimePrice.toLocaleString()}
+                  </p>
                   <p className="mt-1 text-xs text-muted-foreground">One-time payment — no further billing, ever</p>
                 </>
               ) : null}
@@ -252,16 +280,33 @@ export default function CheckoutPageClient() {
           <div>
             <Label>Payment method</Label>
             <div className="mt-2 grid grid-cols-2 gap-3">
-              <div className="flex items-center gap-2 rounded-lg border border-primary bg-primary/10 px-4 py-3 text-sm font-medium text-primary">
-                <Check className="h-4 w-4" />
-                Razorpay
-              </div>
-              <div className="flex items-center justify-between gap-2 rounded-lg border border-border px-4 py-3 text-sm font-medium text-muted-foreground opacity-60">
-                PayPal
-                <span className="rounded-full bg-muted px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide">
-                  Coming Soon
-                </span>
-              </div>
+              {(
+                [
+                  { value: "razorpay" as const, label: "Razorpay", hint: "Pay in INR — Indian customers" },
+                  { value: "paypal" as const, label: "PayPal", hint: "Pay in USD — international customers" },
+                ]
+              ).map((option) => (
+                <button
+                  key={option.value}
+                  type="button"
+                  disabled={stage !== "form"}
+                  onClick={() => {
+                    setProviderTouched(true);
+                    setPaymentProvider(option.value);
+                  }}
+                  className={`flex flex-col items-start gap-0.5 rounded-lg border px-4 py-3 text-left text-sm font-medium transition-colors disabled:cursor-not-allowed disabled:opacity-60 ${
+                    paymentProvider === option.value
+                      ? "border-primary bg-primary/10 text-primary"
+                      : "border-border text-muted-foreground hover:border-primary/40"
+                  }`}
+                >
+                  <span className="flex items-center gap-2">
+                    {paymentProvider === option.value && <Check className="h-4 w-4" />}
+                    {option.label}
+                  </span>
+                  <span className="text-xs font-normal opacity-80">{option.hint}</span>
+                </button>
+              ))}
             </div>
           </div>
 
@@ -274,11 +319,26 @@ export default function CheckoutPageClient() {
               {isSubmitting ? "Preparing checkout…" : "Continue to Payment"}
             </Button>
           ) : tier === "recurring" ? (
-            <RecurringCheckoutButton
+            isPaypal ? (
+              <PaypalRecurringButton
+                sessionsPerWeek={sessionsPerWeek}
+                planType={planType}
+                billingCycle={billingCycle}
+                onSuccess={() => router.push("/onboarding")}
+              />
+            ) : (
+              <RecurringCheckoutButton
+                sessionsPerWeek={sessionsPerWeek}
+                planType={planType}
+                billingCycle={billingCycle}
+                className="w-full rounded-full bg-[#C9A96A] py-6 text-base text-black hover:bg-[#C9A96A]/90"
+                onSuccess={() => router.push("/onboarding")}
+              />
+            )
+          ) : isPaypal ? (
+            <PaypalLifetimeButton
               sessionsPerWeek={sessionsPerWeek}
               planType={planType}
-              billingCycle={billingCycle}
-              className="w-full rounded-full bg-[#C9A96A] py-6 text-base text-black hover:bg-[#C9A96A]/90"
               onSuccess={() => router.push("/onboarding")}
             />
           ) : (
