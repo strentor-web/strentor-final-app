@@ -105,7 +105,7 @@ export async function POST(request: NextRequest) {
     });
   }
 
-  if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_SERVICE_ROLE_KEY) {
+  if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.SUPABASE_SERVICE_ROLE_KEY) {
     console.error("Missing Supabase service role configuration for checkout account creation");
     await markAttempt(attemptId, { status: "failed" });
     return NextResponse.json({ error: "Failed to start checkout" }, { status: 500 });

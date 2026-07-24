@@ -8,7 +8,10 @@ import { Database } from "./types";
  */
 export const createServiceClient = () => {
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-  const supabaseServiceKey = process.env.NEXT_PUBLIC_SUPABASE_SERVICE_ROLE_KEY;
+  // Deliberately NOT NEXT_PUBLIC_-prefixed — that would bundle this
+  // admin-privileged key into client-side JavaScript and expose it to
+  // every visitor's browser.
+  const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
   if (!supabaseUrl || !supabaseServiceKey) {
     throw new Error(
