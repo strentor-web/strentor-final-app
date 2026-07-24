@@ -11,6 +11,10 @@
     {
       "path": "/api/cron/supabase-keep-alive",
       "schedule": "0 2 * * *"
+    },
+    {
+      "path": "/api/cron/refresh-fx-rates",
+      "schedule": "0 5 * * *"
     }
   ]
 }

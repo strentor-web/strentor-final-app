@@ -2,7 +2,8 @@ import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@/utils/supabase/server';
 import prisma from '@/utils/prisma/prismaClient';
 import { createPaypalPlan } from '@/utils/paypal';
-import { getPppTier, getPppMultiplier, getSegmentMultiplier, isSponsoredSegment, isKnownSegment } from '@/utils/pppPricing';
+import { isSponsoredSegment, isKnownSegment } from '@/utils/pppPricing';
+import { isCountryExcluded, getEffectivePricing, clampUsd } from '@/utils/pricingOverrides';
 import {
   WEEKS_PER_MONTH,
   MIN_SESSIONS_PER_WEEK,
@@ -67,6 +68,17 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    const countryInput = typeof countryCode === 'string' ? countryCode : null;
+    const cityInput = typeof city === 'string' && city.trim() ? city.trim() : null;
+    const segmentValue: string | null = segment && isKnownSegment(segment) ? segment : null;
+
+    if (await isCountryExcluded(countryInput)) {
+      return NextResponse.json(
+        { error: 'This plan is not currently available in your region', errorType: 'REGION_EXCLUDED' },
+        { status: 400 }
+      );
+    }
+
     const supabase = await createClient();
     const { data: { user }, error: userError } = await supabase.auth.getUser();
 
@@ -74,12 +86,8 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    const countryInput = typeof countryCode === 'string' ? countryCode : null;
-    const cityInput = typeof city === 'string' && city.trim() ? city.trim() : null;
-    const segmentValue: string | null = segment && isKnownSegment(segment) ? segment : null;
-
-    const tier = getPppTier(countryInput, cityInput);
-    const multiplier = getPppMultiplier(countryInput, cityInput) * getSegmentMultiplier(segmentValue);
+    const pricing = await getEffectivePricing(countryInput, cityInput, segmentValue);
+    const { tier, overrideId } = pricing;
 
     const existingPlan = await prisma.subscription_plans.findFirst({
       where: {
@@ -90,6 +98,7 @@ export async function POST(request: NextRequest) {
         currency: 'USD',
         pricing_tier: tier,
         pricing_segment: segmentValue,
+        pricing_override_id: overrideId,
         is_active: true,
       },
     });
@@ -108,12 +117,13 @@ export async function POST(request: NextRequest) {
 
     const weeksInCycle = billingCycle * WEEKS_PER_MONTH;
     const totalSessions = sessionsPerWeek * weeksInCycle;
-    const { discountedAmount } = calculateCyclePriceUSDForTier(
+    const usdPrice = calculateCyclePriceUSDForTier(
       sessionsPerWeek,
       billingCycle,
       planType as TrainingPlanType,
-      multiplier
+      pricing.multiplier
     );
+    const discountedAmount = clampUsd(usdPrice.discountedAmount, pricing);
     const cycleLabel = CYCLE_LABELS[billingCycle];
     const planName = `Fitness ${PLAN_TYPE_LABELS[planType as TrainingPlanType]} — ${sessionsPerWeek}/week (${cycleLabel}, USD, tier ${tier})`;
 
@@ -138,6 +148,7 @@ export async function POST(request: NextRequest) {
             currency: 'USD',
             pricing_tier: tier,
             pricing_segment: segmentValue,
+            pricing_override_id: overrideId,
             // Unused for PayPal-priced rows — placeholder keeps this
             // NOT NULL column consistent across every subscription_plans row.
             razorpay_plan_id: `paypal_${planType}_${sessionsPerWeek}pw_${billingCycle}mo_tier${tier}`,

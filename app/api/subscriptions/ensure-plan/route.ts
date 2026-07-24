@@ -2,7 +2,9 @@ import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@/utils/supabase/server';
 import Razorpay from 'razorpay';
 import prisma from '@/utils/prisma/prismaClient';
-import { getPppTier, isSponsoredSegment, isKnownSegment } from '@/utils/pppPricing';
+import { isSponsoredSegment, isKnownSegment, roundNicely } from '@/utils/pppPricing';
+import { isCountryExcluded, getEffectivePricing, clampUsd } from '@/utils/pricingOverrides';
+import { getEffectiveFxRate } from '@/utils/fxRates';
 import {
   WEEKS_PER_MONTH,
   MIN_SESSIONS_PER_WEEK,
@@ -11,7 +13,7 @@ import {
   PLAN_TYPE_LABELS,
   CYCLE_DISCOUNTS,
   CYCLE_LABELS,
-  calculateCyclePriceForCountry,
+  calculateCyclePriceUSDForTier,
   TrainingPlanType,
 } from '@/utils/pricing/sessionPricing';
 
@@ -79,6 +81,13 @@ export async function POST(request: NextRequest) {
 
     const cityInput = typeof city === 'string' && city.trim() ? city.trim() : null;
 
+    if (await isCountryExcluded(RAZORPAY_COUNTRY)) {
+      return NextResponse.json(
+        { error: 'This plan is not currently available in your region', errorType: 'REGION_EXCLUDED' },
+        { status: 400 }
+      );
+    }
+
     const supabase = await createClient();
     const { data: { user }, error: userError } = await supabase.auth.getUser();
 
@@ -86,13 +95,14 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    // pricing_tier (+ pricing_segment) discriminates this PPP-priced
-    // generation of rows from any earlier-formula row that may already
-    // exist for this same combo — a Razorpay Plan's billed amount is
-    // fixed forever once created, so an old row must never be silently
-    // reused at a new price.
-    const tier = getPppTier(RAZORPAY_COUNTRY, cityInput);
+    // pricing_tier / pricing_segment / pricing_override_id discriminate
+    // this generation of rows from any earlier-formula (or differently
+    // overridden) row that may already exist for this same combo — a
+    // Razorpay Plan's billed amount is fixed forever once created, so an
+    // old row must never be silently reused at a new price.
     const segmentValue: string | null = segment && isKnownSegment(segment) ? segment : null;
+    const pricing = await getEffectivePricing(RAZORPAY_COUNTRY, cityInput, segmentValue);
+    const { tier, overrideId } = pricing;
 
     const existingPlan = await prisma.subscription_plans.findFirst({
       where: {
@@ -102,6 +112,7 @@ export async function POST(request: NextRequest) {
         plan_type: planType,
         pricing_tier: tier,
         pricing_segment: segmentValue,
+        pricing_override_id: overrideId,
         is_active: true,
       },
     });
@@ -123,14 +134,19 @@ export async function POST(request: NextRequest) {
       key_secret: process.env.RAZORPAY_KEY_SECRET,
     });
 
-    const { totalSessions, discountedAmount } = calculateCyclePriceForCountry(
+    const usdPrice = calculateCyclePriceUSDForTier(
       sessionsPerWeek,
       billingCycle,
       planType as TrainingPlanType,
-      RAZORPAY_COUNTRY,
-      cityInput,
-      segmentValue
+      pricing.multiplier
     );
+    const clampedUsd = clampUsd(usdPrice.discountedAmount, pricing);
+    // Convert at the live-cached INR rate when fresh, else the static
+    // illustrative rate (see utils/fxRates.ts) — either way this is the
+    // one place that actually decides what Razorpay charges in INR.
+    const { rate: inrRate } = await getEffectiveFxRate('INR');
+    const discountedAmount = roundNicely(clampedUsd * inrRate);
+    const totalSessions = usdPrice.totalSessions;
     const weeksInCycle = billingCycle * WEEKS_PER_MONTH;
     const cycleLabel = CYCLE_LABELS[billingCycle];
     const planName = `Fitness ${PLAN_TYPE_LABELS[planType as TrainingPlanType]} — ${sessionsPerWeek}/week (${cycleLabel})`;
@@ -161,6 +177,7 @@ export async function POST(request: NextRequest) {
         price: discountedAmount,
         pricing_tier: tier,
         pricing_segment: segmentValue,
+        pricing_override_id: overrideId,
         razorpay_plan_id: razorpayPlan.id,
         billing_period: cycleLabel,
         billing_cycle: billingCycle,

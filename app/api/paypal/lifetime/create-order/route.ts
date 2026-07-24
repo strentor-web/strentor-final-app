@@ -2,7 +2,8 @@ import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@/utils/supabase/server';
 import prisma from '@/utils/prisma/prismaClient';
 import { createPaypalOrder } from '@/utils/paypal';
-import { getPppTier, getPppMultiplier, getSegmentMultiplier, isSponsoredSegment, isKnownSegment } from '@/utils/pppPricing';
+import { isSponsoredSegment, isKnownSegment } from '@/utils/pppPricing';
+import { isCountryExcluded, getEffectivePricing, clampUsd } from '@/utils/pricingOverrides';
 import {
   MIN_SESSIONS_PER_WEEK,
   MAX_SESSIONS_PER_WEEK,
@@ -58,12 +59,20 @@ export async function POST(request: NextRequest) {
     const cityInput = typeof city === 'string' && city.trim() ? city.trim() : null;
     const segmentValue: string | null = segment && isKnownSegment(segment) ? segment : null;
 
-    const tier = getPppTier(countryInput, cityInput);
-    const multiplier = getPppMultiplier(countryInput, cityInput) * getSegmentMultiplier(segmentValue);
-    const price = getLifetimePriceUSDForTier(sessionsPerWeek, planType as TrainingPlanType, multiplier);
-    if (price === undefined) {
+    if (await isCountryExcluded(countryInput)) {
+      return NextResponse.json(
+        { error: 'This plan is not currently available in your region', errorType: 'REGION_EXCLUDED' },
+        { status: 400 }
+      );
+    }
+
+    const pricing = await getEffectivePricing(countryInput, cityInput, segmentValue);
+    const { tier, overrideId } = pricing;
+    const usdAmount = getLifetimePriceUSDForTier(sessionsPerWeek, planType as TrainingPlanType, pricing.multiplier);
+    if (usdAmount === undefined) {
       return NextResponse.json({ error: 'No Lifetime price configured for this combination' }, { status: 400 });
     }
+    const price = clampUsd(usdAmount, pricing);
 
     const supabase = await createClient();
     const { data: { user }, error: userError } = await supabase.auth.getUser();
@@ -107,6 +116,8 @@ export async function POST(request: NextRequest) {
         plan_type: planType,
         currency: 'USD',
         pricing_tier: tier,
+        pricing_segment: segmentValue,
+        pricing_override_id: overrideId,
         is_active: true,
       },
     });
@@ -121,6 +132,7 @@ export async function POST(request: NextRequest) {
           currency: 'USD',
           pricing_tier: tier,
           pricing_segment: segmentValue,
+          pricing_override_id: overrideId,
           // razorpay_plan_id is NOT NULL in the schema but unused for
           // PayPal-priced rows — a placeholder keeps this row consistent
           // with every other subscription_plans row.

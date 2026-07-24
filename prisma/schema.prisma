@@ -372,6 +372,13 @@ model subscription_plans {
   // discriminated on both, not just tier, to stay safely un-shareable
   // across two customers who should be charged different amounts.
   pricing_segment    String?
+  // Which pricing_overrides row (if any) was in effect when this row was
+  // priced — a third discriminator alongside pricing_tier/pricing_segment,
+  // needed because an admin override can change the price for a scope
+  // that already has a "no override" Plan; without this, a customer
+  // buying while a promo is active could be silently served the
+  // pre-promo (or a different promo's) fixed Razorpay/PayPal Plan price.
+  pricing_override_id String?              @db.Uuid
   user_subscriptions user_subscriptions[]
 
   @@schema("public")
@@ -1187,5 +1194,64 @@ enum country {
   ZIMBABWE
 
   @@map("countries")
+  @@schema("public")
+}
+
+// Admin-controlled overrides for the PPP pricing engine (see
+// utils/pppPricing.ts) — lets an admin correct, exclude, or run a
+// time-bounded promotion for a specific country/city/segment without
+// editing code. Scope fields are matched most-specific-first by the
+// resolver in utils/pricingOverrides.ts: city+segment > city >
+// country+segment > country > global (all scope fields null).
+model pricing_overrides {
+  id                   String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  scope_country        String? // ISO 3166-1 alpha-2; null = every country
+  scope_city           String? // normalized city/region name; null = whole country
+  scope_segment        String? // CustomerSegment; null = every segment
+  tier_override        Int? // 1-5; ignored if multiplier_override is set
+  multiplier_override  Decimal? @db.Decimal(6, 3) // takes precedence over tier_override
+  min_price_usd        Decimal? @db.Decimal(10, 2)
+  max_price_usd        Decimal? @db.Decimal(10, 2)
+  is_excluded          Boolean  @default(false) // blocks checkout entirely for this scope
+  label                String? // e.g. "Diwali 2026 promo" — shown in the admin UI
+  starts_at            DateTime?
+  ends_at              DateTime?
+  is_active            Boolean  @default(true)
+  created_by           String?  @db.Uuid
+  created_at           DateTime @default(now())
+  updated_at           DateTime @updatedAt
+
+  @@index([scope_country, scope_city, scope_segment], map: "PricingOverride_scope_idx")
+  @@schema("public")
+}
+
+// Immutable log of every pricing_overrides change, so admin actions are
+// auditable and reversible (see Section 11/rollback in the pricing
+// framework) — created alongside every CREATE/UPDATE/DELETE, and itself
+// used as the source of truth a ROLLBACK reads from.
+model pricing_audit_log {
+  id          String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  override_id String?  @db.Uuid
+  action      String // CREATE | UPDATE | DELETE | ROLLBACK
+  before      Json?
+  after       Json?
+  changed_by  String?  @db.Uuid
+  changed_at  DateTime @default(now())
+  notes       String?
+
+  @@index([override_id], map: "PricingAuditLog_overrideId_idx")
+  @@schema("public")
+}
+
+// Cached live FX rates (see /api/cron/refresh-fx-rates) — a small, cheap
+// table rather than calling the FX API on every checkout request. Pricing
+// code treats a row older than ~36h as stale and falls back to the static
+// illustrative rate in utils/pppPricing.ts.
+model fx_rate_cache {
+  currency    String   @id
+  rate_to_usd Decimal  @db.Decimal(12, 6)
+  fetched_at  DateTime @default(now())
+  source      String   @default("frankfurter.app")
+
   @@schema("public")
 }

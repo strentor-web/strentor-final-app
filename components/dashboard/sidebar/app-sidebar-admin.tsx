@@ -4,7 +4,7 @@
 import * as React from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { ChevronDown, Users, Shield, LayoutDashboard, Settings, GraduationCap, AlertTriangle, Inbox, UserSearch } from "lucide-react";
+import { ChevronDown, Users, Shield, LayoutDashboard, Settings, GraduationCap, AlertTriangle, Inbox, UserSearch, DollarSign, BarChart3 } from "lucide-react";
 import Image from "next/image";
 
 // Internal components
@@ -82,6 +82,24 @@ const adminNavItems = [
     title: "Corporate",
     url: "/admin/corporate",
     icon: GraduationCap,
+    isActive: false,
+  },
+  {
+    title: "Pricing Overrides",
+    url: "/admin/pricing",
+    icon: DollarSign,
+    isActive: false,
+  },
+  {
+    title: "Pricing Analytics",
+    url: "/admin/pricing/analytics",
+    icon: BarChart3,
+    isActive: false,
+  },
+  {
+    title: "Pricing Signals",
+    url: "/admin/pricing/signals",
+    icon: BarChart3,
     isActive: false,
   },
   {

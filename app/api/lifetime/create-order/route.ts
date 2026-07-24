@@ -2,12 +2,14 @@ import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@/utils/supabase/server';
 import Razorpay from 'razorpay';
 import prisma from '@/utils/prisma/prismaClient';
-import { getPppTier, isSponsoredSegment, isKnownSegment } from '@/utils/pppPricing';
+import { isSponsoredSegment, isKnownSegment, roundNicely } from '@/utils/pppPricing';
+import { isCountryExcluded, getEffectivePricing, clampUsd } from '@/utils/pricingOverrides';
+import { getEffectiveFxRate } from '@/utils/fxRates';
 import {
   MIN_SESSIONS_PER_WEEK,
   MAX_SESSIONS_PER_WEEK,
   PLAN_TYPE_LABELS,
-  getLifetimePriceForCountry,
+  getLifetimePriceUSDForTier,
   LIFETIME_BILLING_CYCLE,
   LIFETIME_BILLING_PERIOD,
   TrainingPlanType,
@@ -60,18 +62,24 @@ export async function POST(request: NextRequest) {
     const cityInput = typeof city === 'string' && city.trim() ? city.trim() : null;
     const segmentValue: string | null = segment && isKnownSegment(segment) ? segment : null;
 
-    const tier = getPppTier(RAZORPAY_COUNTRY, cityInput);
-    const lifetimePrice = getLifetimePriceForCountry(
-      sessionsPerWeek,
-      planType as TrainingPlanType,
-      RAZORPAY_COUNTRY,
-      cityInput,
-      segmentValue
-    );
-    if (lifetimePrice === undefined) {
+    if (await isCountryExcluded(RAZORPAY_COUNTRY)) {
+      return NextResponse.json(
+        { error: 'This plan is not currently available in your region', errorType: 'REGION_EXCLUDED' },
+        { status: 400 }
+      );
+    }
+
+    const pricing = await getEffectivePricing(RAZORPAY_COUNTRY, cityInput, segmentValue);
+    const { tier, overrideId } = pricing;
+    const usdAmount = getLifetimePriceUSDForTier(sessionsPerWeek, planType as TrainingPlanType, pricing.multiplier);
+    if (usdAmount === undefined) {
       return NextResponse.json({ error: 'No Lifetime price configured for this combination' }, { status: 400 });
     }
-    const price = lifetimePrice.amount;
+    const clampedUsd = clampUsd(usdAmount, pricing);
+    // Convert at the live-cached INR rate when fresh, else the static
+    // illustrative rate (see utils/fxRates.ts).
+    const { rate: inrRate } = await getEffectiveFxRate('INR');
+    const price = roundNicely(clampedUsd * inrRate);
 
     const supabase = await createClient();
     const { data: { user }, error: userError } = await supabase.auth.getUser();
@@ -129,6 +137,8 @@ export async function POST(request: NextRequest) {
         sessions_per_week: sessionsPerWeek,
         plan_type: planType,
         pricing_tier: tier,
+        pricing_segment: segmentValue,
+        pricing_override_id: overrideId,
         is_active: true,
       },
     });
@@ -142,6 +152,7 @@ export async function POST(request: NextRequest) {
           price,
           pricing_tier: tier,
           pricing_segment: segmentValue,
+          pricing_override_id: overrideId,
           razorpay_plan_id: `lifetime_${planType}_${sessionsPerWeek}pw_tier${tier}`,
           billing_period: LIFETIME_BILLING_PERIOD,
           billing_cycle: LIFETIME_BILLING_CYCLE,

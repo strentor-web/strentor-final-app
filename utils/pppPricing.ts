@@ -168,7 +168,7 @@ export const CITY_TIER_OVERRIDES: Record<string, PppTier> = {
   "EG|cairo": 3,
 };
 
-function normalizeCity(city: string): string {
+export function normalizeCity(city: string): string {
   return city.trim().toLowerCase().replace(/\s+/g, " ");
 }
 
