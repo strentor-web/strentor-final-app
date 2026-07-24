@@ -13,6 +13,7 @@
 
 import {
   getPppMultiplier,
+  getSegmentMultiplier,
   getCurrencyForCountry,
   convertFromUsd,
   roundNicely,
@@ -158,13 +159,20 @@ export interface CountryCyclePrice extends CyclePriceBreakdown {
   currency: PppCurrency;
 }
 
+// city and segment are optional refinements layered on top of the country
+// tier (see utils/pppPricing.ts) — a free-text city/region name and one of
+// CUSTOMER_SEGMENTS. Callers handling a sponsored segment must check
+// isSponsoredSegment() themselves before calling this — sponsored pricing
+// isn't a multiplier, it's a "route to a contact form instead" decision.
 export function calculateCyclePriceForCountry(
   sessionsPerWeek: number,
   billingCycleMonths: number,
   planType: TrainingPlanType,
-  countryCode: string | null | undefined
+  countryCode: string | null | undefined,
+  city?: string | null,
+  segment?: string | null
 ): CountryCyclePrice {
-  const multiplier = getPppMultiplier(countryCode);
+  const multiplier = getPppMultiplier(countryCode, city) * getSegmentMultiplier(segment);
   const currency = getCurrencyForCountry(countryCode);
   const usd = calculateCyclePriceUSDForTier(sessionsPerWeek, billingCycleMonths, planType, multiplier);
 
@@ -183,9 +191,11 @@ export function calculateCyclePriceForCountry(
 export function getLifetimePriceForCountry(
   sessionsPerWeek: number,
   planType: TrainingPlanType,
-  countryCode: string | null | undefined
+  countryCode: string | null | undefined,
+  city?: string | null,
+  segment?: string | null
 ): { amount: number; currency: PppCurrency } | undefined {
-  const multiplier = getPppMultiplier(countryCode);
+  const multiplier = getPppMultiplier(countryCode, city) * getSegmentMultiplier(segment);
   const currency = getCurrencyForCountry(countryCode);
   const usdAmount = getLifetimePriceUSDForTier(sessionsPerWeek, planType, multiplier);
   if (usdAmount === undefined) return undefined;

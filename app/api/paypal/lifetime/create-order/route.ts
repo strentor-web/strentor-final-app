@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@/utils/supabase/server';
 import prisma from '@/utils/prisma/prismaClient';
 import { createPaypalOrder } from '@/utils/paypal';
-import { getPppTier, getPppMultiplier } from '@/utils/pppPricing';
+import { getPppTier, getPppMultiplier, getSegmentMultiplier, isSponsoredSegment, isKnownSegment } from '@/utils/pppPricing';
 import {
   MIN_SESSIONS_PER_WEEK,
   MAX_SESSIONS_PER_WEEK,
@@ -22,7 +22,7 @@ import {
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { sessionsPerWeek, planType = 'ONLINE', countryCode } = body;
+    const { sessionsPerWeek, planType = 'ONLINE', countryCode, city, segment } = body;
 
     if (
       typeof sessionsPerWeek !== 'number' ||
@@ -40,8 +40,26 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'planType must be one of ONLINE or SELF_PACED' }, { status: 400 });
     }
 
-    const tier = getPppTier(typeof countryCode === 'string' ? countryCode : null);
-    const multiplier = getPppMultiplier(typeof countryCode === 'string' ? countryCode : null);
+    if (segment && !isKnownSegment(segment)) {
+      return NextResponse.json({ error: 'Unrecognized customer segment' }, { status: 400 });
+    }
+
+    if (isSponsoredSegment(segment)) {
+      return NextResponse.json(
+        {
+          error: 'Sponsored pricing is arranged directly, not through self-serve checkout',
+          errorType: 'SPONSORED_SEGMENT',
+        },
+        { status: 400 }
+      );
+    }
+
+    const countryInput = typeof countryCode === 'string' ? countryCode : null;
+    const cityInput = typeof city === 'string' && city.trim() ? city.trim() : null;
+    const segmentValue: string | null = segment && isKnownSegment(segment) ? segment : null;
+
+    const tier = getPppTier(countryInput, cityInput);
+    const multiplier = getPppMultiplier(countryInput, cityInput) * getSegmentMultiplier(segmentValue);
     const price = getLifetimePriceUSDForTier(sessionsPerWeek, planType as TrainingPlanType, multiplier);
     if (price === undefined) {
       return NextResponse.json({ error: 'No Lifetime price configured for this combination' }, { status: 400 });
@@ -102,6 +120,7 @@ export async function POST(request: NextRequest) {
           price,
           currency: 'USD',
           pricing_tier: tier,
+          pricing_segment: segmentValue,
           // razorpay_plan_id is NOT NULL in the schema but unused for
           // PayPal-priced rows — a placeholder keeps this row consistent
           // with every other subscription_plans row.
@@ -135,6 +154,8 @@ export async function POST(request: NextRequest) {
         provider_order_id: order.id,
         amount: price,
         status: 'PENDING',
+        city: cityInput,
+        customer_segment: segmentValue,
       },
     });
 

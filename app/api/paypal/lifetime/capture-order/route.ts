@@ -79,6 +79,8 @@ export async function POST(request: NextRequest) {
           next_charge_at: null,
           paid_count: 1,
           cancel_at_cycle_end: false,
+          city: purchase.city,
+          customer_segment: purchase.customer_segment,
         },
       }),
     ]);

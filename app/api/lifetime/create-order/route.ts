@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@/utils/supabase/server';
 import Razorpay from 'razorpay';
 import prisma from '@/utils/prisma/prismaClient';
-import { getPppTier } from '@/utils/pppPricing';
+import { getPppTier, isSponsoredSegment, isKnownSegment } from '@/utils/pppPricing';
 import {
   MIN_SESSIONS_PER_WEEK,
   MAX_SESSIONS_PER_WEEK,
@@ -25,7 +25,7 @@ const RAZORPAY_COUNTRY = 'IN';
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { sessionsPerWeek, planType = 'ONLINE' } = body;
+    const { sessionsPerWeek, planType = 'ONLINE', city, segment } = body;
 
     if (
       typeof sessionsPerWeek !== 'number' ||
@@ -43,8 +43,31 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'planType must be one of ONLINE or SELF_PACED' }, { status: 400 });
     }
 
-    const tier = getPppTier(RAZORPAY_COUNTRY);
-    const lifetimePrice = getLifetimePriceForCountry(sessionsPerWeek, planType as TrainingPlanType, RAZORPAY_COUNTRY);
+    if (segment && !isKnownSegment(segment)) {
+      return NextResponse.json({ error: 'Unrecognized customer segment' }, { status: 400 });
+    }
+
+    if (isSponsoredSegment(segment)) {
+      return NextResponse.json(
+        {
+          error: 'Sponsored pricing is arranged directly, not through self-serve checkout',
+          errorType: 'SPONSORED_SEGMENT',
+        },
+        { status: 400 }
+      );
+    }
+
+    const cityInput = typeof city === 'string' && city.trim() ? city.trim() : null;
+    const segmentValue: string | null = segment && isKnownSegment(segment) ? segment : null;
+
+    const tier = getPppTier(RAZORPAY_COUNTRY, cityInput);
+    const lifetimePrice = getLifetimePriceForCountry(
+      sessionsPerWeek,
+      planType as TrainingPlanType,
+      RAZORPAY_COUNTRY,
+      cityInput,
+      segmentValue
+    );
     if (lifetimePrice === undefined) {
       return NextResponse.json({ error: 'No Lifetime price configured for this combination' }, { status: 400 });
     }
@@ -118,6 +141,7 @@ export async function POST(request: NextRequest) {
           plan_type: planType,
           price,
           pricing_tier: tier,
+          pricing_segment: segmentValue,
           razorpay_plan_id: `lifetime_${planType}_${sessionsPerWeek}pw_tier${tier}`,
           billing_period: LIFETIME_BILLING_PERIOD,
           billing_cycle: LIFETIME_BILLING_CYCLE,
@@ -149,6 +173,8 @@ export async function POST(request: NextRequest) {
         provider_order_id: order.id,
         amount: price,
         status: 'PENDING',
+        city: cityInput,
+        customer_segment: segmentValue,
       },
     });
 

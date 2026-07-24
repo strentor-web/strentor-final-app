@@ -129,6 +129,9 @@ export async function POST(request: NextRequest) {
           total_count: totalCount,
           paid_count: 0,
           remaining_count: totalCount,
+          // Carried over from the plan this subscription was created
+          // against — see subscription_plans.pricing_segment.
+          customer_segment: plan.pricing_segment,
         }
       });
       

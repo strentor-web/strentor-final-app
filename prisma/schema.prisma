@@ -365,6 +365,13 @@ model subscription_plans {
   // share one Plan/row — this makes tier part of the reuse lookup. Null for
   // Razorpay/INR rows, which don't have PPP tiers.
   pricing_tier       Int?
+  // Customer segment (see utils/pppPricing.ts CUSTOMER_SEGMENTS) this row
+  // was priced for — null means the default/INDIVIDUAL rate. Segment is a
+  // second, independent multiplier layered on top of pricing_tier, so a
+  // recurring Plan (whose billed amount is fixed at creation time) must be
+  // discriminated on both, not just tier, to stay safely un-shareable
+  // across two customers who should be charged different amounts.
+  pricing_segment    String?
   user_subscriptions user_subscriptions[]
 
   @@schema("public")
@@ -403,6 +410,10 @@ model lifetime_membership_purchases {
   provider_payment_id String?
   amount              Decimal  @db.Decimal(10, 2)
   status              String   @default("PENDING")
+  // City/region and customer segment used to compute `amount` (see
+  // utils/pppPricing.ts) — recorded for reporting/support, not re-derived.
+  city                String?
+  customer_segment    String?
   created_at          DateTime @default(now())
   updated_at          DateTime @updatedAt
 
@@ -425,6 +436,12 @@ model checkout_attempts {
   payment_provider  String   @default("razorpay")
   status            String   @default("started") // started | existing_account | account_created | order_created | paid | failed
   user_id           String?  @db.Uuid
+  // City/region the customer typed in on /checkout, and which customer
+  // segment they picked — both feed the PPP pricing formula (see
+  // utils/pppPricing.ts) and are recorded here purely for later
+  // reporting/support; free text, not validated against a fixed list.
+  city              String?
+  customer_segment  String?
   created_at        DateTime @default(now())
   updated_at        DateTime @updatedAt
 
@@ -484,6 +501,10 @@ model user_subscriptions {
   payment_status           PaymentStatus?      @default(PENDING)
   razorpay_subscription_id String?
   paypal_subscription_id   String?
+  // City/region and customer segment used to compute the plan's price
+  // (see utils/pppPricing.ts) — recorded for reporting/support.
+  city                     String?
+  customer_segment         String?
   current_start            DateTime?
   current_end              DateTime?
   next_charge_at           DateTime?

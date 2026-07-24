@@ -75,6 +75,9 @@ export async function POST(request: NextRequest) {
         payment_status: 'PENDING',
         start_date: new Date(),
         end_date: endDate,
+        // Carried over from the plan this subscription was created
+        // against — see subscription_plans.pricing_segment.
+        customer_segment: plan.pricing_segment,
       },
     });
 

@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@/utils/supabase/server';
 import prisma from '@/utils/prisma/prismaClient';
 import { createPaypalPlan } from '@/utils/paypal';
-import { getPppTier, getPppMultiplier } from '@/utils/pppPricing';
+import { getPppTier, getPppMultiplier, getSegmentMultiplier, isSponsoredSegment, isKnownSegment } from '@/utils/pppPricing';
 import {
   WEEKS_PER_MONTH,
   MIN_SESSIONS_PER_WEEK,
@@ -25,7 +25,7 @@ import {
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { sessionsPerWeek, billingCycle, planType = 'ONLINE', countryCode } = body;
+    const { sessionsPerWeek, billingCycle, planType = 'ONLINE', countryCode, city, segment } = body;
 
     if (
       typeof sessionsPerWeek !== 'number' ||
@@ -53,6 +53,20 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    if (segment && !isKnownSegment(segment)) {
+      return NextResponse.json({ error: 'Unrecognized customer segment' }, { status: 400 });
+    }
+
+    if (isSponsoredSegment(segment)) {
+      return NextResponse.json(
+        {
+          error: 'Sponsored pricing is arranged directly, not through self-serve checkout',
+          errorType: 'SPONSORED_SEGMENT',
+        },
+        { status: 400 }
+      );
+    }
+
     const supabase = await createClient();
     const { data: { user }, error: userError } = await supabase.auth.getUser();
 
@@ -60,8 +74,12 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    const tier = getPppTier(typeof countryCode === 'string' ? countryCode : null);
-    const multiplier = getPppMultiplier(typeof countryCode === 'string' ? countryCode : null);
+    const countryInput = typeof countryCode === 'string' ? countryCode : null;
+    const cityInput = typeof city === 'string' && city.trim() ? city.trim() : null;
+    const segmentValue: string | null = segment && isKnownSegment(segment) ? segment : null;
+
+    const tier = getPppTier(countryInput, cityInput);
+    const multiplier = getPppMultiplier(countryInput, cityInput) * getSegmentMultiplier(segmentValue);
 
     const existingPlan = await prisma.subscription_plans.findFirst({
       where: {
@@ -71,6 +89,7 @@ export async function POST(request: NextRequest) {
         plan_type: planType,
         currency: 'USD',
         pricing_tier: tier,
+        pricing_segment: segmentValue,
         is_active: true,
       },
     });
@@ -118,6 +137,7 @@ export async function POST(request: NextRequest) {
             price: discountedAmount,
             currency: 'USD',
             pricing_tier: tier,
+            pricing_segment: segmentValue,
             // Unused for PayPal-priced rows — placeholder keeps this
             // NOT NULL column consistent across every subscription_plans row.
             razorpay_plan_id: `paypal_${planType}_${sessionsPerWeek}pw_${billingCycle}mo_tier${tier}`,

@@ -14,7 +14,15 @@ import { LifetimeCheckoutButton } from "@/components/subscription/LifetimeChecko
 import { PaypalLifetimeButton } from "@/components/subscription/PaypalLifetimeButton";
 import { PaypalRecurringButton } from "@/components/subscription/PaypalRecurringButton";
 import { useCountryTier } from "@/hooks/useCountryTier";
-import { CURRENCY_SYMBOLS, getPppMultiplier } from "@/utils/pppPricing";
+import {
+  CURRENCY_SYMBOLS,
+  getPppMultiplier,
+  getSegmentMultiplier,
+  isSponsoredSegment,
+  CUSTOMER_SEGMENTS,
+  SEGMENT_LABELS,
+  CustomerSegment,
+} from "@/utils/pppPricing";
 import {
   MIN_SESSIONS_PER_WEEK,
   MAX_SESSIONS_PER_WEEK,
@@ -42,6 +50,8 @@ export default function CheckoutPageClient() {
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
+  const [city, setCity] = useState("");
+  const [segment, setSegment] = useState<CustomerSegment | "">("");
 
   const [sessionsPerWeek, setSessionsPerWeek] = useState(
     parseIntParam(searchParams.get("sessionsPerWeek"), DEFAULT_SESSIONS_PER_WEEK)
@@ -70,6 +80,7 @@ export default function CheckoutPageClient() {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const isAe = countryCode === "AE";
+  const isSponsored = isSponsoredSegment(segment);
 
   const adjustSessionsPerWeek = (delta: number) => {
     setSessionsPerWeek((prev) => Math.min(MAX_SESSIONS_PER_WEEK, Math.max(MIN_SESSIONS_PER_WEEK, prev + delta)));
@@ -79,26 +90,29 @@ export default function CheckoutPageClient() {
   const isPaypal = paymentProvider === "paypal";
   // Razorpay only ever serves India, so its price is always India's tier
   // (independent of whatever country was actually detected — e.g. someone
-  // manually switching the toggle to Razorpay).
+  // manually switching the toggle to Razorpay). City refines within
+  // whichever country applies; segment is a second multiplier on top.
   const recurringPrice = calculateCyclePriceForCountry(
     sessionsPerWeek,
     selectedBillingOption.value,
     planType,
-    isPaypal ? countryCode : "IN"
+    isPaypal ? countryCode : "IN",
+    city,
+    segment
   );
-  const lifetime = getLifetimePriceForCountry(sessionsPerWeek, planType, isPaypal ? countryCode : "IN");
+  const lifetime = getLifetimePriceForCountry(sessionsPerWeek, planType, isPaypal ? countryCode : "IN", city, segment);
   const lifetimePrice = lifetime?.amount;
   const currencySymbol = CURRENCY_SYMBOLS[recurringPrice.currency];
   // The actual PayPal charge is always USD, even for AE (whose display
   // currency above is AED) — PayPal doesn't settle in AED.
-  const multiplier = getPppMultiplier(countryCode);
+  const multiplier = getPppMultiplier(countryCode, city) * getSegmentMultiplier(segment);
   const recurringUsdCharge = calculateCyclePriceUSDForTier(sessionsPerWeek, selectedBillingOption.value, planType, multiplier);
   const lifetimeUsdCharge = getLifetimePriceUSDForTier(sessionsPerWeek, planType, multiplier);
 
   const contactValid = fullName.trim() && email.trim() && phone.trim();
 
   async function handleContinue() {
-    if (!contactValid) return;
+    if (!contactValid || isSponsored) return;
     setIsSubmitting(true);
     setStage("starting");
     try {
@@ -114,6 +128,8 @@ export default function CheckoutPageClient() {
           tier,
           billingCycle: tier === "recurring" ? billingCycle : undefined,
           paymentProvider,
+          city: city || undefined,
+          segment: segment || undefined,
         }),
       });
 
@@ -253,7 +269,11 @@ export default function CheckoutPageClient() {
 
             {/* Price summary */}
             <div className="rounded-xl border border-[#C9A96A]/40 bg-[#C9A96A]/5 p-4 text-center">
-              {tier === "recurring" ? (
+              {isSponsored ? (
+                <p className="text-sm font-medium text-muted-foreground">
+                  {SEGMENT_LABELS[segment as CustomerSegment]} pricing is arranged directly — see below.
+                </p>
+              ) : tier === "recurring" ? (
                 <>
                   <p className="text-2xl font-bold text-primary">
                     {currencySymbol}
@@ -305,8 +325,51 @@ export default function CheckoutPageClient() {
               <Label htmlFor="checkout-phone">Phone / WhatsApp</Label>
               <Input id="checkout-phone" value={phone} disabled={stage !== "form"} onChange={(e) => setPhone(e.target.value)} />
             </div>
+            <div>
+              <Label htmlFor="checkout-city">City / region (optional)</Label>
+              <Input
+                id="checkout-city"
+                placeholder="e.g. Mumbai, New York, Dubai"
+                value={city}
+                disabled={stage !== "form"}
+                onChange={(e) => setCity(e.target.value)}
+              />
+              <p className="mt-1 text-xs text-muted-foreground">
+                Refines your price for major metro areas — leave blank to use your country's standard rate.
+              </p>
+            </div>
+            <div>
+              <Label htmlFor="checkout-segment">Which best describes you? (optional)</Label>
+              <select
+                id="checkout-segment"
+                value={segment}
+                disabled={stage !== "form"}
+                onChange={(e) => setSegment(e.target.value as CustomerSegment | "")}
+                className="mt-1 flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm disabled:cursor-not-allowed disabled:opacity-60"
+              >
+                <option value="">Individual (default)</option>
+                {CUSTOMER_SEGMENTS.filter((s) => s !== "INDIVIDUAL").map((s) => (
+                  <option key={s} value={s}>
+                    {SEGMENT_LABELS[s]}
+                  </option>
+                ))}
+              </select>
+            </div>
           </div>
 
+          {isSponsored ? (
+            <div className="rounded-xl border border-[#C9A96A]/40 bg-[#C9A96A]/5 p-6 text-center">
+              <h3 className="text-lg font-bold text-foreground">Let's set up your sponsored pricing</h3>
+              <p className="mt-2 text-sm text-muted-foreground">
+                {SEGMENT_LABELS[segment as CustomerSegment]} pricing is arranged directly with our team rather
+                than through self-serve checkout. Reach out and we'll get you set up.
+              </p>
+              <Button asChild className="mt-4 rounded-full bg-[#C9A96A] text-black hover:bg-[#C9A96A]/90">
+                <a href="/contact">Contact Us</a>
+              </Button>
+            </div>
+          ) : (
+            <>
           {/* Payment method */}
           <div>
             <Label>Payment method</Label>
@@ -356,6 +419,8 @@ export default function CheckoutPageClient() {
                 planType={planType}
                 billingCycle={billingCycle}
                 countryCode={countryCode}
+                city={city}
+                segment={segment}
                 onSuccess={() => router.push("/onboarding")}
               />
             ) : (
@@ -363,6 +428,8 @@ export default function CheckoutPageClient() {
                 sessionsPerWeek={sessionsPerWeek}
                 planType={planType}
                 billingCycle={billingCycle}
+                city={city}
+                segment={segment}
                 className="w-full rounded-full bg-[#C9A96A] py-6 text-base text-black hover:bg-[#C9A96A]/90"
                 onSuccess={() => router.push("/onboarding")}
               />
@@ -372,12 +439,16 @@ export default function CheckoutPageClient() {
               sessionsPerWeek={sessionsPerWeek}
               planType={planType}
               countryCode={countryCode}
+              city={city}
+              segment={segment}
               onSuccess={() => router.push("/onboarding")}
             />
           ) : (
             <LifetimeCheckoutButton
               sessionsPerWeek={sessionsPerWeek}
               planType={planType}
+              city={city}
+              segment={segment}
               className="w-full rounded-full bg-[#C9A96A] py-6 text-base text-black hover:bg-[#C9A96A]/90"
               onSuccess={() => router.push("/onboarding")}
             />
@@ -394,6 +465,8 @@ export default function CheckoutPageClient() {
             </a>
             . We'll email you a link to set your password after checkout.
           </p>
+            </>
+          )}
         </div>
       </div>
 

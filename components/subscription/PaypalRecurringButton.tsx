@@ -11,6 +11,8 @@ interface PaypalRecurringButtonProps {
   planType: TrainingPlanType;
   billingCycle: number;
   countryCode: string | null;
+  city?: string | null;
+  segment?: string | null;
   className?: string;
   onSuccess?: () => void;
 }
@@ -23,6 +25,8 @@ export function PaypalRecurringButton({
   planType,
   billingCycle,
   countryCode,
+  city,
+  segment,
   className,
   onSuccess,
 }: PaypalRecurringButtonProps) {
@@ -51,7 +55,7 @@ export function PaypalRecurringButton({
             const planResponse = await fetch("/api/paypal/subscriptions/ensure-plan", {
               method: "POST",
               headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({ sessionsPerWeek, billingCycle, planType, countryCode }),
+              body: JSON.stringify({ sessionsPerWeek, billingCycle, planType, countryCode, city, segment }),
             });
 
             if (planResponse.status === 401) {
@@ -140,7 +144,7 @@ export function PaypalRecurringButton({
     return () => {
       cancelled = true;
     };
-  }, [sessionsPerWeek, planType, billingCycle, countryCode, router, onSuccess]);
+  }, [sessionsPerWeek, planType, billingCycle, countryCode, city, segment, router, onSuccess]);
 
   if (error) {
     return <p className="text-center text-sm text-destructive">{error}</p>;

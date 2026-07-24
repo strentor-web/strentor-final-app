@@ -9,6 +9,8 @@ interface RecurringCheckoutButtonProps {
   sessionsPerWeek: number;
   planType: TrainingPlanType;
   billingCycle: number;
+  city?: string | null;
+  segment?: string | null;
   className?: string;
   onSuccess?: () => void;
 }
@@ -21,6 +23,8 @@ export function RecurringCheckoutButton({
   sessionsPerWeek,
   planType,
   billingCycle,
+  city,
+  segment,
   className,
   onSuccess,
 }: RecurringCheckoutButtonProps) {
@@ -37,7 +41,7 @@ export function RecurringCheckoutButton({
         const response = await fetch("/api/subscriptions/ensure-plan", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ sessionsPerWeek, billingCycle, planType }),
+          body: JSON.stringify({ sessionsPerWeek, billingCycle, planType, city, segment }),
         });
         if (!response.ok) {
           const data = await response.json().catch(() => ({}));
@@ -54,7 +58,7 @@ export function RecurringCheckoutButton({
     return () => {
       cancelled = true;
     };
-  }, [sessionsPerWeek, planType, billingCycle]);
+  }, [sessionsPerWeek, planType, billingCycle, city, segment]);
 
   if (error) {
     return <p className="text-center text-sm text-destructive">{error}</p>;

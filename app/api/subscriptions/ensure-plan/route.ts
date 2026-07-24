@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@/utils/supabase/server';
 import Razorpay from 'razorpay';
 import prisma from '@/utils/prisma/prismaClient';
-import { getPppTier } from '@/utils/pppPricing';
+import { getPppTier, isSponsoredSegment, isKnownSegment } from '@/utils/pppPricing';
 import {
   WEEKS_PER_MONTH,
   MIN_SESSIONS_PER_WEEK,
@@ -35,7 +35,7 @@ const RAZORPAY_COUNTRY = 'IN';
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { sessionsPerWeek, billingCycle, planType = 'ONLINE' } = body;
+    const { sessionsPerWeek, billingCycle, planType = 'ONLINE', city, segment } = body;
 
     if (
       typeof sessionsPerWeek !== 'number' ||
@@ -63,6 +63,22 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    if (segment && !isKnownSegment(segment)) {
+      return NextResponse.json({ error: 'Unrecognized customer segment' }, { status: 400 });
+    }
+
+    if (isSponsoredSegment(segment)) {
+      return NextResponse.json(
+        {
+          error: 'Sponsored pricing is arranged directly, not through self-serve checkout',
+          errorType: 'SPONSORED_SEGMENT',
+        },
+        { status: 400 }
+      );
+    }
+
+    const cityInput = typeof city === 'string' && city.trim() ? city.trim() : null;
+
     const supabase = await createClient();
     const { data: { user }, error: userError } = await supabase.auth.getUser();
 
@@ -70,11 +86,13 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    // pricing_tier discriminates this PPP-priced generation of rows from
-    // any pre-PPP row (pricing_tier NULL) that may already exist for this
-    // same combo — a Razorpay Plan's billed amount is fixed forever once
-    // created, so an old row must never be silently reused at a new price.
-    const tier = getPppTier(RAZORPAY_COUNTRY);
+    // pricing_tier (+ pricing_segment) discriminates this PPP-priced
+    // generation of rows from any earlier-formula row that may already
+    // exist for this same combo — a Razorpay Plan's billed amount is
+    // fixed forever once created, so an old row must never be silently
+    // reused at a new price.
+    const tier = getPppTier(RAZORPAY_COUNTRY, cityInput);
+    const segmentValue: string | null = segment && isKnownSegment(segment) ? segment : null;
 
     const existingPlan = await prisma.subscription_plans.findFirst({
       where: {
@@ -83,6 +101,7 @@ export async function POST(request: NextRequest) {
         sessions_per_week: sessionsPerWeek,
         plan_type: planType,
         pricing_tier: tier,
+        pricing_segment: segmentValue,
         is_active: true,
       },
     });
@@ -108,7 +127,9 @@ export async function POST(request: NextRequest) {
       sessionsPerWeek,
       billingCycle,
       planType as TrainingPlanType,
-      RAZORPAY_COUNTRY
+      RAZORPAY_COUNTRY,
+      cityInput,
+      segmentValue
     );
     const weeksInCycle = billingCycle * WEEKS_PER_MONTH;
     const cycleLabel = CYCLE_LABELS[billingCycle];
@@ -139,6 +160,7 @@ export async function POST(request: NextRequest) {
         plan_type: planType,
         price: discountedAmount,
         pricing_tier: tier,
+        pricing_segment: segmentValue,
         razorpay_plan_id: razorpayPlan.id,
         billing_period: cycleLabel,
         billing_cycle: billingCycle,

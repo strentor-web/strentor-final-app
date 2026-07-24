@@ -5,6 +5,7 @@ import { createClient } from "@/utils/supabase/server";
 import { createServiceClient } from "@/utils/supabase/service";
 import prisma from "@/utils/prisma/prismaClient";
 import { MIN_SESSIONS_PER_WEEK, MAX_SESSIONS_PER_WEEK } from "@/utils/pricing/sessionPricing";
+import { CUSTOMER_SEGMENTS } from "@/utils/pppPricing";
 
 // Bridges the public, no-account /checkout page into the existing
 // authenticated subscription flow. Creates (or reuses) an account silently
@@ -21,6 +22,8 @@ const payloadSchema = z.object({
   tier: z.enum(["recurring", "lifetime"]),
   billingCycle: z.number().int().optional(),
   paymentProvider: z.enum(["razorpay", "paypal"]).default("razorpay"),
+  city: z.string().trim().max(120).optional(),
+  segment: z.enum(CUSTOMER_SEGMENTS).optional(),
 });
 
 async function markAttempt(attemptId: string | null, data: Record<string, unknown>) {
@@ -64,6 +67,8 @@ export async function POST(request: NextRequest) {
         tier: data.tier,
         billing_cycle: data.tier === "recurring" ? data.billingCycle : null,
         payment_provider: data.paymentProvider,
+        city: data.city || null,
+        customer_segment: data.segment || null,
         status: "started",
       },
     });
