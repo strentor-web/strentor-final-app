@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@/utils/supabase/server';
 import prisma from '@/utils/prisma/prismaClient';
 import { createPaypalPlan } from '@/utils/paypal';
+import { getPppTier, getPppMultiplier } from '@/utils/pppPricing';
 import {
   WEEKS_PER_MONTH,
   MIN_SESSIONS_PER_WEEK,
@@ -10,18 +11,21 @@ import {
   PLAN_TYPE_LABELS,
   CYCLE_DISCOUNTS,
   CYCLE_LABELS,
+  calculateCyclePriceUSDForTier,
   TrainingPlanType,
 } from '@/utils/pricing/sessionPricing';
 
 // PayPal equivalent of /api/subscriptions/ensure-plan — finds or provisions
-// a USD-priced PayPal Billing Plan for the requested sessions-per-week +
-// billing-cycle combination. Kept as a separate subscription_plans row
-// (currency='USD') from the INR/Razorpay row for the same combo, same
-// pattern as the PayPal Lifetime route.
+// a PPP-tier-adjusted, USD-priced PayPal Billing Plan for the requested
+// sessions-per-week + billing-cycle combination. Kept as a separate
+// subscription_plans row (currency='USD', pricing_tier=<1-4>) from both the
+// INR/Razorpay row and every other PPP tier for the same combo — a PayPal
+// recurring subscription's billed amount is fixed at Plan-creation time on
+// PayPal's side, so two different tiers can never safely share one Plan.
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { sessionsPerWeek, billingCycle, planType = 'ONLINE' } = body;
+    const { sessionsPerWeek, billingCycle, planType = 'ONLINE', countryCode } = body;
 
     if (
       typeof sessionsPerWeek !== 'number' ||
@@ -56,6 +60,9 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
+    const tier = getPppTier(typeof countryCode === 'string' ? countryCode : null);
+    const multiplier = getPppMultiplier(typeof countryCode === 'string' ? countryCode : null);
+
     const existingPlan = await prisma.subscription_plans.findFirst({
       where: {
         category: 'FITNESS',
@@ -63,6 +70,7 @@ export async function POST(request: NextRequest) {
         sessions_per_week: sessionsPerWeek,
         plan_type: planType,
         currency: 'USD',
+        pricing_tier: tier,
         is_active: true,
       },
     });
@@ -81,11 +89,14 @@ export async function POST(request: NextRequest) {
 
     const weeksInCycle = billingCycle * WEEKS_PER_MONTH;
     const totalSessions = sessionsPerWeek * weeksInCycle;
-    const discount = CYCLE_DISCOUNTS[billingCycle];
-    const originalAmount = totalSessions * RATE_PER_SESSION_USD[planType as TrainingPlanType];
-    const discountedAmount = Math.round(originalAmount * (1 - discount / 100));
+    const { discountedAmount } = calculateCyclePriceUSDForTier(
+      sessionsPerWeek,
+      billingCycle,
+      planType as TrainingPlanType,
+      multiplier
+    );
     const cycleLabel = CYCLE_LABELS[billingCycle];
-    const planName = `Fitness ${PLAN_TYPE_LABELS[planType as TrainingPlanType]} — ${sessionsPerWeek}/week (${cycleLabel}, USD)`;
+    const planName = `Fitness ${PLAN_TYPE_LABELS[planType as TrainingPlanType]} — ${sessionsPerWeek}/week (${cycleLabel}, USD, tier ${tier})`;
 
     const paypalPlan = await createPaypalPlan({
       name: planName,
@@ -106,9 +117,10 @@ export async function POST(request: NextRequest) {
             plan_type: planType,
             price: discountedAmount,
             currency: 'USD',
+            pricing_tier: tier,
             // Unused for PayPal-priced rows — placeholder keeps this
             // NOT NULL column consistent across every subscription_plans row.
-            razorpay_plan_id: `paypal_${planType}_${sessionsPerWeek}pw_${billingCycle}mo`,
+            razorpay_plan_id: `paypal_${planType}_${sessionsPerWeek}pw_${billingCycle}mo_tier${tier}`,
             paypal_plan_id: paypalPlan.id,
             billing_period: cycleLabel,
             billing_cycle: billingCycle,

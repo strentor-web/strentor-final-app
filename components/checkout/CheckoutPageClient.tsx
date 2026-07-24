@@ -14,15 +14,17 @@ import { LifetimeCheckoutButton } from "@/components/subscription/LifetimeChecko
 import { PaypalLifetimeButton } from "@/components/subscription/PaypalLifetimeButton";
 import { PaypalRecurringButton } from "@/components/subscription/PaypalRecurringButton";
 import { useRegion } from "@/hooks/useRegion";
+import { useCountryTier } from "@/hooks/useCountryTier";
+import { usdToAed } from "@/utils/pppPricing";
 import {
   MIN_SESSIONS_PER_WEEK,
   MAX_SESSIONS_PER_WEEK,
   DEFAULT_SESSIONS_PER_WEEK,
   billingOptions,
   calculateCyclePrice,
-  calculateCyclePriceUSD,
+  calculateCyclePriceUSDForTier,
   getLifetimePrice,
-  getLifetimePriceUSD,
+  getLifetimePriceUSDForTier,
   TrainingPlanType,
 } from "@/utils/pricing/sessionPricing";
 
@@ -67,6 +69,12 @@ export default function CheckoutPageClient() {
   const [stage, setStage] = useState<"form" | "starting" | "ready">("form");
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  // PPP-tier-adjusted USD pricing for the PayPal path (see
+  // utils/pppPricing.ts) — India stays on its own separately-set INR
+  // pricing via Razorpay, untouched by this.
+  const { countryCode, multiplier } = useCountryTier();
+  const isAe = countryCode === "AE";
+
   const adjustSessionsPerWeek = (delta: number) => {
     setSessionsPerWeek((prev) => Math.min(MAX_SESSIONS_PER_WEEK, Math.max(MIN_SESSIONS_PER_WEEK, prev + delta)));
   };
@@ -74,9 +82,11 @@ export default function CheckoutPageClient() {
   const selectedBillingOption = billingOptions.find((o) => o.value === billingCycle) ?? billingOptions[1];
   const isPaypal = paymentProvider === "paypal";
   const recurringPrice = isPaypal
-    ? calculateCyclePriceUSD(sessionsPerWeek, selectedBillingOption.value, planType)
+    ? calculateCyclePriceUSDForTier(sessionsPerWeek, selectedBillingOption.value, planType, multiplier)
     : calculateCyclePrice(sessionsPerWeek, selectedBillingOption.value, planType);
-  const lifetimePrice = isPaypal ? getLifetimePriceUSD(sessionsPerWeek, planType) : getLifetimePrice(sessionsPerWeek, planType);
+  const lifetimePrice = isPaypal
+    ? getLifetimePriceUSDForTier(sessionsPerWeek, planType, multiplier)
+    : getLifetimePrice(sessionsPerWeek, planType);
   const currencySymbol = isPaypal ? "$" : "₹";
 
   const contactValid = fullName.trim() && email.trim() && phone.trim();
@@ -240,23 +250,36 @@ export default function CheckoutPageClient() {
               {tier === "recurring" ? (
                 <>
                   <p className="text-2xl font-bold text-primary">
-                    {currencySymbol}
-                    {recurringPrice.discountedAmount.toLocaleString()}
+                    {isAe ? `AED ${usdToAed(recurringPrice.discountedAmount).toLocaleString()}` : `${currencySymbol}${recurringPrice.discountedAmount.toLocaleString()}`}
                   </p>
                   <p className="mt-1 text-xs text-muted-foreground">
                     {recurringPrice.totalSessions} sessions ({sessionsPerWeek}/week) · {selectedBillingOption.label}
                     {selectedBillingOption.discount > 0 && ` · ${selectedBillingOption.discount}% off`}
                   </p>
+                  {isAe && (
+                    <p className="mt-1 text-xs text-muted-foreground">
+                      Charged as ${recurringPrice.discountedAmount.toLocaleString()} USD via PayPal (AED is shown for reference — PayPal doesn't settle in AED)
+                    </p>
+                  )}
                 </>
               ) : lifetimePrice !== undefined ? (
                 <>
                   <p className="text-2xl font-bold text-primary">
-                    {currencySymbol}
-                    {lifetimePrice.toLocaleString()}
+                    {isAe ? `AED ${usdToAed(lifetimePrice).toLocaleString()}` : `${currencySymbol}${lifetimePrice.toLocaleString()}`}
                   </p>
                   <p className="mt-1 text-xs text-muted-foreground">One-time payment — no further billing, ever</p>
+                  {isAe && (
+                    <p className="mt-1 text-xs text-muted-foreground">
+                      Charged as ${lifetimePrice.toLocaleString()} USD via PayPal (AED is shown for reference — PayPal doesn't settle in AED)
+                    </p>
+                  )}
                 </>
               ) : null}
+              {isPaypal && !isAe && (
+                <p className="mt-2 text-[11px] text-muted-foreground">
+                  Pricing shown reflects your region{countryCode ? ` (${countryCode})` : ""}.
+                </p>
+              )}
             </div>
           </div>
 
@@ -324,6 +347,7 @@ export default function CheckoutPageClient() {
                 sessionsPerWeek={sessionsPerWeek}
                 planType={planType}
                 billingCycle={billingCycle}
+                countryCode={countryCode}
                 onSuccess={() => router.push("/onboarding")}
               />
             ) : (
@@ -339,6 +363,7 @@ export default function CheckoutPageClient() {
             <PaypalLifetimeButton
               sessionsPerWeek={sessionsPerWeek}
               planType={planType}
+              countryCode={countryCode}
               onSuccess={() => router.push("/onboarding")}
             />
           ) : (

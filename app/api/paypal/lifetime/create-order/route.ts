@@ -2,11 +2,12 @@ import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@/utils/supabase/server';
 import prisma from '@/utils/prisma/prismaClient';
 import { createPaypalOrder } from '@/utils/paypal';
+import { getPppTier, getPppMultiplier } from '@/utils/pppPricing';
 import {
   MIN_SESSIONS_PER_WEEK,
   MAX_SESSIONS_PER_WEEK,
   PLAN_TYPE_LABELS,
-  LIFETIME_PRICES_USD,
+  getLifetimePriceUSDForTier,
   LIFETIME_BILLING_CYCLE,
   LIFETIME_BILLING_PERIOD,
   TrainingPlanType,
@@ -14,11 +15,14 @@ import {
 
 // PayPal equivalent of /api/lifetime/create-order — same one-time Lifetime
 // Membership product, priced in USD for non-Indian customers, paid via a
-// PayPal Order (Orders API) instead of a Razorpay Order.
+// PayPal Order (Orders API) instead of a Razorpay Order. The price is a
+// PPP-tier-adjusted USD amount (see utils/pppPricing.ts) computed here from
+// the client-reported countryCode — never trusted as a raw price from the
+// client.
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { sessionsPerWeek, planType = 'ONLINE' } = body;
+    const { sessionsPerWeek, planType = 'ONLINE', countryCode } = body;
 
     if (
       typeof sessionsPerWeek !== 'number' ||
@@ -36,7 +40,9 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'planType must be one of ONLINE or SELF_PACED' }, { status: 400 });
     }
 
-    const price = LIFETIME_PRICES_USD[planType as TrainingPlanType]?.[sessionsPerWeek];
+    const tier = getPppTier(typeof countryCode === 'string' ? countryCode : null);
+    const multiplier = getPppMultiplier(typeof countryCode === 'string' ? countryCode : null);
+    const price = getLifetimePriceUSDForTier(sessionsPerWeek, planType as TrainingPlanType, multiplier);
     if (price === undefined) {
       return NextResponse.json({ error: 'No Lifetime price configured for this combination' }, { status: 400 });
     }
@@ -67,12 +73,14 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Payment provider not configured' }, { status: 500 });
     }
 
-    const planName = `Fitness Lifetime ${PLAN_TYPE_LABELS[planType as TrainingPlanType]} — ${sessionsPerWeek}/week (USD)`;
+    const planName = `Fitness Lifetime ${PLAN_TYPE_LABELS[planType as TrainingPlanType]} — ${sessionsPerWeek}/week (USD, tier ${tier})`;
 
     // Reuse the shared subscription_plans row for this (planType,
-    // sessionsPerWeek) combo if one was already provisioned by an earlier
-    // PayPal purchase attempt; currency='USD' keeps this distinct from the
-    // INR row the Razorpay path uses for the same sessions/week + planType.
+    // sessionsPerWeek, tier) combo if one was already provisioned by an
+    // earlier PayPal purchase attempt at the same PPP tier; currency='USD'
+    // keeps this distinct from the INR row the Razorpay path uses for the
+    // same sessions/week + planType, and pricing_tier keeps different PPP
+    // tiers from sharing (and misreporting) each other's price.
     let plan = await prisma.subscription_plans.findFirst({
       where: {
         category: 'FITNESS',
@@ -80,6 +88,7 @@ export async function POST(request: NextRequest) {
         sessions_per_week: sessionsPerWeek,
         plan_type: planType,
         currency: 'USD',
+        pricing_tier: tier,
         is_active: true,
       },
     });
@@ -92,10 +101,11 @@ export async function POST(request: NextRequest) {
           plan_type: planType,
           price,
           currency: 'USD',
+          pricing_tier: tier,
           // razorpay_plan_id is NOT NULL in the schema but unused for
           // PayPal-priced rows — a placeholder keeps this row consistent
           // with every other subscription_plans row.
-          razorpay_plan_id: `paypal_lifetime_${planType}_${sessionsPerWeek}pw`,
+          razorpay_plan_id: `paypal_lifetime_${planType}_${sessionsPerWeek}pw_tier${tier}`,
           billing_period: LIFETIME_BILLING_PERIOD,
           billing_cycle: LIFETIME_BILLING_CYCLE,
           sessions_per_week: sessionsPerWeek,

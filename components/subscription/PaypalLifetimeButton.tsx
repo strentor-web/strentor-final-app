@@ -9,6 +9,7 @@ import type { TrainingPlanType } from "@/utils/pricing/sessionPricing";
 interface PaypalLifetimeButtonProps {
   sessionsPerWeek: number;
   planType: TrainingPlanType;
+  countryCode: string | null;
   className?: string;
   onSuccess?: () => void;
 }
@@ -16,7 +17,7 @@ interface PaypalLifetimeButtonProps {
 // PayPal equivalent of LifetimeCheckoutButton. Renders PayPal's own Smart
 // Button (a popup-based approval flow) instead of a themed <Button>, since
 // PayPal's branding guidelines require using their button, not a lookalike.
-export function PaypalLifetimeButton({ sessionsPerWeek, planType, className, onSuccess }: PaypalLifetimeButtonProps) {
+export function PaypalLifetimeButton({ sessionsPerWeek, planType, countryCode, className, onSuccess }: PaypalLifetimeButtonProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const router = useRouter();
   const [isReady, setIsReady] = useState(false);
@@ -39,7 +40,7 @@ export function PaypalLifetimeButton({ sessionsPerWeek, planType, className, onS
             const response = await fetch("/api/paypal/lifetime/create-order", {
               method: "POST",
               headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({ sessionsPerWeek, planType }),
+              body: JSON.stringify({ sessionsPerWeek, planType, countryCode }),
             });
 
             if (response.status === 401) {
@@ -109,7 +110,7 @@ export function PaypalLifetimeButton({ sessionsPerWeek, planType, className, onS
     return () => {
       cancelled = true;
     };
-  }, [sessionsPerWeek, planType, router, onSuccess]);
+  }, [sessionsPerWeek, planType, countryCode, router, onSuccess]);
 
   return (
     <div className={className}>

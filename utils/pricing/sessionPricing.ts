@@ -133,3 +133,32 @@ export const LIFETIME_PRICES_USD: Record<TrainingPlanType, Record<number, number
 export function getLifetimePriceUSD(sessionsPerWeek: number, planType: TrainingPlanType): number | undefined {
   return LIFETIME_PRICES_USD[planType]?.[sessionsPerWeek];
 }
+
+// PPP-tier-adjusted USD pricing (see utils/pppPricing.ts) — applies a
+// tier multiplier to the base USD price above, then rounds to a clean
+// "…9"-ending number to match the hand-picked LIFETIME_PRICES_USD style.
+function roundToNiceUsd(amount: number): number {
+  return Math.max(1, Math.round(amount / 10) * 10 - 1);
+}
+
+export function calculateCyclePriceUSDForTier(
+  sessionsPerWeek: number,
+  billingCycleMonths: number,
+  planType: TrainingPlanType,
+  multiplier: number
+): CyclePriceBreakdown {
+  const base = calculateCyclePriceUSD(sessionsPerWeek, billingCycleMonths, planType);
+  return {
+    ...base,
+    discountedAmount: roundToNiceUsd(base.discountedAmount * multiplier),
+  };
+}
+
+export function getLifetimePriceUSDForTier(
+  sessionsPerWeek: number,
+  planType: TrainingPlanType,
+  multiplier: number
+): number | undefined {
+  const base = getLifetimePriceUSD(sessionsPerWeek, planType);
+  return base === undefined ? undefined : roundToNiceUsd(base * multiplier);
+}

@@ -359,6 +359,12 @@ model subscription_plans {
   // currencies.
   currency           String               @default("INR")
   paypal_plan_id     String?
+  // PPP tier (1-4) this row's price was computed at, for PayPal-priced rows
+  // only. A PayPal recurring subscription's billed amount is fixed at Plan
+  // creation time, so two customers in different tiers can never safely
+  // share one Plan/row — this makes tier part of the reuse lookup. Null for
+  // Razorpay/INR rows, which don't have PPP tiers.
+  pricing_tier       Int?
   user_subscriptions user_subscriptions[]
 
   @@schema("public")
