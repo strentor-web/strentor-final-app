@@ -1,7 +1,9 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import { useReducedMotion } from "motion/react";
 import { Quote } from "lucide-react";
+import { testimonials } from "@/data/testimonials";
 
 interface TestimonialCardProps {
   quote: string;
@@ -35,25 +37,7 @@ const TestimonialCardMobile = ({ quote, author }: TestimonialCardProps) => (
 );
 
 export default function Testimonials() {
-   
-  const testimonials = [
-    {
-      quote:
-        "Working with Aditya for over a year now and he is arguably the best fitness coach you could ask for. From personalized workouts to diet, he takes care of everything. Having Spina Bifida, I had my doubts whether lifting heaving weights is for me but he helped overcome those hurdles with ease!",
-      author: "Chaitanya Shetty",
-    },
-    {
-      quote:
-        "Aditya is a brilliant trainer. He pushed me when it was needed and cherished every fitness milestone that I achieved.",
-      author: "Tanushree Das",
-    },
-    {
-      quote:
-        "Working with Aditya I've seen good results in the past few months! My workouts are constantly increasing in difficulty and scope focused to match my fitness goals. Aditya suggests exercise routines that are individualized and challenging, but not more than I handle.",
-      author: "Promila Dsilva",
-    },
-  ];
-
+  const shouldReduceMotion = useReducedMotion();
   const [position, setPosition] = useState(0);
   const [isMobile, setIsMobile] = useState(false);
 
@@ -70,6 +54,7 @@ export default function Testimonials() {
   }, []);
 
   useEffect(() => {
+    if (shouldReduceMotion) return;
     const animation = () => {
       setPosition((prevPosition) => {
         const newPosition = prevPosition - 0.3; // Adjust the speed
@@ -78,7 +63,24 @@ export default function Testimonials() {
     };
     const animationFrame = setInterval(animation, 50);
     return () => clearInterval(animationFrame);
-  }, [totalWidth]);
+  }, [totalWidth, shouldReduceMotion]);
+
+  if (shouldReduceMotion) {
+    return (
+      <section className="py-16">
+        <div className="max-w-7xl mx-auto px-4">
+          <h2 className="text-4xl md:text-5xl font-bold font-display mb-12 text-center text-foreground">
+            Transforming Lives, <span className="text-[#C9A96A]">One Story</span> at a Time
+          </h2>
+          <div className="grid gap-4 sm:grid-cols-3">
+            {testimonials.map((testimonial) => (
+              <TestimonialCard key={testimonial.author} quote={testimonial.quote} author={testimonial.author} />
+            ))}
+          </div>
+        </div>
+      </section>
+    );
+  }
 
   return (
     <section className="py-16">

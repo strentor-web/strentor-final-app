@@ -10,7 +10,7 @@ const navLinks = [
   { href: "/", label: "Home" },
   { href: "/#method", label: "The STRENTOR Method" },
   { href: "/programs", label: "Programs" },
-  { href: "/#stories", label: "Transformation Stories" },
+  { href: "/transformation-stories", label: "Transformation Stories" },
   { href: "/about", label: "About" },
   { href: "/resources", label: "Resources" },
   { href: "/corporate", label: "Corporate Partnerships" },

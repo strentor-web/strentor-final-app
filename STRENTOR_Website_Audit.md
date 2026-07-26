@@ -53,21 +53,31 @@ Fixed in this pass:
 - Sponsorship ("Sponsor a Seat") demoted from a co-equal primary button to a smaller secondary text link in the final CTA — kept reachable (real, working pathway), but no longer presented as equally weighted against the core coaching offer, which is a partial, moderate answer to the still-open Section 4 item below (full resolution needs a business decision, not a copy tweak).
 - Updated `/programs`'s metadata (title/description) off the old "12-Week Program, access-based pricing" framing.
 
-## 5. Problems identified but NOT fixed in this pass
+## 5. Pass 4 — Transformation Stories page built
+
+"Transformation Stories" was a primary nav item pointing at `/#stories`, a homepage anchor — not a real, independently indexable page, and item #1 in the "not done" list below at the time.
+
+Fixed in this pass:
+
+- Built `/transformation-stories` (new page + layout with its own metadata), presenting the same real, named testimonials already live on the homepage — nothing invented. Per the brief's explicit instruction for this exact situation ("If the repository contains only basic testimonials, preserve the authentic quotes and present them cleanly without fabricating case-study information... use truthful placeholder labels where information is unavailable"), the page does not dress the three quotes up with invented starting points, durations, or measurable outcomes. It includes an honest "Detailed transformation stories... coming soon" note instead.
+- Extracted the testimonial data out of `components/landing/Testimonials.tsx` into `data/testimonials.ts`, a single source of truth now shared by the homepage carousel and the new page — avoids the two ever drifting out of sync. (This required a build-time fix: importing a named export from a `"use client"` component file into a Server Component page failed at build with a runtime `TypeError`, not just a lint warning — moving the data to a plain, non-client module resolved it. Caught by running the full production build, not just typecheck.)
+- Header's "Transformation Stories" nav link now points to the real page instead of the anchor; the homepage testimonials section gained a "Read all transformation stories" link to it; added to `app/sitemap.ts`.
+- Fixed the item flagged in Pass 2 about `components/landing/Testimonials.tsx` not respecting `prefers-reduced-motion`: the carousel's `setInterval`-driven auto-scroll now stops under reduced motion, falling back to a static grid — consistent with every other motion primitive in this codebase.
+
+## 6. Problems identified but NOT fixed in this pass
 
 These are real, found during this audit, and require either more implementation time or business/legal input before they can be resolved:
 
-1. **No dedicated "Transformation Stories" or "The STRENTOR Method" pages exist.** The new header links to homepage anchors as an interim measure. Building these as standalone pages (with their own metadata, and in the Stories case, more testimonial detail than currently exists) is unbuilt.
-2. **`components/landing/Testimonials.tsx` auto-scrolls on a `setInterval` regardless of `prefers-reduced-motion`.** Every other motion primitive in this codebase (`ScrollReveal`, `ScrollStory`, `HoverLift`) respects it; this one, which predates that work, does not. Flagged, not fixed, in this pass.
-3. **"Sponsor a Seat" / donor-funded seat language still exists** (`/sponsor-a-seat`, `config/accessTiers.ts`, `config/sponsorshipOptions.ts`) and is real, functioning business infrastructure (an actual donor-funded-seat program), not fabricated content. It's now a secondary link rather than a co-primary CTA on `/programs`, but the page itself, its nav visibility, and its underlying ₹74,999 flat pricing (which may or may not still be current — see the content verification doc) were not touched. This needs an explicit call from STRENTOR on whether sponsorship stays as a secondary pathway (recommended) or is phased out.
-4. **The `/assessment` "Readiness Assessment" tool now has no inbound marketing links from the homepage**, since its actual purpose (post-signup training-safety screening) doesn't match a first-touch CTA. It's still reachable from wherever it was linked before this pass (e.g. post-onboarding flows) — that was not audited in this session.
-5. **Individual program pages themselves were not rewritten** — `/programs/elite-mentorship`, `/programs/flagship-transformation`, etc. keep whatever copy they already had. Only the hub page linking to them was rebuilt in this pass.
-6. **Transformation Stories, Corporate Partnerships copy refresh, Resources, and FAQ (redesign per Section 16) were not rebuilt.**
-7. **No analytics event taxonomy, privacy review, or prelaunch checklist docs were produced.** `STRENTOR_Analytics_Events.md` and `STRENTOR_Privacy_Review_Required.md` and `STRENTOR_Prelaunch_Checklist.md` from the brief's Section 22 are not included in this pass.
-8. **Accessibility**: nothing in this pass regressed existing accessibility (all rebuilt sections reused the same accessible motion primitives), but no dedicated WCAG 2.2 AA audit was run against the new content specifically (heading order, contrast on new copy blocks, etc.) beyond what a normal build/typecheck catches.
-9. **Regional form fields (timezone, preferred communication method) from Section 12 were not added.** The existing `IntakeForm` already collects city and country; the checkout flow separately collects city and customer segment (built earlier in this project). Neither collects timezone or communication preference.
+1. **No dedicated "The STRENTOR Method" page exists** — the header still links to a homepage anchor (`/#method`) for this one. ("Transformation Stories" was resolved in Pass 4 above.)
+2. **"Sponsor a Seat" / donor-funded seat language still exists** (`/sponsor-a-seat`, `config/accessTiers.ts`, `config/sponsorshipOptions.ts`) and is real, functioning business infrastructure (an actual donor-funded-seat program), not fabricated content. It's now a secondary link rather than a co-primary CTA on `/programs`, but the page itself, its nav visibility, and its underlying ₹74,999 flat pricing (which may or may not still be current — see the content verification doc) were not touched. This needs an explicit call from STRENTOR on whether sponsorship stays as a secondary pathway (recommended) or is phased out.
+3. **The `/assessment` "Readiness Assessment" tool now has no inbound marketing links from the homepage**, since its actual purpose (post-signup training-safety screening) doesn't match a first-touch CTA. It's still reachable from wherever it was linked before this pass (e.g. post-onboarding flows) — that was not audited in this session.
+4. **Individual program pages themselves were not rewritten** — `/programs/elite-mentorship`, `/programs/flagship-transformation`, etc. keep whatever copy they already had. Only the hub page linking to them was rebuilt in this pass.
+5. **Corporate Partnerships copy refresh, Resources, and FAQ (redesign per Section 16) were not rebuilt.**
+6. **No analytics event taxonomy, privacy review, or prelaunch checklist docs were produced.** `STRENTOR_Analytics_Events.md` and `STRENTOR_Privacy_Review_Required.md` and `STRENTOR_Prelaunch_Checklist.md` from the brief's Section 22 are not included in this pass.
+7. **Accessibility**: nothing in this pass regressed existing accessibility (all rebuilt sections reused the same accessible motion primitives), but no dedicated WCAG 2.2 AA audit was run against the new content specifically (heading order, contrast on new copy blocks, etc.) beyond what a normal build/typecheck catches.
+8. **Regional form fields (timezone, preferred communication method) from Section 12 were not added.** The existing `IntakeForm` already collects city and country; the checkout flow separately collects city and customer segment (built earlier in this project). Neither collects timezone or communication preference.
 
-## 4. What was verified before shipping
+## 7. What was verified before shipping
 
 - `npx tsc --noEmit --skipLibCheck` — clean.
 - `npm run build` — clean, all routes (including the rebuilt homepage) prerender/build successfully.

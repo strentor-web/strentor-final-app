@@ -448,6 +448,15 @@ export default function Home() {
         <ScrollReveal>
           <Testimonials />
         </ScrollReveal>
+        <div className="pb-16 text-center">
+          <Link
+            href="/transformation-stories"
+            className="group inline-flex items-center gap-1 font-semibold text-[#C9A96A] transition-colors hover:text-[#C9A96A]/80"
+          >
+            Read all transformation stories
+            <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+          </Link>
+        </div>
       </div>
 
       {/* Founder Credibility */}
