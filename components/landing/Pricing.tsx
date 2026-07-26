@@ -110,7 +110,7 @@ export default function Pricing() {
     calculateCyclePriceForCountry(sessionsPerWeek, selectedOption.value, trainingMode, countryCode);
   const weeksInCycle = selectedOption.value * WEEKS_PER_MONTH;
   const currencySymbol = CURRENCY_SYMBOLS[currency];
-  const pricePerSession = Math.round(originalPrice / totalSessions);
+  const pricePerSession = Math.round(discountedPrice / totalSessions);
   const lifetime = getLifetimePriceForCountry(sessionsPerWeek, trainingMode, countryCode);
   const lifetimePrice = lifetime?.amount;
 
