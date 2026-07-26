@@ -23,13 +23,28 @@ import { FloatingLogoScene } from "@/components/three/FloatingLogoSceneLazy";
 import { ScrollReveal, StaggerGroup } from "@/components/motion/ScrollReveal";
 import { ScrollStory } from "@/components/motion/ScrollStory";
 import { HoverLift } from "@/components/motion/HoverLift";
+import { TrackedLink } from "@/components/analytics/TrackedLink";
+
+const homeTitle = "STRENTOR — Premium Performance Coaching for Wheelchair Users";
+const homeDescription =
+  "Premium strength, mindset and purpose coaching for ambitious wheelchair users in India, the UAE and Singapore. Personalized coaching that connects adaptive strength, nutrition, mindset and accountability to the goals that matter in your life. Founder-led by Aditya Mandan, a wheelchair user and para powerlifter.";
 
 export const metadata: Metadata = {
-  title: "STRENTOR — Premium Performance Coaching for Wheelchair Users",
-  description:
-    "Premium strength, mindset and purpose coaching for ambitious wheelchair users in India, the UAE and Singapore. Personalized coaching that connects adaptive strength, nutrition, mindset and accountability to the goals that matter in your life. Founder-led by Aditya Mandan, a wheelchair user and para powerlifter.",
+  title: { absolute: homeTitle },
+  description: homeDescription,
   alternates: {
     canonical: "/",
+  },
+  openGraph: {
+    title: homeTitle,
+    description: homeDescription,
+    type: "website",
+    url: "https://www.strentor.com/",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: homeTitle,
+    description: homeDescription,
   },
 };
 
@@ -209,7 +224,9 @@ export default function Home() {
                 asChild
                 className="h-14 rounded-full bg-[#C9A96A] px-8 text-black transition-transform hover:scale-105 hover:bg-[#C9A96A]/90"
               >
-                <Link href="/apply-for-access">Take the Performance Assessment</Link>
+                <TrackedLink href="/apply-for-access" event="hero_cta_click" eventParams={{ location: "hero" }}>
+                  Take the Performance Assessment
+                </TrackedLink>
               </Button>
               <Button
                 asChild
@@ -515,7 +532,9 @@ export default function Home() {
               asChild
               className="h-14 rounded-full bg-[#C9A96A] px-8 text-black transition-transform hover:scale-105 hover:bg-[#C9A96A]/90"
             >
-              <Link href="/apply-for-access">Take the Performance Assessment</Link>
+              <TrackedLink href="/apply-for-access" event="hero_cta_click" eventParams={{ location: "programs_section" }}>
+                Take the Performance Assessment
+              </TrackedLink>
             </Button>
             <Button asChild variant="outline" className="h-14 rounded-full px-8 transition-transform hover:scale-105">
               <Link href="/programs">See All Programs</Link>
@@ -558,7 +577,9 @@ export default function Home() {
               asChild
               className="h-14 rounded-full bg-[#C9A96A] px-8 text-black transition-transform hover:scale-105 hover:bg-[#C9A96A]/90"
             >
-              <Link href="/apply-for-access">Take the Performance Assessment</Link>
+              <TrackedLink href="/apply-for-access" event="hero_cta_click" eventParams={{ location: "final_cta" }}>
+                Take the Performance Assessment
+              </TrackedLink>
             </Button>
             <Link
               href="/coaching"

@@ -23,6 +23,7 @@ import {
 import { ScrollReveal, StaggerGroup } from "@/components/motion/ScrollReveal"
 import { HoverLift } from "@/components/motion/HoverLift"
 import { ProgramWheel3D } from "@/components/three/ProgramWheel3DLazy"
+import { TrackedLink } from "@/components/analytics/TrackedLink"
 
 // Every card links to a real, already-built program page — nothing here
 // is invented or marked available ahead of business approval.
@@ -251,13 +252,15 @@ export default function ProgramsPage() {
                   <h3 className="text-lg font-bold text-card-foreground">{program.title}</h3>
                   <p className="mt-1 text-muted-foreground">{program.description}</p>
                 </div>
-                <Link
+                <TrackedLink
                   href={program.href}
+                  event="program_view"
+                  eventParams={{ program: program.title }}
                   className="group inline-flex items-center gap-1 font-semibold text-[#C9A96A] transition-colors hover:text-[#C9A96A]/80"
                 >
                   {program.cta}
                   <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
-                </Link>
+                </TrackedLink>
               </HoverLift>
             </ScrollReveal>
           ))}

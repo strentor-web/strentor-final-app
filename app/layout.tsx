@@ -11,9 +11,9 @@ const siteUrl = "https://www.strentor.com/";
 
 const previewImageUrl = new URL("/strentor-social-preview.jpg", siteUrl).toString();
 
-const defaultTitle = "Strentor | Adaptive Strength Coaching for Wheelchair Users";
+const defaultTitle = "Strentor | Premium Performance Coaching for Wheelchair Users";
 const defaultDescription =
-  "STRENTOR is an online adaptive strength, nutrition, mindset, and purpose coaching brand for wheelchair users with spina bifida, CKD, chronic health realities, or long-term physical challenges. Coached by a national-level para powerlifter.";
+  "STRENTOR is a premium strength, mindset, and purpose coaching brand for ambitious wheelchair users in India, the UAE, and Singapore. Founder-led by Aditya Mandan, a wheelchair user and national-level para powerlifter.";
 
   export const metadata: Metadata = {
     metadataBase: new URL(siteUrl),

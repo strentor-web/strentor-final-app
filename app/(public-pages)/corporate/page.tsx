@@ -26,6 +26,7 @@ import {
   FileText,
 } from "lucide-react";
 import Link from "next/link";
+import { TrackedLink } from "@/components/analytics/TrackedLink";
 
 const designedForOrganizations = [
   {
@@ -292,10 +293,10 @@ export default function CorporatePage() {
           </p>
           <div className="mt-8 flex flex-col items-center justify-center gap-4 sm:flex-row">
             <Button size="lg" className="w-full rounded-full bg-[#C9A96A] hover:bg-[#C9A96A]/90 sm:w-auto" asChild>
-              <Link href="/contact?type=corporate">
+              <TrackedLink href="/contact?type=corporate" event="corporate_enquiry_intent" eventParams={{ location: "hero" }}>
                 Discuss a Partnership
                 <ArrowRight className="h-4 w-4" />
-              </Link>
+              </TrackedLink>
             </Button>
             <Button
               size="lg"
@@ -571,10 +572,10 @@ export default function CorporatePage() {
           </p>
           <div className="mt-8 flex flex-col items-center justify-center gap-4 sm:flex-row">
             <Button size="lg" className="w-full rounded-full bg-[#C9A96A] hover:bg-[#C9A96A]/90 sm:w-auto" asChild>
-              <Link href="/contact?type=corporate">
+              <TrackedLink href="/contact?type=corporate" event="corporate_enquiry_intent" eventParams={{ location: "final_cta" }}>
                 Discuss a Partnership
                 <ArrowRight className="h-4 w-4" />
-              </Link>
+              </TrackedLink>
             </Button>
             <Button
               size="lg"
