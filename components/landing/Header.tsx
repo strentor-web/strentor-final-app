@@ -8,15 +8,12 @@ import Link from "next/link"
 
 const navLinks = [
   { href: "/", label: "Home" },
-  { href: "/start-here", label: "Start Here" },
-  { href: "/apply-for-access", label: "Apply for Access" },
-  { href: "/sponsor-a-seat", label: "Sponsor a Seat" },
+  { href: "/#method", label: "The STRENTOR Method" },
   { href: "/programs", label: "Programs" },
-  { href: "/impact", label: "Impact" },
-  { href: "/partner-with-us", label: "Partner With Us" },
+  { href: "/#stories", label: "Transformation Stories" },
   { href: "/about", label: "About" },
-  { href: "/community", label: "Community" },
-  { href: "/contact", label: "Contact" },
+  { href: "/resources", label: "Resources" },
+  { href: "/corporate", label: "Corporate Partnerships" },
 ];
 
 export default function Header() {
@@ -66,7 +63,7 @@ export default function Header() {
               asChild
               className="hidden lg:inline-flex shadow-2xl h-10 rounded-full bg-strentor-red hover:bg-strentor-red/80 text-primary-foreground"
             >
-              <Link href="/apply-for-access">Apply Now</Link>
+              <Link href="/apply-for-access">Apply for Coaching</Link>
             </Button>
           </div>
         </div>
@@ -84,7 +81,7 @@ export default function Header() {
               </Link>
             ))}
             <Button asChild className="shadow-2xl h-10 rounded-full bg-strentor-red hover:bg-strentor-red/80 text-primary-foreground">
-              <Link href="/apply-for-access">Apply Now</Link>
+              <Link href="/apply-for-access">Apply for Coaching</Link>
             </Button>
           </nav>
         )}

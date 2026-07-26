@@ -15,8 +15,8 @@ interface TransformationItem {
 
 const transformations: TransformationItem[] = [
   {
-    title: "Take Control of Your Condition",
-    description: "Manage or Reverse Chronic Health Issues Like Diabetes or Thyroid Problems.",
+    title: "Build Healthier Daily Habits",
+    description: "Structured training, nutrition guidance, and accountability alongside your existing medical care — not a substitute for it.",
     icon: HeartPulse,
     color: "#C9A96A",
     lightColor: "rgba(212, 175, 55, 0.1)"
