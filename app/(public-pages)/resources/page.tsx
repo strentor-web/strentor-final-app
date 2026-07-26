@@ -33,7 +33,7 @@ const resources: Resource[] = [
     description:
       "A short, practical checklist covering the basics you should have in place before starting adaptive strength coaching — from equipment access to a general sense of your current activity level.",
     ctaLabel: "Get the Checklist",
-    href: "/contact?type=personal",
+    href: "/readiness-checklist",
   },
   {
     icon: Activity,
@@ -41,7 +41,7 @@ const resources: Resource[] = [
     description:
       "A guided self-assessment that walks through training readiness, safety signals, and mobility context, so you and a coach can have a focused first conversation instead of starting from zero.",
     ctaLabel: "Start the Assessment",
-    href: "/contact?type=personal",
+    href: "/assessment",
   },
   {
     icon: Rocket,

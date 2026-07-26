@@ -293,7 +293,7 @@ export default function CorporatePage() {
           <div className="mt-8 flex flex-col items-center justify-center gap-4 sm:flex-row">
             <Button size="lg" className="w-full rounded-full bg-[#C9A96A] hover:bg-[#C9A96A]/90 sm:w-auto" asChild>
               <Link href="/contact?type=corporate">
-                Discuss Corporate Program
+                Discuss a Partnership
                 <ArrowRight className="h-4 w-4" />
               </Link>
             </Button>
@@ -572,7 +572,7 @@ export default function CorporatePage() {
           <div className="mt-8 flex flex-col items-center justify-center gap-4 sm:flex-row">
             <Button size="lg" className="w-full rounded-full bg-[#C9A96A] hover:bg-[#C9A96A]/90 sm:w-auto" asChild>
               <Link href="/contact?type=corporate">
-                Discuss Corporate Program
+                Discuss a Partnership
                 <ArrowRight className="h-4 w-4" />
               </Link>
             </Button>

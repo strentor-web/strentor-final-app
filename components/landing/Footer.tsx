@@ -14,7 +14,7 @@ export default function Footer() {
             <span className="font-bold text-foreground">STRENTOR</span>
           </Link>
           <p className="text-sm text-muted-foreground">
-            Holistic strength for wheelchair users. Founder-led, wheelchair-first, mission-driven.
+            Premium strength, mindset and purpose coaching for ambitious wheelchair users. Founder-led, wheelchair-first.
           </p>
         </div>
 
@@ -23,25 +23,25 @@ export default function Footer() {
           <h3 className="text-lg font-semibold text-foreground">Quick Links</h3>
           <ul className="space-y-2 text-sm text-muted-foreground">
             <li className="hover:text-primary">
-              <Link href="/programs">12-Week Program</Link>
+              <Link href="/the-strentor-method">The STRENTOR Method</Link>
             </li>
             <li className="hover:text-primary">
-              <Link href="/apply-for-access">Apply for Access</Link>
+              <Link href="/programs">Programs</Link>
             </li>
             <li className="hover:text-primary">
-              <Link href="/sponsor-a-seat">Sponsor a Seat</Link>
-            </li>
-            <li className="hover:text-primary">
-              <Link href="/impact">Impact</Link>
-            </li>
-            <li className="hover:text-primary">
-              <Link href="/partner-with-us">Partner With Us</Link>
+              <Link href="/transformation-stories">Transformation Stories</Link>
             </li>
             <li className="hover:text-primary">
               <Link href="/about">About</Link>
             </li>
             <li className="hover:text-primary">
-              <Link href="/community">Community</Link>
+              <Link href="/resources">Resources</Link>
+            </li>
+            <li className="hover:text-primary">
+              <Link href="/corporate">Corporate Partnerships</Link>
+            </li>
+            <li className="hover:text-primary">
+              <Link href="/faq">FAQ</Link>
             </li>
           </ul>
         </div>
@@ -58,6 +58,9 @@ export default function Footer() {
             </li>
             <li className="hover:text-primary">
               <Link href="/medical-disclaimer">Medical Disclaimer</Link>
+            </li>
+            <li className="hover:text-primary">
+              <Link href="/sponsor-a-seat">Sponsor a Seat</Link>
             </li>
           </ul>
         </div>
