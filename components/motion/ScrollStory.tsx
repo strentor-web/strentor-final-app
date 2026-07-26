@@ -34,13 +34,19 @@ function StoryBeat({ children, index, total, scrollYProgress }: StoryBeatProps) 
       ? [segStart, fadeIn, segEnd, segEnd]
       : [segStart, fadeIn, fadeOut, segEnd]
   const opacityOutput = isFirst ? [1, 1, 1, 0] : isLast ? [0, 1, 1, 1] : [0, 1, 1, 0]
+  // Beats fly through 3D space rather than just fading: tilted back on
+  // approach, flat and full-size at the peak, tilted forward on the way out.
+  const scaleOutput = isFirst ? [1, 1, 1, 0.92] : isLast ? [0.92, 1, 1, 1] : [0.92, 1, 1, 0.92]
+  const tiltOutput = isFirst ? [0, 0, 0, -10] : isLast ? [10, 0, 0, 0] : [10, 0, 0, -10]
 
   const opacity = useTransform(scrollYProgress, opacityInput, opacityOutput)
   const y = useTransform(scrollYProgress, [segStart, segEnd], [28, -28])
+  const scale = useTransform(scrollYProgress, opacityInput, scaleOutput)
+  const rotateX = useTransform(scrollYProgress, opacityInput, tiltOutput)
 
   return (
     <motion.div
-      style={{ opacity, y }}
+      style={{ opacity, y, scale, rotateX, transformPerspective: 1200 }}
       className="pointer-events-none absolute inset-0 flex items-center justify-center px-4"
     >
       <div className="pointer-events-auto">{children}</div>
