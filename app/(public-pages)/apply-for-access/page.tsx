@@ -10,32 +10,32 @@ import { Check } from "lucide-react"
 const steps = [
   {
     number: 1,
-    title: "Application",
-    description: "Submit your details",
+    title: "Performance Assessment",
+    description: "Tell us about your goals, situation, and readiness",
   },
   {
     number: 2,
     title: "Review",
-    description: "We review your application",
+    description: "STRENTOR reviews your goals, readiness, and coaching fit",
   },
   {
     number: 3,
-    title: "Access Decision",
-    description: "We assign the right access tier",
+    title: "Discovery Conversation",
+    description: "Qualified applicants are invited to talk it through",
   },
   {
     number: 4,
-    title: "Begin Program",
-    description: "Start your 12-week journey",
+    title: "Coaching Begins",
+    description: "Pathway recommended, onboarding and baseline assessment start",
   },
 ]
 
 const eligibility = [
-  "Wheelchair users (18+ years)",
-  "Motivated to build strength & habits",
+  "Wheelchair users (18+) ready to build real strength and capability",
+  "Committed to structured coaching, not random workouts",
   "Ready to commit 2–4x per week",
-  "Open to guidance & accountability",
-  "Living with physical challenges, health realities, or long-term conditions",
+  "Open to being coached, tracked, and held accountable",
+  "Focused on long-term progress, not a one-off session",
 ]
 
 export default function ApplyForAccessPage() {
@@ -48,14 +48,15 @@ export default function ApplyForAccessPage() {
         <div className="absolute inset-0 bg-gradient-to-br from-[#C9A96A]/10 via-black to-black" />
         <ScrollReveal direction="none" duration={0.6} className="container relative mx-auto px-4 text-center">
           <span className="text-sm font-bold uppercase tracking-widest text-[#C9A96A]">
-            Access Application
+            Performance Assessment
           </span>
           <h1 className="mt-4 text-4xl font-bold font-display text-white sm:text-5xl md:text-6xl">
-            Apply for a <span className="text-[#C9A96A]">STRENTOR Access Seat</span>
+            Apply for <span className="text-[#C9A96A]">Private Coaching</span>
           </h1>
           <p className="mx-auto mt-6 max-w-2xl text-lg text-gray-300 md:text-xl">
-            Take the first step toward building seated strength, confidence,
-            discipline, and daily fitness habits.
+            A structured assessment of your goals, readiness, and fit — so
+            STRENTOR can recommend the right personalized coaching pathway
+            for you.
           </p>
         </ScrollReveal>
       </div>
@@ -85,11 +86,11 @@ export default function ApplyForAccessPage() {
           {/* Left column: Who Can Apply */}
           <ScrollReveal direction="left" className="rounded-2xl border border-border bg-card p-8 lg:sticky lg:top-24">
             <h2 className="text-2xl font-bold font-display text-card-foreground">
-              Who Can Apply?
+              Is This Right for You?
             </h2>
             <p className="mt-2 text-sm text-muted-foreground">
-              STRENTOR Access seats are for people who are ready to show up and build
-              real, lasting strength.
+              STRENTOR coaching is for wheelchair users ready to show up and
+              build real, lasting strength — not a one-off exercise chart.
             </p>
             <StaggerGroup as="ul" className="mt-6 space-y-4">
               {eligibility.map((item) => (
@@ -109,14 +110,16 @@ export default function ApplyForAccessPage() {
           <div>
             <ScrollReveal direction="right">
               <h2 className="text-2xl font-bold font-display text-foreground">
-                Application Form
+                Performance Assessment
               </h2>
             </ScrollReveal>
             <div className="mt-6">
               <IntakeForm initialPathway="personal" sourcePage="/apply-for-access" />
             </div>
             <p className="mt-4 text-center text-xs text-muted-foreground">
-              Your information is safe and only used for program evaluation.
+              Your information is confidential and used only to recommend the
+              right coaching pathway for you. This is not a medical intake
+              form, and STRENTOR coaching does not replace medical care.
             </p>
           </div>
         </div>

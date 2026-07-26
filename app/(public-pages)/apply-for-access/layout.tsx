@@ -1,8 +1,8 @@
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: "Apply for Access",
-  description: "Apply for a STRENTOR Access Seat — the application for our 12-week wheelchair-user-focused adaptive strength coaching program. Submit your details for review and an access-tier decision.",
+  title: "Performance Assessment — Apply for Coaching",
+  description: "Take the STRENTOR Performance Assessment — a structured review of your goals, readiness, and fit, so we can recommend the right personalized coaching pathway for you.",
   alternates: {
     canonical: "/apply-for-access",
   },

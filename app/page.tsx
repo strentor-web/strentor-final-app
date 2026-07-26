@@ -209,7 +209,7 @@ export default function Home() {
                 asChild
                 className="h-14 rounded-full bg-[#C9A96A] px-8 text-black transition-transform hover:scale-105 hover:bg-[#C9A96A]/90"
               >
-                <Link href="/assessment">Take the Performance Assessment</Link>
+                <Link href="/apply-for-access">Take the Performance Assessment</Link>
               </Button>
               <Button
                 asChild
@@ -497,7 +497,7 @@ export default function Home() {
               asChild
               className="h-14 rounded-full bg-[#C9A96A] px-8 text-black transition-transform hover:scale-105 hover:bg-[#C9A96A]/90"
             >
-              <Link href="/assessment">Take the Performance Assessment</Link>
+              <Link href="/apply-for-access">Take the Performance Assessment</Link>
             </Button>
             <Button asChild variant="outline" className="h-14 rounded-full px-8 transition-transform hover:scale-105">
               <Link href="/programs">See All Programs</Link>
@@ -540,7 +540,7 @@ export default function Home() {
               asChild
               className="h-14 rounded-full bg-[#C9A96A] px-8 text-black transition-transform hover:scale-105 hover:bg-[#C9A96A]/90"
             >
-              <Link href="/assessment">Take the Performance Assessment</Link>
+              <Link href="/apply-for-access">Take the Performance Assessment</Link>
             </Button>
             <Link
               href="/coaching"
