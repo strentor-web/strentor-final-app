@@ -15,6 +15,11 @@ interface ScrollRevealProps {
   distance?: number
   once?: boolean
   as?: "div" | "section" | "li"
+  /** Starting scale (e.g. 0.94) the element grows in from — Apple's
+   * signature "zoom into place" headline treatment. 1 (default) = off. */
+  scale?: number
+  /** Blur-to-sharp entrance, layered on top of the fade/slide. */
+  blur?: boolean
 }
 
 const OFFSETS: Record<Direction, { x?: number; y?: number }> = {
@@ -40,6 +45,8 @@ export function ScrollReveal({
   distance = 24,
   once = true,
   as = "div",
+  scale = 1,
+  blur = false,
 }: ScrollRevealProps) {
   const shouldReduceMotion = useReducedMotion()
   const offset = OFFSETS[direction]
@@ -51,8 +58,10 @@ export function ScrollReveal({
           opacity: 0,
           x: offset.x ? offset.x * distance : 0,
           y: offset.y ? offset.y * distance : 0,
+          scale,
+          filter: blur ? "blur(12px)" : "blur(0px)",
         },
-        visible: { opacity: 1, x: 0, y: 0 },
+        visible: { opacity: 1, x: 0, y: 0, scale: 1, filter: "blur(0px)" },
       }
 
   const MotionTag = motion[as]
