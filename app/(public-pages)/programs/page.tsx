@@ -7,25 +7,76 @@ import Header from "@/components/landing/Header"
 import Footer from "@/components/landing/Footer"
 import { Button } from "@/components/ui/button"
 import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table"
-import {
   Dumbbell,
   Apple,
   Brain,
   Users,
   ShieldCheck,
   Compass,
+  Crown,
+  Sparkles,
+  Rocket,
+  Bot,
+  Building2,
+  ArrowRight,
 } from "lucide-react"
-import { accessTiers, PROGRAM_TRUE_VALUE } from "@/config/accessTiers"
 import { ScrollReveal, StaggerGroup } from "@/components/motion/ScrollReveal"
 import { HoverLift } from "@/components/motion/HoverLift"
 import { ProgramWheel3D } from "@/components/three/ProgramWheel3DLazy"
+
+// Every card links to a real, already-built program page — nothing here
+// is invented or marked available ahead of business approval.
+const programs = [
+  {
+    icon: Crown,
+    title: "Elite Mentorship",
+    description: "Private, high-touch coaching with direct founder access — for clients seeking fully integrated physical, mental, emotional, and purpose development.",
+    cta: "Apply for Elite Mentorship",
+    href: "/programs/elite-mentorship",
+  },
+  {
+    icon: Sparkles,
+    title: "Flagship Transformation",
+    description: "A structured, four-phase program: assess and stabilise, build the foundation, progress strength, build independence.",
+    cta: "Explore Flagship Transformation",
+    href: "/programs/flagship-transformation",
+  },
+  {
+    icon: Dumbbell,
+    title: "Strength & Performance Coaching",
+    description: "Focused adaptive strength training, nutrition guidance, and progress tracking — the core STRENTOR coaching program.",
+    cta: "Explore Strength Coaching",
+    href: "/programs/fitness-training",
+  },
+  {
+    icon: Users,
+    title: "Strength Circle",
+    description: "Education, community, and group support — structured coaching for clients who prefer a group environment.",
+    cta: "Join the Strength Circle",
+    href: "/programs/membership",
+  },
+  {
+    icon: Rocket,
+    title: "7-Day Starter Kit",
+    description: "A low-commitment introduction to adaptive strength training — exercise plan, video feedback, and daily tracking.",
+    cta: "Get the Starter Kit",
+    href: "/programs/starter-kit",
+  },
+  {
+    icon: Bot,
+    title: "AI Coaching",
+    description: "Structured, tech-assisted coaching for clients who want a lower-commitment starting point.",
+    cta: "Explore AI Coaching",
+    href: "/programs/ai-coaching",
+  },
+  {
+    icon: Building2,
+    title: "Corporate & Institutional Programs",
+    description: "Programs for companies, institutions, and organizations seeking wheelchair-first performance, wellbeing, or inclusion initiatives.",
+    cta: "Discuss a Partnership",
+    href: "/corporate",
+  },
+]
 
 const pillars = [
   {
@@ -89,19 +140,20 @@ export default function ProgramsPage() {
         <div className="absolute inset-0 bg-gradient-to-br from-[#C9A96A]/10 via-black to-black" />
         <div className="container relative mx-auto px-4 text-center">
           <span className="text-sm font-bold uppercase tracking-widest text-[#C9A96A]">
-            The STRENTOR Program
+            Programs
           </span>
           <h1 className="mt-4 text-4xl font-bold font-display text-white sm:text-5xl md:text-6xl">
-            The 12-Week <span className="text-[#C9A96A]">STRENTOR</span> Holistic Strength Program
+            Coaching matched to your <span className="text-[#C9A96A]">goals and readiness</span>
           </h1>
           <p className="mx-auto mt-6 max-w-2xl text-lg text-gray-300 md:text-xl">
-            A complete system to build seated strength, confidence, discipline, resilience and
-            daily fitness habits.
+            STRENTOR runs several coaching programs, each built for a different level of support
+            and commitment. The right fit for you is recommended after the Performance Assessment
+            — but here is what exists today.
           </p>
           <div className="mt-8">
             <Button asChild className="h-14 rounded-full bg-[#C9A96A] px-8 hover:bg-[#C9A96A]/90">
               <Link href="/apply-for-access">
-                Apply for Access
+                Take the Performance Assessment
               </Link>
             </Button>
           </div>
@@ -176,40 +228,40 @@ export default function ProgramsPage() {
         </div>
       </section>
 
-      {/* Access-Based Pricing */}
+      {/* Program tiers */}
       <section className="container mx-auto px-4 py-16 md:py-24">
-        <ScrollReveal className="mx-auto max-w-3xl text-center">
+        <ScrollReveal className="mx-auto max-w-2xl text-center">
           <h2 className="text-3xl font-bold font-display text-foreground sm:text-4xl">
-            Access-Based Pricing
+            Every current STRENTOR program
           </h2>
           <p className="mt-4 text-lg text-muted-foreground">
-            The 12-week program (minimum 3 sessions per week for at least 3 months) has one true
-            value: {PROGRAM_TRUE_VALUE} per participant. A seat is either fully sponsored by
-            donors and partners, or self-funded. Anyone can also pay it forward — sponsoring a
-            full seat for someone else — without needing to sign up for the program themselves.
+            Programs are recommended following your Performance Assessment. Pricing depends on
+            your program, region, and coaching format — see individual program pages for detail.
           </p>
         </ScrollReveal>
 
-        <ScrollReveal delay={0.1} className="mx-auto mt-10 max-w-4xl overflow-hidden rounded-2xl border border-border bg-card">
-          <Table>
-            <TableHeader>
-              <TableRow className="hover:bg-transparent">
-                <TableHead className="text-foreground">Access Tier</TableHead>
-                <TableHead className="text-foreground">Contribution (INR)</TableHead>
-                <TableHead className="text-foreground">Who It's For</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {accessTiers.map((tier) => (
-                <TableRow key={tier.id}>
-                  <TableCell className="font-semibold text-card-foreground">{tier.name}</TableCell>
-                  <TableCell className="text-[#C9A96A]">{tier.price}</TableCell>
-                  <TableCell className="text-muted-foreground">{tier.whoItsFor}</TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </ScrollReveal>
+        <StaggerGroup className="mx-auto mt-10 grid max-w-5xl gap-6 sm:grid-cols-2">
+          {programs.map((program) => (
+            <ScrollReveal key={program.href}>
+              <HoverLift className="flex h-full flex-col gap-4 rounded-2xl border border-border bg-card p-6 shadow-sm transition-colors hover:border-[#C9A96A]/40">
+                <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-[#C9A96A]">
+                  <program.icon className="h-5 w-5 text-strentor-black" />
+                </div>
+                <div className="flex-1">
+                  <h3 className="text-lg font-bold text-card-foreground">{program.title}</h3>
+                  <p className="mt-1 text-muted-foreground">{program.description}</p>
+                </div>
+                <Link
+                  href={program.href}
+                  className="group inline-flex items-center gap-1 font-semibold text-[#C9A96A] transition-colors hover:text-[#C9A96A]/80"
+                >
+                  {program.cta}
+                  <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+                </Link>
+              </HoverLift>
+            </ScrollReveal>
+          ))}
+        </StaggerGroup>
       </section>
 
       {/* Final CTA */}
@@ -217,28 +269,21 @@ export default function ProgramsPage() {
         <div className="absolute inset-0 bg-gradient-to-br from-[#C9A96A]/10 via-black to-black" />
         <ScrollReveal className="container relative mx-auto px-4 text-center">
           <h2 className="text-3xl font-bold font-display text-white sm:text-4xl">
-            Not sure which access tier fits you?
+            Not sure which program fits you?
           </h2>
           <p className="mx-auto mt-4 max-w-xl text-lg text-gray-300">
-            Apply and our team will match you to the right seat, or sponsor a seat for someone
-            who needs it.
+            Take the Performance Assessment and STRENTOR will recommend the right coaching
+            pathway based on your goals, readiness, and current situation.
           </p>
           <div className="mt-8 flex flex-col items-center justify-center gap-4 sm:flex-row">
             <Button asChild className="h-14 rounded-full bg-[#C9A96A] px-8 hover:bg-[#C9A96A]/90">
-              <Link href="/apply-for-access">Apply for Access</Link>
-            </Button>
-            <Button
-              asChild
-              variant="outline"
-              className="h-14 rounded-full border-[#C9A96A] px-8 text-[#C9A96A] hover:bg-[#C9A96A]/10"
-            >
-              <Link href="/sponsor-a-seat">Sponsor a Seat</Link>
+              <Link href="/apply-for-access">Take the Performance Assessment</Link>
             </Button>
           </div>
           <p className="mt-6 text-sm text-gray-400">
-            Prefer something lower-commitment?{" "}
-            <Link href="/programs/ai-coaching" className="text-[#C9A96A] hover:underline">
-              Explore STRENTOR AI Coaching
+            Want to fund coaching for someone else instead?{" "}
+            <Link href="/sponsor-a-seat" className="text-[#C9A96A] hover:underline">
+              Sponsor a seat
             </Link>
           </p>
         </ScrollReveal>
