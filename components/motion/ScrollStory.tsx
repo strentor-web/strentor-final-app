@@ -1,7 +1,9 @@
 "use client"
 
-import { ReactNode, useRef } from "react"
+import { ReactNode, useEffect, useRef, useState } from "react"
 import { motion, useReducedMotion, useScroll, useTransform, MotionValue } from "motion/react"
+
+type PinState = "before" | "pinned" | "after"
 
 interface StoryBeatProps {
   children: ReactNode
@@ -67,12 +69,19 @@ interface ScrollStoryProps {
 }
 
 /**
- * Apple.com's signature effect: a section "pins" in place (via position:
- * sticky) while its content crossfades through several beats as the
- * visitor scrolls past it. Falls back to a plain stacked, non-pinned list
- * under prefers-reduced-motion — scroll-linked pinning is exactly the kind
- * of effect that's uncomfortable for vestibular-sensitive visitors, and a
- * meaningful share of STRENTOR's audience is managing health conditions.
+ * Apple.com's signature effect: a section "pins" in place while its content
+ * crossfades through several beats as the visitor scrolls past it. Falls
+ * back to a plain stacked, non-pinned list under prefers-reduced-motion —
+ * scroll-linked pinning is exactly the kind of effect that's uncomfortable
+ * for vestibular-sensitive visitors, and a meaningful share of STRENTOR's
+ * audience is managing health conditions.
+ *
+ * The pin is driven by a manual scroll listener toggling position:fixed,
+ * rather than CSS position:sticky — iOS Safari has a well-documented bug
+ * where any ancestor with overflow-x:hidden (which this site sets globally
+ * on html/body to prevent horizontal scroll from decorative elements)
+ * silently breaks position:sticky, leaving the section unpinned. Fixed
+ * positioning isn't affected by that ancestor overflow setting.
  */
 export function ScrollStory({ beats, background, className, vhPerBeat = 100 }: ScrollStoryProps) {
   const containerRef = useRef<HTMLDivElement>(null)
@@ -81,6 +90,40 @@ export function ScrollStory({ beats, background, className, vhPerBeat = 100 }: S
     target: containerRef,
     offset: ["start start", "end end"],
   })
+  const [pinState, setPinState] = useState<PinState>("before")
+
+  useEffect(() => {
+    if (shouldReduceMotion) return
+
+    let ticking = false
+    function updatePinState() {
+      const el = containerRef.current
+      if (!el) return
+      const rect = el.getBoundingClientRect()
+      if (rect.top > 0) {
+        setPinState("before")
+      } else if (rect.bottom <= window.innerHeight) {
+        setPinState("after")
+      } else {
+        setPinState("pinned")
+      }
+      ticking = false
+    }
+    function onScroll() {
+      if (!ticking) {
+        ticking = true
+        requestAnimationFrame(updatePinState)
+      }
+    }
+
+    updatePinState()
+    window.addEventListener("scroll", onScroll, { passive: true })
+    window.addEventListener("resize", onScroll)
+    return () => {
+      window.removeEventListener("scroll", onScroll)
+      window.removeEventListener("resize", onScroll)
+    }
+  }, [shouldReduceMotion])
 
   if (shouldReduceMotion) {
     return (
@@ -98,8 +141,22 @@ export function ScrollStory({ beats, background, className, vhPerBeat = 100 }: S
   }
 
   return (
-    <div ref={containerRef} className={className} style={{ height: `${beats.length * vhPerBeat}dvh` }}>
-      <div className="sticky top-0 h-dvh w-full overflow-hidden relative">
+    <div
+      ref={containerRef}
+      className={className}
+      style={{ height: `${beats.length * vhPerBeat}dvh`, position: "relative" }}
+    >
+      <div
+        className="w-full overflow-hidden"
+        style={{
+          position: pinState === "pinned" ? "fixed" : "absolute",
+          top: pinState === "after" ? "auto" : 0,
+          bottom: pinState === "after" ? 0 : "auto",
+          left: 0,
+          right: 0,
+          height: "100dvh",
+        }}
+      >
         {background}
         <div className="relative h-full w-full">
           {beats.map((beat, i) => (
