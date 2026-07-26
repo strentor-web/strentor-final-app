@@ -8,7 +8,7 @@ import Link from "next/link"
 
 const navLinks = [
   { href: "/", label: "Home" },
-  { href: "/#method", label: "The STRENTOR Method" },
+  { href: "/the-strentor-method", label: "The STRENTOR Method" },
   { href: "/programs", label: "Programs" },
   { href: "/transformation-stories", label: "Transformation Stories" },
   { href: "/about", label: "About" },

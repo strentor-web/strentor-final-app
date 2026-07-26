@@ -362,6 +362,15 @@ export default function Home() {
               </ScrollReveal>
             ))}
           </div>
+          <div className="mt-10 text-center">
+            <Link
+              href="/the-strentor-method"
+              className="group inline-flex items-center gap-1 font-semibold text-[#C9A96A] transition-colors hover:text-[#C9A96A]/80"
+            >
+              Read the full method
+              <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+            </Link>
+          </div>
         </div>
       </section>
 

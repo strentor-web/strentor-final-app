@@ -64,20 +64,32 @@ Fixed in this pass:
 - Header's "Transformation Stories" nav link now points to the real page instead of the anchor; the homepage testimonials section gained a "Read all transformation stories" link to it; added to `app/sitemap.ts`.
 - Fixed the item flagged in Pass 2 about `components/landing/Testimonials.tsx` not respecting `prefers-reduced-motion`: the carousel's `setInterval`-driven auto-scroll now stops under reduced motion, falling back to a static grid — consistent with every other motion primitive in this codebase.
 
-## 6. Problems identified but NOT fixed in this pass
+## 6. Pass 5 — The STRENTOR Method page built
+
+"The STRENTOR Method" was the last primary nav item still pointing at a homepage anchor (`/#method`) rather than a real page.
+
+Fixed in this pass:
+
+- Built `/the-strentor-method`: expands the homepage's compact Break/Build/Become summary into a full page — each stage gets four concrete sub-points (not just the one-line description used on the homepage), plus a recap of the four coaching dimensions (Physical/Mental/Emotional/Purpose).
+- Cross-links to `/coaching` for visitors who want the operational detail (assessment process, session structure, safety principles, FAQ) — that page already covers this well and wasn't duplicated.
+- Header's "The STRENTOR Method" nav link now points to the real page; homepage's own method section gained a "Read the full method" link to it; added to `app/sitemap.ts`.
+- No new claims: every point on this page restates what's already asserted on the homepage or `/coaching`, just organized and expanded — nothing new was invented about the methodology.
+
+With this, every item in the brief's Section 7 primary nav now has a real, dedicated page except where a nav item deliberately points to functioning existing pages (Programs, About, Resources, Corporate Partnerships).
+
+## 7. Problems identified but NOT fixed in this pass
 
 These are real, found during this audit, and require either more implementation time or business/legal input before they can be resolved:
 
-1. **No dedicated "The STRENTOR Method" page exists** — the header still links to a homepage anchor (`/#method`) for this one. ("Transformation Stories" was resolved in Pass 4 above.)
-2. **"Sponsor a Seat" / donor-funded seat language still exists** (`/sponsor-a-seat`, `config/accessTiers.ts`, `config/sponsorshipOptions.ts`) and is real, functioning business infrastructure (an actual donor-funded-seat program), not fabricated content. It's now a secondary link rather than a co-primary CTA on `/programs`, but the page itself, its nav visibility, and its underlying ₹74,999 flat pricing (which may or may not still be current — see the content verification doc) were not touched. This needs an explicit call from STRENTOR on whether sponsorship stays as a secondary pathway (recommended) or is phased out.
-3. **The `/assessment` "Readiness Assessment" tool now has no inbound marketing links from the homepage**, since its actual purpose (post-signup training-safety screening) doesn't match a first-touch CTA. It's still reachable from wherever it was linked before this pass (e.g. post-onboarding flows) — that was not audited in this session.
-4. **Individual program pages themselves were not rewritten** — `/programs/elite-mentorship`, `/programs/flagship-transformation`, etc. keep whatever copy they already had. Only the hub page linking to them was rebuilt in this pass.
-5. **Corporate Partnerships copy refresh, Resources, and FAQ (redesign per Section 16) were not rebuilt.**
-6. **No analytics event taxonomy, privacy review, or prelaunch checklist docs were produced.** `STRENTOR_Analytics_Events.md` and `STRENTOR_Privacy_Review_Required.md` and `STRENTOR_Prelaunch_Checklist.md` from the brief's Section 22 are not included in this pass.
-7. **Accessibility**: nothing in this pass regressed existing accessibility (all rebuilt sections reused the same accessible motion primitives), but no dedicated WCAG 2.2 AA audit was run against the new content specifically (heading order, contrast on new copy blocks, etc.) beyond what a normal build/typecheck catches.
-8. **Regional form fields (timezone, preferred communication method) from Section 12 were not added.** The existing `IntakeForm` already collects city and country; the checkout flow separately collects city and customer segment (built earlier in this project). Neither collects timezone or communication preference.
+1. **"Sponsor a Seat" / donor-funded seat language still exists** (`/sponsor-a-seat`, `config/accessTiers.ts`, `config/sponsorshipOptions.ts`) and is real, functioning business infrastructure (an actual donor-funded-seat program), not fabricated content. It's now a secondary link rather than a co-primary CTA on `/programs`, but the page itself, its nav visibility, and its underlying ₹74,999 flat pricing (which may or may not still be current — see the content verification doc) were not touched. This needs an explicit call from STRENTOR on whether sponsorship stays as a secondary pathway (recommended) or is phased out.
+2. **The `/assessment` "Readiness Assessment" tool now has no inbound marketing links from the homepage**, since its actual purpose (post-signup training-safety screening) doesn't match a first-touch CTA. It's still reachable from wherever it was linked before this pass (e.g. post-onboarding flows) — that was not audited in this session.
+3. **Individual program pages themselves were not rewritten** — `/programs/elite-mentorship`, `/programs/flagship-transformation`, etc. keep whatever copy they already had. Only the hub page linking to them was rebuilt in this pass.
+4. **Corporate Partnerships copy refresh, Resources, and FAQ (redesign per Section 16) were not rebuilt.**
+5. **No analytics event taxonomy, privacy review, or prelaunch checklist docs were produced.** `STRENTOR_Analytics_Events.md` and `STRENTOR_Privacy_Review_Required.md` and `STRENTOR_Prelaunch_Checklist.md` from the brief's Section 22 are not included in this pass.
+6. **Accessibility**: nothing in this pass regressed existing accessibility (all rebuilt sections reused the same accessible motion primitives), but no dedicated WCAG 2.2 AA audit was run against the new content specifically (heading order, contrast on new copy blocks, etc.) beyond what a normal build/typecheck catches.
+7. **Regional form fields (timezone, preferred communication method) from Section 12 were not added.** The existing `IntakeForm` already collects city and country; the checkout flow separately collects city and customer segment (built earlier in this project). Neither collects timezone or communication preference.
 
-## 7. What was verified before shipping
+## 8. What was verified before shipping
 
 - `npx tsc --noEmit --skipLibCheck` — clean.
 - `npm run build` — clean, all routes (including the rebuilt homepage) prerender/build successfully.
