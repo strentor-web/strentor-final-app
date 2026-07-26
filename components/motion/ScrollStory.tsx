@@ -62,7 +62,7 @@ interface ScrollStoryProps {
    * a 3D scene or gradient) — doesn't crossfade with the text. */
   background?: ReactNode
   className?: string
-  /** Scroll distance per beat, in viewport heights. Lower = faster pace. */
+  /** Scroll distance per beat, in dynamic viewport heights (dvh). Lower = faster pace. */
   vhPerBeat?: number
 }
 
@@ -98,8 +98,8 @@ export function ScrollStory({ beats, background, className, vhPerBeat = 100 }: S
   }
 
   return (
-    <div ref={containerRef} className={className} style={{ height: `${beats.length * vhPerBeat}vh` }}>
-      <div className="sticky top-0 h-screen w-full overflow-hidden relative">
+    <div ref={containerRef} className={className} style={{ height: `${beats.length * vhPerBeat}dvh` }}>
+      <div className="sticky top-0 h-dvh w-full overflow-hidden relative">
         {background}
         <div className="relative h-full w-full">
           {beats.map((beat, i) => (
