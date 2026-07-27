@@ -1,11 +1,28 @@
 import type { MetadataRoute } from "next";
+import { getPublishedPosts } from "@/lib/blog";
 
 const siteUrl = "https://www.strentor.com";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const now = new Date();
 
+  const blogEntries: MetadataRoute.Sitemap = [
+    {
+      url: `${siteUrl}/blog`,
+      lastModified: now,
+      changeFrequency: "weekly",
+      priority: 0.7,
+    },
+    ...getPublishedPosts().map((post) => ({
+      url: `${siteUrl}/blog/${post.slug}`,
+      lastModified: new Date(post.publishedAt),
+      changeFrequency: "monthly" as const,
+      priority: 0.6,
+    })),
+  ];
+
   return [
+    ...blogEntries,
     {
       url: `${siteUrl}/`,
       lastModified: now,

@@ -13,6 +13,7 @@ const navLinks = [
   { href: "/transformation-stories", label: "Transformation Stories" },
   { href: "/about", label: "About" },
   { href: "/resources", label: "Resources" },
+  { href: "/blog", label: "Blog" },
   { href: "/corporate", label: "Corporate Partnerships" },
 ];
 

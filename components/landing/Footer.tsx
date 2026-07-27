@@ -38,6 +38,9 @@ export default function Footer() {
               <Link href="/resources">Resources</Link>
             </li>
             <li className="hover:text-primary">
+              <Link href="/blog">Blog</Link>
+            </li>
+            <li className="hover:text-primary">
               <Link href="/corporate">Corporate Partnerships</Link>
             </li>
             <li className="hover:text-primary">
