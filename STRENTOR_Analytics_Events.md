@@ -4,7 +4,9 @@ Date: 2026-07-26
 
 ## Setup
 
-Google Analytics (GA4, via `@next/third-parties/google`, `gaId="G-MBX9B1QQXM"`) is the site's only analytics integration, loaded in `app/layout.tsx`. Before this pass, it only captured automatic pageviews — no custom events existed anywhere in the codebase.
+Google Analytics (GA4, via `@next/third-parties/google`, `gaId="G-MBX9B1QQXM"`) is the site's only analytics integration. Before this engagement, it only captured automatic pageviews — no custom events existed anywhere in the codebase.
+
+**Consent-gated since the privacy pass**: GA (and Meta Pixel) now only load after the visitor accepts the cookie banner (`components/consent/AnalyticsConsent.tsx` — see `STRENTOR_Privacy_Review_Required.md`). `trackEvent()` already no-ops safely if `window.gtag` doesn't exist yet, so every event below simply doesn't fire for a visitor who hasn't accepted or has rejected — no error, no event queued for later, nothing sent. This was true by construction before the consent banner existed (the guard was originally just defensive coding against the script not having loaded yet); it now does real privacy-relevant work.
 
 A small, type-safe event helper was added:
 

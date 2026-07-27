@@ -4,16 +4,16 @@ Date: 2026-07-26
 
 This is a developer-facing list of implementation areas that need review by qualified counsel before production release, aimed at India (DPDP Act), UAE, and Singapore (PDPA) — the three primary markets named in the repositioning brief. **Nothing in this document constitutes legal advice or a compliance determination.** Every item below was found by reading the actual code in this repository, not assumed.
 
-## 1. Third-party trackers fire unconditionally, site-wide, with no consent mechanism
+## 1. Third-party trackers — RESOLVED (mechanism live; wording/model still needs counsel)
 
-`app/layout.tsx` loads, on every single page load across the entire application (marketing pages, the multi-step intake form, the authenticated dashboard, checkout):
+**Status update**: `app/layout.tsx` previously loaded Google Analytics and Meta/Facebook Pixel unconditionally, site-wide, with no consent mechanism. This is now fixed at the mechanism level: **`components/consent/AnalyticsConsent.tsx`** gates both trackers behind an explicit accept/reject banner (state stored client-side only, in `localStorage`, via `utils/consent.ts`). Neither tracker script loads, and no tracking request leaves the browser, until the visitor clicks "Accept." "Reject" is an equally-prominent button, not a dark pattern.
 
-- **Google Analytics** (`@next/third-parties/google`, `gaId="G-MBX9B1QQXM"`)
-- **Meta/Facebook Pixel** (`fbq('init', ...)`, `fbq('track', 'PageView')`, plus a `<noscript>` tracking pixel `<img>`)
+This was implemented as a **conservative, site-wide default** (block-until-consent everywhere) rather than trying to geo-detect which specific jurisdiction's rules apply to each visitor — this sandboxed environment has no way to reliably do that, and blocking-by-default is the safer failure mode if a stricter regime turns out to apply than expected.
 
-Both load via `strategy="afterInteractive"` / the Next.js third-party script pattern — neither is gated behind a cookie-consent banner or any opt-in mechanism. **Searched the codebase for a consent-banner component and found none.** This means every visitor, including one mid-way through submitting the health-related sections of the intake form (see item 2), is being tracked by two third-party ad/analytics platforms by default.
-
-**Needs legal review**: whether this requires a consent banner (GDPR-style, relevant if any EU visitors occur despite the primary markets being India/UAE/Singapore), what DPDP Act and PDPA actually require here, and whether Meta Pixel specifically needs to be gated or removed from pages where sensitive data is being entered.
+**Still needs legal review**:
+- The banner's exact wording (currently: "We use analytics and marketing cookies to understand site usage. They only load if you accept.") — a plain-English placeholder, not vetted copy.
+- Whether a single accept/reject choice is sufficient, or whether DPDP Act / PDPA / any other applicable regime requires **per-category** consent (e.g. analytics vs. marketing/ads decided separately) — Meta Pixel and Google Analytics are currently gated together as one decision.
+- Whether the current mechanism (client-side `localStorage`, no server record of consent) is sufficient, or whether a given jurisdiction requires a server-side, auditable consent record.
 
 ## 2. The intake form collects genuinely sensitive health data through a single, undifferentiated consent checkbox
 
