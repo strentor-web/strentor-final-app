@@ -18,6 +18,7 @@ export function decodeJWT(accessToken: string): CustomClaims | null {
       platform_access: decoded.platform_access || undefined,
       profile_completed: decoded.profile_completed || false,
       auth_user_id: decoded.auth_user_id || '',
+      corporate_group_id: decoded.corporate_group_id || undefined,
     };
   } catch (error) {
     console.error('Failed to decode JWT:', error);
@@ -85,6 +86,14 @@ export function isTrainerRole(userRole: UserRole): boolean {
   ].includes(userRole);
 }
 
+export function isCorporateAdmin(userRole: UserRole): boolean {
+  return userRole === 'CORPORATE_ADMIN';
+}
+
+export function isCorporateEmployee(userRole: UserRole): boolean {
+  return userRole === 'CORPORATE_EMPLOYEE';
+}
+
 export function hasPermission(
   userRole: UserRole,
   permission: string
@@ -113,15 +122,18 @@ export function canAccessRoute(
 ): boolean {
   // Define route access rules with new role structure
   const routeRules = {
-    // CLIENT-ONLY routes
-    '/calculator': ['CLIENT'],
-    '/plans': ['CLIENT'],
-    '/transformation': ['CLIENT'],
-    '/settings': ['CLIENT'],
+    // CLIENT routes — CORPORATE_EMPLOYEE reuses the same coaching dashboard
+    '/calculator': ['CLIENT', 'CORPORATE_EMPLOYEE'],
+    '/plans': ['CLIENT', 'CORPORATE_EMPLOYEE'],
+    '/transformation': ['CLIENT', 'CORPORATE_EMPLOYEE'],
+    '/settings': ['CLIENT', 'CORPORATE_EMPLOYEE'],
     '/pricing': ['CLIENT'],
-    '/personal-records': ['CLIENT'],
-    '/workout-plan': ['CLIENT'],
-    '/dashboard': ['CLIENT'],
+    '/personal-records': ['CLIENT', 'CORPORATE_EMPLOYEE'],
+    '/workout-plan': ['CLIENT', 'CORPORATE_EMPLOYEE'],
+    '/dashboard': ['CLIENT', 'CORPORATE_EMPLOYEE'],
+
+    // Company workshops — visible to a corporate account's employees and its admin
+    '/company-workshops': ['CORPORATE_EMPLOYEE', 'CORPORATE_ADMIN'],
 
     // TRAINER-ONLY routes
     '/fitness': ['FITNESS_TRAINER', 'FITNESS_TRAINER_ADMIN', 'TRAINER'], // Legacy TRAINER maps to fitness
@@ -129,8 +141,11 @@ export function canAccessRoute(
     // ADMIN-ONLY routes
     '/admin': ['ADMIN', 'FITNESS_TRAINER_ADMIN'],
 
+    // CORPORATE_ADMIN-ONLY routes
+    '/corporate-admin': ['CORPORATE_ADMIN'],
+
     // SHARED routes - accessible by all authenticated users
-    '/protected': ['CLIENT', 'FITNESS_TRAINER', 'FITNESS_TRAINER_ADMIN', 'ADMIN'],
+    '/protected': ['CLIENT', 'FITNESS_TRAINER', 'FITNESS_TRAINER_ADMIN', 'ADMIN', 'CORPORATE_ADMIN', 'CORPORATE_EMPLOYEE'],
 
     // Legacy /training route - redirect to /fitness
     '/training': ['FITNESS_TRAINER', 'FITNESS_TRAINER_ADMIN', 'TRAINER'],
@@ -155,7 +170,10 @@ export function getDefaultRouteForRole(userRole: UserRole): string {
       return '/fitness'; // Default to fitness, can switch to admin
     case 'ADMIN':
       return '/admin';
+    case 'CORPORATE_ADMIN':
+      return '/corporate-admin';
     case 'CLIENT':
+    case 'CORPORATE_EMPLOYEE':
     default:
       return '/dashboard';
   }

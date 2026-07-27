@@ -960,6 +960,14 @@ export function IntakeForm({ initialPathway, region, plan, sourcePage, onPathway
               <Input id="orgWebsite" value={corporate.organizationWebsite || ""} onChange={(e) => setCorporate({ ...corporate, organizationWebsite: e.target.value })} />
             </div>
             <div>
+              <Label htmlFor="industry">Industry / sector</Label>
+              <Input id="industry" placeholder="e.g. IT, manufacturing, finance" value={corporate.industry || ""} onChange={(e) => setCorporate({ ...corporate, industry: e.target.value })} />
+            </div>
+            <div>
+              <Label htmlFor="companyEmployeeCount">Company-wide employee headcount</Label>
+              <Input id="companyEmployeeCount" value={corporate.companyEmployeeCount || ""} onChange={(e) => setCorporate({ ...corporate, companyEmployeeCount: e.target.value })} />
+            </div>
+            <div>
               <Label htmlFor="audienceSize">Audience or beneficiary size</Label>
               <Input id="audienceSize" value={corporate.audienceSize || ""} onChange={(e) => setCorporate({ ...corporate, audienceSize: e.target.value })} />
             </div>
@@ -982,6 +990,38 @@ export function IntakeForm({ initialPathway, region, plan, sourcePage, onPathway
             <div className="sm:col-span-2">
               <Label htmlFor="timeline">Timeline</Label>
               <Input id="timeline" value={corporate.timeline || ""} onChange={(e) => setCorporate({ ...corporate, timeline: e.target.value })} />
+            </div>
+          </div>
+
+          <h3 className="mt-8 text-base font-bold text-card-foreground">HR / CSR contact</h3>
+          <p className="mt-1 text-sm text-muted-foreground">Only fill this in if it's someone other than you.</p>
+          <div className="mt-4 grid gap-4 sm:grid-cols-2">
+            <div>
+              <Label htmlFor="hrContactName">Contact name</Label>
+              <Input id="hrContactName" value={corporate.hrContactName || ""} onChange={(e) => setCorporate({ ...corporate, hrContactName: e.target.value })} />
+            </div>
+            <div>
+              <Label htmlFor="hrContactEmail">Contact email</Label>
+              <Input id="hrContactEmail" type="email" value={corporate.hrContactEmail || ""} onChange={(e) => setCorporate({ ...corporate, hrContactEmail: e.target.value })} />
+            </div>
+            <div>
+              <Label htmlFor="hrContactPhone">Contact phone</Label>
+              <Input id="hrContactPhone" value={corporate.hrContactPhone || ""} onChange={(e) => setCorporate({ ...corporate, hrContactPhone: e.target.value })} />
+            </div>
+          </div>
+
+          <h3 className="mt-8 text-base font-bold text-card-foreground">Billing details (optional)</h3>
+          <p className="mt-1 text-sm text-muted-foreground">
+            These are usually finalized at contract stage — fill in now only if you already have them handy.
+          </p>
+          <div className="mt-4 grid gap-4 sm:grid-cols-2">
+            <div className="sm:col-span-2">
+              <Label htmlFor="billingAddress">Company billing address</Label>
+              <Textarea id="billingAddress" value={corporate.billingAddress || ""} onChange={(e) => setCorporate({ ...corporate, billingAddress: e.target.value })} />
+            </div>
+            <div>
+              <Label htmlFor="gstNumber">GST number</Label>
+              <Input id="gstNumber" value={corporate.gstNumber || ""} onChange={(e) => setCorporate({ ...corporate, gstNumber: e.target.value })} />
             </div>
           </div>
 

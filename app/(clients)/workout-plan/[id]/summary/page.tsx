@@ -16,7 +16,7 @@ export default async function WorkoutPlanSummaryPage({
   params: Promise<{ id: string }> 
 }) {
   const { id } = await params;
-  const { user } = await validateServerRole(['CLIENT']);
+  const { user } = await validateServerRole(['CLIENT', 'CORPORATE_EMPLOYEE']);
   // Fetch the workout plan to get the duration
   const { data: workoutPlan, error } = await getClientWorkoutPlanFull({ planId: id });
 

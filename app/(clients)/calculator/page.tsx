@@ -13,7 +13,7 @@ export const metadata: Metadata = {
 
 export default async function Calculator() {
   // Validate user authentication and CLIENT role
-  const { user } = await validateServerRole(['CLIENT']);
+  const { user } = await validateServerRole(['CLIENT', 'CORPORATE_EMPLOYEE']);
   
   const calculators = [
     {

@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 
 export default async function PersonalRecords() {
   // Validate user authentication and CLIENT role
-  const { user } = await validateServerRole(['CLIENT']);
+  const { user } = await validateServerRole(['CLIENT', 'CORPORATE_EMPLOYEE']);
   
   const { uniqueExercises, allMaxLifts } = await getMaxLiftsData();
   

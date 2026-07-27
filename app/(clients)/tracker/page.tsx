@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 }
 
 export default async function TrackerPage() {
-  const { user } = await validateServerRole(["CLIENT"])
+  const { user } = await validateServerRole(["CLIENT", "CORPORATE_EMPLOYEE"])
 
   const logs = await prisma.pain_fatigue_logs.findMany({
     where: { user_id: user.id },

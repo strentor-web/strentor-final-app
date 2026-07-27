@@ -17,7 +17,7 @@ export const metadata: Metadata = {
 
 export default async function WorkoutPlanPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
-  const { user } = await validateServerRole(['CLIENT']);
+  const { user } = await validateServerRole(['CLIENT', 'CORPORATE_EMPLOYEE']);
 
   const { data: workoutPlan, error } = await getClientWorkoutPlanFull({ planId: id });
 

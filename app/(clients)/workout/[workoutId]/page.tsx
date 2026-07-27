@@ -15,7 +15,7 @@ export default async function WorkoutLogPage({
   const { workoutId } = await params;
   const { weekNumber } = await searchParams;
 
-  const { user } = await validateServerRole(['CLIENT']);
+  const { user } = await validateServerRole(['CLIENT', 'CORPORATE_EMPLOYEE']);
 
   // Validate required search params
   if (!weekNumber) {

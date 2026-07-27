@@ -207,6 +207,13 @@ export async function POST(request: NextRequest) {
         data.corporate.budgetRange ? `Budget: ${data.corporate.budgetRange}` : null,
         data.corporate.preferredFormat ? `Preferred format: ${data.corporate.preferredFormat}` : null,
         data.corporate.timeline ? `Timeline: ${data.corporate.timeline}` : null,
+        data.corporate.industry ? `Industry: ${data.corporate.industry}` : null,
+        data.corporate.companyEmployeeCount ? `Company headcount: ${data.corporate.companyEmployeeCount}` : null,
+        data.corporate.hrContactName || data.corporate.hrContactEmail || data.corporate.hrContactPhone
+          ? `HR/CSR contact: ${[data.corporate.hrContactName, data.corporate.hrContactEmail, data.corporate.hrContactPhone].filter(Boolean).join(" / ")}`
+          : null,
+        data.corporate.billingAddress ? `Billing address: ${data.corporate.billingAddress}` : null,
+        data.corporate.gstNumber ? `GST number: ${data.corporate.gstNumber}` : null,
         Array.isArray(data.corporate.workshopTopics) && data.corporate.workshopTopics.length
           ? `Workshop topics: ${data.corporate.workshopTopics.join(", ")}`
           : null,

@@ -14,8 +14,10 @@ import {
   HeartPulse,
   ClipboardCheck,
   Bot,
+  Building2,
 
 } from "lucide-react";
+import type { UserRole } from "@/types/auth";
 
 export interface ClientNavItem {
   title: string;
@@ -26,6 +28,8 @@ export interface ClientNavItem {
   badge?: string;
   /** Gates this item on an active SubscriptionCategory (see prisma schema). */
   requiredCategory?: "FITNESS" | "ALL_IN_ONE" | "AI_COACHING";
+  /** Restricts this item to specific roles. Omit to show for all dashboard users. */
+  roles?: UserRole[];
 }
 
 export const clientSidebarMenus: {
@@ -82,6 +86,12 @@ export const clientSidebarMenus: {
       title: "Calculators",
       url: "/calculator",
       icon: Calculator,
+    },
+    {
+      title: "Company Workshops",
+      url: "/company-workshops",
+      icon: Building2,
+      roles: ["CORPORATE_EMPLOYEE"],
     },
     {
       title: "Settings",

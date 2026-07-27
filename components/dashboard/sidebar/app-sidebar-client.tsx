@@ -22,6 +22,7 @@ import {
   useSidebar,
 } from "@/components/ui/sidebar";
 import { clientSidebarMenus } from "@/data/sidebar-data/client-sidebar-menus";
+import { useAuth } from "@/hooks/useAuth";
 
 // ALL_IN_ONE is a bundle that also grants FITNESS access (mirrors
 // lib/auth-utils.ts's hasActiveSubscription). It does not currently grant
@@ -47,6 +48,7 @@ type AppSidebarProps = React.ComponentProps<typeof Sidebar> & {
  */
 export function AppSidebar({ activeSubscriptionCategories = [], ...props }: AppSidebarProps) {
   const { open } = useSidebar();
+  const { user } = useAuth();
 
   // Persist sidebar open state in localStorage
   React.useEffect(() => {
@@ -55,13 +57,15 @@ export function AppSidebar({ activeSubscriptionCategories = [], ...props }: AppS
 
   const navMainItems = React.useMemo(
     () =>
-      clientSidebarMenus.navMain.map(({ requiredCategory, ...item }) => ({
-        ...item,
-        disabled: requiredCategory
-          ? !hasCategoryAccess(activeSubscriptionCategories, requiredCategory)
-          : item.disabled,
-      })),
-    [activeSubscriptionCategories]
+      clientSidebarMenus.navMain
+        .filter((item) => !item.roles || (user && item.roles.includes(user.role)))
+        .map(({ requiredCategory, roles, ...item }) => ({
+          ...item,
+          disabled: requiredCategory
+            ? !hasCategoryAccess(activeSubscriptionCategories, requiredCategory)
+            : item.disabled,
+        })),
+    [activeSubscriptionCategories, user]
   );
 
   return (

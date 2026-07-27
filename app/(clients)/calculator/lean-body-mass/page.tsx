@@ -7,7 +7,7 @@ import { validateServerRole } from "@/lib/server-role-validation";
 
 export default async function LeanBodyMassPage() {
   // Validate user authentication and CLIENT role
-  const { user } = await validateServerRole(['CLIENT']);
+  const { user } = await validateServerRole(['CLIENT', 'CORPORATE_EMPLOYEE']);
 
   const profileDetails = await getProfileDetails();
 

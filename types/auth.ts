@@ -3,13 +3,17 @@ export type UserRole =
   | 'TRAINER' // Legacy - will be removed
   | 'FITNESS_TRAINER'
   | 'FITNESS_TRAINER_ADMIN'
-  | 'ADMIN';
+  | 'ADMIN'
+  | 'CORPORATE_ADMIN'
+  | 'CORPORATE_EMPLOYEE';
 
 export type TrainerCategory = 'FITNESS';
 export type PlatformAccess =
   | 'fitness_trainer'
   | 'fitness_trainer_admin'
   | 'admin'
+  | 'corporate_admin'
+  | 'corporate_employee'
   | 'none';
 
 export type SubscriptionCategory = 'FITNESS' | 'ALL_IN_ONE';
@@ -36,6 +40,7 @@ export interface CustomClaims {
   platform_access?: PlatformAccess; // Only for TRAINER/ADMIN roles
   profile_completed: boolean;
   auth_user_id: string; // Matches public.User.id
+  corporate_group_id?: string; // Only for CORPORATE_ADMIN/CORPORATE_EMPLOYEE
 }
 
 export interface AuthUser {
@@ -47,6 +52,7 @@ export interface AuthUser {
   platformAccess?: PlatformAccess; // Only for TRAINER/ADMIN roles
   profileCompleted: boolean;
   trainerCategory?: TrainerCategory; // Derived from role
+  corporateGroupId?: string; // Only for CORPORATE_ADMIN/CORPORATE_EMPLOYEE
 }
 
 export interface RolePermissions {
@@ -55,6 +61,8 @@ export interface RolePermissions {
   FITNESS_TRAINER: string[];
   FITNESS_TRAINER_ADMIN: string[];
   ADMIN: string[];
+  CORPORATE_ADMIN: string[];
+  CORPORATE_EMPLOYEE: string[];
 }
 
 // Permission constants
@@ -87,6 +95,13 @@ export const PERMISSIONS = {
   ADMIN_USER_MANAGEMENT: 'admin.user_management',
   ADMIN_SYSTEM_CONFIG: 'admin.system_config',
   ADMIN_VIEW_ALL: 'admin.view_all',
+
+  // Corporate account permissions
+  CORPORATE_EMPLOYEES_MANAGE: 'corporate.employees.manage',
+  CORPORATE_VIEW_BOOKINGS: 'corporate.bookings.view',
+  CORPORATE_VIEW_ENGAGEMENT: 'corporate.engagement.view',
+  CORPORATE_VIEW_BILLING: 'corporate.billing.view',
+  CORPORATE_VIEW_WORKSHOPS: 'corporate.workshops.view',
 } as const;
 
 const CLIENT_PERMISSIONS = [
@@ -110,6 +125,21 @@ const FITNESS_TRAINER_PERMISSIONS = [
   PERMISSIONS.WORKOUTS_VIEW_CLIENTS,
 ];
 
+const CORPORATE_EMPLOYEE_PERMISSIONS = [
+  ...CLIENT_PERMISSIONS,
+  PERMISSIONS.CORPORATE_VIEW_WORKSHOPS,
+];
+
+const CORPORATE_ADMIN_PERMISSIONS = [
+  PERMISSIONS.PROFILE_VIEW_OWN,
+  PERMISSIONS.PROFILE_EDIT_OWN,
+  PERMISSIONS.CORPORATE_EMPLOYEES_MANAGE,
+  PERMISSIONS.CORPORATE_VIEW_BOOKINGS,
+  PERMISSIONS.CORPORATE_VIEW_ENGAGEMENT,
+  PERMISSIONS.CORPORATE_VIEW_BILLING,
+  PERMISSIONS.CORPORATE_VIEW_WORKSHOPS,
+];
+
 export const ROLE_PERMISSIONS: RolePermissions = {
   CLIENT: CLIENT_PERMISSIONS,
   TRAINER: FITNESS_TRAINER_PERMISSIONS, // Legacy - map to fitness trainer
@@ -119,4 +149,6 @@ export const ROLE_PERMISSIONS: RolePermissions = {
     ...Object.values(PERMISSIONS).filter(p => p.startsWith('admin.')),
   ],
   ADMIN: Object.values(PERMISSIONS),
+  CORPORATE_ADMIN: CORPORATE_ADMIN_PERMISSIONS,
+  CORPORATE_EMPLOYEE: CORPORATE_EMPLOYEE_PERMISSIONS,
 };

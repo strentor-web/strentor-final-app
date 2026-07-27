@@ -12,17 +12,18 @@ type Props = {
 };
 
 export function DashboardAuthGate({ children, activeSubscriptionCategories }: Props) {
-  const { user, isClient, loading } = useAuth();
+  const { user, isClient, isCorporateEmployee, loading } = useAuth();
   const router = useRouter();
   const [isRedirecting, setIsRedirecting] = useState(false);
+  const hasDashboardAccess = isClient || isCorporateEmployee;
 
   useEffect(() => {
-    if (!loading && user && !isClient) {
+    if (!loading && user && !hasDashboardAccess) {
       setIsRedirecting(true);
       const defaultRoute = getDefaultRouteForRole(user.role);
       router.push(defaultRoute);
     }
-  }, [user, isClient, loading, router]);
+  }, [user, hasDashboardAccess, loading, router]);
 
   // Show skeleton loading while checking auth
   if (loading) {

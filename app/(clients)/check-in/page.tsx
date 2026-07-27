@@ -18,7 +18,7 @@ function startOfWeek(date: Date): string {
 }
 
 export default async function CheckInPage() {
-  const { user } = await validateServerRole(["CLIENT"])
+  const { user } = await validateServerRole(["CLIENT", "CORPORATE_EMPLOYEE"])
 
   const currentWeekStart = startOfWeek(new Date())
   const existing = await prisma.weekly_checkins.findUnique({

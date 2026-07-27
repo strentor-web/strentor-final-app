@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { createClient } from '@/utils/supabase/client'; // Use your existing path
-import { decodeJWT, getTrainerCategory, hasAdminAccess, isTrainerRole } from '@/lib/auth-utils';
+import { decodeJWT, getTrainerCategory, hasAdminAccess, isTrainerRole, isCorporateAdmin, isCorporateEmployee } from '@/lib/auth-utils';
 import type { AuthUser, UserRole, TrainerCategory } from '@/types/auth';
 import type { User, Session } from '@supabase/supabase-js';
 
@@ -49,6 +49,7 @@ export function useAuth() {
           platformAccess: claims.platform_access,
           profileCompleted: claims.profile_completed,
           trainerCategory: getTrainerCategory(claims.user_role),
+          corporateGroupId: claims.corporate_group_id,
         });
       }
     } else {
@@ -67,7 +68,10 @@ export function useAuth() {
     isFitnessTrainer: authUser?.role === 'FITNESS_TRAINER' || authUser?.role === 'FITNESS_TRAINER_ADMIN' || authUser?.role === 'TRAINER',
     isAdmin: authUser?.role === 'ADMIN',
     hasAdminAccess: authUser ? hasAdminAccess(authUser.role) : false,
+    isCorporateAdmin: authUser ? isCorporateAdmin(authUser.role) : false,
+    isCorporateEmployee: authUser ? isCorporateEmployee(authUser.role) : false,
     trainerCategory: authUser?.trainerCategory,
     platformAccess: authUser?.platformAccess,
+    corporateGroupId: authUser?.corporateGroupId,
   };
 }

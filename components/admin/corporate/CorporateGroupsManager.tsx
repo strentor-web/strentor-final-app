@@ -5,6 +5,7 @@ import { toast } from "sonner"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import { inviteCorporateAdmin } from "@/actions/admin/invite-corporate-admin.action"
 
 export interface CorporateGroupRow {
   id: string
@@ -24,6 +25,34 @@ export function CorporateGroupsManager({ initialGroups }: { initialGroups: Corpo
   const [planType, setPlanType] = useState("")
   const [memberLimit, setMemberLimit] = useState("")
   const [isSaving, setIsSaving] = useState(false)
+  const [openInviteFor, setOpenInviteFor] = useState<string | null>(null)
+  const [inviteName, setInviteName] = useState("")
+  const [inviteEmail, setInviteEmail] = useState("")
+  const [isInviting, setIsInviting] = useState(false)
+
+  async function handleInviteAdmin(groupId: string) {
+    if (!inviteName.trim() || !inviteEmail.trim() || isInviting) return
+    setIsInviting(true)
+    try {
+      const result = await inviteCorporateAdmin({
+        corporateGroupId: groupId,
+        email: inviteEmail.trim(),
+        name: inviteName.trim(),
+      })
+      if (result.data) {
+        toast.success(`Invitation sent to ${inviteEmail}`)
+        setOpenInviteFor(null)
+        setInviteName("")
+        setInviteEmail("")
+      } else if (result.error) {
+        toast.error(result.error)
+      }
+    } catch {
+      toast.error("Network error.")
+    } finally {
+      setIsInviting(false)
+    }
+  }
 
   async function handleCreate() {
     if (!companyName.trim() || !contactPerson.trim() || !contactEmail.trim() || isSaving) return
@@ -97,14 +126,52 @@ export function CorporateGroupsManager({ initialGroups }: { initialGroups: Corpo
       ) : (
         <div className="space-y-2">
           {groups.map((g) => (
-            <div key={g.id} className="border rounded-lg p-4 flex flex-wrap items-center justify-between gap-2">
-              <div>
-                <p className="font-semibold text-foreground">{g.companyName}</p>
-                <p className="text-sm text-muted-foreground">{g.contactPerson} • {g.contactEmail}</p>
+            <div key={g.id} className="border rounded-lg p-4 space-y-3">
+              <div className="flex flex-wrap items-center justify-between gap-2">
+                <div>
+                  <p className="font-semibold text-foreground">{g.companyName}</p>
+                  <p className="text-sm text-muted-foreground">{g.contactPerson} • {g.contactEmail}</p>
+                </div>
+                <div className="flex items-center gap-3">
+                  <p className="text-sm text-muted-foreground">
+                    {g.planType || "—"} {g.memberLimit ? `• up to ${g.memberLimit} members` : ""}
+                  </p>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => setOpenInviteFor(openInviteFor === g.id ? null : g.id)}
+                  >
+                    {openInviteFor === g.id ? "Cancel" : "Invite Corporate Admin"}
+                  </Button>
+                </div>
               </div>
-              <p className="text-sm text-muted-foreground">
-                {g.planType || "—"} {g.memberLimit ? `• up to ${g.memberLimit} members` : ""}
-              </p>
+
+              {openInviteFor === g.id && (
+                <div className="grid gap-3 sm:grid-cols-3 border-t pt-3">
+                  <div>
+                    <Label htmlFor={`invite-admin-name-${g.id}`}>Name</Label>
+                    <Input
+                      id={`invite-admin-name-${g.id}`}
+                      value={inviteName}
+                      onChange={(e) => setInviteName(e.target.value)}
+                    />
+                  </div>
+                  <div>
+                    <Label htmlFor={`invite-admin-email-${g.id}`}>Email</Label>
+                    <Input
+                      id={`invite-admin-email-${g.id}`}
+                      type="email"
+                      value={inviteEmail}
+                      onChange={(e) => setInviteEmail(e.target.value)}
+                    />
+                  </div>
+                  <div className="flex items-end">
+                    <Button onClick={() => handleInviteAdmin(g.id)} disabled={isInviting} className="w-full">
+                      {isInviting ? "Sending..." : "Send Invitation"}
+                    </Button>
+                  </div>
+                </div>
+              )}
             </div>
           ))}
         </div>

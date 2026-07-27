@@ -74,7 +74,10 @@ export const updateSession = async (request: NextRequest) => {
        '/pricing',
        '/personal-records',
        '/workout-plan',
-       '/dashboard'
+       '/dashboard',
+       '/company-workshops',
+       // Corporate admin routes
+       '/corporate-admin'
      ];
      const isProtectedRoute = protectedRoutes.some(route => 
        pathname.startsWith(route)
@@ -153,9 +156,13 @@ export const updateSession = async (request: NextRequest) => {
         // console.log("claims work well")
         // console.log(claims)
 
-        // Redirect incomplete profiles to onboarding
-        if (!claims.profile_completed && 
-            !pathname.startsWith('/onboarding') && 
+        // Redirect incomplete profiles to onboarding — the onboarding flow
+        // collects fitness/health profile data, which doesn't apply to
+        // corporate accounts, so they skip it entirely.
+        const isCorporateRole = claims.user_role === 'CORPORATE_ADMIN' || claims.user_role === 'CORPORATE_EMPLOYEE';
+        if (!claims.profile_completed &&
+            !isCorporateRole &&
+            !pathname.startsWith('/onboarding') &&
             !pathname.startsWith('/sign-') &&
             !pathname.startsWith('/auth/') &&
             pathname !== '/') {

@@ -135,6 +135,17 @@ export interface CorporateDetails {
   workshopMode?: string;
   /** Accessibility or venue requirements for the workshop (seating, wheelchair access, AV, etc.). */
   workshopAccessibilityNeeds?: string;
+  /** Industry or sector the organization operates in. */
+  industry?: string;
+  /** Total company-wide headcount, distinct from audienceSize (the program's specific reach). */
+  companyEmployeeCount?: string;
+  /** Name of the HR/CSR contact, if different from the person submitting this form. */
+  hrContactName?: string;
+  hrContactEmail?: string;
+  hrContactPhone?: string;
+  /** Company billing address for invoicing. */
+  billingAddress?: string;
+  gstNumber?: string;
 }
 
 export interface ReferralDetails {

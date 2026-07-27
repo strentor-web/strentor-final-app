@@ -45,7 +45,7 @@ export const metadata: Metadata = {
 
 export default async function DashboardPage() {
   // Validate user authentication and CLIENT role
-  const { user } = await validateServerRole(['CLIENT']);
+  const { user } = await validateServerRole(['CLIENT', 'CORPORATE_EMPLOYEE']);
 
   // Parallel loading for better performance with caching strategy.
   // The Academy queries (assessments, weekly_checkins) are wrapped so a

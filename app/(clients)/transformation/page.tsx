@@ -26,7 +26,7 @@ export const metadata: Metadata = {
 
 async function TransformationPageContent() {
   // Validate user authentication and CLIENT role
-  const { user } = await validateServerRole(['CLIENT']);
+  const { user } = await validateServerRole(['CLIENT', 'CORPORATE_EMPLOYEE']);
 
   return (
     <div className="container mx-auto p-6 space-y-6">

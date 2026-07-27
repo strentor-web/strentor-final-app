@@ -10,7 +10,7 @@ export const dynamic = 'force-dynamic';
 
 export default async function BodyFatCalculatorPage() {
 
-  const { user } = await validateServerRole(['CLIENT']);
+  const { user } = await validateServerRole(['CLIENT', 'CORPORATE_EMPLOYEE']);
 
   let weight = 0;
   let height = 0;

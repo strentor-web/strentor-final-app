@@ -18,7 +18,7 @@ export default async function SettingsPage(props: {
   const searchParams = await props.searchParams;
   
   // Validate user authentication and CLIENT role
-  const { user } = await validateServerRole(['CLIENT']);
+  const { user } = await validateServerRole(['CLIENT', 'CORPORATE_EMPLOYEE']);
   
   const supabase = await createClient();
 

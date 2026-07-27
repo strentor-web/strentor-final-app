@@ -249,15 +249,52 @@ model admin_notes {
 }
 
 model corporate_groups {
-  id             String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  company_name   String
-  contact_person String
-  contact_email  String
-  plan_type      String?
-  member_limit   Int?
-  status         String   @default("active")
-  created_at     DateTime @default(now())
+  id                       String                     @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  company_name             String
+  contact_person           String
+  contact_email            String
+  plan_type                String?
+  member_limit             Int?
+  status                   String                     @default("active")
+  created_at               DateTime                   @default(now())
+  members                  users_profile[]            @relation("CorporateGroupMembers")
+  program_bookings         corporate_program_bookings[]
+  invoices                 corporate_invoices[]
 
+  @@schema("public")
+}
+
+model corporate_program_bookings {
+  id                String           @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  corporate_group_id String          @db.Uuid
+  corporate_group   corporate_groups @relation(fields: [corporate_group_id], references: [id], onDelete: Cascade, map: "CorporateProgramBooking_corporateGroupId_fkey")
+  /** Which Workshop & Pilot Program Options tier — see config/partnerPricing.ts. */
+  program_option    String
+  scheduled_date    DateTime?
+  status            String           @default("scheduled")
+  notes             String?
+  created_by_id     String?          @db.Uuid
+  created_at        DateTime         @default(now())
+
+  @@index([corporate_group_id], map: "CorporateProgramBooking_corporateGroupId_idx")
+  @@schema("public")
+}
+
+model corporate_invoices {
+  id                String           @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  corporate_group_id String          @db.Uuid
+  corporate_group   corporate_groups @relation(fields: [corporate_group_id], references: [id], onDelete: Cascade, map: "CorporateInvoice_corporateGroupId_fkey")
+  description       String
+  amount            Decimal          @db.Decimal(12, 2)
+  currency          String           @default("INR")
+  status            String           @default("pending")
+  issued_at         DateTime         @default(now())
+  due_at            DateTime?
+  paid_at           DateTime?
+  created_by_id     String?          @db.Uuid
+  created_at        DateTime         @default(now())
+
+  @@index([corporate_group_id], map: "CorporateInvoice_corporateGroupId_idx")
   @@schema("public")
 }
 
@@ -572,9 +609,12 @@ model users_profile {
   hips                                                      Float?
   forearm                                                   Float?
   wrist                                                     Float?
-  country                                                   country?                  
+  country                                                   country?
   phone                                                     String?
   onboarding_completed                                      DateTime?
+  // Set for CORPORATE_ADMIN and CORPORATE_EMPLOYEE roles — which corporate account this user belongs to.
+  corporate_group_id                                        String?                    @db.Uuid
+  corporate_group                                           corporate_groups?          @relation("CorporateGroupMembers", fields: [corporate_group_id], references: [id], onDelete: SetNull, map: "UsersProfile_corporateGroupId_fkey")
   // Safety Check step of onboarding — see components/onboarding/steps/SafetyCheckStep.tsx.
   // Persisted regardless of answer so a coach can see the check was done,
   // not only when something was flagged (that goes to safety_flags too).
@@ -610,6 +650,7 @@ model users_profile {
   workout_plans_as_trainer                                  workout_plans[]          @relation("TrainerWorkoutPlans")
   workout_day_videos                                        workout_day_videos[]     // NEW: One-to-many relationship for workout videos
 
+  @@index([corporate_group_id], map: "UsersProfile_corporateGroupId_idx")
   @@schema("public")
 }
 
@@ -766,6 +807,8 @@ enum Role {
   FITNESS_TRAINER
   FITNESS_TRAINER_ADMIN
   ADMIN
+  CORPORATE_ADMIN
+  CORPORATE_EMPLOYEE
 
   @@schema("public")
 }
