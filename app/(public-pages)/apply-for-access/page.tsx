@@ -1,5 +1,7 @@
 "use client"
 
+import { Suspense } from "react"
+import { useSearchParams } from "next/navigation"
 import Header from "@/components/landing/Header"
 import Footer from "@/components/landing/Footer"
 import { IntakeForm } from "@/components/forms/intake/IntakeForm"
@@ -38,7 +40,10 @@ const eligibility = [
   "Focused on long-term progress, not a one-off session",
 ]
 
-export default function ApplyForAccessPage() {
+function ApplyForAccessPageContent() {
+  const searchParams = useSearchParams()
+  const referralCode = searchParams.get("ref") || undefined
+
   return (
     <div className="min-h-screen bg-background">
       <Header />
@@ -114,7 +119,7 @@ export default function ApplyForAccessPage() {
               </h2>
             </ScrollReveal>
             <div className="mt-6">
-              <IntakeForm initialPathway="personal" sourcePage="/apply-for-access" />
+              <IntakeForm initialPathway="personal" sourcePage="/apply-for-access" initialReferralCode={referralCode} />
             </div>
             <p className="mt-4 text-center text-xs text-muted-foreground">
               Your information is confidential and used only to recommend the
@@ -127,5 +132,13 @@ export default function ApplyForAccessPage() {
 
       <Footer />
     </div>
+  )
+}
+
+export default function ApplyForAccessPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen bg-background" />}>
+      <ApplyForAccessPageContent />
+    </Suspense>
   )
 }

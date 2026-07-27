@@ -15,6 +15,7 @@ import {
   ClipboardCheck,
   Bot,
   Building2,
+  Gift,
 
 } from "lucide-react";
 import type { UserRole } from "@/types/auth";
@@ -92,6 +93,11 @@ export const clientSidebarMenus: {
       url: "/company-workshops",
       icon: Building2,
       roles: ["CORPORATE_EMPLOYEE"],
+    },
+    {
+      title: "Refer a Friend",
+      url: "/refer",
+      icon: Gift,
     },
     {
       title: "Settings",

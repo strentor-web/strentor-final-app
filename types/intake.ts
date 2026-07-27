@@ -191,6 +191,8 @@ export interface IntakeFormPayload {
   region?: string;
   plan?: string;
   sourcePage?: string;
+  /** Referral code of the STRENTOR client who referred this applicant, if any — see lib/referral.ts. */
+  referralCode?: string;
   consent: boolean;
   submittedAt: string;
 }

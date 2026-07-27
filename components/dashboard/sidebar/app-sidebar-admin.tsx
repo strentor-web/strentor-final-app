@@ -4,7 +4,7 @@
 import * as React from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { ChevronDown, Users, Shield, LayoutDashboard, Settings, GraduationCap, AlertTriangle, Inbox, UserSearch, DollarSign, BarChart3 } from "lucide-react";
+import { ChevronDown, Users, Shield, LayoutDashboard, Settings, GraduationCap, AlertTriangle, Inbox, UserSearch, DollarSign, BarChart3, Gift } from "lucide-react";
 import Image from "next/image";
 
 // Internal components
@@ -76,6 +76,12 @@ const adminNavItems = [
     title: "Testimonials",
     url: "/admin/testimonials",
     icon: Users,
+    isActive: false,
+  },
+  {
+    title: "Referrals",
+    url: "/admin/referrals",
+    icon: Gift,
     isActive: false,
   },
   {

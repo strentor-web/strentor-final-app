@@ -36,6 +36,7 @@ export const config = {
     "/workout-plan/:path*",
     "/dashboard/:path*",
     "/company-workshops/:path*",
+    "/refer/:path*",
     // Corporate admin routes
     "/corporate-admin/:path*",
     "/sign-in",

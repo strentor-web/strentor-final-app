@@ -181,9 +181,16 @@ model testimonials {
   name_display      String
   program_type      String?
   testimonial_text  String
+  /** For video reviews, a link to the video (YouTube/Instagram/Drive) — not an uploaded file. */
   media_url         String?
+  /** TEXT or VIDEO — determines the cashback amount. */
+  review_type       String              @default("TEXT")
   approval_status   TestimonialStatus   @default(PENDING)
   published_at      DateTime?
+  /** Set server-side from review_type at submission (500 for TEXT, 1000 for VIDEO) — never trust a client-supplied amount. */
+  cashback_amount   Int?
+  /** Cashback only becomes payable once approval_status = APPROVED; this timestamp marks staff having actually paid it out. */
+  cashback_paid_at  DateTime?
   created_at        DateTime            @default(now())
   users_profile     users_profile       @relation(fields: [user_id], references: [id], onDelete: NoAction, map: "Testimonial_userId_fkey")
 
@@ -295,6 +302,26 @@ model corporate_invoices {
   created_at        DateTime         @default(now())
 
   @@index([corporate_group_id], map: "CorporateInvoice_corporateGroupId_idx")
+  @@schema("public")
+}
+
+model referrals {
+  id                String        @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  referrer_id       String        @db.Uuid
+  referrer          users_profile @relation("ReferralsMade", fields: [referrer_id], references: [id], onDelete: Cascade, map: "Referral_referrerId_fkey")
+  referral_code     String
+  referred_name     String
+  referred_email    String
+  /** pending (applied, not yet a paying client) | converted (staff confirmed they became a paying client — cashback owed) | paid */
+  status            String        @default("pending")
+  intake_submission_id String?    @db.Uuid
+  cashback_amount   Int           @default(2000)
+  converted_at      DateTime?
+  cashback_paid_at  DateTime?
+  created_at        DateTime      @default(now())
+
+  @@index([referrer_id], map: "Referral_referrerId_idx")
+  @@index([status], map: "Referral_status_idx")
   @@schema("public")
 }
 
@@ -615,6 +642,11 @@ model users_profile {
   // Set for CORPORATE_ADMIN and CORPORATE_EMPLOYEE roles — which corporate account this user belongs to.
   corporate_group_id                                        String?                    @db.Uuid
   corporate_group                                           corporate_groups?          @relation("CorporateGroupMembers", fields: [corporate_group_id], references: [id], onDelete: SetNull, map: "UsersProfile_corporateGroupId_fkey")
+  // Lazily generated the first time a user visits /refer — see lib/referral.ts.
+  referral_code                                              String?                    @unique(map: "UsersProfile_referralCode_key")
+  // Shared payout destination for both testimonial-review and referral cashback — captured once, reused.
+  payout_upi_id                                              String?
+  referrals_made                                             referrals[]                @relation("ReferralsMade")
   // Safety Check step of onboarding — see components/onboarding/steps/SafetyCheckStep.tsx.
   // Persisted regardless of answer so a coach can see the check was done,
   // not only when something was flagged (that goes to safety_flags too).

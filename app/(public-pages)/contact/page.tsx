@@ -88,6 +88,7 @@ function ContactContent() {
   const { region } = useRegion()
   const typeParam = searchParams.get("type")
   const planParam = searchParams.get("plan") || undefined
+  const referralCodeParam = searchParams.get("ref") || undefined
 
   const initialPathway: EnquiryPathway | undefined = VALID_PATHWAYS.includes(typeParam as EnquiryPathway)
     ? (typeParam as EnquiryPathway)
@@ -166,6 +167,7 @@ function ContactContent() {
                   region={region}
                   plan={planParam}
                   sourcePage="/contact"
+                  initialReferralCode={referralCodeParam}
                   onPathwayChange={setPathway}
                 />
               </div>

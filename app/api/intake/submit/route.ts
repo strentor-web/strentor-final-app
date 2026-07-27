@@ -54,6 +54,7 @@ const payloadSchema = z.object({
   region: z.string().max(10).optional(),
   plan: z.string().max(100).optional(),
   sourcePage: z.string().max(200).optional(),
+  referralCode: z.string().trim().max(20).optional(),
   consent: z.literal(true),
   submittedAt: z.string().trim().min(1).max(50),
 });
@@ -236,6 +237,39 @@ export async function POST(request: NextRequest) {
       });
     } catch (error) {
       console.error("Failed to record corporate inquiry:", error);
+    }
+  }
+
+  // Referral tracking — only meaningful for personal-track applicants who
+  // entered someone's code. Starts "pending"; a STRENTOR admin marks it
+  // "converted" (cashback owed) once this applicant actually becomes a
+  // paying client — see app/admin/referrals.
+  if (data.referralCode) {
+    try {
+      const referrer = await prisma.users_profile.findFirst({
+        where: { referral_code: data.referralCode.trim().toUpperCase() },
+        select: { id: true, email: true },
+      });
+      // Ignore unknown codes and self-referral attempts silently — neither
+      // should block the applicant's actual submission.
+      if (referrer && referrer.email.toLowerCase() !== contact.email.toLowerCase()) {
+        const alreadyReferred = await prisma.referrals.findFirst({
+          where: { referrer_id: referrer.id, referred_email: contact.email },
+        });
+        if (!alreadyReferred) {
+          await prisma.referrals.create({
+            data: {
+              referrer_id: referrer.id,
+              referral_code: data.referralCode.trim().toUpperCase(),
+              referred_name: contact.fullName,
+              referred_email: contact.email,
+              status: "pending",
+            },
+          });
+        }
+      }
+    } catch (error) {
+      console.error("Failed to record referral:", error);
     }
   }
 

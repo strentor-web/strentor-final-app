@@ -3,9 +3,10 @@ import { z } from "zod";
 import { validateServerRole } from "@/lib/server-role-validation";
 import prisma from "@/utils/prisma/prismaClient";
 
-const payloadSchema = z.object({
-  approvalStatus: z.enum(["PENDING", "APPROVED", "REJECTED"]),
-});
+const payloadSchema = z.union([
+  z.object({ approvalStatus: z.enum(["PENDING", "APPROVED", "REJECTED"]) }),
+  z.object({ markCashbackPaid: z.literal(true) }),
+]);
 
 export async function PATCH(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
@@ -21,6 +22,19 @@ export async function PATCH(request: NextRequest, { params }: { params: Promise<
   const parsed = payloadSchema.safeParse(body);
   if (!parsed.success) {
     return NextResponse.json({ error: "Invalid submission" }, { status: 400 });
+  }
+
+  if ("markCashbackPaid" in parsed.data) {
+    // Only payable once the review has actually been approved as genuine.
+    const existing = await prisma.testimonials.findUnique({ where: { id } });
+    if (!existing || existing.approval_status !== "APPROVED") {
+      return NextResponse.json({ error: "Cashback can only be marked paid on an approved review" }, { status: 400 });
+    }
+    const testimonial = await prisma.testimonials.update({
+      where: { id },
+      data: { cashback_paid_at: new Date() },
+    });
+    return NextResponse.json({ id: testimonial.id, cashbackPaidAt: testimonial.cashback_paid_at });
   }
 
   const testimonial = await prisma.testimonials.update({

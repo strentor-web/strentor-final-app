@@ -15,6 +15,7 @@ export default async function AdminTestimonialsPage() {
   const testimonials = await prisma.testimonials.findMany({
     orderBy: [{ approval_status: "asc" }, { created_at: "desc" }],
     take: 100,
+    include: { users_profile: { select: { payout_upi_id: true } } },
   })
 
   const rows: TestimonialRow[] = testimonials.map((t) => ({
@@ -24,6 +25,11 @@ export default async function AdminTestimonialsPage() {
     testimonialText: t.testimonial_text,
     approvalStatus: t.approval_status,
     createdAt: t.created_at.toISOString(),
+    reviewType: t.review_type,
+    videoUrl: t.review_type === "VIDEO" ? t.media_url : null,
+    cashbackAmount: t.cashback_amount,
+    cashbackPaidAt: t.cashback_paid_at ? t.cashback_paid_at.toISOString() : null,
+    payoutUpiId: t.users_profile.payout_upi_id,
   }))
 
   return (

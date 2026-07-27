@@ -144,10 +144,11 @@ interface IntakeFormProps {
   region?: string
   plan?: string
   sourcePage?: string
+  initialReferralCode?: string
   onPathwayChange?: (pathway: EnquiryPathway | undefined) => void
 }
 
-export function IntakeForm({ initialPathway, region, plan, sourcePage, onPathwayChange }: IntakeFormProps) {
+export function IntakeForm({ initialPathway, region, plan, sourcePage, initialReferralCode, onPathwayChange }: IntakeFormProps) {
   const [pathway, setPathwayState] = useState<EnquiryPathway | undefined>(initialPathway)
   const setPathway = (value: EnquiryPathway | undefined) => {
     setPathwayState(value)
@@ -169,6 +170,7 @@ export function IntakeForm({ initialPathway, region, plan, sourcePage, onPathway
   const [referral, setReferral] = useState<ReferralDetails>(emptyReferral)
   const [sponsor, setSponsor] = useState<SponsorDetails>(emptySponsor)
   const [general, setGeneral] = useState<GeneralEnquiryDetails>(emptyGeneral)
+  const [referralCode, setReferralCode] = useState(initialReferralCode || "")
   const [honeypot, setHoneypot] = useState("")
   const [consent, setConsent] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
@@ -233,6 +235,7 @@ export function IntakeForm({ initialPathway, region, plan, sourcePage, onPathway
         region,
         plan,
         sourcePage,
+        referralCode: referralCode.trim() || undefined,
         consent,
         submittedAt: new Date().toISOString(),
       }
@@ -378,6 +381,18 @@ export function IntakeForm({ initialPathway, region, plan, sourcePage, onPathway
                   value={contact.emergencyContact || ""}
                   onChange={(e) => setContact({ ...contact, emergencyContact: e.target.value })}
                 />
+              </div>
+            )}
+            {isPersonalTrack && (
+              <div className="sm:col-span-2">
+                <Label htmlFor="referralCode">Referral code (optional)</Label>
+                <Input
+                  id="referralCode"
+                  placeholder="e.g. ABC1234"
+                  value={referralCode}
+                  onChange={(e) => setReferralCode(e.target.value.toUpperCase())}
+                />
+                <p className="mt-1 text-xs text-muted-foreground">If a STRENTOR client referred you, enter their code here.</p>
               </div>
             )}
             {!isPersonalTrack && (
