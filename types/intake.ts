@@ -125,6 +125,16 @@ export interface CorporateDetails {
   location?: string;
   timeline?: string;
   additionalContext?: string;
+  /** What the workshop itself should cover — distinct from the broader programObjective. */
+  workshopTopics?: string[];
+  /** Expected attendee count for the workshop session specifically. */
+  workshopAttendeeCount?: string;
+  /** Preferred date(s) or scheduling window for the workshop. */
+  workshopDatePreference?: string;
+  /** Delivery mode for the workshop. */
+  workshopMode?: string;
+  /** Accessibility or venue requirements for the workshop (seating, wheelchair access, AV, etc.). */
+  workshopAccessibilityNeeds?: string;
 }
 
 export interface ReferralDetails {

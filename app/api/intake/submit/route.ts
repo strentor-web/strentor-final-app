@@ -207,6 +207,13 @@ export async function POST(request: NextRequest) {
         data.corporate.budgetRange ? `Budget: ${data.corporate.budgetRange}` : null,
         data.corporate.preferredFormat ? `Preferred format: ${data.corporate.preferredFormat}` : null,
         data.corporate.timeline ? `Timeline: ${data.corporate.timeline}` : null,
+        Array.isArray(data.corporate.workshopTopics) && data.corporate.workshopTopics.length
+          ? `Workshop topics: ${data.corporate.workshopTopics.join(", ")}`
+          : null,
+        data.corporate.workshopAttendeeCount ? `Workshop attendees: ${data.corporate.workshopAttendeeCount}` : null,
+        data.corporate.workshopDatePreference ? `Workshop date preference: ${data.corporate.workshopDatePreference}` : null,
+        data.corporate.workshopMode ? `Workshop mode: ${data.corporate.workshopMode}` : null,
+        data.corporate.workshopAccessibilityNeeds ? `Workshop accessibility needs: ${data.corporate.workshopAccessibilityNeeds}` : null,
         data.corporate.additionalContext,
       ].filter(Boolean);
 

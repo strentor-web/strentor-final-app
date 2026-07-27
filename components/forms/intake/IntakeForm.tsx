@@ -983,6 +983,69 @@ export function IntakeForm({ initialPathway, region, plan, sourcePage, onPathway
               <Label htmlFor="timeline">Timeline</Label>
               <Input id="timeline" value={corporate.timeline || ""} onChange={(e) => setCorporate({ ...corporate, timeline: e.target.value })} />
             </div>
+          </div>
+
+          <h3 className="mt-8 text-base font-bold text-card-foreground">Workshop requirements</h3>
+          <p className="mt-1 text-sm text-muted-foreground">
+            If your enquiry involves a workshop, tell us what you need from it.
+          </p>
+          <div className="mt-4 grid gap-4 sm:grid-cols-2">
+            <div className="sm:col-span-2">
+              <Label>Topics or focus areas</Label>
+              <div className="mt-3">
+                <CheckboxGroup
+                  options={[
+                    { value: "disability_awareness", label: "Disability awareness & sensitization" },
+                    { value: "adaptive_fitness_basics", label: "Adaptive strength & fitness basics" },
+                    { value: "workplace_inclusion", label: "Workplace inclusion for wheelchair users" },
+                    { value: "founder_lived_experience_talk", label: "Founder / lived-experience talk" },
+                    { value: "team_wellness_session", label: "Team wellness session" },
+                    { value: "custom_topic", label: "Custom topic — describe in Additional context" },
+                  ]}
+                  selected={corporate.workshopTopics || []}
+                  onToggle={(v) => setCorporate({ ...corporate, workshopTopics: toggleValue(corporate.workshopTopics || [], v) })}
+                />
+              </div>
+            </div>
+            <div>
+              <Label htmlFor="workshopAttendeeCount">Expected attendees</Label>
+              <Input
+                id="workshopAttendeeCount"
+                value={corporate.workshopAttendeeCount || ""}
+                onChange={(e) => setCorporate({ ...corporate, workshopAttendeeCount: e.target.value })}
+              />
+            </div>
+            <div>
+              <Label htmlFor="workshopDatePreference">Preferred date(s) or window</Label>
+              <Input
+                id="workshopDatePreference"
+                placeholder="e.g. Second week of September"
+                value={corporate.workshopDatePreference || ""}
+                onChange={(e) => setCorporate({ ...corporate, workshopDatePreference: e.target.value })}
+              />
+            </div>
+            <div className="sm:col-span-2">
+              <RadioRow
+                label="Mode"
+                value={corporate.workshopMode}
+                onChange={(v) => setCorporate({ ...corporate, workshopMode: v })}
+                options={[
+                  { value: "online", label: "Online" },
+                  { value: "in_person", label: "In person" },
+                  { value: "hybrid", label: "Hybrid" },
+                  { value: "unsure", label: "Unsure" },
+                ]}
+              />
+            </div>
+            <div className="sm:col-span-2">
+              <Label htmlFor="workshopAccessibilityNeeds">Accessibility or venue requirements</Label>
+              <Textarea
+                id="workshopAccessibilityNeeds"
+                placeholder="e.g. wheelchair-accessible venue, step-free access, seating layout, AV needs"
+                value={corporate.workshopAccessibilityNeeds || ""}
+                onChange={(e) => setCorporate({ ...corporate, workshopAccessibilityNeeds: e.target.value })}
+              />
+            </div>
             <div className="sm:col-span-2">
               <Label htmlFor="corpAdditional">Additional context (optional)</Label>
               <Textarea id="corpAdditional" value={corporate.additionalContext || ""} onChange={(e) => setCorporate({ ...corporate, additionalContext: e.target.value })} />
