@@ -147,8 +147,14 @@ export default function sitemap(): MetadataRoute.Sitemap {
     {
       url: `${siteUrl}/transformation-stories`,
       lastModified: now,
-      changeFrequency: "monthly",
+      changeFrequency: "daily",
       priority: 0.7,
+    },
+    {
+      url: `${siteUrl}/transformation-stories/share`,
+      lastModified: now,
+      changeFrequency: "monthly",
+      priority: 0.5,
     },
     {
       url: `${siteUrl}/the-strentor-method`,

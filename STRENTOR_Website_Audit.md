@@ -77,17 +77,7 @@ Fixed in this pass:
 
 With this, every item in the brief's Section 7 primary nav now has a real, dedicated page except where a nav item deliberately points to functioning existing pages (Programs, About, Resources, Corporate Partnerships).
 
-## 7. Problems identified but NOT fixed in this pass
-
-These are real, found during this audit, and require either more implementation time or business/legal input before they can be resolved:
-
-1. **"Sponsor a Seat" / donor-funded seat language still exists** (`/sponsor-a-seat`, `config/accessTiers.ts`, `config/sponsorshipOptions.ts`) and is real, functioning business infrastructure (an actual donor-funded-seat program), not fabricated content. It's now a secondary link rather than a co-primary CTA on `/programs`, but the page itself, its nav visibility, and its underlying ₹74,999 flat pricing (which may or may not still be current — see the content verification doc) were not touched. This needs an explicit call from STRENTOR on whether sponsorship stays as a secondary pathway (recommended) or is phased out.
-2. **The `/assessment` "Readiness Assessment" tool now has no inbound marketing links from the homepage**, since its actual purpose (post-signup training-safety screening) doesn't match a first-touch CTA. It's still reachable from wherever it was linked before this pass (e.g. post-onboarding flows) — that was not audited in this session.
-3. **Individual program pages themselves were not rewritten** — `/programs/elite-mentorship`, `/programs/flagship-transformation`, etc. keep whatever copy they already had. Only the hub page linking to them was rebuilt in this pass.
-4. **Regional form fields (timezone, preferred communication method) from Section 12 were not added.** The existing `IntakeForm` already collects city and country; the checkout flow separately collects city and customer segment (built earlier in this project). Neither collects timezone or communication preference.
-5. **`IntakeForm.tsx`'s single, undifferentiated consent checkbox** (covering both operational contact and the form's genuinely clinical fields) was not split into separate operational/marketing/health-specific consent as the brief's Section 9 asks for — this needs a legal decision on required wording first. See `STRENTOR_Privacy_Review_Required.md`.
-
-## 9. Pass 6 — Corporate/Resources/FAQ, analytics events, and metadata fallback fix
+## 7. Pass 6 — Corporate/Resources/FAQ, analytics events, and metadata fallback fix
 
 - **`/corporate`**: reviewed against the brief in full — it already avoided charity framing and fabricated numbers (explicitly states "STRENTOR is deliberately not positioned as a charity initiative"). Only its CTA label was aligned to "Discuss a Partnership" for consistency with the Programs hub.
 - **`/resources`**: found and fixed two real broken/misdirected internal links — "STRENTOR Readiness Checklist" and "Adaptive Strength Readiness Assessment" cards linked to a generic `/contact` form instead of the real, already-built `/readiness-checklist` and `/assessment` pages.
@@ -97,7 +87,40 @@ These are real, found during this audit, and require either more implementation 
 - **Real analytics events implemented** (not just specified): `utils/analytics.ts` (a type-safe `trackEvent` helper) and `components/analytics/TrackedLink.tsx`, wired into 6 real call sites — the homepage's 3 Performance Assessment CTAs, the Programs hub's card links, and Corporate's 2 "Discuss a Partnership" CTAs. Full taxonomy, including events specified but not wired, in `STRENTOR_Analytics_Events.md`.
 - Also flagged, not fixed: a likely site-wide title-templating issue (`"%s | Strentor"` template applied to page titles that already contain "STRENTOR", potentially producing "STRENTOR ... | Strentor" duplication) — too broad and unverifiable without a live browser to fix blind in this pass.
 
-## 10. What was verified before shipping
+## 8. Pass 7 — Consent banner (privacy mechanism)
+
+Gated Google Analytics and Meta/Facebook Pixel behind an explicit accept/reject banner (`components/consent/AnalyticsConsent.tsx`, state in `utils/consent.ts`) — both trackers previously fired unconditionally site-wide with no consent mechanism (see `STRENTOR_Privacy_Review_Required.md` item 1). Applied as a conservative, site-wide default rather than trying to geo-detect jurisdiction. Banner wording and whether per-category consent is required still need a legal read — this implements the mechanism, not a legal determination.
+
+## 9. Pass 8 — Business decisions confirmed; public testimonial submission built
+
+STRENTOR confirmed three previously-open items directly:
+
+- **PPP-tiered per-session pricing (`utils/pricing/sessionPricing.ts`) is current and authoritative.** The old flat ₹74,999 "program true value" (`config/accessTiers.ts`) was already fully dead code (unreferenced since the `/programs` rebuild in Pass 3) and was deleted outright.
+- **`config/sponsorshipOptions.ts` and `config/partnerPricing.ts` stay as intentional flat numbers** for donor/corporate contexts — not meant to track the per-session engine. No change made.
+- **Sponsor a Seat stays a secondary pathway** — matches what this pass had already done (demoted from a co-primary CTA to a secondary link on `/programs` and the final CTA). No further code change needed.
+- **Testimonials were submitted by the clients themselves**, and **founder credentials are verified** — both written-permission/verification concerns in the content verification doc are resolved.
+
+New feature built: **public, self-service testimonial submission**, published immediately with no manual review step (explicit business direction).
+
+- `/transformation-stories/share` — a new public page with a form (name, story, optional program context, required consent checkbox).
+- `app/api/site-testimonials/submit/route.ts` — new public API route. Deliberately separate from the existing `app/api/testimonials/submit/route.ts` (which requires login and feeds the admin-moderated `testimonials` table used by `/community`) — a public, unauthenticated visitor has no user record to attach a submission to, so this writes to a new `site_testimonials` table instead. Reuses the same honeypot + per-IP rate-limit pattern already established in `/api/intake/submit` (5 submissions / 10 minutes per IP) rather than inventing a new anti-spam approach.
+- `prisma/schema.prisma` gained the `site_testimonials` model; migration delivered via `SendUserFile` (`20260727090000_add_site_testimonials`).
+- `/transformation-stories` now reads live from the database (`export const dynamic = "force-dynamic"` — without this, Next.js tried to statically prerender the page once at build time, which both requires database access during the build and would freeze the testimonial list until the next deploy, defeating the "publish immediately" requirement; this was caught by running the full production build, not just typecheck) and merges submitted stories with the existing static/curated ones, most recent first.
+- A best-effort notification email fires to the founder on every new submission (non-fatal if it fails — the testimonial is already published either way), since with no review gate, someone needs to know a new one went live.
+
+**Real, standing risk, not fixed and not asked to be fixed**: there is currently no admin UI to unpublish or remove a testimonial after the fact — doing so requires direct database access. Documented as item 9 in `STRENTOR_Website_Content_Verification.md`.
+
+## 10. Problems identified but NOT fixed
+
+These are real, found during this audit, and require either more implementation time or business/legal input before they can be resolved:
+
+1. **The `/assessment` "Readiness Assessment" tool now has no inbound marketing links from the homepage**, since its actual purpose (post-signup training-safety screening) doesn't match a first-touch CTA. It's still reachable from wherever it was linked before this pass (e.g. post-onboarding flows) — that was not audited in this session.
+2. **Individual program pages themselves were not rewritten** — `/programs/elite-mentorship`, `/programs/flagship-transformation`, etc. keep whatever copy they already had. Only the hub page linking to them was rebuilt in this pass.
+3. **Regional form fields (timezone, preferred communication method) from Section 12 were not added.** The existing `IntakeForm` already collects city and country; the checkout flow separately collects city and customer segment (built earlier in this project). Neither collects timezone or communication preference.
+4. **`IntakeForm.tsx`'s single, undifferentiated consent checkbox** (covering both operational contact and the form's genuinely clinical fields) was not split into separate operational/marketing/health-specific consent as the brief's Section 9 asks for — this needs a legal decision on required wording first. See `STRENTOR_Privacy_Review_Required.md`.
+5. **No admin UI to unpublish a public-submitted testimonial** — see Pass 8 above.
+
+## 11. What was verified before shipping
 
 - `npx tsc --noEmit --skipLibCheck` — clean, after every pass.
 - `npm run build` — clean after every pass, all routes (including every new page) prerender/build successfully.

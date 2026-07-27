@@ -191,6 +191,29 @@ model testimonials {
   @@schema("public")
 }
 
+// Public, unauthenticated testimonial submissions from the marketing site
+// (/transformation-stories/share) — deliberately separate from
+// `testimonials` above, which requires an authenticated user_id and feeds
+// the admin-moderated in-app client flow. Site visitors submitting here
+// aren't logged in, so there's no user record to attach to; per business
+// direction, these publish immediately on submission (is_published
+// defaults true) rather than sitting in a moderation queue — is_published
+// exists so a bad entry can be unpublished after the fact without deleting
+// the record.
+model site_testimonials {
+  id                String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name_display      String
+  testimonial_text  String
+  context           String?
+  consent_given     Boolean  @default(false)
+  is_published      Boolean  @default(true)
+  source_page       String?
+  created_at        DateTime @default(now())
+
+  @@index([is_published], map: "SiteTestimonial_isPublished_idx")
+  @@schema("public")
+}
+
 // Audit trail for every triggered email/reminder/access change/safety
 // notification — see App Builder Requirement Document section 13.
 model automation_events {
