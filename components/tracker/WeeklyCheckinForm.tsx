@@ -44,7 +44,7 @@ export function WeeklyCheckinForm({ alreadyCompleted }: { alreadyCompleted: bool
         toast.error("Something went wrong submitting your check-in.")
         return
       }
-      toast.success("Weekly reflection submitted.")
+      toast.success("Reflection submitted.", { description: "Thanks for taking the time — your coach will read this." })
       setSubmitted(true)
     } catch {
       toast.error("Network error. Please try again.")

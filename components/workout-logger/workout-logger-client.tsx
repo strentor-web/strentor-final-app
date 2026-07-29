@@ -165,6 +165,19 @@ export function WorkoutLoggerClient({
 
   const { execute: saveSet, isLoading: isSaving } = useAction(saveWorkoutSet, {
     onSuccess: (data) => {
+      // Celebrate the meaningful milestone (a fully logged day) rather than
+      // every individual set — the per-set save already gets a visual
+      // confirmation (the row turns green), so a toast on every set would
+      // just be noise.
+      const day = workoutData?.days.find((d) =>
+        d.exercises.some((ex) => ex.dayExerciseId === data.dayExerciseId)
+      );
+      const exercise = day?.exercises.find((ex) => ex.dayExerciseId === data.dayExerciseId);
+      const wasAlreadyCompleted = exercise?.sets.find((s) => s.setNumber === data.setNumber)?.isCompleted ?? false;
+      if (day && !wasAlreadyCompleted && day.completedSets + 1 === day.totalSets) {
+        toast.success("Day complete — every set logged.");
+      }
+
       // Update specific set in state - no refetch needed!
       updateSpecificSetInState(data);
     },

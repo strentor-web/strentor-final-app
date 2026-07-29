@@ -7,6 +7,7 @@ import {
 } from "lucide-react";
 import { Progress } from "@/components/ui/progress";
 import { Button } from "@/components/ui/button";
+import { EmptyState } from "@/components/ui/empty-state";
 import UpcomingWorkouts, {
   UpcomingWorkoutsLoading,
 } from "@/components/upcoming-workouts";
@@ -126,19 +127,27 @@ export default async function DashboardPage() {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         {hasWorkoutPlan ? (
           <div className="md:col-span-2 border rounded-lg p-6">
-            <h2 className="text-2xl font-bold mb-1">Workout Plan Progress</h2>
+            <h2 className="text-2xl font-bold mb-4">Workout Plan Progress</h2>
 
-            <Progress value={workoutPlan.progress.progressPercentage} className="h-2 mb-4" />
-            <p className="text-muted-foreground mb-4">
-              {workoutPlan.progress.daysRemaining} days left in your current plan
-            </p>
-
-            <div className="flex items-center gap-2 bg-primary/10 p-2 rounded-md w-fit">
-              <Dumbbell className="h-5 w-5 text-primary" />
-              <span className="font-medium">
-                Currently on Week {workoutPlan.progress.currentWeek} of {workoutPlan.progress.totalWeeks}
-              </span>
+            <div className="grid grid-cols-3 gap-3 mb-4">
+              <div className="rounded-lg bg-primary/5 border border-primary/10 p-3 text-center">
+                <p className="text-2xl font-bold text-primary">
+                  {workoutPlan.progress.currentWeek}
+                  <span className="text-sm font-medium text-muted-foreground">/{workoutPlan.progress.totalWeeks}</span>
+                </p>
+                <p className="text-xs text-muted-foreground mt-1">Current Week</p>
+              </div>
+              <div className="rounded-lg bg-primary/5 border border-primary/10 p-3 text-center">
+                <p className="text-2xl font-bold text-primary">{workoutPlan.progress.daysRemaining}</p>
+                <p className="text-xs text-muted-foreground mt-1">Days Left</p>
+              </div>
+              <div className="rounded-lg bg-primary/5 border border-primary/10 p-3 text-center">
+                <p className="text-2xl font-bold text-primary">{workoutPlan.progress.progressPercentage}%</p>
+                <p className="text-xs text-muted-foreground mt-1">Complete</p>
+              </div>
             </div>
+
+            <Progress value={workoutPlan.progress.progressPercentage} className="h-2" />
           </div>
         ) : (
           <NoWorkoutPlanCard />
@@ -254,15 +263,11 @@ export default async function DashboardPage() {
               </table>
             </div>
           ) : (
-            <div className="text-center py-16 text-muted-foreground bg-muted/30 rounded-lg">
-              <Weight className="h-12 w-12 mx-auto mb-4 opacity-30" />
-              <p className="text-lg font-medium text-foreground">
-                No personal records found yet.
-              </p>
-              <p className="text-sm mt-2 text-muted-foreground">
-                Complete workouts to start tracking your progress!
-              </p>
-            </div>
+            <EmptyState
+              icon={Weight}
+              title="No personal records found yet."
+              description="Complete workouts to start tracking your progress!"
+            />
           )}
         </div>
 

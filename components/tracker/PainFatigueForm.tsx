@@ -65,7 +65,7 @@ export function PainFatigueForm({ onLogged }: { onLogged?: () => void }) {
       }
       const data = await response.json()
       setLastFlag(data.redFlagDetected)
-      toast.success("Body check logged.")
+      toast.success("Body check logged.", { description: "That's useful data for your coach." })
       setSymptoms([])
       setNotes("")
       onLogged?.()

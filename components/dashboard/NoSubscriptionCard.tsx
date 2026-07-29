@@ -1,7 +1,7 @@
 import Link from "next/link";
-import { CreditCard, ArrowRight, AlertCircle } from "lucide-react";
+import { CreditCard, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { EmptyState } from "@/components/ui/empty-state";
 
 export function NoSubscriptionCard() {
   return (
@@ -10,23 +10,20 @@ export function NoSubscriptionCard() {
         <h2 className="text-2xl font-bold">Active Subscriptions</h2>
       </div>
 
-      <Alert className="border-accent/20 bg-accent/5">
-        <AlertCircle className="h-4 w-4 text-accent" />
-        <AlertTitle className="text-accent-foreground">No Active Subscription Found</AlertTitle>
-        <AlertDescription className="text-accent-foreground/80 mt-2">
-          Subscribe to a plan to get access to personalized workout plans and trainer guidance.
-        </AlertDescription>
-      </Alert>
-
-      <div className="mt-6 flex justify-center">
-        <Button asChild className="bg-primary hover:bg-primary/90">
-          <Link href="/settings/subscription" className="flex items-center gap-2">
-            <CreditCard className="h-4 w-4" />
-            Subscribe Now
-            <ArrowRight className="h-4 w-4" />
-          </Link>
-        </Button>
-      </div>
+      <EmptyState
+        icon={CreditCard}
+        title="No Active Subscription Found"
+        description="Subscribe to a plan to get access to personalized workout plans and trainer guidance."
+        action={
+          <Button asChild className="bg-primary hover:bg-primary/90">
+            <Link href="/settings/subscription" className="flex items-center gap-2">
+              <CreditCard className="h-4 w-4" />
+              Subscribe Now
+              <ArrowRight className="h-4 w-4" />
+            </Link>
+          </Button>
+        }
+      />
     </div>
   );
-} 
+}
