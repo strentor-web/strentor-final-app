@@ -9,11 +9,25 @@ import { Button } from "@/components/ui/button"
 import { DiscoveryCallButton } from "@/components/forms/DiscoveryCallButton"
 import { ScrollReveal } from "@/components/motion/ScrollReveal"
 import { AlertTriangle, CheckCircle2 } from "lucide-react"
+import { EmptyState } from "@/components/ui/empty-state"
+import { Skeleton } from "@/components/ui/skeleton"
 import {
   PATHWAY_DESTINATION,
   PATHWAY_LABELS,
   type PathwayResult,
 } from "@/utils/assessment/scoring"
+
+function ResultSkeleton() {
+  return (
+    <div className="mx-auto max-w-2xl space-y-6 rounded-2xl border border-border bg-card p-8 text-center shadow-sm">
+      <Skeleton className="mx-auto h-14 w-14 rounded-full" />
+      <Skeleton className="mx-auto h-4 w-48" />
+      <Skeleton className="mx-auto h-8 w-64" />
+      <Skeleton className="mx-auto h-16 w-full max-w-md" />
+      <Skeleton className="mx-auto h-12 w-48 rounded-full" />
+    </div>
+  )
+}
 
 interface ResultData {
   id: string
@@ -48,17 +62,23 @@ function AssessmentResultContent() {
 
   if (error) {
     return (
-      <div className="mx-auto max-w-lg text-center">
-        <p className="text-muted-foreground">{error}</p>
-        <Button asChild className="mt-6 h-12 rounded-full bg-[#C9A96A] hover:bg-[#C9A96A]/90">
-          <Link href="/assessment">Retake Assessment</Link>
-        </Button>
+      <div className="mx-auto max-w-lg">
+        <EmptyState
+          icon={AlertTriangle}
+          title="We couldn't find that result"
+          description={error}
+          action={
+            <Button asChild className="h-12 rounded-full bg-[#C9A96A] hover:bg-[#C9A96A]/90">
+              <Link href="/assessment">Retake Assessment</Link>
+            </Button>
+          }
+        />
       </div>
     )
   }
 
   if (!data) {
-    return <div className="mx-auto max-w-lg text-center text-muted-foreground">Loading your result...</div>
+    return <ResultSkeleton />
   }
 
   const destination = PATHWAY_DESTINATION[data.pathway]
@@ -128,7 +148,7 @@ export default function AssessmentResultPage() {
       <Header />
       <section className="container mx-auto px-4 py-16 md:py-20">
         <ScrollReveal>
-          <Suspense fallback={<div className="text-center text-muted-foreground">Loading...</div>}>
+          <Suspense fallback={<ResultSkeleton />}>
             <AssessmentResultContent />
           </Suspense>
         </ScrollReveal>

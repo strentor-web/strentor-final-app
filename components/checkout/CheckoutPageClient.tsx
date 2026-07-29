@@ -14,6 +14,7 @@ import { LifetimeCheckoutButton } from "@/components/subscription/LifetimeChecko
 import { PaypalLifetimeButton } from "@/components/subscription/PaypalLifetimeButton";
 import { PaypalRecurringButton } from "@/components/subscription/PaypalRecurringButton";
 import { useCountryTier } from "@/hooks/useCountryTier";
+import { getProfileDetails } from "@/actions/profile/get-profile-details.action";
 import {
   CURRENCY_SYMBOLS,
   getPppMultiplier,
@@ -78,6 +79,28 @@ export default function CheckoutPageClient() {
 
   const [stage, setStage] = useState<"form" | "starting" | "ready">("form");
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  // Signed-in users (e.g. arriving from a pricing page after already
+  // submitting intake, or re-subscribing from settings) shouldn't have to
+  // retype contact info already on file. Anonymous/guest checkout is
+  // unaffected — the lookup silently no-ops when there's no session.
+  useEffect(() => {
+    let cancelled = false;
+    getProfileDetails()
+      .then((profile) => {
+        if (cancelled || !profile) return;
+        const { name, email: profileEmail, phone: profilePhone } = profile;
+        if (name) setFullName((prev) => prev || name);
+        if (profileEmail) setEmail((prev) => prev || profileEmail);
+        if (profilePhone) setPhone((prev) => prev || profilePhone);
+      })
+      .catch(() => {
+        // No session / no profile yet — guest checkout, nothing to prefill.
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   const isAe = countryCode === "AE";
   const isSponsored = isSponsoredSegment(segment);

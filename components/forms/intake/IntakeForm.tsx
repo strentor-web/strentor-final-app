@@ -180,7 +180,7 @@ export function IntakeForm({ initialPathway, region, plan, sourcePage, initialRe
 
   const steps = useMemo(() => {
     if (!pathway) return ["pathway"]
-    if (pathway === "corporate") return ["pathway", "contact", "corporate", "review"]
+    if (pathway === "corporate") return ["pathway", "contact", "corporate", "corporateContact", "corporateWorkshop", "review"]
     if (pathway === "referral") return ["pathway", "contact", "referral", "review"]
     if (pathway === "sponsor") return ["pathway", "contact", "sponsor", "review"]
     if (pathway === "general") return ["pathway", "contact", "general", "review"]
@@ -300,6 +300,23 @@ export function IntakeForm({ initialPathway, region, plan, sourcePage, initialRe
         autoComplete="off"
         aria-hidden="true"
       />
+
+      {currentStep !== "pathway" && (
+        <div className="mb-8">
+          <div className="mb-2 flex items-center justify-between text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+            <span>
+              Step {stepIndex} of {steps.length - 1}
+            </span>
+            <span>{Math.round((stepIndex / (steps.length - 1)) * 100)}%</span>
+          </div>
+          <div className="h-1.5 w-full overflow-hidden rounded-full bg-muted">
+            <div
+              className="h-full rounded-full bg-[#C9A96A] transition-all duration-slow ease-premium"
+              style={{ width: `${(stepIndex / (steps.length - 1)) * 100}%` }}
+            />
+          </div>
+        </div>
+      )}
 
       {currentStep === "pathway" && (
         <div>
@@ -1007,8 +1024,17 @@ export function IntakeForm({ initialPathway, region, plan, sourcePage, initialRe
               <Input id="timeline" value={corporate.timeline || ""} onChange={(e) => setCorporate({ ...corporate, timeline: e.target.value })} />
             </div>
           </div>
+          <div className="mt-8 flex justify-between">
+            <Button variant="outline" onClick={goBack}>Back</Button>
+            <Button disabled={!corporate.organizationName.trim()} onClick={goNext}>Continue</Button>
+          </div>
+        </div>
+      )}
 
-          <h3 className="mt-8 text-base font-bold text-card-foreground">HR / CSR contact</h3>
+      {currentStep === "corporateContact" && (
+        <div className="text-left">
+          <h2 className="text-xl font-bold text-card-foreground">HR / CSR Contact &amp; Billing</h2>
+          <h3 className="mt-6 text-base font-bold text-card-foreground">HR / CSR contact</h3>
           <p className="mt-1 text-sm text-muted-foreground">Only fill this in if it's someone other than you.</p>
           <div className="mt-4 grid gap-4 sm:grid-cols-2">
             <div>
@@ -1039,8 +1065,16 @@ export function IntakeForm({ initialPathway, region, plan, sourcePage, initialRe
               <Input id="gstNumber" value={corporate.gstNumber || ""} onChange={(e) => setCorporate({ ...corporate, gstNumber: e.target.value })} />
             </div>
           </div>
+          <div className="mt-8 flex justify-between">
+            <Button variant="outline" onClick={goBack}>Back</Button>
+            <Button onClick={goNext}>Continue</Button>
+          </div>
+        </div>
+      )}
 
-          <h3 className="mt-8 text-base font-bold text-card-foreground">Workshop requirements</h3>
+      {currentStep === "corporateWorkshop" && (
+        <div className="text-left">
+          <h2 className="text-xl font-bold text-card-foreground">Workshop Requirements</h2>
           <p className="mt-1 text-sm text-muted-foreground">
             If your enquiry involves a workshop, tell us what you need from it.
           </p>

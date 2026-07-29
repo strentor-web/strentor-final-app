@@ -221,7 +221,7 @@ export default function OnboardingWizard({ userEmail, userName }: OnboardingWiza
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-strentor-blue/10 via-background to-strentor-yellow/10">
+    <div className="min-h-screen bg-gradient-to-br from-primary/10 via-background to-primary/5">
       {/* Improved layout for larger screens */}
       <div className="container mx-auto px-4 py-8">
         <div className="max-w-6xl mx-auto">
@@ -267,7 +267,7 @@ export default function OnboardingWizard({ userEmail, userName }: OnboardingWiza
                   <div className="flex justify-center space-x-[20px]">
                     <button
                       type="button"
-                      className="w-[100px] px-4 py-2 text-sm font-medium text-muted-foreground bg-card border border-border rounded-md hover:bg-muted focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-strentor-red disabled:opacity-50 disabled:cursor-not-allowed"
+                      className="w-[100px] px-4 py-2 text-sm font-medium text-muted-foreground bg-card border border-border rounded-md hover:bg-muted focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary disabled:opacity-50 disabled:cursor-not-allowed"
                       onClick={handleBack}
                       disabled={activeStep === 1}
                     >
@@ -276,7 +276,7 @@ export default function OnboardingWizard({ userEmail, userName }: OnboardingWiza
                     {activeStep === ONBOARDING_STEPS.length ? (
                       <button
                         type="submit"
-                        className="w-[100px] px-4 py-2 text-sm font-medium text-primary-foreground bg-strentor-red border border-transparent rounded-md hover:bg-strentor-red/80 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-strentor-red disabled:opacity-50 disabled:cursor-not-allowed"
+                        className="w-[100px] px-4 py-2 text-sm font-medium text-primary-foreground bg-primary border border-transparent rounded-md hover:bg-primary/80 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary disabled:opacity-50 disabled:cursor-not-allowed"
                         disabled={isSubmitting}
                       >
                         {isSubmitting ? 'Submitting...' : 'Submit'}
@@ -284,7 +284,7 @@ export default function OnboardingWizard({ userEmail, userName }: OnboardingWiza
                     ) : (
                       <button
                         type="button"
-                        className="w-[100px] px-4 py-2 text-sm font-medium text-primary-foreground bg-strentor-red border border-transparent rounded-md hover:bg-strentor-red/80 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-strentor-red"
+                        className="w-[100px] px-4 py-2 text-sm font-medium text-primary-foreground bg-primary border border-transparent rounded-md hover:bg-primary/80 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary"
                         onClick={handleNext}
                       >
                         Next

@@ -80,7 +80,18 @@ const config = {
   		borderRadius: {
   			lg: 'var(--radius)',
   			md: 'calc(var(--radius) - 2px)',
-  			sm: 'calc(var(--radius) - 4px)'
+  			sm: 'calc(var(--radius) - 4px)',
+  			xl: 'calc(var(--radius) + 4px)',
+  			'2xl': 'calc(var(--radius) + 12px)',
+  			full: '9999px'
+  		},
+  		transitionDuration: {
+  			fast: '150ms',
+  			base: '250ms',
+  			slow: '450ms'
+  		},
+  		transitionTimingFunction: {
+  			premium: 'cubic-bezier(0.22, 1, 0.36, 1)'
   		},
   		keyframes: {
   			'accordion-down': {
@@ -98,11 +109,16 @@ const config = {
   				to: {
   					height: '0'
   				}
+  			},
+  			shimmer: {
+  				'0%': { backgroundPosition: '-200% 0' },
+  				'100%': { backgroundPosition: '200% 0' }
   			}
   		},
   		animation: {
   			'accordion-down': 'accordion-down 0.2s ease-out',
-  			'accordion-up': 'accordion-up 0.2s ease-out'
+  			'accordion-up': 'accordion-up 0.2s ease-out',
+  			shimmer: 'shimmer 2s linear infinite'
   		}
   	}
   },
