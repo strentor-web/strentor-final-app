@@ -52,7 +52,7 @@ export function ProblemSection() {
 export function DifferenceSection() {
   const points = [
     { title: "Built from lived experience", description: "Founded by a national-level para powerlifter who trains from the same reality clients do." },
-    { title: "Health-respecting by design", description: "Every program factors in your actual health context — not a standing-body template adapted after the fact." },
+    { title: "Health-respecting by design", description: "Every program factors in your actual health context from the start." },
     { title: "Safety before intensity", description: "We build capacity progressively, with pain-aware and fatigue-aware adjustments as standard practice." },
     { title: "Premium, not performative", description: "This is structured, disciplined coaching — not an inspirational campaign or a charity gesture." },
   ]

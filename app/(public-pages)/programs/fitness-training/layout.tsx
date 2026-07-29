@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
   title: "Adaptive Transformation Coaching Program | Strentor",
-  description: "STRENTOR's adaptive transformation coaching program — personalized strength, nutrition, and mindset coaching for wheelchair users with spina bifida, CKD, chronic health realities, or long-term physical challenges. Expert para-athlete coaching, customized plans, proven results.",
+  description: "STRENTOR's adaptive transformation coaching program — personalized strength, nutrition, and mindset coaching for wheelchair users with spina bifida, CKD, chronic health realities, or long-term physical challenges. Founder-led by a national-level para powerlifter.",
   alternates: {
     canonical: "/programs/fitness-training",
   },

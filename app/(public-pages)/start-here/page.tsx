@@ -38,7 +38,7 @@ const journey = [
   {
     number: 4,
     title: "Your Recommended Pathway",
-    description: "A clear, deterministic recommendation — never a guess — with the reason behind it.",
+    description: "A clear, deterministic recommendation, with the reasoning behind it laid out plainly.",
     href: null,
     cta: null,
   },

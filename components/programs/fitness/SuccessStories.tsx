@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button"
 const successStories = [
   {
     condition: "Spina Bifida",
-    description: "Helped clients play sports like critical pain-free with customised fitness plans.",
+    description: "Adaptive strength and mobility coaching built around spina bifida — not a generic seated workout.",
     number: "01",
     color: "from-[#C9A96A]/10 to-[#C9A96A]/5",
     numberBg: "#C9A96A",
@@ -21,10 +21,10 @@ export default function SuccessStories() {
       <div className="container mx-auto px-4">
         <div className="text-center mb-16">
           <h2 className="text-4xl md:text-5xl font-bold font-display mb-4">
-            Real <span className="text-[#C9A96A]">Transformations</span>, Real Results
+            Built Around <span className="text-[#C9A96A]">Real Conditions</span>
           </h2>
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-            At STRENTOR, we&apos;ve already helped people achieve life-changing results. We don&apos;t promise magic - we deliver proven strategies that empower you to break through your limitations.
+            Coaching designed around your specific situation, not a generic template. Here&apos;s what that looks like.
           </p>
         </div>
 

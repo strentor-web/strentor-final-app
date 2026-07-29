@@ -280,7 +280,7 @@ export default function PrivacyPolicy() {
                 <div className="text-muted-foreground space-y-3">
                   <p>We may employ third party companies and individuals to facilitate our Service ("Service Providers"), provide Service on our behalf, perform Service-related services or assist us in analysing how our Service is used.</p>
                   <p>These third parties have access to your Personal Data only to perform these tasks on our behalf and are obligated not to disclose or use it for any other purpose.</p>
-                  <p>We use trusted third-party service providers to operate our Service, including Resend for delivering transactional and notification emails on our behalf, and Supabase for account authentication and secure data storage. These providers process data only as necessary to provide their services to us and are not authorized to use your information for their own purposes.</p>
+                  <p>We use the following third-party service providers to operate our Service: Resend for delivering transactional and notification emails on our behalf, and Supabase for account authentication and secure data storage. These providers process data only as necessary to provide their services to us and are not authorized to use your information for their own purposes.</p>
                 </div>
               </section>
 

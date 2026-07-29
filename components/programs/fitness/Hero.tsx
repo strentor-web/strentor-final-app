@@ -16,7 +16,7 @@ const features = [
     color: "#B8935A"
   },
   {
-    text: "Proven Results",
+    text: "Adaptive by Design",
     icon: TrendingUp,
     color: "#C9C0B4"
   }

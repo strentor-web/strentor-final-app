@@ -35,7 +35,7 @@ const includes = [
     icon: HeartPulse,
     title: "Fatigue-Aware Conditioning",
     description:
-      "Endurance and conditioning work that builds capacity gradually, with progression paced to your energy levels and recovery — not a fixed schedule that ignores how you're doing week to week.",
+      "Endurance and conditioning work that builds capacity gradually, with progression paced to how your energy and recovery actually look week to week.",
   },
   {
     icon: ShieldAlert,

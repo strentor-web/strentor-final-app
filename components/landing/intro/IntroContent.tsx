@@ -21,7 +21,7 @@ export function IntroContent() {
     {
       icon: "empowerment",
       title: "Coached by a Para-Athlete",
-      description: "Programming shaped by a national-level para powerlifter's own training experience — not a generic certification applied to your situation."
+      description: "Programming shaped by a national-level para powerlifter's own training experience, applied directly to your situation."
     },
     {
       icon: "community",

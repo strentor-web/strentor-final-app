@@ -26,7 +26,7 @@ export default async function Signup(props: {
               <span className="text-strentor-red">BREAK.</span> <span className="text-strentor-orange">BUILD.</span> <span className="text-[#EDE0C8]">BECOME.</span>
             </h1>
             <p className="text-xl md:text-2xl font-medium text-muted-foreground">
-              Join our community of wellness seekers and transform your life. Start your journey to become unstoppable today.
+              Create an account to apply for coaching built around your body, your goals, and your equipment.
             </p>
           </div>
 

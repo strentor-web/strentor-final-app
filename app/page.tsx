@@ -175,7 +175,7 @@ export default function Home() {
             </p>
             <p className="mx-auto mt-4 max-w-lg text-base text-gray-400">
               Build a stronger body, a more resilient identity, and a life
-              shaped by your ambitions — not other people&apos;s assumptions.
+              shaped by your own ambitions.
             </p>
           </div>,
           <div key="founder" className="mx-auto max-w-2xl text-center">
@@ -401,9 +401,9 @@ export default function Home() {
                 template.
               </h2>
               <p className="mt-4 text-lg text-muted-foreground">
-                Every coaching plan considers the specifics of your body, your
-                equipment, and your life — not a generic program adapted at
-                the last step.
+                Every coaching plan starts from the specifics of your body,
+                your equipment, and your life. It isn&apos;t a generic
+                program with the exercises swapped out.
               </p>
             </ScrollReveal>
             <StaggerGroup as="ul" className="space-y-3">

@@ -21,7 +21,7 @@ const faqs = [
   {
     question: "Who is STRENTOR designed for?",
     answer:
-      "Ambitious wheelchair users who want to build strength, confidence, identity, and direction — not just manage limitations. STRENTOR doesn't define clients primarily by diagnosis; it's built for people who want structured progress and are willing to be coached, tracked, and held accountable.",
+      "Ambitious wheelchair users focused on building strength, confidence, identity, and direction. STRENTOR doesn't define clients primarily by diagnosis; it's built for people who want structured progress and are willing to be coached, tracked, and held accountable.",
   },
   {
     question: "Do I need gym equipment?",

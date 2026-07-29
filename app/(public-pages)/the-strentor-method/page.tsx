@@ -54,7 +54,7 @@ const stages = [
     summary: "A personalized system across training, nutrition, mindset, and accountability.",
     points: [
       "A strength and conditioning plan built around your body and equipment",
-      "Nutrition guidance that supports training and energy — not a generic diet",
+      "Nutrition guidance that supports training, energy, and recovery",
       "Mindset practices for consistency, focus, and resilience under setbacks",
       "Accountability systems and measurable routines you can actually sustain",
     ],
