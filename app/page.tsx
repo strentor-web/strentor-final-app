@@ -48,6 +48,7 @@ export const metadata: Metadata = {
   },
 };
 
+
 // The four integrated dimensions of the STRENTOR coaching system.
 const dimensions = [
   {
@@ -418,25 +419,28 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Credibility */}
-      <section className="bg-muted/30 py-16">
-        <div className="container mx-auto px-4 text-center">
-          <ScrollReveal scale={0.94} blur duration={0.7}>
-            <h2 className="text-2xl font-bold font-display uppercase tracking-wide text-[#C9A96A] sm:text-3xl">
+      {/* Credibility — an inline trust strip rather than another card grid,
+          to break up the repeated grid rhythm running through this stretch
+          of the page. */}
+      <section className="border-y border-border bg-muted/30 py-10">
+        <div className="container mx-auto px-4">
+          <ScrollReveal scale={0.96} className="mx-auto mb-8 max-w-xl text-center">
+            <h2 className="text-sm font-bold uppercase tracking-widest text-[#C9A96A]">
               Built From Lived Experience, Not Theory.
             </h2>
           </ScrollReveal>
-          <StaggerGroup className="mx-auto mt-10 grid max-w-5xl grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6">
-            {credibilityBadges.map((badge) => (
-              <ScrollReveal key={badge.label} direction="up">
-                <HoverLift className="flex flex-col items-center gap-3 rounded-2xl border border-border bg-card px-4 py-6 text-center transition-colors hover:border-[#C9A96A]/40">
-                  <div className="flex h-9 w-9 items-center justify-center rounded-full bg-[#C9A96A]/10">
-                    <badge.icon className="h-5 w-5 text-[#C9A96A]" />
-                  </div>
-                  <span className="text-sm font-semibold text-card-foreground">
+          <StaggerGroup className="mx-auto flex max-w-5xl flex-wrap items-center justify-center gap-x-10 gap-y-6">
+            {credibilityBadges.map((badge, idx) => (
+              <ScrollReveal key={badge.label} direction="none" className="flex items-center gap-6">
+                <div className="flex items-center gap-2.5">
+                  <badge.icon className="h-5 w-5 flex-shrink-0 text-[#C9A96A]" />
+                  <span className="whitespace-nowrap text-sm font-semibold text-muted-foreground">
                     {badge.label}
                   </span>
-                </HoverLift>
+                </div>
+                {idx < credibilityBadges.length - 1 && (
+                  <span className="hidden h-6 w-px bg-border sm:block" aria-hidden />
+                )}
               </ScrollReveal>
             ))}
           </StaggerGroup>
