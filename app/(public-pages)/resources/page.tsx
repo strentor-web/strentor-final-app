@@ -105,7 +105,7 @@ const resources: Resource[] = [
     description:
       "Learn how STRENTOR's Pay It Forward program extends coaching access to individuals who could not otherwise afford it, and how you can contribute or apply.",
     ctaLabel: "Learn More",
-    href: "/pay-it-forward",
+    href: "/sponsor-a-seat",
   },
 ];
 

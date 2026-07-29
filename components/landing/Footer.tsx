@@ -32,6 +32,9 @@ export default function Footer() {
               <Link href="/transformation-stories">Transformation Stories</Link>
             </li>
             <li className="hover:text-primary">
+              <Link href="/community">Community</Link>
+            </li>
+            <li className="hover:text-primary">
               <Link href="/about">About</Link>
             </li>
             <li className="hover:text-primary">

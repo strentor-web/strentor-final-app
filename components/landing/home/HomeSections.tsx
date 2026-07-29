@@ -180,7 +180,7 @@ export function PayItForwardIntro() {
           company or community group.
         </p>
         <Button asChild className="mt-6 bg-[#C9A96A] hover:bg-[#C9A96A]/90 text-primary-foreground rounded-full px-8">
-          <Link href="/pay-it-forward">Learn About Pay It Forward</Link>
+          <Link href="/sponsor-a-seat">Learn About Pay It Forward</Link>
         </Button>
       </div>
     </section>
