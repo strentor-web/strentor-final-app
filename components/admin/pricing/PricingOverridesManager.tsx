@@ -53,6 +53,10 @@ function scopeLabel(row: OverrideRow): string {
   return parts.filter(Boolean).join(" · ");
 }
 
+function isScheduled(row: OverrideRow): boolean {
+  return row.is_active && !!row.starts_at && new Date(row.starts_at).getTime() > Date.now();
+}
+
 export function PricingOverridesManager({ initialOverrides }: { initialOverrides: OverrideRow[] }) {
   const [overrides, setOverrides] = useState<OverrideRow[]>(initialOverrides);
   const [form, setForm] = useState(emptyForm);
@@ -60,6 +64,7 @@ export function PricingOverridesManager({ initialOverrides }: { initialOverrides
   const [expandedAuditFor, setExpandedAuditFor] = useState<string | null>(null);
   const [auditEntries, setAuditEntries] = useState<AuditEntry[]>([]);
   const [loadingAudit, setLoadingAudit] = useState(false);
+  const [isImporting, setIsImporting] = useState(false);
 
   async function refresh() {
     const response = await fetch("/api/admin/pricing/overrides");
@@ -145,6 +150,34 @@ export function PricingOverridesManager({ initialOverrides }: { initialOverrides
     await refresh();
   }
 
+  async function handleImportFile(file: File) {
+    setIsImporting(true);
+    try {
+      const text = await file.text();
+      const response = await fetch("/api/admin/pricing/overrides/import", {
+        method: "POST",
+        headers: { "Content-Type": "text/csv" },
+        body: text,
+      });
+      const data = await response.json();
+      if (!response.ok) {
+        toast.error(data.error || "Import failed");
+        return;
+      }
+      if (data.failed > 0) {
+        toast.warning(`Imported ${data.created}, ${data.failed} row(s) failed — see console for details`);
+        console.warn("Pricing override import errors:", data.results.filter((r: { status: string }) => r.status === "error"));
+      } else {
+        toast.success(`Imported ${data.created} override(s)`);
+      }
+      await refresh();
+    } catch {
+      toast.error("Import failed");
+    } finally {
+      setIsImporting(false);
+    }
+  }
+
   async function toggleAudit(row: OverrideRow) {
     if (expandedAuditFor === row.id) {
       setExpandedAuditFor(null);
@@ -165,6 +198,30 @@ export function PricingOverridesManager({ initialOverrides }: { initialOverrides
 
   return (
     <div className="space-y-8">
+      <div className="flex flex-wrap items-center justify-end gap-2">
+        <Button size="sm" variant="outline" asChild>
+          <a href="/api/admin/pricing/overrides/export" download>
+            Export CSV
+          </a>
+        </Button>
+        <Button size="sm" variant="outline" disabled={isImporting} asChild>
+          <label className="cursor-pointer">
+            {isImporting ? "Importing…" : "Import CSV"}
+            <input
+              type="file"
+              accept=".csv,text/csv"
+              className="hidden"
+              disabled={isImporting}
+              onChange={(e) => {
+                const file = e.target.files?.[0];
+                if (file) handleImportFile(file);
+                e.target.value = "";
+              }}
+            />
+          </label>
+        </Button>
+      </div>
+
       <div className="rounded-2xl border border-border bg-card p-6">
         <h3 className="text-lg font-bold">New Override</h3>
         <p className="mt-1 text-sm text-muted-foreground">
@@ -284,9 +341,19 @@ export function PricingOverridesManager({ initialOverrides }: { initialOverrides
                     {row.ends_at ? ` – ${new Date(row.ends_at).toLocaleDateString()}` : ""}
                   </td>
                   <td className="px-4 py-3">
-                    <span className={`rounded-full px-2 py-1 text-xs font-semibold ${row.is_active ? "bg-green-500/10 text-green-600" : "bg-muted text-muted-foreground"}`}>
-                      {row.is_active ? "Active" : "Inactive"}
-                    </span>
+                    <div className="flex flex-wrap gap-1">
+                      <span className={`rounded-full px-2 py-1 text-xs font-semibold ${row.is_active ? "bg-green-500/10 text-green-600" : "bg-muted text-muted-foreground"}`}>
+                        {row.is_active ? "Active" : "Inactive"}
+                      </span>
+                      {isScheduled(row) && (
+                        <span
+                          className="rounded-full bg-amber-500/10 px-2 py-1 text-xs font-semibold text-amber-600"
+                          title={`Starts ${new Date(row.starts_at as string).toLocaleString()}`}
+                        >
+                          Scheduled
+                        </span>
+                      )}
+                    </div>
                   </td>
                   <td className="px-4 py-3">
                     <div className="flex flex-wrap gap-2">
