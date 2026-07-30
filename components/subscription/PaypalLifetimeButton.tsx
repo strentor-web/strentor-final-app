@@ -12,6 +12,7 @@ interface PaypalLifetimeButtonProps {
   countryCode: string | null;
   city?: string | null;
   segment?: string | null;
+  promoCode?: string | null;
   className?: string;
   onSuccess?: () => void;
 }
@@ -19,7 +20,7 @@ interface PaypalLifetimeButtonProps {
 // PayPal equivalent of LifetimeCheckoutButton. Renders PayPal's own Smart
 // Button (a popup-based approval flow) instead of a themed <Button>, since
 // PayPal's branding guidelines require using their button, not a lookalike.
-export function PaypalLifetimeButton({ sessionsPerWeek, planType, countryCode, city, segment, className, onSuccess }: PaypalLifetimeButtonProps) {
+export function PaypalLifetimeButton({ sessionsPerWeek, planType, countryCode, city, segment, promoCode, className, onSuccess }: PaypalLifetimeButtonProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const router = useRouter();
   const [isReady, setIsReady] = useState(false);
@@ -42,7 +43,7 @@ export function PaypalLifetimeButton({ sessionsPerWeek, planType, countryCode, c
             const response = await fetch("/api/paypal/lifetime/create-order", {
               method: "POST",
               headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({ sessionsPerWeek, planType, countryCode, city, segment }),
+              body: JSON.stringify({ sessionsPerWeek, planType, countryCode, city, segment, promoCode }),
             });
 
             if (response.status === 401) {
@@ -112,7 +113,7 @@ export function PaypalLifetimeButton({ sessionsPerWeek, planType, countryCode, c
     return () => {
       cancelled = true;
     };
-  }, [sessionsPerWeek, planType, countryCode, city, segment, router, onSuccess]);
+  }, [sessionsPerWeek, planType, countryCode, city, segment, promoCode, router, onSuccess]);
 
   return (
     <div className={className}>

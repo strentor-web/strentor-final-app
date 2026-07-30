@@ -4,6 +4,7 @@ import Razorpay from 'razorpay';
 import prisma from '@/utils/prisma/prismaClient';
 import { isSponsoredSegment, isKnownSegment, roundNicely } from '@/utils/pppPricing';
 import { isCountryExcluded, getEffectivePricing, clampUsd } from '@/utils/pricingOverrides';
+import { validatePromoCode } from '@/utils/pricing/promoCodes';
 import { getEffectiveFxRate } from '@/utils/fxRates';
 import {
   WEEKS_PER_MONTH,
@@ -37,7 +38,7 @@ const RAZORPAY_COUNTRY = 'IN';
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { sessionsPerWeek, billingCycle, planType = 'ONLINE', city, segment } = body;
+    const { sessionsPerWeek, billingCycle, planType = 'ONLINE', city, segment, promoCode } = body;
 
     if (
       typeof sessionsPerWeek !== 'number' ||
@@ -95,14 +96,40 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    // pricing_tier / pricing_segment / pricing_override_id discriminate
-    // this generation of rows from any earlier-formula (or differently
-    // overridden) row that may already exist for this same combo — a
-    // Razorpay Plan's billed amount is fixed forever once created, so an
-    // old row must never be silently reused at a new price.
+    // pricing_tier / pricing_segment / pricing_override_id / promo_code_id
+    // discriminate this generation of rows from any earlier-formula (or
+    // differently overridden/promo'd) row that may already exist for this
+    // same combo — a Razorpay Plan's billed amount is fixed forever once
+    // created, so an old row must never be silently reused at a new price.
     const segmentValue: string | null = segment && isKnownSegment(segment) ? segment : null;
     const pricing = await getEffectivePricing(RAZORPAY_COUNTRY, cityInput, segmentValue);
     const { tier, overrideId } = pricing;
+
+    const usdPrice = calculateCyclePriceUSDForTier(
+      sessionsPerWeek,
+      billingCycle,
+      planType as TrainingPlanType,
+      pricing.multiplier
+    );
+
+    let promoCodeId: string | null = null;
+    let discountAmountUsd = 0;
+    let preClampUsd = usdPrice.discountedAmount;
+    if (typeof promoCode === 'string' && promoCode.trim()) {
+      const promoResult = await validatePromoCode({
+        code: promoCode,
+        countryCode: RAZORPAY_COUNTRY,
+        product: 'recurring',
+        amountUsd: usdPrice.discountedAmount,
+        email: user.email ?? '',
+      });
+      if (!promoResult.valid) {
+        return NextResponse.json({ error: promoResult.error, errorType: 'INVALID_PROMO' }, { status: 400 });
+      }
+      promoCodeId = promoResult.promoCodeId ?? null;
+      discountAmountUsd = promoResult.discountAmountUsd ?? 0;
+      preClampUsd = promoResult.discountedAmountUsd ?? preClampUsd;
+    }
 
     const existingPlan = await prisma.subscription_plans.findFirst({
       where: {
@@ -113,6 +140,7 @@ export async function POST(request: NextRequest) {
         pricing_tier: tier,
         pricing_segment: segmentValue,
         pricing_override_id: overrideId,
+        promo_code_id: promoCodeId,
         is_active: true,
       },
     });
@@ -134,18 +162,13 @@ export async function POST(request: NextRequest) {
       key_secret: process.env.RAZORPAY_KEY_SECRET,
     });
 
-    const usdPrice = calculateCyclePriceUSDForTier(
-      sessionsPerWeek,
-      billingCycle,
-      planType as TrainingPlanType,
-      pricing.multiplier
-    );
-    const clampedUsd = clampUsd(usdPrice.discountedAmount, pricing);
+    const clampedUsd = clampUsd(preClampUsd, pricing);
     // Convert at the live-cached INR rate when fresh, else the static
     // illustrative rate (see utils/fxRates.ts) — either way this is the
     // one place that actually decides what Razorpay charges in INR.
     const { rate: inrRate } = await getEffectiveFxRate('INR');
     const discountedAmount = roundNicely(clampedUsd * inrRate);
+    const discountAmountInr = discountAmountUsd > 0 ? roundNicely(discountAmountUsd * inrRate) : null;
     const totalSessions = usdPrice.totalSessions;
     const weeksInCycle = billingCycle * WEEKS_PER_MONTH;
     const cycleLabel = CYCLE_LABELS[billingCycle];
@@ -178,6 +201,8 @@ export async function POST(request: NextRequest) {
         pricing_tier: tier,
         pricing_segment: segmentValue,
         pricing_override_id: overrideId,
+        promo_code_id: promoCodeId,
+        discount_amount: discountAmountInr,
         razorpay_plan_id: razorpayPlan.id,
         billing_period: cycleLabel,
         billing_cycle: billingCycle,

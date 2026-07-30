@@ -4,6 +4,7 @@ import prisma from '@/utils/prisma/prismaClient';
 import { createPaypalPlan } from '@/utils/paypal';
 import { isSponsoredSegment, isKnownSegment } from '@/utils/pppPricing';
 import { isCountryExcluded, getEffectivePricing, clampUsd } from '@/utils/pricingOverrides';
+import { validatePromoCode } from '@/utils/pricing/promoCodes';
 import {
   WEEKS_PER_MONTH,
   MIN_SESSIONS_PER_WEEK,
@@ -26,7 +27,7 @@ import {
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { sessionsPerWeek, billingCycle, planType = 'ONLINE', countryCode, city, segment } = body;
+    const { sessionsPerWeek, billingCycle, planType = 'ONLINE', countryCode, city, segment, promoCode } = body;
 
     if (
       typeof sessionsPerWeek !== 'number' ||
@@ -89,6 +90,34 @@ export async function POST(request: NextRequest) {
     const pricing = await getEffectivePricing(countryInput, cityInput, segmentValue);
     const { tier, overrideId } = pricing;
 
+    const weeksInCycle = billingCycle * WEEKS_PER_MONTH;
+    const totalSessions = sessionsPerWeek * weeksInCycle;
+    const usdPrice = calculateCyclePriceUSDForTier(
+      sessionsPerWeek,
+      billingCycle,
+      planType as TrainingPlanType,
+      pricing.multiplier
+    );
+
+    let promoCodeId: string | null = null;
+    let discountAmount: number | null = null;
+    let preClampUsd = usdPrice.discountedAmount;
+    if (typeof promoCode === 'string' && promoCode.trim()) {
+      const promoResult = await validatePromoCode({
+        code: promoCode,
+        countryCode: countryInput,
+        product: 'recurring',
+        amountUsd: usdPrice.discountedAmount,
+        email: user.email ?? '',
+      });
+      if (!promoResult.valid) {
+        return NextResponse.json({ error: promoResult.error, errorType: 'INVALID_PROMO' }, { status: 400 });
+      }
+      promoCodeId = promoResult.promoCodeId ?? null;
+      discountAmount = promoResult.discountAmountUsd ?? null;
+      preClampUsd = promoResult.discountedAmountUsd ?? preClampUsd;
+    }
+
     const existingPlan = await prisma.subscription_plans.findFirst({
       where: {
         category: 'FITNESS',
@@ -99,6 +128,7 @@ export async function POST(request: NextRequest) {
         pricing_tier: tier,
         pricing_segment: segmentValue,
         pricing_override_id: overrideId,
+        promo_code_id: promoCodeId,
         is_active: true,
       },
     });
@@ -115,15 +145,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Payment provider not configured' }, { status: 500 });
     }
 
-    const weeksInCycle = billingCycle * WEEKS_PER_MONTH;
-    const totalSessions = sessionsPerWeek * weeksInCycle;
-    const usdPrice = calculateCyclePriceUSDForTier(
-      sessionsPerWeek,
-      billingCycle,
-      planType as TrainingPlanType,
-      pricing.multiplier
-    );
-    const discountedAmount = clampUsd(usdPrice.discountedAmount, pricing);
+    const discountedAmount = clampUsd(preClampUsd, pricing);
     const cycleLabel = CYCLE_LABELS[billingCycle];
     const planName = `Fitness ${PLAN_TYPE_LABELS[planType as TrainingPlanType]} — ${sessionsPerWeek}/week (${cycleLabel}, USD, tier ${tier})`;
 
@@ -149,6 +171,8 @@ export async function POST(request: NextRequest) {
             pricing_tier: tier,
             pricing_segment: segmentValue,
             pricing_override_id: overrideId,
+            promo_code_id: promoCodeId,
+            discount_amount: discountAmount,
             // Unused for PayPal-priced rows — placeholder keeps this
             // NOT NULL column consistent across every subscription_plans row.
             razorpay_plan_id: `paypal_${planType}_${sessionsPerWeek}pw_${billingCycle}mo_tier${tier}`,

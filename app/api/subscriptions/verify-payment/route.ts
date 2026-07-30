@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import prisma from '@/utils/prisma/prismaClient';
 import crypto from 'crypto';
 import { safeUpdateSubscriptionStatus, type SubscriptionStatus } from '@/utils/subscription-status';
+import { recordPromoRedemption } from '@/utils/pricing/promoCodes';
 
 export async function POST(request: NextRequest) {
   try {
@@ -164,8 +165,33 @@ export async function POST(request: NextRequest) {
         }
       });
 
-      return NextResponse.json({ 
-        status: 'ok', 
+      // Only recorded now that payment is actually confirmed — an
+      // abandoned checkout must never consume a per-customer-limited promo
+      // code. Guarded against the same race this route already handles
+      // above (verify-payment called twice for one subscription).
+      if (plan?.promo_code_id) {
+        const alreadyRecorded = await prisma.promo_code_redemptions.findFirst({
+          where: { promo_code_id: plan.promo_code_id, order_reference: subscription.id },
+        });
+        if (!alreadyRecorded) {
+          const subscriber = await prisma.users_profile.findUnique({
+            where: { id: subscription.user_id },
+            select: { email: true },
+          });
+          if (subscriber?.email) {
+            await recordPromoRedemption({
+              promoCodeId: plan.promo_code_id,
+              userId: subscription.user_id,
+              email: subscriber.email,
+              orderReference: subscription.id,
+              amountDiscounted: plan.discount_amount ? Number(plan.discount_amount) : 0,
+            });
+          }
+        }
+      }
+
+      return NextResponse.json({
+        status: 'ok',
         message: 'Payment verified successfully',
         subscription: {
           id: updatedSubscription.id,

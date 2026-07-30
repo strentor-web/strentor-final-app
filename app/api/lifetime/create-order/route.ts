@@ -4,6 +4,7 @@ import Razorpay from 'razorpay';
 import prisma from '@/utils/prisma/prismaClient';
 import { isSponsoredSegment, isKnownSegment, roundNicely } from '@/utils/pppPricing';
 import { isCountryExcluded, getEffectivePricing, clampUsd } from '@/utils/pricingOverrides';
+import { validatePromoCode } from '@/utils/pricing/promoCodes';
 import { getEffectiveFxRate } from '@/utils/fxRates';
 import {
   MIN_SESSIONS_PER_WEEK,
@@ -27,7 +28,7 @@ const RAZORPAY_COUNTRY = 'IN';
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { sessionsPerWeek, planType = 'ONLINE', city, segment } = body;
+    const { sessionsPerWeek, planType = 'ONLINE', city, segment, promoCode } = body;
 
     if (
       typeof sessionsPerWeek !== 'number' ||
@@ -75,11 +76,6 @@ export async function POST(request: NextRequest) {
     if (usdAmount === undefined) {
       return NextResponse.json({ error: 'No Lifetime price configured for this combination' }, { status: 400 });
     }
-    const clampedUsd = clampUsd(usdAmount, pricing);
-    // Convert at the live-cached INR rate when fresh, else the static
-    // illustrative rate (see utils/fxRates.ts).
-    const { rate: inrRate } = await getEffectiveFxRate('INR');
-    const price = roundNicely(clampedUsd * inrRate);
 
     const supabase = await createClient();
     const { data: { user }, error: userError } = await supabase.auth.getUser();
@@ -87,6 +83,32 @@ export async function POST(request: NextRequest) {
     if (!user?.id || userError) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
+
+    let promoCodeId: string | null = null;
+    let discountAmountUsd = 0;
+    let preClampUsd = usdAmount;
+    if (typeof promoCode === 'string' && promoCode.trim()) {
+      const promoResult = await validatePromoCode({
+        code: promoCode,
+        countryCode: RAZORPAY_COUNTRY,
+        product: 'lifetime',
+        amountUsd: usdAmount,
+        email: user.email ?? '',
+      });
+      if (!promoResult.valid) {
+        return NextResponse.json({ error: promoResult.error, errorType: 'INVALID_PROMO' }, { status: 400 });
+      }
+      promoCodeId = promoResult.promoCodeId ?? null;
+      discountAmountUsd = promoResult.discountAmountUsd ?? 0;
+      preClampUsd = promoResult.discountedAmountUsd ?? preClampUsd;
+    }
+
+    const clampedUsd = clampUsd(preClampUsd, pricing);
+    // Convert at the live-cached INR rate when fresh, else the static
+    // illustrative rate (see utils/fxRates.ts).
+    const { rate: inrRate } = await getEffectiveFxRate('INR');
+    const price = roundNicely(clampedUsd * inrRate);
+    const discountAmount = discountAmountUsd > 0 ? roundNicely(discountAmountUsd * inrRate) : null;
 
     // Lifetime is a Fitness membership — a user can only ever hold one
     // Fitness relationship (recurring or lifetime) at a time.
@@ -139,6 +161,7 @@ export async function POST(request: NextRequest) {
         pricing_tier: tier,
         pricing_segment: segmentValue,
         pricing_override_id: overrideId,
+        promo_code_id: promoCodeId,
         is_active: true,
       },
     });
@@ -153,7 +176,8 @@ export async function POST(request: NextRequest) {
           pricing_tier: tier,
           pricing_segment: segmentValue,
           pricing_override_id: overrideId,
-          razorpay_plan_id: `lifetime_${planType}_${sessionsPerWeek}pw_tier${tier}`,
+          promo_code_id: promoCodeId,
+          razorpay_plan_id: `lifetime_${planType}_${sessionsPerWeek}pw_tier${tier}${promoCodeId ? `_promo${promoCodeId.slice(0, 8)}` : ''}`,
           billing_period: LIFETIME_BILLING_PERIOD,
           billing_cycle: LIFETIME_BILLING_CYCLE,
           sessions_per_week: sessionsPerWeek,
@@ -186,6 +210,8 @@ export async function POST(request: NextRequest) {
         status: 'PENDING',
         city: cityInput,
         customer_segment: segmentValue,
+        promo_code_id: promoCodeId,
+        discount_amount: discountAmount,
       },
     });
 

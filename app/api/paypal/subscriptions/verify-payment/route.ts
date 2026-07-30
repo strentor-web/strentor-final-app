@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import prisma from '@/utils/prisma/prismaClient';
 import { getPaypalSubscription } from '@/utils/paypal';
 import { safeUpdateSubscriptionStatus, type SubscriptionStatus } from '@/utils/subscription-status';
+import { recordPromoRedemption } from '@/utils/pricing/promoCodes';
 
 // PayPal equivalent of /api/subscriptions/verify-payment. PayPal
 // subscriptions have no client-supplied signature to check — after the
@@ -100,6 +101,29 @@ export async function POST(request: NextRequest) {
         },
       },
     });
+
+    // Only recorded now that payment is actually confirmed — an abandoned
+    // checkout must never consume a per-customer-limited promo code.
+    if (plan?.promo_code_id) {
+      const alreadyRecorded = await prisma.promo_code_redemptions.findFirst({
+        where: { promo_code_id: plan.promo_code_id, order_reference: subscription.id },
+      });
+      if (!alreadyRecorded) {
+        const subscriber = await prisma.users_profile.findUnique({
+          where: { id: subscription.user_id },
+          select: { email: true },
+        });
+        if (subscriber?.email) {
+          await recordPromoRedemption({
+            promoCodeId: plan.promo_code_id,
+            userId: subscription.user_id,
+            email: subscriber.email,
+            orderReference: subscription.id,
+            amountDiscounted: plan.discount_amount ? Number(plan.discount_amount) : 0,
+          });
+        }
+      }
+    }
 
     return NextResponse.json(
       {

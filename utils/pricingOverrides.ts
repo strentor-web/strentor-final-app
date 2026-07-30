@@ -131,6 +131,25 @@ export function clampUsd(amount: number, pricing: EffectivePricing): number {
   return clamped;
 }
 
+// subscription_plans rows are found-or-created keyed partly on
+// pricing_override_id (see app/api/subscriptions/ensure-plan/route.ts and
+// its PayPal/Lifetime counterparts) and are never mutated in place once
+// created — Razorpay/PayPal Plan objects are immutable once created too, so
+// existing subscribers always keep their contracted price regardless of
+// what happens here. But an admin PATCHing/rolling-back an override *in
+// place* (same id, different multiplier/tier/min/max) doesn't change that
+// id, so the old cached plan row would otherwise keep matching and serving
+// its stale pre-edit price to brand-new customers as well. Deactivating
+// those cached rows forces the next request for that combo to recompute
+// and create a fresh plan at the corrected price — existing subscriptions
+// are untouched since they reference the row by id, not by is_active.
+export async function invalidateCachedPlansForOverride(overrideId: string): Promise<void> {
+  await prisma.subscription_plans.updateMany({
+    where: { pricing_override_id: overrideId, is_active: true },
+    data: { is_active: false },
+  });
+}
+
 // Records every pricing_overrides change to pricing_audit_log — called by
 // every admin write (create/update/delete/rollback) so overrides stay
 // fully auditable and reversible.

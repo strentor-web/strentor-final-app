@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { checkAdminAccess } from "@/utils/user";
 import prisma from "@/utils/prisma/prismaClient";
-import { logPricingChange } from "@/utils/pricingOverrides";
+import { logPricingChange, invalidateCachedPlansForOverride } from "@/utils/pricingOverrides";
 
 async function requireFullAdmin() {
   const admin = await checkAdminAccess();
@@ -68,6 +68,8 @@ export async function POST(request: NextRequest, { params }: { params: Promise<{
       ends_at: before.ends_at ? new Date(before.ends_at as string) : null,
     },
   });
+
+  await invalidateCachedPlansForOverride(id);
 
   await logPricingChange({
     overrideId: id,

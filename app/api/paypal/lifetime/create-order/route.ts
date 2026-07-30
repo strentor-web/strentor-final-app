@@ -4,6 +4,7 @@ import prisma from '@/utils/prisma/prismaClient';
 import { createPaypalOrder } from '@/utils/paypal';
 import { isSponsoredSegment, isKnownSegment } from '@/utils/pppPricing';
 import { isCountryExcluded, getEffectivePricing, clampUsd } from '@/utils/pricingOverrides';
+import { validatePromoCode } from '@/utils/pricing/promoCodes';
 import {
   MIN_SESSIONS_PER_WEEK,
   MAX_SESSIONS_PER_WEEK,
@@ -23,7 +24,7 @@ import {
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { sessionsPerWeek, planType = 'ONLINE', countryCode, city, segment } = body;
+    const { sessionsPerWeek, planType = 'ONLINE', countryCode, city, segment, promoCode } = body;
 
     if (
       typeof sessionsPerWeek !== 'number' ||
@@ -72,7 +73,6 @@ export async function POST(request: NextRequest) {
     if (usdAmount === undefined) {
       return NextResponse.json({ error: 'No Lifetime price configured for this combination' }, { status: 400 });
     }
-    const price = clampUsd(usdAmount, pricing);
 
     const supabase = await createClient();
     const { data: { user }, error: userError } = await supabase.auth.getUser();
@@ -80,6 +80,27 @@ export async function POST(request: NextRequest) {
     if (!user?.id || userError) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
+
+    let promoCodeId: string | null = null;
+    let discountAmount: number | null = null;
+    let preClampUsd = usdAmount;
+    if (typeof promoCode === 'string' && promoCode.trim()) {
+      const promoResult = await validatePromoCode({
+        code: promoCode,
+        countryCode: countryInput,
+        product: 'lifetime',
+        amountUsd: usdAmount,
+        email: user.email ?? '',
+      });
+      if (!promoResult.valid) {
+        return NextResponse.json({ error: promoResult.error, errorType: 'INVALID_PROMO' }, { status: 400 });
+      }
+      promoCodeId = promoResult.promoCodeId ?? null;
+      discountAmount = promoResult.discountAmountUsd ?? null;
+      preClampUsd = promoResult.discountedAmountUsd ?? preClampUsd;
+    }
+
+    const price = clampUsd(preClampUsd, pricing);
 
     const existingFitnessSubscription = await prisma.user_subscriptions.findFirst({
       where: {
@@ -118,6 +139,7 @@ export async function POST(request: NextRequest) {
         pricing_tier: tier,
         pricing_segment: segmentValue,
         pricing_override_id: overrideId,
+        promo_code_id: promoCodeId,
         is_active: true,
       },
     });
@@ -133,10 +155,11 @@ export async function POST(request: NextRequest) {
           pricing_tier: tier,
           pricing_segment: segmentValue,
           pricing_override_id: overrideId,
+          promo_code_id: promoCodeId,
           // razorpay_plan_id is NOT NULL in the schema but unused for
           // PayPal-priced rows — a placeholder keeps this row consistent
           // with every other subscription_plans row.
-          razorpay_plan_id: `paypal_lifetime_${planType}_${sessionsPerWeek}pw_tier${tier}`,
+          razorpay_plan_id: `paypal_lifetime_${planType}_${sessionsPerWeek}pw_tier${tier}${promoCodeId ? `_promo${promoCodeId.slice(0, 8)}` : ''}`,
           billing_period: LIFETIME_BILLING_PERIOD,
           billing_cycle: LIFETIME_BILLING_CYCLE,
           sessions_per_week: sessionsPerWeek,
@@ -168,6 +191,8 @@ export async function POST(request: NextRequest) {
         status: 'PENDING',
         city: cityInput,
         customer_segment: segmentValue,
+        promo_code_id: promoCodeId,
+        discount_amount: discountAmount,
       },
     });
 

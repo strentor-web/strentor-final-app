@@ -13,11 +13,12 @@ interface LifetimeCheckoutButtonProps {
   planType: TrainingPlanType;
   city?: string | null;
   segment?: string | null;
+  promoCode?: string | null;
   className?: string;
   onSuccess?: () => void;
 }
 
-export function LifetimeCheckoutButton({ sessionsPerWeek, planType, city, segment, className, onSuccess }: LifetimeCheckoutButtonProps) {
+export function LifetimeCheckoutButton({ sessionsPerWeek, planType, city, segment, promoCode, className, onSuccess }: LifetimeCheckoutButtonProps) {
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
 
@@ -34,7 +35,7 @@ export function LifetimeCheckoutButton({ sessionsPerWeek, planType, city, segmen
       const response = await fetch("/api/lifetime/create-order", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ sessionsPerWeek, planType, city, segment }),
+        body: JSON.stringify({ sessionsPerWeek, planType, city, segment, promoCode }),
       });
 
       if (response.status === 401) {

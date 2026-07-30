@@ -79,6 +79,12 @@ export default function CheckoutPageClient() {
 
   const [stage, setStage] = useState<"form" | "starting" | "ready">("form");
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [promoCodeInput, setPromoCodeInput] = useState("");
+  const [appliedPromoCode, setAppliedPromoCode] = useState<string | null>(null);
+  const [promoStatus, setPromoStatus] = useState<
+    { valid: true; discountAmountUsd: number } | { valid: false; error: string } | null
+  >(null);
+  const [isValidatingPromo, setIsValidatingPromo] = useState(false);
 
   // Signed-in users (e.g. arriving from a pricing page after already
   // submitting intake, or re-subscribing from settings) shouldn't have to
@@ -178,6 +184,43 @@ export default function CheckoutPageClient() {
       setStage("form");
     } finally {
       setIsSubmitting(false);
+    }
+  }
+
+  async function handleApplyPromo() {
+    if (!promoCodeInput.trim()) return;
+    setIsValidatingPromo(true);
+    setPromoStatus(null);
+    const amountUsd = tier === "recurring" ? recurringUsdCharge.discountedAmount : lifetimeUsdCharge;
+    if (!amountUsd) {
+      setPromoStatus({ valid: false, error: "No price to apply a promo to yet" });
+      setIsValidatingPromo(false);
+      return;
+    }
+    try {
+      const response = await fetch("/api/checkout/validate-promo", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          code: promoCodeInput,
+          countryCode: isPaypal ? countryCode : "IN",
+          product: tier,
+          amountUsd,
+        }),
+      });
+      const data = await response.json();
+      if (!response.ok || !data.valid) {
+        setPromoStatus({ valid: false, error: data.error || "Invalid promo code" });
+        setAppliedPromoCode(null);
+        return;
+      }
+      setPromoStatus({ valid: true, discountAmountUsd: data.discountAmountUsd ?? 0 });
+      setAppliedPromoCode(promoCodeInput.trim().toUpperCase());
+    } catch {
+      setPromoStatus({ valid: false, error: "Couldn't check that code — try again" });
+      setAppliedPromoCode(null);
+    } finally {
+      setIsValidatingPromo(false);
     }
   }
 
@@ -331,6 +374,9 @@ export default function CheckoutPageClient() {
                   Pricing shown reflects your region{countryCode ? ` (${countryCode})` : ""}.
                 </p>
               )}
+              <p className="mt-1 text-[11px] text-muted-foreground">
+                Taxes, if applicable in your region, are calculated at checkout.
+              </p>
             </div>
           </div>
 
@@ -377,6 +423,39 @@ export default function CheckoutPageClient() {
                   </option>
                 ))}
               </select>
+            </div>
+            <div>
+              <Label htmlFor="checkout-promo">Promo code (optional)</Label>
+              <div className="mt-1 flex gap-2">
+                <Input
+                  id="checkout-promo"
+                  placeholder="e.g. WELCOME10"
+                  value={promoCodeInput}
+                  disabled={stage !== "form"}
+                  onChange={(e) => {
+                    setPromoCodeInput(e.target.value);
+                    setPromoStatus(null);
+                    setAppliedPromoCode(null);
+                  }}
+                  className="uppercase"
+                />
+                <Button
+                  type="button"
+                  variant="outline"
+                  disabled={stage !== "form" || isValidatingPromo || !promoCodeInput.trim()}
+                  onClick={handleApplyPromo}
+                >
+                  {isValidatingPromo ? "Checking…" : "Apply"}
+                </Button>
+              </div>
+              {promoStatus?.valid === true && (
+                <p className="mt-1 text-xs font-medium text-green-600">
+                  Code applied — ${promoStatus.discountAmountUsd.toFixed(2)} off.
+                </p>
+              )}
+              {promoStatus?.valid === false && (
+                <p className="mt-1 text-xs text-destructive">{promoStatus.error}</p>
+              )}
             </div>
           </div>
 
@@ -444,6 +523,7 @@ export default function CheckoutPageClient() {
                 countryCode={countryCode}
                 city={city}
                 segment={segment}
+                promoCode={appliedPromoCode}
                 onSuccess={() => router.push("/onboarding")}
               />
             ) : (
@@ -453,6 +533,7 @@ export default function CheckoutPageClient() {
                 billingCycle={billingCycle}
                 city={city}
                 segment={segment}
+                promoCode={appliedPromoCode}
                 className="w-full rounded-full bg-[#C9A96A] py-6 text-base text-black hover:bg-[#C9A96A]/90"
                 onSuccess={() => router.push("/onboarding")}
               />
@@ -464,6 +545,7 @@ export default function CheckoutPageClient() {
               countryCode={countryCode}
               city={city}
               segment={segment}
+              promoCode={appliedPromoCode}
               onSuccess={() => router.push("/onboarding")}
             />
           ) : (
@@ -472,6 +554,7 @@ export default function CheckoutPageClient() {
               planType={planType}
               city={city}
               segment={segment}
+              promoCode={appliedPromoCode}
               className="w-full rounded-full bg-[#C9A96A] py-6 text-base text-black hover:bg-[#C9A96A]/90"
               onSuccess={() => router.push("/onboarding")}
             />

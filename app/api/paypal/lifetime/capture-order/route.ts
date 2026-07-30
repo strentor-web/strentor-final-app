@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@/utils/supabase/server';
 import prisma from '@/utils/prisma/prismaClient';
 import { capturePaypalOrder } from '@/utils/paypal';
+import { recordPromoRedemption } from '@/utils/pricing/promoCodes';
 
 // PayPal equivalent of /api/lifetime/verify-payment. PayPal Orders don't
 // carry an HMAC signature the way Razorpay does — capturing the order via
@@ -84,6 +85,18 @@ export async function POST(request: NextRequest) {
         },
       }),
     ]);
+
+    // Only recorded now that payment is actually confirmed — an abandoned
+    // checkout must never consume a per-customer-limited promo code.
+    if (purchase.promo_code_id && user.email) {
+      await recordPromoRedemption({
+        promoCodeId: purchase.promo_code_id,
+        userId: user.id,
+        email: user.email,
+        orderReference: purchase.id,
+        amountDiscounted: purchase.discount_amount ? Number(purchase.discount_amount) : 0,
+      });
+    }
 
     return NextResponse.json({ status: 'ok', message: 'Payment verified successfully' });
   } catch (error) {

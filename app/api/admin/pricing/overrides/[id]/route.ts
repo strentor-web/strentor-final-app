@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import { checkAdminAccess } from "@/utils/user";
 import prisma from "@/utils/prisma/prismaClient";
-import { logPricingChange } from "@/utils/pricingOverrides";
+import { logPricingChange, invalidateCachedPlansForOverride } from "@/utils/pricingOverrides";
 import { CUSTOMER_SEGMENTS } from "@/utils/pppPricing";
 
 async function requireFullAdmin() {
@@ -76,6 +76,8 @@ export async function PATCH(request: NextRequest, { params }: { params: Promise<
     },
   });
 
+  await invalidateCachedPlansForOverride(id);
+
   await logPricingChange({
     overrideId: id,
     action: "UPDATE",
@@ -108,6 +110,8 @@ export async function DELETE(request: NextRequest, { params }: { params: Promise
     where: { id },
     data: { is_active: false },
   });
+
+  await invalidateCachedPlansForOverride(id);
 
   await logPricingChange({
     overrideId: id,

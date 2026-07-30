@@ -18,18 +18,18 @@ datasource db {
 // for the admin queue. Corporate submissions also get a specialized row
 // in corporate_inquiries; this table is the universal fallback.
 model intake_submissions {
-  id            String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  pathway       String
-  full_name     String
-  email         String
-  phone         String
-  city          String?
-  country       String?
-  review_level  String   @default("standard_fit_review")
-  status        String   @default("new")
-  source_page   String?
-  payload       Json
-  created_at    DateTime @default(now())
+  id           String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  pathway      String
+  full_name    String
+  email        String
+  phone        String
+  city         String?
+  country      String?
+  review_level String   @default("standard_fit_review")
+  status       String   @default("new")
+  source_page  String?
+  payload      Json
+  created_at   DateTime @default(now())
 
   @@index([pathway], map: "IntakeSubmission_pathway_idx")
   @@index([status], map: "IntakeSubmission_status_idx")
@@ -42,17 +42,17 @@ model intake_submissions {
 // section 12 (core schema). Scoring/pathway rules are deterministic and
 // enforced in app code, not here.
 model assessments {
-  id                     String                   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  user_id                String                   @db.Uuid
-  total_score            Int
-  red_flag_exists        Boolean                  @default(false)
-  pathway_result         AssessmentPathway
-  human_review_required  Boolean                  @default(false)
-  corporate_interest     Boolean                  @default(false)
-  elite_interest         Boolean                  @default(false)
-  submitted_at           DateTime                 @default(now())
-  users_profile          users_profile            @relation("AssessmentUser", fields: [user_id], references: [id], onDelete: NoAction, map: "Assessment_userId_fkey")
-  assessment_answers     assessment_answers[]
+  id                      String                    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  user_id                 String                    @db.Uuid
+  total_score             Int
+  red_flag_exists         Boolean                   @default(false)
+  pathway_result          AssessmentPathway
+  human_review_required   Boolean                   @default(false)
+  corporate_interest      Boolean                   @default(false)
+  elite_interest          Boolean                   @default(false)
+  submitted_at            DateTime                  @default(now())
+  users_profile           users_profile             @relation("AssessmentUser", fields: [user_id], references: [id], onDelete: NoAction, map: "Assessment_userId_fkey")
+  assessment_answers      assessment_answers[]
   pathway_recommendations pathway_recommendations[]
 
   @@index([user_id], map: "Assessment_userId_idx")
@@ -74,16 +74,16 @@ model assessment_answers {
 }
 
 model pathway_recommendations {
-  id                           String            @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  user_id                      String            @db.Uuid
-  assessment_id                String            @db.Uuid
-  pathway                      AssessmentPathway
-  reason                       String
-  cta_type                     String
-  automatic_progression_allowed Boolean          @default(true)
-  created_at                   DateTime          @default(now())
-  users_profile                users_profile     @relation("PathwayRecommendationUser", fields: [user_id], references: [id], onDelete: NoAction, map: "PathwayRecommendation_userId_fkey")
-  assessments                  assessments       @relation(fields: [assessment_id], references: [id], onDelete: Cascade, map: "PathwayRecommendation_assessmentId_fkey")
+  id                            String            @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  user_id                       String            @db.Uuid
+  assessment_id                 String            @db.Uuid
+  pathway                       AssessmentPathway
+  reason                        String
+  cta_type                      String
+  automatic_progression_allowed Boolean           @default(true)
+  created_at                    DateTime          @default(now())
+  users_profile                 users_profile     @relation("PathwayRecommendationUser", fields: [user_id], references: [id], onDelete: NoAction, map: "PathwayRecommendation_userId_fkey")
+  assessments                   assessments       @relation(fields: [assessment_id], references: [id], onDelete: Cascade, map: "PathwayRecommendation_assessmentId_fkey")
 
   @@index([user_id], map: "PathwayRecommendation_userId_idx")
   @@schema("public")
@@ -136,22 +136,22 @@ model pain_fatigue_logs {
 }
 
 model weekly_checkins {
-  id                    String                @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  user_id               String                @db.Uuid
-  week_start            DateTime              @db.Date
-  wins                  String?
-  barriers              String?
-  pain_summary          String?
-  energy_summary        String?
-  mood_summary          String?
-  habit_consistency     String?
-  support_needed        Boolean               @default(false)
+  id                     String            @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  user_id                String            @db.Uuid
+  week_start             DateTime          @db.Date
+  wins                   String?
+  barriers               String?
+  pain_summary           String?
+  energy_summary         String?
+  mood_summary           String?
+  habit_consistency      String?
+  support_needed         Boolean           @default(false)
   support_needed_details String?
-  red_flag_detected     Boolean               @default(false)
-  coach_review_status   CoachReviewStatus     @default(PENDING)
-  admin_notes           String?
-  created_at            DateTime              @default(now())
-  users_profile         users_profile         @relation(fields: [user_id], references: [id], onDelete: NoAction, map: "WeeklyCheckin_userId_fkey")
+  red_flag_detected      Boolean           @default(false)
+  coach_review_status    CoachReviewStatus @default(PENDING)
+  admin_notes            String?
+  created_at             DateTime          @default(now())
+  users_profile          users_profile     @relation(fields: [user_id], references: [id], onDelete: NoAction, map: "WeeklyCheckin_userId_fkey")
 
   @@unique([user_id, week_start], map: "WeeklyCheckin_userId_weekStart_key")
   @@index([user_id, week_start], map: "WeeklyCheckin_userId_weekStart_idx")
@@ -176,23 +176,31 @@ model coaching_calls {
 }
 
 model testimonials {
-  id                String              @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  user_id           String              @db.Uuid
-  name_display      String
-  program_type      String?
-  testimonial_text  String
-  /** For video reviews, a link to the video (YouTube/Instagram/Drive) — not an uploaded file. */
-  media_url         String?
-  /** TEXT or VIDEO — determines the cashback amount. */
-  review_type       String              @default("TEXT")
-  approval_status   TestimonialStatus   @default(PENDING)
-  published_at      DateTime?
-  /** Set server-side from review_type at submission (500 for TEXT, 1000 for VIDEO) — never trust a client-supplied amount. */
-  cashback_amount   Int?
-  /** Cashback only becomes payable once approval_status = APPROVED; this timestamp marks staff having actually paid it out. */
-  cashback_paid_at  DateTime?
-  created_at        DateTime            @default(now())
-  users_profile     users_profile       @relation(fields: [user_id], references: [id], onDelete: NoAction, map: "Testimonial_userId_fkey")
+  id               String            @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  user_id          String            @db.Uuid
+  name_display     String
+  program_type     String?
+  testimonial_text String
+  /**
+   * For video reviews, a link to the video (YouTube/Instagram/Drive) — not an uploaded file.
+   */
+  media_url        String?
+  /**
+   * TEXT or VIDEO — determines the cashback amount.
+   */
+  review_type      String            @default("TEXT")
+  approval_status  TestimonialStatus @default(PENDING)
+  published_at     DateTime?
+  /**
+   * Set server-side from review_type at submission (500 for TEXT, 1000 for VIDEO) — never trust a client-supplied amount.
+   */
+  cashback_amount  Int?
+  /**
+   * Cashback only becomes payable once approval_status = APPROVED; this timestamp marks staff having actually paid it out.
+   */
+  cashback_paid_at DateTime?
+  created_at       DateTime          @default(now())
+  users_profile    users_profile     @relation(fields: [user_id], references: [id], onDelete: NoAction, map: "Testimonial_userId_fkey")
 
   @@index([approval_status], map: "Testimonial_approvalStatus_idx")
   @@schema("public")
@@ -208,14 +216,14 @@ model testimonials {
 // exists so a bad entry can be unpublished after the fact without deleting
 // the record.
 model site_testimonials {
-  id                String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  name_display      String
-  testimonial_text  String
-  context           String?
-  consent_given     Boolean  @default(false)
-  is_published      Boolean  @default(true)
-  source_page       String?
-  created_at        DateTime @default(now())
+  id               String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name_display     String
+  testimonial_text String
+  context          String?
+  consent_given    Boolean  @default(false)
+  is_published     Boolean  @default(true)
+  source_page      String?
+  created_at       DateTime @default(now())
 
   @@index([is_published], map: "SiteTestimonial_isPublished_idx")
   @@schema("public")
@@ -224,13 +232,13 @@ model site_testimonials {
 // Audit trail for every triggered email/reminder/access change/safety
 // notification — see App Builder Requirement Document section 13.
 model automation_events {
-  id              String        @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  user_id         String?       @db.Uuid
+  id              String         @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  user_id         String?        @db.Uuid
   event_type      String
   trigger_source  String
   payload_summary String?
-  status          String        @default("sent")
-  sent_at         DateTime      @default(now())
+  status          String         @default("sent")
+  sent_at         DateTime       @default(now())
   error_message   String?
   users_profile   users_profile? @relation(fields: [user_id], references: [id], onDelete: SetNull, map: "AutomationEvent_userId_fkey")
 
@@ -240,85 +248,89 @@ model automation_events {
 }
 
 model admin_notes {
-  id             String        @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  user_id        String        @db.Uuid
-  related_type   String
-  related_id     String
-  note           String
-  visibility     String        @default("internal")
-  created_by_id  String        @db.Uuid
-  created_at     DateTime      @default(now())
-  users_profile  users_profile @relation("AdminNoteSubject", fields: [user_id], references: [id], onDelete: NoAction, map: "AdminNote_userId_fkey")
-  created_by     users_profile @relation("AdminNoteAuthor", fields: [created_by_id], references: [id], onDelete: NoAction, map: "AdminNote_createdById_fkey")
+  id            String        @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  user_id       String        @db.Uuid
+  related_type  String
+  related_id    String
+  note          String
+  visibility    String        @default("internal")
+  created_by_id String        @db.Uuid
+  created_at    DateTime      @default(now())
+  users_profile users_profile @relation("AdminNoteSubject", fields: [user_id], references: [id], onDelete: NoAction, map: "AdminNote_userId_fkey")
+  created_by    users_profile @relation("AdminNoteAuthor", fields: [created_by_id], references: [id], onDelete: NoAction, map: "AdminNote_createdById_fkey")
 
   @@index([user_id, related_type], map: "AdminNote_userId_relatedType_idx")
   @@schema("public")
 }
 
 model corporate_groups {
-  id                       String                     @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  company_name             String
-  contact_person           String
-  contact_email            String
-  plan_type                String?
-  member_limit             Int?
-  status                   String                     @default("active")
-  created_at               DateTime                   @default(now())
-  members                  users_profile[]            @relation("CorporateGroupMembers")
-  program_bookings         corporate_program_bookings[]
-  invoices                 corporate_invoices[]
+  id               String                       @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  company_name     String
+  contact_person   String
+  contact_email    String
+  plan_type        String?
+  member_limit     Int?
+  status           String                       @default("active")
+  created_at       DateTime                     @default(now())
+  members          users_profile[]              @relation("CorporateGroupMembers")
+  program_bookings corporate_program_bookings[]
+  invoices         corporate_invoices[]
 
   @@schema("public")
 }
 
 model corporate_program_bookings {
-  id                String           @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  corporate_group_id String          @db.Uuid
-  corporate_group   corporate_groups @relation(fields: [corporate_group_id], references: [id], onDelete: Cascade, map: "CorporateProgramBooking_corporateGroupId_fkey")
-  /** Which Workshop & Pilot Program Options tier — see config/partnerPricing.ts. */
-  program_option    String
-  scheduled_date    DateTime?
-  status            String           @default("scheduled")
-  notes             String?
-  created_by_id     String?          @db.Uuid
-  created_at        DateTime         @default(now())
+  id                 String           @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  corporate_group_id String           @db.Uuid
+  corporate_group    corporate_groups @relation(fields: [corporate_group_id], references: [id], onDelete: Cascade, map: "CorporateProgramBooking_corporateGroupId_fkey")
+  /**
+   * Which Workshop & Pilot Program Options tier — see config/partnerPricing.ts.
+   */
+  program_option     String
+  scheduled_date     DateTime?
+  status             String           @default("scheduled")
+  notes              String?
+  created_by_id      String?          @db.Uuid
+  created_at         DateTime         @default(now())
 
   @@index([corporate_group_id], map: "CorporateProgramBooking_corporateGroupId_idx")
   @@schema("public")
 }
 
 model corporate_invoices {
-  id                String           @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  corporate_group_id String          @db.Uuid
-  corporate_group   corporate_groups @relation(fields: [corporate_group_id], references: [id], onDelete: Cascade, map: "CorporateInvoice_corporateGroupId_fkey")
-  description       String
-  amount            Decimal          @db.Decimal(12, 2)
-  currency          String           @default("INR")
-  status            String           @default("pending")
-  issued_at         DateTime         @default(now())
-  due_at            DateTime?
-  paid_at           DateTime?
-  created_by_id     String?          @db.Uuid
-  created_at        DateTime         @default(now())
+  id                 String           @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  corporate_group_id String           @db.Uuid
+  corporate_group    corporate_groups @relation(fields: [corporate_group_id], references: [id], onDelete: Cascade, map: "CorporateInvoice_corporateGroupId_fkey")
+  description        String
+  amount             Decimal          @db.Decimal(12, 2)
+  currency           String           @default("INR")
+  status             String           @default("pending")
+  issued_at          DateTime         @default(now())
+  due_at             DateTime?
+  paid_at            DateTime?
+  created_by_id      String?          @db.Uuid
+  created_at         DateTime         @default(now())
 
   @@index([corporate_group_id], map: "CorporateInvoice_corporateGroupId_idx")
   @@schema("public")
 }
 
 model referrals {
-  id                String        @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  referrer_id       String        @db.Uuid
-  referrer          users_profile @relation("ReferralsMade", fields: [referrer_id], references: [id], onDelete: Cascade, map: "Referral_referrerId_fkey")
-  referral_code     String
-  referred_name     String
-  referred_email    String
-  /** pending (applied, not yet a paying client) | converted (staff confirmed they became a paying client — cashback owed) | paid */
-  status            String        @default("pending")
-  intake_submission_id String?    @db.Uuid
-  cashback_amount   Int           @default(2000)
-  converted_at      DateTime?
-  cashback_paid_at  DateTime?
-  created_at        DateTime      @default(now())
+  id                   String        @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  referrer_id          String        @db.Uuid
+  referrer             users_profile @relation("ReferralsMade", fields: [referrer_id], references: [id], onDelete: Cascade, map: "Referral_referrerId_fkey")
+  referral_code        String
+  referred_name        String
+  referred_email       String
+  /**
+   * pending (applied, not yet a paying client) | converted (staff confirmed they became a paying client — cashback owed) | paid
+   */
+  status               String        @default("pending")
+  intake_submission_id String?       @db.Uuid
+  cashback_amount      Int           @default(2000)
+  converted_at         DateTime?
+  cashback_paid_at     DateTime?
+  created_at           DateTime      @default(now())
 
   @@index([referrer_id], map: "Referral_referrerId_idx")
   @@index([status], map: "Referral_status_idx")
@@ -340,17 +352,17 @@ model corporate_inquiries {
 }
 
 model mentorship_applications {
-  id                 String                     @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  user_id            String                     @db.Uuid
+  id                 String                      @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  user_id            String                      @db.Uuid
   goals              String
   current_challenges String?
   desired_support    String?
   readiness_score    Int?
   status             MentorshipApplicationStatus @default(PENDING)
-  reviewed_by_id     String?                    @db.Uuid
-  submitted_at       DateTime                   @default(now())
-  users_profile      users_profile              @relation("MentorshipApplicant", fields: [user_id], references: [id], onDelete: NoAction, map: "MentorshipApplication_userId_fkey")
-  reviewed_by        users_profile?             @relation("MentorshipReviewer", fields: [reviewed_by_id], references: [id], onDelete: SetNull, map: "MentorshipApplication_reviewedById_fkey")
+  reviewed_by_id     String?                     @db.Uuid
+  submitted_at       DateTime                    @default(now())
+  users_profile      users_profile               @relation("MentorshipApplicant", fields: [user_id], references: [id], onDelete: NoAction, map: "MentorshipApplication_userId_fkey")
+  reviewed_by        users_profile?              @relation("MentorshipReviewer", fields: [reviewed_by_id], references: [id], onDelete: SetNull, map: "MentorshipApplication_reviewedById_fkey")
 
   @@index([user_id], map: "MentorshipApplication_userId_idx")
   @@schema("public")
@@ -359,11 +371,11 @@ model mentorship_applications {
 model calculator_sessions {
   id            String         @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   user_id       String         @db.Uuid
-  category    CalculatorType
+  category      CalculatorType
   inputs        Json
   result        Float
   result_unit   String?
-  date    DateTime      @db.Date
+  date          DateTime       @db.Date
   users_profile users_profile  @relation(fields: [user_id], references: [id], onDelete: NoAction, map: "CalculatorSession_userId_fkey")
 
   @@index([date], map: "CalculatorSession_date_idx")
@@ -372,19 +384,19 @@ model calculator_sessions {
 }
 
 model client_max_lifts {
-  id            String        @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  client_id     String        @db.Uuid
-  list_exercise_id String     @db.Uuid
-  max_weight    Float?        // For weight-based exercises (can be null for reps-based)
-  max_reps      Int?          // NEW: For reps-based exercises (can be null for weight-based)
-  exercise_type ExerciseType  @default(WEIGHT_BASED) // NEW: Track exercise type
-  last_updated  DateTime
-  date_achieved DateTime      @default(now())
-  set_id        String?       @db.Uuid // NEW: Link to specific exercise_logs entry
-  is_invalid    Boolean       @default(false) // NEW: Allow users to invalidate suspicious PRs
+  id                     String                 @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  client_id              String                 @db.Uuid
+  list_exercise_id       String                 @db.Uuid
+  max_weight             Float? // For weight-based exercises (can be null for reps-based)
+  max_reps               Int? // NEW: For reps-based exercises (can be null for weight-based)
+  exercise_type          ExerciseType           @default(WEIGHT_BASED) // NEW: Track exercise type
+  last_updated           DateTime
+  date_achieved          DateTime               @default(now())
+  set_id                 String?                @db.Uuid // NEW: Link to specific exercise_logs entry
+  is_invalid             Boolean                @default(false) // NEW: Allow users to invalidate suspicious PRs
   workout_exercise_lists workout_exercise_lists @relation(fields: [list_exercise_id], references: [id], onDelete: NoAction, map: "ClientMaxLift_listExerciseId_fkey")
-  users_profile users_profile @relation(fields: [client_id], references: [id], onDelete: NoAction, map: "ClientMaxLift_clientId_fkey")
-  exercise_logs exercise_logs? @relation(fields: [set_id], references: [id], onDelete: SetNull, map: "ClientMaxLift_setId_fkey")
+  users_profile          users_profile          @relation(fields: [client_id], references: [id], onDelete: NoAction, map: "ClientMaxLift_clientId_fkey")
+  exercise_logs          exercise_logs?         @relation(fields: [set_id], references: [id], onDelete: SetNull, map: "ClientMaxLift_setId_fkey")
 
   @@index([client_id, list_exercise_id], map: "ClientMaxLift_clientId_listExerciseId_idx")
   @@index([set_id], map: "ClientMaxLift_setId_idx")
@@ -397,31 +409,31 @@ model exercise_logs {
   client_id                String                   @db.Uuid
   set_id                   String                   @db.Uuid
   performed_date           DateTime                 @default(now()) @db.Date
-  scheduled_date            DateTime                 @db.Date
+  scheduled_date           DateTime                 @db.Date
   weight_used              Float?
   reps_done                Int?
-  rpe                      Int?                     //how to make it 1-10 scale?     
+  rpe                      Int? //how to make it 1-10 scale?     
   notes                    String?
   users_profile            users_profile            @relation(fields: [client_id], references: [id], onDelete: NoAction, map: "ExerciseLog_clientId_fkey")
   workout_set_instructions workout_set_instructions @relation(fields: [set_id], references: [id], onDelete: NoAction, map: "ExerciseLog_setId_fkey")
-  client_max_lifts         client_max_lifts[]       // NEW: One-to-many relation to PRs linked to this set
+  client_max_lifts         client_max_lifts[] // NEW: One-to-many relation to PRs linked to this set
 
   @@schema("public")
 }
 
 model subscription_events {
-  id                   String        @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  user_id              String        @db.Uuid
+  id                   String          @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  user_id              String          @db.Uuid
   event_type           String
   payment_id           String?
   amount               Decimal?
-  created_at           DateTime?     @default(now())
+  created_at           DateTime?       @default(now())
   metadata             Json?
   subscription_id      String?
   subscription_plan_id String?
-  webhook_event_id     String?        @db.Uuid
-  webhook_event        webhook_events?     @relation(fields: [webhook_event_id], references: [id], onDelete: NoAction, map: "SubscriptionEvent_webhookEventId_fkey")
-  users_profile        users_profile       @relation(fields: [user_id], references: [id], onDelete: NoAction, map: "SubscriptionEvent_userId_fkey")
+  webhook_event_id     String?         @db.Uuid
+  webhook_event        webhook_events? @relation(fields: [webhook_event_id], references: [id], onDelete: NoAction, map: "SubscriptionEvent_webhookEventId_fkey")
+  users_profile        users_profile   @relation(fields: [user_id], references: [id], onDelete: NoAction, map: "SubscriptionEvent_userId_fkey")
 
   @@index([event_type], map: "SubscriptionEvent_eventType_idx")
   @@index([user_id], map: "SubscriptionEvent_userId_idx")
@@ -429,36 +441,36 @@ model subscription_events {
 }
 
 model subscription_plans {
-  id                 String               @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  name               String
-  category           SubscriptionCategory
-  plan_type          PlanType             @default(ONLINE)
-  price              Decimal              @db.Decimal(10, 2)
-  features           Json?
-  razorpay_plan_id   String
-  billing_period     String               @default("monthly")
-  billing_cycle      Int                  @default(1)
-  is_active          Boolean?              @default(true)
-  sessions_per_week  Int?
+  id                  String               @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name                String
+  category            SubscriptionCategory
+  plan_type           PlanType             @default(ONLINE)
+  price               Decimal              @db.Decimal(10, 2)
+  features            Json?
+  razorpay_plan_id    String
+  billing_period      String               @default("monthly")
+  billing_cycle       Int                  @default(1)
+  is_active           Boolean?             @default(true)
+  sessions_per_week   Int?
   // Currency this row's price is denominated in. Razorpay-backed rows are
   // always INR; PayPal-backed rows (see paypal_plan_id) get their own
   // parallel rows priced in USD, rather than reusing the same row for two
   // currencies.
-  currency           String               @default("INR")
-  paypal_plan_id     String?
+  currency            String               @default("INR")
+  paypal_plan_id      String?
   // PPP tier (1-4) this row's price was computed at, for PayPal-priced rows
   // only. A PayPal recurring subscription's billed amount is fixed at Plan
   // creation time, so two customers in different tiers can never safely
   // share one Plan/row — this makes tier part of the reuse lookup. Null for
   // Razorpay/INR rows, which don't have PPP tiers.
-  pricing_tier       Int?
+  pricing_tier        Int?
   // Customer segment (see utils/pppPricing.ts CUSTOMER_SEGMENTS) this row
   // was priced for — null means the default/INDIVIDUAL rate. Segment is a
   // second, independent multiplier layered on top of pricing_tier, so a
   // recurring Plan (whose billed amount is fixed at creation time) must be
   // discriminated on both, not just tier, to stay safely un-shareable
   // across two customers who should be charged different amounts.
-  pricing_segment    String?
+  pricing_segment     String?
   // Which pricing_overrides row (if any) was in effect when this row was
   // priced — a third discriminator alongside pricing_tier/pricing_segment,
   // needed because an admin override can change the price for a scope
@@ -466,7 +478,19 @@ model subscription_plans {
   // buying while a promo is active could be silently served the
   // pre-promo (or a different promo's) fixed Razorpay/PayPal Plan price.
   pricing_override_id String?              @db.Uuid
-  user_subscriptions user_subscriptions[]
+  // A fourth discriminator, same reasoning as pricing_override_id: a promo
+  // code changes the fixed amount a recurring/lifetime Plan bills, so a
+  // customer who redeemed one must get their own Plan row rather than
+  // reusing a same-tier/segment/override row priced without it.
+  promo_code_id       String?              @db.Uuid
+  discount_amount     Decimal?             @db.Decimal(10, 2)
+  // Tax-ready fields — not yet populated by any real calculation (see
+  // utils/pricing/tax.ts). Kept NOT_CALCULATED/null until a real tax
+  // provider is wired in; checkout displays "taxes, if applicable,
+  // calculated at checkout" rather than inventing a rate.
+  tax_mode            TaxMode              @default(NOT_CALCULATED)
+  tax_amount          Decimal?             @db.Decimal(10, 2)
+  user_subscriptions  user_subscriptions[]
 
   @@schema("public")
 }
@@ -478,6 +502,10 @@ model starter_kit_purchases {
   razorpay_payment_id String?
   amount              Decimal  @db.Decimal(10, 2)
   status              String   @default("PENDING")
+  promo_code_id       String?  @db.Uuid
+  discount_amount     Decimal? @db.Decimal(10, 2)
+  tax_mode            TaxMode  @default(NOT_CALCULATED)
+  tax_amount          Decimal? @db.Decimal(10, 2)
   created_at          DateTime @default(now())
   updated_at          DateTime @updatedAt
 
@@ -508,6 +536,10 @@ model lifetime_membership_purchases {
   // utils/pppPricing.ts) — recorded for reporting/support, not re-derived.
   city                String?
   customer_segment    String?
+  promo_code_id       String?  @db.Uuid
+  discount_amount     Decimal? @db.Decimal(10, 2)
+  tax_mode            TaxMode  @default(NOT_CALCULATED)
+  tax_amount          Decimal? @db.Decimal(10, 2)
   created_at          DateTime @default(now())
   updated_at          DateTime @updatedAt
 
@@ -536,6 +568,10 @@ model checkout_attempts {
   // reporting/support; free text, not validated against a fixed list.
   city              String?
   customer_segment  String?
+  // Promo code entered on /checkout, if any — funnel-tracking only; the
+  // actual discount is applied and recorded on the resulting
+  // subscription_plans/lifetime_membership_purchases row, not here.
+  promo_code_id     String?  @db.Uuid
   created_at        DateTime @default(now())
   updated_at        DateTime @updatedAt
 
@@ -559,13 +595,13 @@ model onboarding_drafts {
 }
 
 model trainer_clients {
-  id                                                      String        @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  trainer_id                                              String        @db.Uuid
-  client_id                                               String        @db.Uuid
-  category                                                SubscriptionCategory? // New field for category-specific assignments
-  assigned_at                                             DateTime      @default(now())
-  client  users_profile @relation("TrainerClient_Client", fields: [client_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "TrainerClient_clientId_fkey")
-  trainer users_profile @relation("TrainerClient_Trainer", fields: [trainer_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "TrainerClient_trainerId_fkey")
+  id          String                @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  trainer_id  String                @db.Uuid
+  client_id   String                @db.Uuid
+  category    SubscriptionCategory? // New field for category-specific assignments
+  assigned_at DateTime              @default(now())
+  client      users_profile         @relation("TrainerClient_Client", fields: [client_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "TrainerClient_clientId_fkey")
+  trainer     users_profile         @relation("TrainerClient_Trainer", fields: [trainer_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "TrainerClient_trainerId_fkey")
 
   @@unique([trainer_id, client_id, category], map: "TrainerClient_trainerId_clientId_category_key")
   @@schema("public")
@@ -606,8 +642,8 @@ model user_subscriptions {
   paid_count               Int?
   remaining_count          Int?
   retry_attempts           Int?                @default(0)
-   //  NEW FIELDS FOR CANCEL FUNCTIONALITY
-  cancel_requested_at      DateTime?           // When user requested cancellation
+  //  NEW FIELDS FOR CANCEL FUNCTIONALITY
+  cancel_requested_at      DateTime? // When user requested cancellation
   cancel_at_cycle_end      Boolean?            @default(false) // Whether to cancel at cycle end
   subscription_plans       subscription_plans  @relation(fields: [plan_id], references: [id], onDelete: NoAction, map: "UserSubscription_planId_fkey")
   users_profile            users_profile       @relation(fields: [user_id], references: [id], onDelete: NoAction, map: "UserSubscription_userId_fkey")
@@ -618,83 +654,83 @@ model user_subscriptions {
 
 /// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
 model users_profile {
-  id                                                        String                   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  email                                                     String                   @unique(map: "User_email_key")
-  name                                                      String
-  role                                                      Role                     @default(CLIENT)
-  created_at                                                DateTime                 @default(now())
-  weight                                                    Float?
-  weight_unit                                               WeightUnit?              @default(KG)
-  height                                                    Float?
-  height_unit                                               HeightUnit?              @default(CM)
-  date_of_birth                                             DateTime?
-  gender                                                    Gender?
-  activity_level                                            ActivityLevel?           @default(SEDENTARY)
-  profile_completed                                         Boolean                  @default(false)
-  neck                                                      Float?
-  waist                                                     Float?
-  hips                                                      Float?
-  forearm                                                   Float?
-  wrist                                                     Float?
-  country                                                   country?
-  phone                                                     String?
-  onboarding_completed                                      DateTime?
+  id                                   String                    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  email                                String                    @unique(map: "User_email_key")
+  name                                 String
+  role                                 Role                      @default(CLIENT)
+  created_at                           DateTime                  @default(now())
+  weight                               Float?
+  weight_unit                          WeightUnit?               @default(KG)
+  height                               Float?
+  height_unit                          HeightUnit?               @default(CM)
+  date_of_birth                        DateTime?
+  gender                               Gender?
+  activity_level                       ActivityLevel?            @default(SEDENTARY)
+  profile_completed                    Boolean                   @default(false)
+  neck                                 Float?
+  waist                                Float?
+  hips                                 Float?
+  forearm                              Float?
+  wrist                                Float?
+  country                              country?
+  phone                                String?
+  onboarding_completed                 DateTime?
   // Set for CORPORATE_ADMIN and CORPORATE_EMPLOYEE roles — which corporate account this user belongs to.
-  corporate_group_id                                        String?                    @db.Uuid
-  corporate_group                                           corporate_groups?          @relation("CorporateGroupMembers", fields: [corporate_group_id], references: [id], onDelete: SetNull, map: "UsersProfile_corporateGroupId_fkey")
+  corporate_group_id                   String?                   @db.Uuid
+  corporate_group                      corporate_groups?         @relation("CorporateGroupMembers", fields: [corporate_group_id], references: [id], onDelete: SetNull, map: "UsersProfile_corporateGroupId_fkey")
   // Lazily generated the first time a user visits /refer — see lib/referral.ts.
-  referral_code                                              String?                    @unique(map: "UsersProfile_referralCode_key")
+  referral_code                        String?                   @unique(map: "UsersProfile_referralCode_key")
   // Shared payout destination for both testimonial-review and referral cashback — captured once, reused.
-  payout_upi_id                                              String?
-  referrals_made                                             referrals[]                @relation("ReferralsMade")
+  payout_upi_id                        String?
+  referrals_made                       referrals[]               @relation("ReferralsMade")
   // Safety Check step of onboarding — see components/onboarding/steps/SafetyCheckStep.tsx.
   // Persisted regardless of answer so a coach can see the check was done,
   // not only when something was flagged (that goes to safety_flags too).
-  safety_medical_condition                                  String?
-  safety_medical_clearance                                  String?
-  safety_red_flags                                          Json?
-  safety_notes                                              String?
-  safety_check_completed_at                                 DateTime?
-  assessments_as_user                                       assessments[]              @relation("AssessmentUser")
-  pathway_recommendations                                   pathway_recommendations[]  @relation("PathwayRecommendationUser")
-  safety_flags_as_user                                      safety_flags[]             @relation("SafetyFlagUser")
-  safety_flags_assigned                                     safety_flags[]             @relation("SafetyFlagAssignedTo")
-  pain_fatigue_logs                                         pain_fatigue_logs[]
-  weekly_checkins                                           weekly_checkins[]
-  coaching_calls                                            coaching_calls[]
-  testimonials                                               testimonials[]
-  automation_events                                         automation_events[]
-  admin_notes_as_subject                                    admin_notes[]              @relation("AdminNoteSubject")
-  admin_notes_authored                                      admin_notes[]              @relation("AdminNoteAuthor")
-  mentorship_applications_as_applicant                      mentorship_applications[]  @relation("MentorshipApplicant")
-  mentorship_applications_reviewed                          mentorship_applications[]  @relation("MentorshipReviewer")
-  calculator_sessions                                       calculator_sessions[]
-  client_max_lifts                                          client_max_lifts[]
-  exercise_logs                                             exercise_logs[]
-  subscription_events                                       subscription_events[]
-  trainerClientsAsClient  trainer_clients[] @relation("TrainerClient_Client")
-  trainerClientsAsTrainer trainer_clients[] @relation("TrainerClient_Trainer")
-  transformation_photos                                     transformation_photos[]
-  user_subscriptions                                        user_subscriptions[]
-  weight_logs                                               weight_logs[]
-  workout_exercise_lists                                    workout_exercise_lists[]
-  workout_plans_as_client                                   workout_plans[]          @relation("ClientWorkoutPlans")
-  workout_plans_as_trainer                                  workout_plans[]          @relation("TrainerWorkoutPlans")
-  workout_day_videos                                        workout_day_videos[]     // NEW: One-to-many relationship for workout videos
+  safety_medical_condition             String?
+  safety_medical_clearance             String?
+  safety_red_flags                     Json?
+  safety_notes                         String?
+  safety_check_completed_at            DateTime?
+  assessments_as_user                  assessments[]             @relation("AssessmentUser")
+  pathway_recommendations              pathway_recommendations[] @relation("PathwayRecommendationUser")
+  safety_flags_as_user                 safety_flags[]            @relation("SafetyFlagUser")
+  safety_flags_assigned                safety_flags[]            @relation("SafetyFlagAssignedTo")
+  pain_fatigue_logs                    pain_fatigue_logs[]
+  weekly_checkins                      weekly_checkins[]
+  coaching_calls                       coaching_calls[]
+  testimonials                         testimonials[]
+  automation_events                    automation_events[]
+  admin_notes_as_subject               admin_notes[]             @relation("AdminNoteSubject")
+  admin_notes_authored                 admin_notes[]             @relation("AdminNoteAuthor")
+  mentorship_applications_as_applicant mentorship_applications[] @relation("MentorshipApplicant")
+  mentorship_applications_reviewed     mentorship_applications[] @relation("MentorshipReviewer")
+  calculator_sessions                  calculator_sessions[]
+  client_max_lifts                     client_max_lifts[]
+  exercise_logs                        exercise_logs[]
+  subscription_events                  subscription_events[]
+  trainerClientsAsClient               trainer_clients[]         @relation("TrainerClient_Client")
+  trainerClientsAsTrainer              trainer_clients[]         @relation("TrainerClient_Trainer")
+  transformation_photos                transformation_photos[]
+  user_subscriptions                   user_subscriptions[]
+  weight_logs                          weight_logs[]
+  workout_exercise_lists               workout_exercise_lists[]
+  workout_plans_as_client              workout_plans[]           @relation("ClientWorkoutPlans")
+  workout_plans_as_trainer             workout_plans[]           @relation("TrainerWorkoutPlans")
+  workout_day_videos                   workout_day_videos[] // NEW: One-to-many relationship for workout videos
 
   @@index([corporate_group_id], map: "UsersProfile_corporateGroupId_idx")
   @@schema("public")
 }
 
 model webhook_events {
-  id           String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  webhook_id   String   @unique(map: "WebhookEvent_webhookId_key")
-  event_type   String
-  processed_at DateTime @default(now())
-  payload      Json
-  status       String   @default("success")
-  error        String?
-  retry_count  Int      @default(0)
+  id                  String                @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  webhook_id          String                @unique(map: "WebhookEvent_webhookId_key")
+  event_type          String
+  processed_at        DateTime              @default(now())
+  payload             Json
+  status              String                @default("success")
+  error               String?
+  retry_count         Int                   @default(0)
   subscription_events subscription_events[]
 
   @@index([event_type], map: "WebhookEvent_eventType_idx")
@@ -711,7 +747,6 @@ model weight_logs {
   notes         String?
   created_at    DateTime      @default(now())
   users_profile users_profile @relation(fields: [user_id], references: [id], onDelete: NoAction, map: "WeightLog_userId_fkey")
-  
 
   @@unique([user_id, date_logged], map: "WeightLog_userId_dateLogged_key")
   @@index([user_id, date_logged], map: "WeightLog_userId_dateLogged_idx")
@@ -728,7 +763,7 @@ model workout_day_exercises {
   notes                    String?
   workout_exercise_lists   workout_exercise_lists     @relation(fields: [list_exercise_id], references: [id], onDelete: NoAction, map: "WorkoutDayExercise_listExerciseId_fkey")
   workout_days             workout_days               @relation(fields: [workout_day_id], references: [id], onDelete: Cascade, map: "WorkoutDayExercise_workoutDayId_fkey")
-  frontend_uid            String?                    // NEW: For stable matching
+  frontend_uid             String? // NEW: For stable matching
   is_deleted               Boolean                    @default(false)
   deleted_at               DateTime?
   workout_set_instructions workout_set_instructions[]
@@ -739,27 +774,27 @@ model workout_day_exercises {
 }
 
 model workout_days {
-  id                    String                  @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  plan_id               String                  @db.Uuid
-  week_number           Int
-  day_number            Int
+  id          String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  plan_id     String @db.Uuid
+  week_number Int
+  day_number  Int
 
   /// NEW: calendar date of this day (always Monday..Sunday)
   /// Use DateTime + @db.Date so only the date portion is stored.
-  day_date      DateTime @db.Date
+  day_date DateTime @db.Date
 
   title                 String
   workout_type          String?
   is_deleted            Boolean                 @default(false) // NEW: Soft delete
-  deleted_at            DateTime?               // NEW: Soft delete timestamp
+  deleted_at            DateTime? // NEW: Soft delete timestamp
   workout_day_exercises workout_day_exercises[]
-  workout_day_videos    workout_day_videos?     // NEW: One-to-one relationship for workout videos
+  workout_day_videos    workout_day_videos? // NEW: One-to-one relationship for workout videos
   workout_plans         workout_plans           @relation(fields: [plan_id], references: [id], onDelete: Cascade, map: "WorkoutDay_planId_fkey")
 
-  @@schema("public")
   //@@unique([plan_id, day_date])              // never two days on the same date in one plan
   @@index([plan_id, day_date])
-  @@index([plan_id, is_deleted])             // NEW: Index for filtering soft-deleted days
+  @@index([plan_id, is_deleted]) // NEW: Index for filtering soft-deleted days
+  @@schema("public")
 }
 
 model workout_exercise_lists {
@@ -774,27 +809,29 @@ model workout_exercise_lists {
   workout_day_exercises workout_day_exercises[]
   users_profile         users_profile           @relation(fields: [created_by_id], references: [id], onDelete: NoAction, map: "WorkoutExerciseList_createdById_fkey")
   client_max_lifts      client_max_lifts[]
+
   @@index([name], map: "WorkoutExerciseList_name_idx")
   @@index([type], map: "WorkoutExerciseList_type_idx")
   @@schema("public")
 }
 
 model workout_plans {
-  id                                                    String          @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  title                                                 String
-  trainer_id                                            String          @db.Uuid
-  client_id                                             String          @db.Uuid
-  start_date                                            DateTime        @db.Date
-  end_date                                              DateTime        @db.Date
-  duration_in_weeks                                     Int
-  category                                              WorkoutCategory
-  description                                           String?         @default("")
-  created_at                                            DateTime        @default(now())
-  workout_days                                          workout_days[]
-  intensity_mode                                        IntensityMode   @default(ABSOLUTE)
-  status                                                WorkoutPlanStatus @default(DRAFT)
-  client   users_profile @relation("ClientWorkoutPlans", fields: [client_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "WorkoutPlan_clientId_fkey")
-  trainer  users_profile @relation("TrainerWorkoutPlans", fields: [trainer_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "WorkoutPlan_trainerId_fkey")
+  id                String            @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  title             String
+  trainer_id        String            @db.Uuid
+  client_id         String            @db.Uuid
+  start_date        DateTime          @db.Date
+  end_date          DateTime          @db.Date
+  duration_in_weeks Int
+  category          WorkoutCategory
+  description       String?           @default("")
+  created_at        DateTime          @default(now())
+  workout_days      workout_days[]
+  intensity_mode    IntensityMode     @default(ABSOLUTE)
+  status            WorkoutPlanStatus @default(DRAFT)
+  client            users_profile     @relation("ClientWorkoutPlans", fields: [client_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "WorkoutPlan_clientId_fkey")
+  trainer           users_profile     @relation("TrainerWorkoutPlans", fields: [trainer_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "WorkoutPlan_trainerId_fkey")
+
   @@schema("public")
 }
 
@@ -808,25 +845,25 @@ model workout_set_instructions {
   rest_time             Int?
   notes                 String?
   is_deleted            Boolean               @default(false) // NEW: Soft delete
-  deleted_at            DateTime?             // NEW: Soft delete timestamp
+  deleted_at            DateTime? // NEW: Soft delete timestamp
   exercise_logs         exercise_logs[]
   workout_day_exercises workout_day_exercises @relation(fields: [exercise_id], references: [id], onDelete: Cascade, map: "WorkoutSetInstruction_exerciseId_fkey")
-  
+
   @@index([exercise_id, is_deleted])
   @@schema("public")
 }
 
 model workout_day_videos {
-  id            String      @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  workout_day_id String     @db.Uuid
-  client_id     String      @db.Uuid
-  video_url     String      // The cloud link (Google Drive, Dropbox, etc.)
-  video_title   String?     // Optional title/description
-  uploaded_at   DateTime    @default(now())
-  reviewed_at   DateTime?   // When trainer reviewed it
-  trainer_notes String?     // Trainer feedback/notes
-  workout_days  workout_days @relation(fields: [workout_day_id], references: [id], onDelete: Cascade, map: "WorkoutDayVideo_workoutDayId_fkey")
-  users_profile users_profile @relation(fields: [client_id], references: [id], onDelete: NoAction, map: "WorkoutDayVideo_clientId_fkey")
+  id             String        @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  workout_day_id String        @db.Uuid
+  client_id      String        @db.Uuid
+  video_url      String // The cloud link (Google Drive, Dropbox, etc.)
+  video_title    String? // Optional title/description
+  uploaded_at    DateTime      @default(now())
+  reviewed_at    DateTime? // When trainer reviewed it
+  trainer_notes  String? // Trainer feedback/notes
+  workout_days   workout_days  @relation(fields: [workout_day_id], references: [id], onDelete: Cascade, map: "WorkoutDayVideo_workoutDayId_fkey")
+  users_profile  users_profile @relation(fields: [client_id], references: [id], onDelete: NoAction, map: "WorkoutDayVideo_clientId_fkey")
 
   @@unique([workout_day_id]) // Only one video per workout day
   @@index([client_id], map: "WorkoutDayVideo_clientId_idx")
@@ -982,8 +1019,8 @@ enum HeightUnit {
 }
 
 enum ExerciseType {
-  WEIGHT_BASED    // Traditional exercises with weight (bench press, squats, etc.)
-  REPS_BASED      // Bodyweight exercises (pushups, pull-ups, etc.)
+  WEIGHT_BASED // Traditional exercises with weight (bench press, squats, etc.)
+  REPS_BASED // Bodyweight exercises (pushups, pull-ups, etc.)
 
   @@schema("public")
 }
@@ -1302,22 +1339,22 @@ enum country {
 // resolver in utils/pricingOverrides.ts: city+segment > city >
 // country+segment > country > global (all scope fields null).
 model pricing_overrides {
-  id                   String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  scope_country        String? // ISO 3166-1 alpha-2; null = every country
-  scope_city           String? // normalized city/region name; null = whole country
-  scope_segment        String? // CustomerSegment; null = every segment
-  tier_override        Int? // 1-5; ignored if multiplier_override is set
-  multiplier_override  Decimal? @db.Decimal(6, 3) // takes precedence over tier_override
-  min_price_usd        Decimal? @db.Decimal(10, 2)
-  max_price_usd        Decimal? @db.Decimal(10, 2)
-  is_excluded          Boolean  @default(false) // blocks checkout entirely for this scope
-  label                String? // e.g. "Diwali 2026 promo" — shown in the admin UI
-  starts_at            DateTime?
-  ends_at              DateTime?
-  is_active            Boolean  @default(true)
-  created_by           String?  @db.Uuid
-  created_at           DateTime @default(now())
-  updated_at           DateTime @updatedAt
+  id                  String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  scope_country       String? // ISO 3166-1 alpha-2; null = every country
+  scope_city          String? // normalized city/region name; null = whole country
+  scope_segment       String? // CustomerSegment; null = every segment
+  tier_override       Int? // 1-5; ignored if multiplier_override is set
+  multiplier_override Decimal?  @db.Decimal(6, 3) // takes precedence over tier_override
+  min_price_usd       Decimal?  @db.Decimal(10, 2)
+  max_price_usd       Decimal?  @db.Decimal(10, 2)
+  is_excluded         Boolean   @default(false) // blocks checkout entirely for this scope
+  label               String? // e.g. "Diwali 2026 promo" — shown in the admin UI
+  starts_at           DateTime?
+  ends_at             DateTime?
+  is_active           Boolean   @default(true)
+  created_by          String?   @db.Uuid
+  created_at          DateTime  @default(now())
+  updated_at          DateTime  @updatedAt
 
   @@index([scope_country, scope_city, scope_segment], map: "PricingOverride_scope_idx")
   @@schema("public")
@@ -1351,5 +1388,77 @@ model fx_rate_cache {
   fetched_at  DateTime @default(now())
   source      String   @default("frankfurter.app")
 
+  @@schema("public")
+}
+
+enum PromoCodeType {
+  PERCENTAGE
+  FIXED_AMOUNT
+
+  @@schema("public")
+}
+
+// Whether a stored price includes tax, excludes it, or hasn't had tax
+// calculated at all yet. Every row defaults to NOT_CALCULATED — no tax
+// rate is invented anywhere in this codebase (see utils/pricing/tax.ts);
+// this exists so a real tax provider has somewhere to write to later.
+enum TaxMode {
+  INCLUSIVE
+  EXCLUSIVE
+  NOT_CALCULATED
+
+  @@schema("public")
+}
+
+// Admin-managed discount codes redeemable at checkout — distinct from the
+// referrals/testimonials cashback systems (those pay the referrer/reviewer
+// a flat amount; this reduces what the purchaser themselves pays).
+// Validated and applied server-side only, in utils/pricing/promoCodes.ts —
+// never trust a client-supplied discount amount. A promo can never
+// undercut the pricing_overrides min_price_usd floor for the same scope
+// (see clampUsd in utils/pricingOverrides.ts, applied after the promo).
+model promo_codes {
+  id                 String        @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  code               String        @unique // matched case-insensitively, stored uppercase
+  type               PromoCodeType
+  // Percentage (0-100) if type = PERCENTAGE, otherwise a fixed USD amount.
+  value              Decimal       @db.Decimal(10, 3)
+  scope_country      String? // ISO 3166-1 alpha-2; null = every country
+  scope_product      String? // "recurring" | "lifetime" | "starter_kit"; null = every product
+  starts_at          DateTime?
+  ends_at            DateTime?
+  redemption_limit   Int? // total redemptions across all customers; null = unlimited
+  per_customer_limit Int           @default(1)
+  is_active          Boolean       @default(true)
+  label              String?
+  created_by         String?       @db.Uuid
+  created_at         DateTime      @default(now())
+  updated_at         DateTime      @updatedAt
+
+  promo_code_redemptions promo_code_redemptions[]
+
+  @@index([code], map: "PromoCode_code_idx")
+  @@schema("public")
+}
+
+// One row per successful redemption — the source of truth for enforcing
+// redemption_limit/per_customer_limit and giving the admin console a real
+// audit trail of who used what code, when, and for how much.
+model promo_code_redemptions {
+  id                String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  promo_code_id     String   @db.Uuid
+  user_id           String?  @db.Uuid
+  email             String
+  // id of the checkout_attempts / lifetime_membership_purchases /
+  // starter_kit_purchases / subscription_plans row this redemption applied
+  // to — not a foreign key, since it can point to any of several tables.
+  order_reference   String
+  amount_discounted Decimal  @db.Decimal(10, 2)
+  redeemed_at       DateTime @default(now())
+
+  promo_codes promo_codes @relation(fields: [promo_code_id], references: [id], onDelete: Cascade, map: "PromoCodeRedemption_promoCodeId_fkey")
+
+  @@index([promo_code_id], map: "PromoCodeRedemption_promoCodeId_idx")
+  @@index([email], map: "PromoCodeRedemption_email_idx")
   @@schema("public")
 }
