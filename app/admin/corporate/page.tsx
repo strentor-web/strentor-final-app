@@ -44,6 +44,10 @@ export default async function AdminCorporatePage() {
     planType: g.plan_type,
     memberLimit: g.member_limit,
     status: g.status,
+    seatPriceAmount: g.seat_price_amount?.toString() ?? null,
+    seatPriceCurrency: g.seat_price_currency,
+    contractStartsAt: g.contract_starts_at?.toISOString() ?? null,
+    contractEndsAt: g.contract_ends_at?.toISOString() ?? null,
   }))
 
   const applicationRows: MentorshipApplicationRow[] = applications.map((a) => ({

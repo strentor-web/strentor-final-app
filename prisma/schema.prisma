@@ -264,17 +264,25 @@ model admin_notes {
 }
 
 model corporate_groups {
-  id               String                       @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  company_name     String
-  contact_person   String
-  contact_email    String
-  plan_type        String?
-  member_limit     Int?
-  status           String                       @default("active")
-  created_at       DateTime                     @default(now())
-  members          users_profile[]              @relation("CorporateGroupMembers")
-  program_bookings corporate_program_bookings[]
-  invoices         corporate_invoices[]
+  id                  String                       @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  company_name        String
+  contact_person      String
+  contact_email       String
+  plan_type           String?
+  member_limit        Int?
+  status              String                       @default("active")
+  created_at          DateTime                     @default(now())
+  // Per-seat contract pricing — set once a B2B deal is negotiated; member_limit
+  // above already doubles as the contracted seat cap. Null until a group has
+  // an actual negotiated rate (most groups today are still admin-provisioned
+  // ad hoc, not seat-priced).
+  seat_price_amount   Decimal?                     @db.Decimal(10, 2)
+  seat_price_currency String?
+  contract_starts_at  DateTime?
+  contract_ends_at    DateTime?
+  members             users_profile[]              @relation("CorporateGroupMembers")
+  program_bookings    corporate_program_bookings[]
+  invoices            corporate_invoices[]
 
   @@schema("public")
 }
@@ -305,6 +313,10 @@ model corporate_invoices {
   amount             Decimal          @db.Decimal(12, 2)
   currency           String           @default("INR")
   status             String           @default("pending")
+  // Itemized breakdown ([{description, quantity, unit_amount}, ...]) —
+  // optional; `amount` above remains the single billed total regardless of
+  // whether line_items is populated.
+  line_items         Json?
   issued_at          DateTime         @default(now())
   due_at             DateTime?
   paid_at            DateTime?
