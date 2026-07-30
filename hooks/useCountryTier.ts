@@ -30,33 +30,50 @@ function detectCountryCode(): string | null {
   return null;
 }
 
-export function useCountryTier(): { countryCode: string | null; tier: PppTier; multiplier: number } {
+export function useCountryTier(): {
+  countryCode: string | null;
+  tier: PppTier;
+  multiplier: number;
+  setCountryCode: (code: string) => void;
+} {
   const searchParams = useSearchParams();
   const urlCountry = searchParams.get("country")?.toUpperCase() ?? null;
   const [savedCountry, setSavedCountry] = useLocalStorage<string | null>(COUNTRY_STORAGE_KEY, null);
-  const [countryCode, setCountryCode] = useState<string | null>(null);
+  const [countryCode, setCountryCodeState] = useState<string | null>(null);
 
   useEffect(() => {
     if (urlCountry && /^[A-Z]{2}$/.test(urlCountry)) {
-      setCountryCode(urlCountry);
+      setCountryCodeState(urlCountry);
       setSavedCountry(urlCountry);
       return;
     }
     if (savedCountry) {
-      setCountryCode(savedCountry);
+      setCountryCodeState(savedCountry);
       return;
     }
     const detected = detectCountryCode();
     if (detected) {
-      setCountryCode(detected);
+      setCountryCodeState(detected);
       setSavedCountry(detected);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [urlCountry]);
 
+  // Explicit override — e.g. a visible country selector on /checkout. Per
+  // the spec's "never rely only on IP" and "don't silently change price"
+  // requirements: this is the one path a customer directly controls, and
+  // callers are expected to require a fresh price recalculation (a new
+  // ensure-plan/create-order call) after it fires, not reuse a stale one.
+  function setCountryCode(code: string) {
+    const normalized = code.toUpperCase();
+    setCountryCodeState(normalized);
+    setSavedCountry(normalized);
+  }
+
   return {
     countryCode,
     tier: getPppTier(countryCode),
     multiplier: getPppMultiplier(countryCode),
+    setCountryCode,
   };
 }

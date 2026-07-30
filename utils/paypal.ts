@@ -219,3 +219,39 @@ export async function getPaypalSubscription(subscriptionId: string): Promise<{
 }> {
   return paypalFetch(`/v1/billing/subscriptions/${subscriptionId}`);
 }
+
+// PayPal's cancel endpoint returns 204 No Content on success — nothing to
+// parse, unlike every other call in this file.
+export async function cancelPaypalSubscription(subscriptionId: string, reason: string): Promise<void> {
+  const accessToken = await getAccessToken();
+  const response = await fetch(`${PAYPAL_API_BASE}/v1/billing/subscriptions/${subscriptionId}/cancel`, {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ reason }),
+  });
+  if (!response.ok && response.status !== 204) {
+    const text = await response.text().catch(() => "");
+    throw new Error(`PayPal subscription cancel failed (${response.status}): ${text}`);
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Refunds
+// ---------------------------------------------------------------------------
+
+export interface PaypalRefund {
+  id: string;
+  status: string;
+}
+
+// Full refund unless amountUsd is given. captureId is the Capture id from
+// PaypalCapture.purchase_units[].payments.captures[].id — NOT the Order id.
+export async function refundPaypalCapture(captureId: string, amountUsd?: number): Promise<PaypalRefund> {
+  return paypalFetch<PaypalRefund>(`/v2/payments/captures/${captureId}/refund`, {
+    method: "POST",
+    body: amountUsd !== undefined ? { amount: { currency_code: "USD", value: amountUsd.toFixed(2) } } : {},
+  });
+}

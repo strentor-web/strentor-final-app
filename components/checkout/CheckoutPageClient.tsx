@@ -14,6 +14,7 @@ import { LifetimeCheckoutButton } from "@/components/subscription/LifetimeChecko
 import { PaypalLifetimeButton } from "@/components/subscription/PaypalLifetimeButton";
 import { PaypalRecurringButton } from "@/components/subscription/PaypalRecurringButton";
 import { useCountryTier } from "@/hooks/useCountryTier";
+import { CountryCurrencySelector } from "@/components/checkout/CountryCurrencySelector";
 import { getProfileDetails } from "@/actions/profile/get-profile-details.action";
 import {
   CURRENCY_SYMBOLS,
@@ -68,7 +69,7 @@ export default function CheckoutPageClient() {
   // utils/pppPricing.ts): Razorpay only ever serves India (INR); PayPal
   // serves everyone else, at that country's PPP-tier USD price. The toggle
   // below always lets a visitor override the default.
-  const { countryCode } = useCountryTier();
+  const { countryCode, setCountryCode } = useCountryTier();
   const [paymentProvider, setPaymentProvider] = useState<PaymentProvider>("razorpay");
   const [providerTouched, setProviderTouched] = useState(false);
   useEffect(() => {
@@ -394,6 +395,14 @@ export default function CheckoutPageClient() {
               <Label htmlFor="checkout-phone">Phone / WhatsApp</Label>
               <Input id="checkout-phone" value={phone} disabled={stage !== "form"} onChange={(e) => setPhone(e.target.value)} />
             </div>
+            <CountryCurrencySelector
+              countryCode={countryCode}
+              onChange={(code) => {
+                setCountryCode(code);
+                setProviderTouched(false);
+              }}
+              disabled={stage !== "form"}
+            />
             <div>
               <Label htmlFor="checkout-city">City / region (optional)</Label>
               <Input
