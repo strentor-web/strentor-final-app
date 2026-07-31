@@ -45,6 +45,12 @@ export interface ContactDetails {
   weight?: string;
   emergencyContact?: string;
   preferredContactMethod?: string[];
+  // Only relevant (and shown) when the matching value above is selected —
+  // WhatsApp/Email/Call already have phone/email collected above, so only
+  // the DM-based methods need a distinct handle.
+  whatsappNumber?: string;
+  instagramHandle?: string;
+  linkedinProfile?: string;
 }
 
 // Section 2 — Coaching context and goals

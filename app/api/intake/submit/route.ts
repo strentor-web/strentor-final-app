@@ -26,6 +26,9 @@ const contactSchema = z.object({
   weight: z.string().trim().max(50).optional(),
   emergencyContact: z.string().trim().max(200).optional(),
   preferredContactMethod: z.array(z.string()).optional(),
+  whatsappNumber: z.string().trim().max(50).optional(),
+  instagramHandle: z.string().trim().max(100).optional(),
+  linkedinProfile: z.string().trim().max(300).optional(),
 });
 
 const payloadSchema = z.object({

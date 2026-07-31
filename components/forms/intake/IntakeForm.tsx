@@ -441,6 +441,41 @@ export function IntakeForm({ initialPathway, region, plan, sourcePage, initialRe
                     }
                   />
                 </div>
+                {/* Only the DM-based methods need a distinct handle — WhatsApp/
+                    Email/Call already have phone/email collected above. */}
+                {(contact.preferredContactMethod || []).includes("whatsapp") && (
+                  <div className="mt-4">
+                    <Label htmlFor="whatsappNumber">WhatsApp number</Label>
+                    <Input
+                      id="whatsappNumber"
+                      placeholder="Leave blank to use the phone number above"
+                      value={contact.whatsappNumber || ""}
+                      onChange={(e) => setContact({ ...contact, whatsappNumber: e.target.value })}
+                    />
+                  </div>
+                )}
+                {(contact.preferredContactMethod || []).includes("instagram_dm") && (
+                  <div className="mt-4">
+                    <Label htmlFor="instagramHandle">Instagram handle</Label>
+                    <Input
+                      id="instagramHandle"
+                      placeholder="@yourhandle"
+                      value={contact.instagramHandle || ""}
+                      onChange={(e) => setContact({ ...contact, instagramHandle: e.target.value })}
+                    />
+                  </div>
+                )}
+                {(contact.preferredContactMethod || []).includes("linkedin_dm") && (
+                  <div className="mt-4">
+                    <Label htmlFor="linkedinProfile">LinkedIn profile</Label>
+                    <Input
+                      id="linkedinProfile"
+                      placeholder="https://linkedin.com/in/..."
+                      value={contact.linkedinProfile || ""}
+                      onChange={(e) => setContact({ ...contact, linkedinProfile: e.target.value })}
+                    />
+                  </div>
+                )}
               </div>
             )}
           </div>
@@ -499,10 +534,8 @@ export function IntakeForm({ initialPathway, region, plan, sourcePage, initialRe
               value={coachingContext.coachingFormat}
               onChange={(v) => setCoachingContext({ ...coachingContext, coachingFormat: v })}
               options={[
-                { value: "online", label: "Online" },
-                { value: "hybrid", label: "Hybrid" },
-                { value: "in_person_where_available", label: "In-person where available" },
-                { value: "unsure", label: "Unsure" },
+                { value: "self_paced", label: "Self-Paced" },
+                { value: "instructor_led", label: "Instructor-Led" },
               ]}
             />
             <div>
