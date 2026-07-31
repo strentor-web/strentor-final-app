@@ -56,3 +56,10 @@ next-env.d.ts
 .idea
 *.swp
 *.swo
+
+# Playwright / Vitest artifacts
+/test-results/
+/playwright-report/
+/coverage/
+/blob-report/
+/playwright/.cache/
