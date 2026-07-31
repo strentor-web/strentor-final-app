@@ -104,9 +104,22 @@ describe("roundNicely", () => {
     expect(roundNicely(49)).toBe(49);
   });
 
-  it("rounds larger amounts to a clean ...9 figure", () => {
+  it("rounds amounts under 1,000 to a single trailing 9", () => {
+    expect(roundNicely(799)).toBe(799);
+    expect(roundNicely(743)).toBe(739);
+  });
+
+  it("rounds amounts of 1,000+ to a ...99 ending, growing to ...999/...9999 near a round number", () => {
     expect(roundNicely(1799)).toBe(1799);
-    expect(roundNicely(5727)).toBe(5729);
+    expect(roundNicely(5727)).toBe(5699);
+    expect(roundNicely(1134)).toBe(1099);
+    expect(roundNicely(15054)).toBe(15099);
+  });
+
+  it("never collides two amounts under 1,000 apart at the 1,000+ tier", () => {
+    // A ~15% segment discount (e.g. Student) on a four-figure price should
+    // still read as a different, lower number after rounding.
+    expect(roundNicely(2430)).not.toBe(roundNicely(2430 * 0.85));
   });
 });
 

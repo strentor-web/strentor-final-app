@@ -152,8 +152,12 @@ export function getLifetimePriceUSD(sessionsPerWeek: number, planType: TrainingP
 // display currency below isn't USD.
 // ---------------------------------------------------------------------------
 
+// Same charm-price rounding as every other price on the site — see
+// roundNicely in utils/pppPricing.ts (imported above) for the actual rule.
+// Kept as a locally-named wrapper since this module's functions apply it
+// specifically to a USD tier-adjusted amount, before currency conversion.
 function roundToNiceUsd(amount: number): number {
-  return Math.max(1, Math.round(amount / 10) * 10 - 1);
+  return roundNicely(amount);
 }
 
 export function calculateCyclePriceUSDForTier(

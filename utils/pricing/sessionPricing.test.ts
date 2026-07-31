@@ -53,8 +53,9 @@ describe("tier-adjusted USD pricing", () => {
 
   it("scales the Lifetime price by the same tier multiplier", () => {
     expect(getLifetimePriceUSDForTier(3, "ONLINE", 1.0)).toBe(3599);
-    // roundToNiceUsd(3599*1.15=4138.85) = round(413.885)*10-1 = 4139
-    expect(getLifetimePriceUSDForTier(3, "ONLINE", 1.15)).toBe(4139);
+    // roundToNiceUsd(3599*1.15=4138.85) — amount >= 1000, so the ...99 rule
+    // applies: round(41.3885)*100-1 = 4099
+    expect(getLifetimePriceUSDForTier(3, "ONLINE", 1.15)).toBe(4099);
   });
 
   it("returns undefined when the underlying Lifetime price is undefined", () => {
@@ -68,7 +69,9 @@ describe("country-aware pricing (full PPP tier -> currency chain)", () => {
     expect(result.currency).toBe("INR");
     expect(result.totalSessions).toBe(12);
     expect(result.originalAmount).toBe(11952); // round(144 * 83)
-    expect(result.discountedAmount).toBe(5729); // roundNicely(69 * 83) after tier 0.5 discount
+    // roundNicely(69 * 83 = 5727) — amount >= 1000, so the ...99 rule
+    // applies: round(57.27)*100-1 = 5699
+    expect(result.discountedAmount).toBe(5699);
   });
 
   it("computes a USD-settled country (US) cycle price with no currency conversion", () => {
@@ -85,7 +88,9 @@ describe("country-aware pricing (full PPP tier -> currency chain)", () => {
 
   it("computes a Lifetime price for a Tier 1 (Premium, AED) country", () => {
     const result = getLifetimePriceForCountry(3, "ONLINE", "AE");
-    expect(result).toEqual({ amount: 15199, currency: "AED" });
+    // usdAmount = 4099 (see "scales the Lifetime price" above), converted
+    // to AED (×3.6725 = 15053.58) and re-rounded: round(150.5358)*100-1 = 15099
+    expect(result).toEqual({ amount: 15099, currency: "AED" });
   });
 
   it("returns undefined for an unsupported sessions/week combination", () => {

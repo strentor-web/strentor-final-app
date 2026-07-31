@@ -312,12 +312,21 @@ export function convertFromUsd(usdAmount: number, currency: PppCurrency): number
   return usdAmount * FX_RATES[currency];
 }
 
-// Rounds to a clean "…9"-ending figure (₹499, $1,799, AED 249) in whatever
-// currency it's given, matching the hand-picked price style used
-// throughout this app before PPP tiering existed.
+// Rounds to a classic "charm price" ending — a single trailing 9 for
+// amounts under 1,000 (₹549, $799), nearest ...99 for 1,000 and up
+// ($1,099, ₹15,099 — the run of trailing 9s naturally grows to .../999,
+// .../9999 whenever the amount is already close to one of those round
+// numbers) — in whatever currency it's given. The coarser ...99 rounding
+// only kicks in at 1,000+ specifically so it can't collide two nearby
+// prices (e.g. a segment discount or a tier step) onto the same number —
+// a $100-ish gap easily survives at 4+ digits but would erase real
+// differences at 2-3. Every price on the site (display and
+// actually-charged) is rounded through this one function, so the ending
+// is consistent everywhere.
 export function roundNicely(amount: number): number {
-  if (amount < 50) return Math.max(1, Math.round(amount));
-  return Math.round(amount / 10) * 10 - 1;
+  if (amount < 10) return Math.max(1, Math.round(amount));
+  if (amount < 1000) return Math.round(amount / 10) * 10 - 1;
+  return Math.round(amount / 100) * 100 - 1;
 }
 
 // AED-specific helper retained for callers that only ever need a USD->AED
