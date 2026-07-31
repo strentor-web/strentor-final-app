@@ -1,4 +1,5 @@
 import { Resend } from "resend";
+import type { CreateEmailResponseSuccess } from "resend";
 
 const resendClient = process.env.RESEND_API_KEY
   ? new Resend(process.env.RESEND_API_KEY)
@@ -6,6 +7,24 @@ const resendClient = process.env.RESEND_API_KEY
 
 const FROM_EMAIL = process.env.RESEND_FROM_EMAIL || "Strentor <noreply@strentor.com>";
 const SITE_URL = "https://www.strentor.com";
+
+// resend.emails.send() resolves normally even when the API rejects the
+// send (bad/unverified from-address, invalid or restricted API key,
+// quota exceeded, etc.) — it never throws for those, it just returns
+// { data: null, error: {...} }. Every call site below awaited the promise
+// and returned it directly without checking `.error`, so a real send
+// failure looked identical to success: the intake route (and the
+// subscription-reminder cron) would log nothing useful and report success
+// upstream while no email ever went out. This turns that into a thrown
+// error carrying Resend's actual error message, so callers' existing
+// try/catch blocks actually catch it.
+async function sendOrThrow(payload: Parameters<Resend["emails"]["send"]>[0]): Promise<CreateEmailResponseSuccess> {
+  const result = await resendClient!.emails.send(payload);
+  if (result.error) {
+    throw new Error(`Resend API error (${result.error.name}): ${result.error.message}`);
+  }
+  return result.data;
+}
 
 interface RenewalReminderParams {
   to: string;
@@ -62,7 +81,7 @@ export async function sendSubscriptionRenewalReminder({
     </div>
   `;
 
-  return resendClient.emails.send({
+  return sendOrThrow({
     from: FROM_EMAIL,
     to,
     subject,
@@ -84,7 +103,7 @@ export async function sendIntakeNotification({ to, cc, subject, html, replyTo }:
     return { skipped: true };
   }
 
-  return resendClient.emails.send({
+  return sendOrThrow({
     from: FROM_EMAIL,
     to,
     cc,

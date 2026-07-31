@@ -19,7 +19,6 @@ import Footer from "@/components/landing/Footer";
 import WhatsAppButton from "@/components/landing/WhatsAppButton";
 import Testimonials from "@/components/landing/Testimonials";
 import { Button } from "@/components/ui/button";
-import { FloatingLogoScene } from "@/components/three/FloatingLogoSceneLazy";
 import { ScrollReveal, StaggerGroup } from "@/components/motion/ScrollReveal";
 import { ScrollStory } from "@/components/motion/ScrollStory";
 import { HoverLift } from "@/components/motion/HoverLift";
@@ -160,10 +159,7 @@ export default function Home() {
       <ScrollStory
         className="relative bg-black"
         background={
-          <>
-            <div className="absolute inset-0 bg-gradient-to-br from-[#C9A96A]/10 via-black to-black" />
-            <FloatingLogoScene className="pointer-events-none absolute inset-0 opacity-70" />
-          </>
+          <div className="absolute inset-0 bg-gradient-to-br from-[#C9A96A]/10 via-black to-black" />
         }
         beats={[
           <div key="headline" className="mx-auto max-w-3xl text-center">
