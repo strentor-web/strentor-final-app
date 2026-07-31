@@ -3,12 +3,13 @@
 import { useEffect, useState } from "react";
 import { SubscribeButton } from "./subscribe-button";
 import { Button } from "@/components/ui/button";
-import type { TrainingPlanType } from "@/utils/pricing/sessionPricing";
+import type { TrainingPlanType, TrainingProgram } from "@/utils/pricing/sessionPricing";
 
 interface RecurringCheckoutButtonProps {
   sessionsPerWeek: number;
   planType: TrainingPlanType;
   billingCycle: number;
+  program?: TrainingProgram;
   city?: string | null;
   segment?: string | null;
   promoCode?: string | null;
@@ -24,6 +25,7 @@ export function RecurringCheckoutButton({
   sessionsPerWeek,
   planType,
   billingCycle,
+  program,
   city,
   segment,
   promoCode,
@@ -43,7 +45,7 @@ export function RecurringCheckoutButton({
         const response = await fetch("/api/subscriptions/ensure-plan", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ sessionsPerWeek, billingCycle, planType, city, segment, promoCode }),
+          body: JSON.stringify({ sessionsPerWeek, billingCycle, planType, program, city, segment, promoCode }),
         });
         if (!response.ok) {
           const data = await response.json().catch(() => ({}));
@@ -60,7 +62,7 @@ export function RecurringCheckoutButton({
     return () => {
       cancelled = true;
     };
-  }, [sessionsPerWeek, planType, billingCycle, city, segment, promoCode]);
+  }, [sessionsPerWeek, planType, billingCycle, program, city, segment, promoCode]);
 
   if (error) {
     return <p className="text-center text-sm text-destructive">{error}</p>;

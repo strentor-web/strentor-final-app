@@ -80,14 +80,45 @@ export const RATE_PER_SESSION_USD: Record<TrainingPlanType, number> = {
   SELF_PACED: 6,
 };
 
+// Named coaching programs that reuse the generic sessions-per-week pricing
+// formula below at their own base rate, instead of a flat/range marketing
+// price. "FITNESS" is the generic recurring product (both training modes);
+// Flagship/Elite are coach-led only (see PROGRAM_RATE_PER_SESSION_USD —
+// there's no SELF_PACED entry for them, ensure-plan enforces ONLINE-only).
+export type TrainingProgram = "FITNESS" | "FLAGSHIP_TRANSFORMATION" | "ELITE_MENTORSHIP";
+
+export const PROGRAM_LABELS: Record<TrainingProgram, string> = {
+  FITNESS: "Fitness Coaching",
+  FLAGSHIP_TRANSFORMATION: "Flagship Transformation",
+  ELITE_MENTORSHIP: "Elite Mentorship",
+};
+
+// Per-session USD rate for programs priced above the generic Fitness rate,
+// reflecting their existing premium positioning (previously flat $799-1499
+// / $1999-4999 marketing ranges for an 8-/12-week engagement — these rates
+// were picked so an ongoing monthly-equivalent commitment lands in roughly
+// the same ballpark). Falls back to RATE_PER_SESSION_USD for any program
+// not listed here. Retune here, or via an admin pricing_overrides
+// multiplier/tier override (same mechanism as every other price on the
+// site), if these need adjusting.
+const PROGRAM_RATE_PER_SESSION_USD: Partial<Record<TrainingProgram, number>> = {
+  FLAGSHIP_TRANSFORMATION: 35,
+  ELITE_MENTORSHIP: 75,
+};
+
+function ratePerSessionUsd(program: TrainingProgram, planType: TrainingPlanType): number {
+  return PROGRAM_RATE_PER_SESSION_USD[program] ?? RATE_PER_SESSION_USD[planType];
+}
+
 export function calculateCyclePriceUSD(
   sessionsPerWeek: number,
   billingCycleMonths: number,
-  planType: TrainingPlanType
+  planType: TrainingPlanType,
+  program: TrainingProgram = "FITNESS"
 ): CyclePriceBreakdown {
   const discount = CYCLE_DISCOUNTS[billingCycleMonths] ?? 0;
   const totalSessions = sessionsPerWeek * billingCycleMonths * WEEKS_PER_MONTH;
-  const originalAmount = totalSessions * RATE_PER_SESSION_USD[planType];
+  const originalAmount = totalSessions * ratePerSessionUsd(program, planType);
   const discountedAmount = Math.round(originalAmount * (1 - discount / 100));
   return { totalSessions, originalAmount, discountedAmount };
 }
@@ -129,9 +160,10 @@ export function calculateCyclePriceUSDForTier(
   sessionsPerWeek: number,
   billingCycleMonths: number,
   planType: TrainingPlanType,
-  multiplier: number
+  multiplier: number,
+  program: TrainingProgram = "FITNESS"
 ): CyclePriceBreakdown {
-  const base = calculateCyclePriceUSD(sessionsPerWeek, billingCycleMonths, planType);
+  const base = calculateCyclePriceUSD(sessionsPerWeek, billingCycleMonths, planType, program);
   return {
     ...base,
     discountedAmount: roundToNiceUsd(base.discountedAmount * multiplier),
@@ -170,11 +202,12 @@ export function calculateCyclePriceForCountry(
   planType: TrainingPlanType,
   countryCode: string | null | undefined,
   city?: string | null,
-  segment?: string | null
+  segment?: string | null,
+  program: TrainingProgram = "FITNESS"
 ): CountryCyclePrice {
   const multiplier = getPppMultiplier(countryCode, city) * getSegmentMultiplier(segment);
   const currency = getCurrencyForCountry(countryCode);
-  const usd = calculateCyclePriceUSDForTier(sessionsPerWeek, billingCycleMonths, planType, multiplier);
+  const usd = calculateCyclePriceUSDForTier(sessionsPerWeek, billingCycleMonths, planType, multiplier, program);
 
   if (currency === "USD") {
     return { ...usd, currency };

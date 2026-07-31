@@ -17,6 +17,7 @@ function FlagshipTransformationContent() {
       titleAccent="& Mindset Transformation"
       subtitle="A structured, four-phase transformation for wheelchair users — building strength, nutrition habits, and mindset together, so progress lasts well beyond week eight."
       priceRange={formatRegionalPlanPrice(plan, countryCode)}
+      checkoutHref="/checkout?program=flagship-transformation"
       intro={{
         heading: "A method, not just a workout plan",
         paragraphs: [

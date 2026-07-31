@@ -11,11 +11,15 @@ import {
   MAX_SESSIONS_PER_WEEK,
   RATE_PER_SESSION_USD,
   PLAN_TYPE_LABELS,
+  PROGRAM_LABELS,
   CYCLE_DISCOUNTS,
   CYCLE_LABELS,
   calculateCyclePriceUSDForTier,
   TrainingPlanType,
+  TrainingProgram,
 } from '@/utils/pricing/sessionPricing';
+
+const VALID_PROGRAMS: TrainingProgram[] = ['FITNESS', 'FLAGSHIP_TRANSFORMATION', 'ELITE_MENTORSHIP'];
 
 // PayPal equivalent of /api/subscriptions/ensure-plan — finds or provisions
 // a PPP-tier-adjusted, USD-priced PayPal Billing Plan for the requested
@@ -27,7 +31,7 @@ import {
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { sessionsPerWeek, billingCycle, planType = 'ONLINE', countryCode, city, segment, promoCode } = body;
+    const { sessionsPerWeek, billingCycle, planType = 'ONLINE', program = 'FITNESS', countryCode, city, segment, promoCode } = body;
 
     if (
       typeof sessionsPerWeek !== 'number' ||
@@ -51,6 +55,17 @@ export async function POST(request: NextRequest) {
     if (!(planType in RATE_PER_SESSION_USD)) {
       return NextResponse.json(
         { error: 'planType must be one of ONLINE or SELF_PACED' },
+        { status: 400 }
+      );
+    }
+
+    if (!VALID_PROGRAMS.includes(program)) {
+      return NextResponse.json({ error: 'Unrecognized program' }, { status: 400 });
+    }
+
+    if (program !== 'FITNESS' && planType !== 'ONLINE') {
+      return NextResponse.json(
+        { error: `${PROGRAM_LABELS[program as TrainingProgram]} is Trainer-Led only — Self-Paced isn't offered for this program` },
         { status: 400 }
       );
     }
@@ -96,7 +111,8 @@ export async function POST(request: NextRequest) {
       sessionsPerWeek,
       billingCycle,
       planType as TrainingPlanType,
-      pricing.multiplier
+      pricing.multiplier,
+      program as TrainingProgram
     );
 
     let promoCodeId: string | null = null;
@@ -120,7 +136,7 @@ export async function POST(request: NextRequest) {
 
     const existingPlan = await prisma.subscription_plans.findFirst({
       where: {
-        category: 'FITNESS',
+        category: program,
         billing_cycle: billingCycle,
         sessions_per_week: sessionsPerWeek,
         plan_type: planType,
@@ -147,7 +163,7 @@ export async function POST(request: NextRequest) {
 
     const discountedAmount = clampUsd(preClampUsd, pricing);
     const cycleLabel = CYCLE_LABELS[billingCycle];
-    const planName = `Fitness ${PLAN_TYPE_LABELS[planType as TrainingPlanType]} — ${sessionsPerWeek}/week (${cycleLabel}, USD, tier ${tier})`;
+    const planName = `${PROGRAM_LABELS[program as TrainingProgram]} ${PLAN_TYPE_LABELS[planType as TrainingPlanType]} — ${sessionsPerWeek}/week (${cycleLabel}, USD, tier ${tier})`;
 
     const paypalPlan = await createPaypalPlan({
       name: planName,
@@ -164,7 +180,7 @@ export async function POST(request: NextRequest) {
       : await prisma.subscription_plans.create({
           data: {
             name: planName,
-            category: 'FITNESS',
+            category: program,
             plan_type: planType,
             price: discountedAmount,
             currency: 'USD',
@@ -175,7 +191,7 @@ export async function POST(request: NextRequest) {
             discount_amount: discountAmount,
             // Unused for PayPal-priced rows — placeholder keeps this
             // NOT NULL column consistent across every subscription_plans row.
-            razorpay_plan_id: `paypal_${planType}_${sessionsPerWeek}pw_${billingCycle}mo_tier${tier}`,
+            razorpay_plan_id: `paypal_${program}_${planType}_${sessionsPerWeek}pw_${billingCycle}mo_tier${tier}`,
             paypal_plan_id: paypalPlan.id,
             billing_period: cycleLabel,
             billing_cycle: billingCycle,

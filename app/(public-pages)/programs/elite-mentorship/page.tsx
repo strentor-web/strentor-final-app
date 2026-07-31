@@ -17,6 +17,7 @@ function EliteMentorshipContent() {
       titleAccent="Transformation Mentorship"
       subtitle="A 12-week, high-touch mentorship for wheelchair users who want intensive, deeply personalized transformation — with direct founder access and priority support."
       priceRange={formatRegionalPlanPrice(plan, countryCode)}
+      checkoutHref="/checkout?program=elite-mentorship"
       intro={{
         heading: "For clients who want everything, personalized",
         paragraphs: [

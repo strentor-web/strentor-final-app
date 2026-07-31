@@ -928,6 +928,16 @@ enum SubscriptionCategory {
   FITNESS
   ALL_IN_ONE
   AI_COACHING
+  // Coach-led, ONLINE-only premium programs (see utils/pricing/sessionPricing.ts
+  // PROGRAM_RATE_PER_SESSION_USD) — priced by the same sessions-per-week
+  // formula as FITNESS but at their own higher per-session rate, reflecting
+  // their existing premium marketing positioning. Kept as distinct
+  // categories (not just a differently-named FITNESS plan) so a
+  // subscription_plans row can never be ambiguously reused across a
+  // generic Fitness price and a Flagship/Elite price for the same
+  // sessions/billing-cycle/tier/segment combination.
+  FLAGSHIP_TRANSFORMATION
+  ELITE_MENTORSHIP
 
   @@schema("public")
 }

@@ -12,11 +12,15 @@ import {
   MAX_SESSIONS_PER_WEEK,
   RATE_PER_SESSION_USD,
   PLAN_TYPE_LABELS,
+  PROGRAM_LABELS,
   CYCLE_DISCOUNTS,
   CYCLE_LABELS,
   calculateCyclePriceUSDForTier,
   TrainingPlanType,
+  TrainingProgram,
 } from '@/utils/pricing/sessionPricing';
+
+const VALID_PROGRAMS: TrainingProgram[] = ['FITNESS', 'FLAGSHIP_TRANSFORMATION', 'ELITE_MENTORSHIP'];
 
 function getRazorpayPeriod(months: number): { period: 'monthly' | 'yearly'; interval: number } {
   if (months === 12) {
@@ -38,7 +42,7 @@ const RAZORPAY_COUNTRY = 'IN';
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { sessionsPerWeek, billingCycle, planType = 'ONLINE', city, segment, promoCode } = body;
+    const { sessionsPerWeek, billingCycle, planType = 'ONLINE', program = 'FITNESS', city, segment, promoCode } = body;
 
     if (
       typeof sessionsPerWeek !== 'number' ||
@@ -62,6 +66,19 @@ export async function POST(request: NextRequest) {
     if (!(planType in RATE_PER_SESSION_USD)) {
       return NextResponse.json(
         { error: 'planType must be one of ONLINE or SELF_PACED' },
+        { status: 400 }
+      );
+    }
+
+    if (!VALID_PROGRAMS.includes(program)) {
+      return NextResponse.json({ error: 'Unrecognized program' }, { status: 400 });
+    }
+
+    // Flagship/Elite are coach-led, high-touch programs — there's no
+    // Self-Paced variant (see utils/pricing/sessionPricing.ts PROGRAM_LABELS).
+    if (program !== 'FITNESS' && planType !== 'ONLINE') {
+      return NextResponse.json(
+        { error: `${PROGRAM_LABELS[program as TrainingProgram]} is Trainer-Led only — Self-Paced isn't offered for this program` },
         { status: 400 }
       );
     }
@@ -109,7 +126,8 @@ export async function POST(request: NextRequest) {
       sessionsPerWeek,
       billingCycle,
       planType as TrainingPlanType,
-      pricing.multiplier
+      pricing.multiplier,
+      program as TrainingProgram
     );
 
     let promoCodeId: string | null = null;
@@ -133,7 +151,7 @@ export async function POST(request: NextRequest) {
 
     const existingPlan = await prisma.subscription_plans.findFirst({
       where: {
-        category: 'FITNESS',
+        category: program,
         billing_cycle: billingCycle,
         sessions_per_week: sessionsPerWeek,
         plan_type: planType,
@@ -172,7 +190,7 @@ export async function POST(request: NextRequest) {
     const totalSessions = usdPrice.totalSessions;
     const weeksInCycle = billingCycle * WEEKS_PER_MONTH;
     const cycleLabel = CYCLE_LABELS[billingCycle];
-    const planName = `Fitness ${PLAN_TYPE_LABELS[planType as TrainingPlanType]} — ${sessionsPerWeek}/week (${cycleLabel})`;
+    const planName = `${PROGRAM_LABELS[program as TrainingProgram]} ${PLAN_TYPE_LABELS[planType as TrainingPlanType]} — ${sessionsPerWeek}/week (${cycleLabel})`;
 
     const { period, interval } = getRazorpayPeriod(billingCycle);
 
@@ -189,13 +207,14 @@ export async function POST(request: NextRequest) {
         sessions_per_week: sessionsPerWeek,
         billing_cycle: billingCycle,
         plan_type: planType,
+        program,
       },
     });
 
     const plan = await prisma.subscription_plans.create({
       data: {
         name: planName,
-        category: 'FITNESS',
+        category: program,
         plan_type: planType,
         price: discountedAmount,
         pricing_tier: tier,

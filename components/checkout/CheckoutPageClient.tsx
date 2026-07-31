@@ -34,7 +34,9 @@ import {
   calculateCyclePriceUSDForTier,
   getLifetimePriceForCountry,
   getLifetimePriceUSDForTier,
+  PROGRAM_LABELS,
   TrainingPlanType,
+  TrainingProgram,
 } from "@/utils/pricing/sessionPricing";
 
 type Tier = "recurring" | "lifetime";
@@ -43,6 +45,17 @@ type PaymentProvider = "razorpay" | "paypal";
 function parseIntParam(value: string | null, fallback: number): number {
   const parsed = value ? parseInt(value, 10) : NaN;
   return Number.isNaN(parsed) ? fallback : parsed;
+}
+
+// A named program pre-selects and locks Trainer-Led + Recurring billing —
+// Flagship/Elite are coach-led only and don't offer a Lifetime tier (see
+// PROGRAM_LABELS/PROGRAM_RATE_PER_SESSION_USD in sessionPricing.ts).
+// Anything else (including no ?program= at all) is the generic Fitness
+// product, unchanged from before.
+function parseProgramParam(value: string | null): TrainingProgram {
+  if (value === "flagship-transformation") return "FLAGSHIP_TRANSFORMATION";
+  if (value === "elite-mentorship") return "ELITE_MENTORSHIP";
+  return "FITNESS";
 }
 
 export default function CheckoutPageClient() {
@@ -55,6 +68,9 @@ export default function CheckoutPageClient() {
   const [city, setCity] = useState("");
   const [segment, setSegment] = useState<CustomerSegment | "">("");
 
+  const program = parseProgramParam(searchParams.get("program"));
+  const isNamedProgram = program !== "FITNESS";
+
   const [sessionsPerWeek, setSessionsPerWeek] = useState(
     parseIntParam(searchParams.get("sessionsPerWeek"), DEFAULT_SESSIONS_PER_WEEK)
   );
@@ -63,6 +79,14 @@ export default function CheckoutPageClient() {
   );
   const [tier, setTier] = useState<Tier>(searchParams.get("tier") === "lifetime" ? "lifetime" : "recurring");
   const [billingCycle, setBillingCycle] = useState(parseIntParam(searchParams.get("billingCycle"), 3));
+
+  // A named program locks these two — Flagship/Elite are Trainer-Led,
+  // recurring-only (no Self-Paced variant, no Lifetime tier). Use these
+  // "effective" values everywhere below instead of the raw toggle state,
+  // so a hand-crafted ?program=...&planType=SELF_PACED URL can't bypass it
+  // (the server independently enforces the same rule — see ensure-plan).
+  const effectivePlanType: TrainingPlanType = isNamedProgram ? "ONLINE" : planType;
+  const effectiveTier: Tier = isNamedProgram ? "recurring" : tier;
 
   // Every price on the site — including which payment provider serves a
   // customer — is driven by the same country detection (see
@@ -125,19 +149,28 @@ export default function CheckoutPageClient() {
   const recurringPrice = calculateCyclePriceForCountry(
     sessionsPerWeek,
     selectedBillingOption.value,
-    planType,
+    effectivePlanType,
     isPaypal ? countryCode : "IN",
     city,
-    segment
+    segment,
+    program
   );
-  const lifetime = getLifetimePriceForCountry(sessionsPerWeek, planType, isPaypal ? countryCode : "IN", city, segment);
+  const lifetime = isNamedProgram
+    ? undefined
+    : getLifetimePriceForCountry(sessionsPerWeek, effectivePlanType, isPaypal ? countryCode : "IN", city, segment);
   const lifetimePrice = lifetime?.amount;
   const currencySymbol = CURRENCY_SYMBOLS[recurringPrice.currency];
   // The actual PayPal charge is always USD, even for AE (whose display
   // currency above is AED) — PayPal doesn't settle in AED.
   const multiplier = getPppMultiplier(countryCode, city) * getSegmentMultiplier(segment);
-  const recurringUsdCharge = calculateCyclePriceUSDForTier(sessionsPerWeek, selectedBillingOption.value, planType, multiplier);
-  const lifetimeUsdCharge = getLifetimePriceUSDForTier(sessionsPerWeek, planType, multiplier);
+  const recurringUsdCharge = calculateCyclePriceUSDForTier(
+    sessionsPerWeek,
+    selectedBillingOption.value,
+    effectivePlanType,
+    multiplier,
+    program
+  );
+  const lifetimeUsdCharge = isNamedProgram ? undefined : getLifetimePriceUSDForTier(sessionsPerWeek, effectivePlanType, multiplier);
 
   const contactValid = fullName.trim() && email.trim() && phone.trim();
 
@@ -154,9 +187,9 @@ export default function CheckoutPageClient() {
           email,
           phone,
           sessionsPerWeek,
-          planType,
-          tier,
-          billingCycle: tier === "recurring" ? billingCycle : undefined,
+          planType: effectivePlanType,
+          tier: effectiveTier,
+          billingCycle: effectiveTier === "recurring" ? billingCycle : undefined,
           paymentProvider,
           city: city || undefined,
           segment: segment || undefined,
@@ -192,7 +225,7 @@ export default function CheckoutPageClient() {
     if (!promoCodeInput.trim()) return;
     setIsValidatingPromo(true);
     setPromoStatus(null);
-    const amountUsd = tier === "recurring" ? recurringUsdCharge.discountedAmount : lifetimeUsdCharge;
+    const amountUsd = effectiveTier === "recurring" ? recurringUsdCharge.discountedAmount : lifetimeUsdCharge;
     if (!amountUsd) {
       setPromoStatus({ valid: false, error: "No price to apply a promo to yet" });
       setIsValidatingPromo(false);
@@ -205,7 +238,7 @@ export default function CheckoutPageClient() {
         body: JSON.stringify({
           code: promoCodeInput,
           countryCode: isPaypal ? countryCode : "IN",
-          product: tier,
+          product: effectiveTier,
           amountUsd,
         }),
       });
@@ -240,43 +273,54 @@ export default function CheckoutPageClient() {
         <div className="mt-10 space-y-8 rounded-2xl border border-border bg-card p-6 sm:p-8">
           {/* Plan selection */}
           <div className="space-y-6">
-            <div>
-              <Label>Membership type</Label>
-              <div className="mt-2 flex rounded-full border border-input p-1">
-                {(["recurring", "lifetime"] as Tier[]).map((value) => (
-                  <button
-                    key={value}
-                    type="button"
-                    disabled={stage !== "form"}
-                    onClick={() => setTier(value)}
-                    className={`flex-1 rounded-full px-4 py-2 text-sm font-medium transition-colors disabled:cursor-not-allowed disabled:opacity-60 ${
-                      tier === value ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:text-foreground"
-                    }`}
-                  >
-                    {value === "recurring" ? "Recurring Billing" : "Lifetime Membership"}
-                  </button>
-                ))}
+            {isNamedProgram ? (
+              <div className="rounded-xl border border-[#C9A96A]/40 bg-[#C9A96A]/5 px-4 py-3">
+                <p className="text-sm font-semibold text-foreground">{PROGRAM_LABELS[program]}</p>
+                <p className="mt-0.5 text-xs text-muted-foreground">
+                  Trainer-Led · Recurring billing — choose your sessions per week and billing cycle below.
+                </p>
               </div>
-            </div>
+            ) : (
+              <>
+                <div>
+                  <Label>Membership type</Label>
+                  <div className="mt-2 flex rounded-full border border-input p-1">
+                    {(["recurring", "lifetime"] as Tier[]).map((value) => (
+                      <button
+                        key={value}
+                        type="button"
+                        disabled={stage !== "form"}
+                        onClick={() => setTier(value)}
+                        className={`flex-1 rounded-full px-4 py-2 text-sm font-medium transition-colors disabled:cursor-not-allowed disabled:opacity-60 ${
+                          tier === value ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:text-foreground"
+                        }`}
+                      >
+                        {value === "recurring" ? "Recurring Billing" : "Lifetime Membership"}
+                      </button>
+                    ))}
+                  </div>
+                </div>
 
-            <div>
-              <Label>Training mode</Label>
-              <div className="mt-2 flex rounded-full border border-input p-1">
-                {(["ONLINE", "SELF_PACED"] as TrainingPlanType[]).map((value) => (
-                  <button
-                    key={value}
-                    type="button"
-                    disabled={stage !== "form"}
-                    onClick={() => setPlanType(value)}
-                    className={`flex-1 rounded-full px-4 py-2 text-sm font-medium transition-colors disabled:cursor-not-allowed disabled:opacity-60 ${
-                      planType === value ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:text-foreground"
-                    }`}
-                  >
-                    {value === "ONLINE" ? "Trainer-Led" : "Self-Paced"}
-                  </button>
-                ))}
-              </div>
-            </div>
+                <div>
+                  <Label>Training mode</Label>
+                  <div className="mt-2 flex rounded-full border border-input p-1">
+                    {(["ONLINE", "SELF_PACED"] as TrainingPlanType[]).map((value) => (
+                      <button
+                        key={value}
+                        type="button"
+                        disabled={stage !== "form"}
+                        onClick={() => setPlanType(value)}
+                        className={`flex-1 rounded-full px-4 py-2 text-sm font-medium transition-colors disabled:cursor-not-allowed disabled:opacity-60 ${
+                          planType === value ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:text-foreground"
+                        }`}
+                      >
+                        {value === "ONLINE" ? "Trainer-Led" : "Self-Paced"}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              </>
+            )}
 
             <div>
               <Label htmlFor="checkout-sessions">Sessions per week</Label>
@@ -311,7 +355,7 @@ export default function CheckoutPageClient() {
               </div>
             </div>
 
-            {tier === "recurring" && (
+            {effectiveTier === "recurring" && (
               <div>
                 <Label>Billing cycle</Label>
                 <div className="mt-2 grid grid-cols-2 gap-2 sm:grid-cols-4">
@@ -340,7 +384,7 @@ export default function CheckoutPageClient() {
                 <p className="text-sm font-medium text-muted-foreground">
                   {SEGMENT_LABELS[segment as CustomerSegment]} pricing is arranged directly — see below.
                 </p>
-              ) : tier === "recurring" ? (
+              ) : effectiveTier === "recurring" ? (
                 <>
                   <p className="text-2xl font-bold text-primary">
                     {currencySymbol}
@@ -523,11 +567,12 @@ export default function CheckoutPageClient() {
             >
               {isSubmitting ? "Preparing checkout…" : "Continue to Payment"}
             </Button>
-          ) : tier === "recurring" ? (
+          ) : effectiveTier === "recurring" ? (
             isPaypal ? (
               <PaypalRecurringButton
                 sessionsPerWeek={sessionsPerWeek}
-                planType={planType}
+                planType={effectivePlanType}
+                program={program}
                 billingCycle={billingCycle}
                 countryCode={countryCode}
                 city={city}
@@ -538,7 +583,8 @@ export default function CheckoutPageClient() {
             ) : (
               <RecurringCheckoutButton
                 sessionsPerWeek={sessionsPerWeek}
-                planType={planType}
+                planType={effectivePlanType}
+                program={program}
                 billingCycle={billingCycle}
                 city={city}
                 segment={segment}
@@ -550,7 +596,7 @@ export default function CheckoutPageClient() {
           ) : isPaypal ? (
             <PaypalLifetimeButton
               sessionsPerWeek={sessionsPerWeek}
-              planType={planType}
+              planType={effectivePlanType}
               countryCode={countryCode}
               city={city}
               segment={segment}
@@ -560,7 +606,7 @@ export default function CheckoutPageClient() {
           ) : (
             <LifetimeCheckoutButton
               sessionsPerWeek={sessionsPerWeek}
-              planType={planType}
+              planType={effectivePlanType}
               city={city}
               segment={segment}
               promoCode={appliedPromoCode}

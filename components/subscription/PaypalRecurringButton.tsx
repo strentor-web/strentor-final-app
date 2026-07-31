@@ -4,12 +4,13 @@ import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { loadPaypalScript } from "@/utils/paypalClient";
 import { toast } from "sonner";
-import type { TrainingPlanType } from "@/utils/pricing/sessionPricing";
+import type { TrainingPlanType, TrainingProgram } from "@/utils/pricing/sessionPricing";
 
 interface PaypalRecurringButtonProps {
   sessionsPerWeek: number;
   planType: TrainingPlanType;
   billingCycle: number;
+  program?: TrainingProgram;
   countryCode: string | null;
   city?: string | null;
   segment?: string | null;
@@ -25,6 +26,7 @@ export function PaypalRecurringButton({
   sessionsPerWeek,
   planType,
   billingCycle,
+  program,
   countryCode,
   city,
   segment,
@@ -57,7 +59,7 @@ export function PaypalRecurringButton({
             const planResponse = await fetch("/api/paypal/subscriptions/ensure-plan", {
               method: "POST",
               headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({ sessionsPerWeek, billingCycle, planType, countryCode, city, segment, promoCode }),
+              body: JSON.stringify({ sessionsPerWeek, billingCycle, planType, program, countryCode, city, segment, promoCode }),
             });
 
             if (planResponse.status === 401) {
@@ -146,7 +148,7 @@ export function PaypalRecurringButton({
     return () => {
       cancelled = true;
     };
-  }, [sessionsPerWeek, planType, billingCycle, countryCode, city, segment, promoCode, router, onSuccess]);
+  }, [sessionsPerWeek, planType, billingCycle, program, countryCode, city, segment, promoCode, router, onSuccess]);
 
   if (error) {
     return <p className="text-center text-sm text-destructive">{error}</p>;

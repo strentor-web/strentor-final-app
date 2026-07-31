@@ -24,6 +24,10 @@ export interface NicheProgramPageProps {
   subtitle: string
   priceRange?: string
   contactPlan: string
+  // When set, the primary hero CTA links directly to checkout (sessions/
+  // week priced, program pre-selected) instead of the discovery-call
+  // funnel — "Book Fit Assessment" still appears as a secondary option.
+  checkoutHref?: string
   intro: {
     heading: string
     paragraphs: string[]
@@ -41,6 +45,7 @@ export function NicheProgramPage({
   subtitle,
   priceRange,
   contactPlan,
+  checkoutHref,
   intro,
   benefits,
   disclaimer,
@@ -83,15 +88,31 @@ export function NicheProgramPage({
           </p>
           {priceRange && (
             <p className="mt-4 text-sm font-semibold uppercase tracking-wide text-gray-400">
-              {priceRange} · Final pricing confirmed on your discovery call
+              {priceRange}
+              {checkoutHref
+                ? " · Priced by sessions per week — enroll instantly or book a call first"
+                : " · Final pricing confirmed on your discovery call"}
             </p>
           )}
-          <div className="mt-8">
-            <Button asChild className="h-14 rounded-full bg-[#C9A96A] px-8 hover:bg-[#C9A96A]/90">
-              <Link href={`/contact?type=personal&plan=${encodeURIComponent(contactPlan)}`}>
-                Book Fit Assessment
-              </Link>
-            </Button>
+          <div className="mt-8 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
+            {checkoutHref ? (
+              <>
+                <Button asChild className="h-14 rounded-full bg-[#C9A96A] px-8 hover:bg-[#C9A96A]/90">
+                  <Link href={checkoutHref}>Enroll Now</Link>
+                </Button>
+                <Button asChild variant="outline" className="h-14 rounded-full border-white/30 px-8 text-white hover:bg-white/10">
+                  <Link href={`/contact?type=personal&plan=${encodeURIComponent(contactPlan)}`}>
+                    Or Book Fit Assessment First
+                  </Link>
+                </Button>
+              </>
+            ) : (
+              <Button asChild className="h-14 rounded-full bg-[#C9A96A] px-8 hover:bg-[#C9A96A]/90">
+                <Link href={`/contact?type=personal&plan=${encodeURIComponent(contactPlan)}`}>
+                  Book Fit Assessment
+                </Link>
+              </Button>
+            )}
           </div>
         </div>
       </div>
