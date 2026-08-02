@@ -4,7 +4,7 @@
 import * as React from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { ChevronDown, Users, Shield, LayoutDashboard, Settings, GraduationCap, AlertTriangle, Inbox, UserSearch, DollarSign, BarChart3, Gift, Undo2 } from "lucide-react";
+import { ChevronDown, Users, Shield, LayoutDashboard, Settings, GraduationCap, AlertTriangle, Inbox, UserSearch, DollarSign, BarChart3, Gift, Undo2, PenSquare } from "lucide-react";
 import Image from "next/image";
 
 // Internal components
@@ -112,6 +112,12 @@ const adminNavItems = [
     title: "Refunds",
     url: "/admin/payments/refunds",
     icon: Undo2,
+    isActive: false,
+  },
+  {
+    title: "Content Drafts",
+    url: "/admin/content",
+    icon: PenSquare,
     isActive: false,
   },
   {
