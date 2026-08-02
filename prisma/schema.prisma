@@ -132,6 +132,24 @@ model ai_coach_messages {
   @@schema("public")
 }
 
+// A trainer's raw session notes plus an AI-structured summary generated
+// from them (utils/ai/anthropicClient.ts). Internal to the trainer/admin
+// side — never shown to the client.
+model trainer_session_notes {
+  id           String        @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  client_id    String        @db.Uuid
+  trainer_id   String        @db.Uuid
+  raw_notes    String
+  summary      String?
+  session_date DateTime      @default(now())
+  created_at   DateTime      @default(now())
+  client       users_profile @relation("TrainerSessionNoteClient", fields: [client_id], references: [id], onDelete: Cascade, map: "TrainerSessionNote_clientId_fkey")
+  trainer      users_profile @relation("TrainerSessionNoteTrainer", fields: [trainer_id], references: [id], onDelete: NoAction, map: "TrainerSessionNote_trainerId_fkey")
+
+  @@index([client_id, session_date], map: "TrainerSessionNote_clientId_sessionDate_idx")
+  @@schema("public")
+}
+
 // Body-check tracker. Any symptom in `symptoms` that overlaps the app's
 // red-flag list sets red_flag_detected = true and creates a safety_flags
 // row — see App Builder Requirement Document section 11.
@@ -728,6 +746,8 @@ model users_profile {
   safety_flags_assigned                safety_flags[]            @relation("SafetyFlagAssignedTo")
   pain_fatigue_logs                    pain_fatigue_logs[]
   ai_coach_messages                    ai_coach_messages[]
+  trainer_session_notes_as_client      trainer_session_notes[]  @relation("TrainerSessionNoteClient")
+  trainer_session_notes_as_trainer     trainer_session_notes[]  @relation("TrainerSessionNoteTrainer")
   weekly_checkins                      weekly_checkins[]
   coaching_calls                       coaching_calls[]
   testimonials                         testimonials[]

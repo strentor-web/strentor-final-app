@@ -6,6 +6,7 @@ import { validateServerRole } from "@/lib/server-role-validation";
 import { Metadata } from "next";
 import { getFitnessClientSummary } from "@/actions/trainer-clients/fitness/get-fitness-client-summary.action";
 import { ClientProfileClient } from "@/components/trainer/ClientProfileClient";
+import { TrainerSessionNotes } from "@/components/trainer/TrainerSessionNotes";
 
 export const metadata: Metadata = {
   title: "Client Profile - Strentor",
@@ -65,11 +66,13 @@ export default async function ClientProfilePage({ params }: ClientProfilePagePro
         <h1 className="text-3xl p-6 font-bold">Client Profile</h1>
       </div>
 
-      <ClientProfileClient 
+      <ClientProfileClient
         profile={clientSummary.profile}
         bestPRs={clientSummary.bestPRs}
         uniqueBodyParts={clientSummary.uniqueBodyParts}
       />
+
+      <TrainerSessionNotes clientId={clientId} />
     </div>
   );
 } 
