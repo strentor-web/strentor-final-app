@@ -5,6 +5,7 @@ import { z } from "zod";
 import prisma from "@/utils/prisma/prismaClient";
 import { validateServerRole } from "@/lib/server-role-validation";
 import { BodyPart } from "@prisma/client";
+import { isNextControlFlowError } from "@/utils/next-control-flow-errors";
 
 const getFitnessClientSummarySchema = z.object({
   clientId: z.string().min(1, "Client ID is required"),
@@ -131,6 +132,7 @@ export const getFitnessClientSummary = createSafeAction(
         },
       };
     } catch (error) {
+      if (isNextControlFlowError(error)) throw error;
       console.error("Error fetching client fitness summary:", error);
       return { error: "Failed to fetch client fitness summary" };
     }

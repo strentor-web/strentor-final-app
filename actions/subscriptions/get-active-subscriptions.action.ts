@@ -4,6 +4,7 @@ import { createSafeAction, ActionState } from '@/lib/create-safe-action';
 import prisma from '@/utils/prisma/prismaClient';
 import { createClient } from '@/utils/supabase/server';
 import { z } from 'zod';
+import { isNextControlFlowError } from '@/utils/next-control-flow-errors';
 
 // Input schema - no input needed, uses session user
 const GetActiveSubscriptionsSchema = z.object({});
@@ -86,6 +87,7 @@ const handler = async (_: InputType): Promise<ActionState<InputType, ReturnType>
 
     return { data };
   } catch (error) {
+    if (isNextControlFlowError(error)) throw error;
     console.error('Error fetching active subscriptions:', error);
     return { error: 'Failed to fetch active subscriptions' };
   }

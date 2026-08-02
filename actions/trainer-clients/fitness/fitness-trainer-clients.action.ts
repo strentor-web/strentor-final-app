@@ -5,6 +5,7 @@ import { createSafeAction, ActionState } from "@/lib/create-safe-action";
 import { getTrainerClients, getTrainerClientsCount } from "@/actions/trainer-clients/fitness/get-fitness-trainer-clients";
 import { TrainerClientsResponse } from "@/types/trainer-clients.types";
 import { createClient } from "@/utils/supabase/server";
+import { isNextControlFlowError } from "@/utils/next-control-flow-errors";
 
 // Zod schema for input validation
 const trainerClientsQuerySchema = z.object({
@@ -82,6 +83,7 @@ export const fetchTrainerClients = createSafeAction(
         },
       };
     } catch (error) {
+      if (isNextControlFlowError(error)) throw error;
       console.error("Error fetching trainer clients:", error);
       return {
         error: "Failed to fetch clients. Please try again.",

@@ -3,6 +3,7 @@
 import { WeightUnit } from "@prisma/client";
 import prisma from "@/utils/prisma/prismaClient";
 import { getAuthenticatedUserId } from "@/utils/user";
+import { isNextControlFlowError } from "@/utils/next-control-flow-errors";
 
 export async function getWeightUnit(): Promise<WeightUnit> {
   try {
@@ -20,6 +21,7 @@ export async function getWeightUnit(): Promise<WeightUnit> {
 
     return userProfile?.weight_unit || WeightUnit.KG;
   } catch (error) {
+    if (isNextControlFlowError(error)) throw error;
     console.error("Error fetching weight unit:", error);
     // Default to KG on error
     return WeightUnit.KG;

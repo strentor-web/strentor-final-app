@@ -104,6 +104,7 @@ function getInitials(name: string): string {
 
 // Import admin utility from centralized user utils
 import { getAdminUser } from "@/utils/user";
+import { isNextControlFlowError } from "@/utils/next-control-flow-errors";
 
 // Get available trainers for a specific plan category
 export async function getAvailableTrainers(planCategory: string): Promise<Trainer[]> {
@@ -166,6 +167,7 @@ export async function assignTrainerToClient(
 
     return { success: true, message: "Trainer assigned successfully" };
   } catch (error) {
+    if (isNextControlFlowError(error)) throw error;
     console.error("Error assigning trainer:", error);
     return { success: false, message: "Failed to assign trainer" };
   }
@@ -198,6 +200,7 @@ export async function assignAllInOneTrainers(
 
     return { success: true, message: "Trainer assigned successfully" };
   } catch (error) {
+    if (isNextControlFlowError(error)) throw error;
     console.error("Error assigning ALL_IN_ONE trainers:", error);
     return { success: false, message: "Failed to assign trainers. Please try again." };
   }
@@ -244,6 +247,7 @@ export async function getUserSignupsChartData(): Promise<UserSignupData[]> {
       };
     });
   } catch (error) {
+    if (isNextControlFlowError(error)) throw error;
     console.error("Error fetching user signup data:", error);
     throw new Error(`Failed to fetch user signup data: ${error instanceof Error ? error.message : 'Unknown error' }`);
   }

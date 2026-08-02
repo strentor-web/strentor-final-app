@@ -2,6 +2,7 @@
 
 import prisma from "@/utils/prisma/prismaClient";
 import { getTrainerUser } from "@/utils/user";
+import { isNextControlFlowError } from "@/utils/next-control-flow-errors";
 
 export async function getTrainerProfileDetails() {
   try {
@@ -30,6 +31,7 @@ export async function getTrainerProfileDetails() {
 
     return profileDetails;
   } catch (error) {
+    if (isNextControlFlowError(error)) throw error;
     console.error("Error fetching trainer profile details:", error);
     throw new Error("Failed to fetch trainer profile details");
   }

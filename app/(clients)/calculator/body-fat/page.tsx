@@ -4,6 +4,7 @@ import { getWeightHeight } from "@/actions/body-measurement-metrics/get-weight-h
 import { getProfileDetails } from "@/actions/profile/get-profile-details.action";
 import { Gender } from "@prisma/client";
 import { validateServerRole } from "@/lib/server-role-validation";
+import { isNextControlFlowError } from "@/utils/next-control-flow-errors";
 
 // Force dynamic rendering since this page uses cookies for authentication
 export const dynamic = 'force-dynamic';
@@ -41,6 +42,7 @@ export default async function BodyFatCalculatorPage() {
     };
     
   } catch (error) {
+    if (isNextControlFlowError(error)) throw error;
     console.error("Error fetching profile data:", error);
   }
 

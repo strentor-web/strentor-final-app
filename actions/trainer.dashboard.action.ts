@@ -3,6 +3,7 @@
 import { createClient } from "@/utils/supabase/server";
 import prisma from "@/utils/prisma/prismaClient";
 import { unstable_cache } from 'next/cache';
+import { isNextControlFlowError } from "@/utils/next-control-flow-errors";
 import type {
   TrainerDashboardData,
   TrainerDashboardStats,
@@ -500,6 +501,7 @@ const getCachedTrainerDashboardData = unstable_cache(
         newlyAssignedClients,
       };
     } catch (error) {
+      if (isNextControlFlowError(error)) throw error;
       console.error("Error fetching trainer dashboard data:", error);
       throw new Error("Failed to load dashboard data. Please try again later.");
     }

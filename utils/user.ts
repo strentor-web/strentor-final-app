@@ -1,5 +1,6 @@
 import { createClient } from "@/utils/supabase/server";
 import prisma from "@/utils/prisma/prismaClient";
+import { isNextControlFlowError } from "@/utils/next-control-flow-errors";
 
 export async function getAuthenticatedUserId() {
   const supabase = await createClient();
@@ -47,7 +48,8 @@ export async function isAdmin(): Promise<boolean> {
   try {
     await checkAdminAccess();
     return true;
-  } catch {
+  } catch (error) {
+    if (isNextControlFlowError(error)) throw error;
     return false;
   }
 }
@@ -59,7 +61,8 @@ export async function isAdmin(): Promise<boolean> {
 export async function getAdminUser(): Promise<{ userId: string; role: string } | null> {
   try {
     return await checkAdminAccess();
-  } catch {
+  } catch (error) {
+    if (isNextControlFlowError(error)) throw error;
     return null;
   }
 }
@@ -80,7 +83,8 @@ export async function hasRole(requiredRole: string): Promise<boolean> {
   try {
     const { role } = await checkAdminAccess();
     return role === requiredRole;
-  } catch {
+  } catch (error) {
+    if (isNextControlFlowError(error)) throw error;
     return false;
   }
 }
@@ -123,7 +127,8 @@ export async function isTrainer(): Promise<boolean> {
   try {
     await checkTrainerAccess();
     return true;
-  } catch {
+  } catch (error) {
+    if (isNextControlFlowError(error)) throw error;
     return false;
   }
 }
@@ -135,7 +140,8 @@ export async function isTrainer(): Promise<boolean> {
 export async function getTrainerUser(): Promise<{ userId: string; role: string } | null> {
   try {
     return await checkTrainerAccess();
-  } catch {
+  } catch (error) {
+    if (isNextControlFlowError(error)) throw error;
     return null;
   }
 }

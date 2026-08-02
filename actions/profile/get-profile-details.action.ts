@@ -6,6 +6,7 @@ import { getAuthenticatedUserId } from "@/utils/user";
 import { createSafeAction, ActionState } from "@/lib/create-safe-action";
 import { revalidatePath } from "next/cache";
 import { alpha3ToCountryEnum } from '@/utils/country-mapping';
+import { isNextControlFlowError } from '@/utils/next-control-flow-errors';
 
 // Schema for profile details update
 const UpdateProfileSchema = z.object({
@@ -72,6 +73,7 @@ export async function getProfileDetails() {
       age,
     };
   } catch (error) {
+    if (isNextControlFlowError(error)) throw error;
     console.error("Error fetching profile details:", error);
     throw new Error("Failed to fetch profile details");
   }

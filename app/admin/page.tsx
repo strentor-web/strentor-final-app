@@ -5,6 +5,7 @@ import { getAdminDashboardData } from "@/actions/admin/admin.dashboard.action";
 import { RecentSalesCard } from "@/components/admin/recent-sales-card";
 import { UserSignupsChart } from "@/components/admin/user-signups-chart";
 import { validateServerRole } from "@/lib/server-role-validation";
+import { isNextControlFlowError } from "@/utils/next-control-flow-errors";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -22,6 +23,7 @@ export default async function AdminPage() {
   try {
     dashboardData = await getAdminDashboardData();
   } catch (error) {
+    if (isNextControlFlowError(error)) throw error;
     console.error("Error fetching admin dashboard data:", error);
     // Return a fallback UI or redirect
     return (

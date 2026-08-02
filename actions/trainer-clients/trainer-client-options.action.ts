@@ -4,6 +4,7 @@ import { z } from "zod";
 import { createSafeAction, ActionState } from "@/lib/create-safe-action";
 import { getTrainerClientOptions } from "@/actions/trainer-clients/get-trainer-client-options";
 import { createClient } from "@/utils/supabase/server";
+import { isNextControlFlowError } from "@/utils/next-control-flow-errors";
 
 // The action doesn't expect any input values, but createSafeAction
 // requires a schema. An empty object schema serves that purpose gracefully.
@@ -34,6 +35,7 @@ export const fetchTrainerClientOptions = createSafeAction(
       const options = await getTrainerClientOptions(user.id);
       return { data: options };
     } catch (err) {
+      if (isNextControlFlowError(err)) throw err;
       console.error("Error fetching trainer client options", err);
       return { error: "Failed to load clients. Please try again later." };
     }

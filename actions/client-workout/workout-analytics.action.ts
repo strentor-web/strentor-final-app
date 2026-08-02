@@ -4,6 +4,7 @@ import { z } from "zod";
 import { createSafeAction, ActionState } from "@/lib/create-safe-action";
 import prisma from "@/utils/prisma/prismaClient";
 import { createClient } from "@/utils/supabase/server";
+import { isNextControlFlowError } from "@/utils/next-control-flow-errors";
 
 // ────────────────────────────────────────────────────────────────────────────
 // Helper Functions
@@ -361,6 +362,7 @@ async function weekAnalyticsHandler({
     return { data: result };
 
   } catch (error) {
+    if (isNextControlFlowError(error)) throw error;
     console.error("Error fetching week analytics:", error);
     return { error: "Failed to fetch week analytics" };
   }
@@ -586,6 +588,7 @@ async function overallAnalyticsHandler({
     return { data: result };
 
   } catch (error) {
+    if (isNextControlFlowError(error)) throw error;
     console.error("Error fetching overall analytics:", error);
     return { error: "Failed to fetch overall analytics" };
   }

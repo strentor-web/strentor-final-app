@@ -2,6 +2,7 @@
 
 import prisma from "@/utils/prisma/prismaClient";
 import { getAdminUser } from "@/utils/user";
+import { isNextControlFlowError } from "@/utils/next-control-flow-errors";
 
 export async function getAdminProfileDetails() {
   try {
@@ -30,6 +31,7 @@ export async function getAdminProfileDetails() {
 
     return profileDetails;
   } catch (error) {
+    if (isNextControlFlowError(error)) throw error;
     console.error("Error fetching admin profile details:", error);
     throw new Error("Failed to fetch admin profile details");
   }

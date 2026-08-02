@@ -5,6 +5,7 @@ import { createSafeAction, ActionState } from "@/lib/create-safe-action";
 import { getExerciseList } from "@/actions/exercise_list/get-exercise-list";
 import { createClient } from "@/utils/supabase/server";
 import { BodyPart } from "@prisma/client";
+import { isNextControlFlowError } from "@/utils/next-control-flow-errors";
 
 // The action doesn't expect any input values, but createSafeAction
 // requires a schema. An empty object schema serves that purpose gracefully.
@@ -38,6 +39,7 @@ export const fetchExerciseList = createSafeAction(
       const list = await getExerciseList();
       return { data: list };
      } catch (err) {
+      if (isNextControlFlowError(err)) throw err;
       console.error("Error fetching exercise list", err);
       return { error: "Failed to load exercises. Please try again later." };
      }
