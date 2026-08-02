@@ -25,6 +25,7 @@ import { ProgramsCarousel, type CarouselProgram } from "@/components/landing/Pro
 import Featured from "@/components/landing/Featured";
 import { Button } from "@/components/ui/button";
 import { ScrollReveal, StaggerGroup } from "@/components/motion/ScrollReveal";
+import { ScrollStory } from "@/components/motion/ScrollStory";
 import { TrackedLink } from "@/components/analytics/TrackedLink";
 
 const homeTitle = "STRENTOR — Premium Performance Coaching for Wheelchair Users";
@@ -85,88 +86,120 @@ export default function Home() {
     <div className="bg-black">
       <HomeHeader />
 
-      {/* Hero */}
-      <section className="relative overflow-hidden bg-black py-16 sm:py-20">
-        <div className="absolute inset-0 bg-gradient-to-br from-[#C9A96A]/10 via-black to-black" />
-        <div className="container relative mx-auto grid gap-12 px-4 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
-          <div>
-            <h1 className="text-5xl font-extrabold uppercase leading-[1.05] tracking-tight text-white sm:text-6xl md:text-7xl">
-              Break.
-              <br />
-              Build.
-              <br />
-              <span className="text-[#C9A96A]">Become.</span>
-            </h1>
-            <p className="mt-6 max-w-md text-base text-gray-300 sm:text-lg">
-              Adaptive strength coaching for wheelchair users and anyone ready
-              to transform&mdash;physically, mentally and purposefully.
+      {/* Hero — cinematic scroll-driven reveal. Three oversized-type beats
+          ("Break." / "Build." / "Become.") pin and crossfade as the visitor
+          scrolls, then the founder photo, subhead, and CTAs land as the
+          fourth beat — the "product" gradually revealed at the end of the
+          build-up rather than shown upfront. Falls back to a plain stacked
+          list (see ScrollStory) under prefers-reduced-motion. Beats 1-3 are
+          aria-hidden since they're a visual reveal of the same "Break.
+          Build. Become." already stated in beat 4's h1 — screen reader
+          users get one coherent heading, not three fragments plus a repeat. */}
+      <ScrollStory
+        className="relative bg-black"
+        background={<div className="absolute inset-0 bg-gradient-to-br from-[#C9A96A]/10 via-black to-black" />}
+        beats={[
+          <div key="break" aria-hidden className="text-center">
+            <p className="mb-4 text-xs font-bold uppercase tracking-[0.4em] text-gray-500">
+              The STRENTOR Method
             </p>
+            <p className="text-[22vw] font-extrabold uppercase leading-[0.85] tracking-tight text-white sm:text-[16vw]">
+              Break.
+            </p>
+            <p className="mx-auto mt-6 max-w-sm text-sm text-gray-400 sm:text-base">
+              The patterns, excuses, and limits that were never really yours to keep.
+            </p>
+          </div>,
+          <div key="build" aria-hidden className="text-center">
+            <p className="text-[22vw] font-extrabold uppercase leading-[0.85] tracking-tight text-white sm:text-[16vw]">
+              Build.
+            </p>
+            <p className="mx-auto mt-6 max-w-sm text-sm text-gray-400 sm:text-base">
+              Strength, systems, and consistency built around your body and your life.
+            </p>
+          </div>,
+          <div key="become" aria-hidden className="text-center">
+            <p className="text-[22vw] font-extrabold uppercase leading-[0.85] tracking-tight text-[#C9A96A] sm:text-[16vw]">
+              Become.
+            </p>
+            <p className="mx-auto mt-6 max-w-sm text-sm text-gray-400 sm:text-base">
+              The version of you this was always building toward.
+            </p>
+          </div>,
+          <div key="reveal" className="container mx-auto grid gap-10 px-4 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
+            <div>
+              <h1 className="text-4xl font-extrabold uppercase leading-[1.05] tracking-tight text-white sm:text-5xl md:text-6xl">
+                Break. Build. <span className="text-[#C9A96A]">Become.</span>
+              </h1>
+              <p className="mt-5 max-w-md text-base text-gray-300 sm:text-lg">
+                Adaptive strength coaching for wheelchair users and anyone ready
+                to transform&mdash;physically, mentally and purposefully.
+              </p>
 
-            <div className="mt-8 flex flex-col gap-4 sm:flex-row">
-              <Button
-                asChild
-                className="h-14 rounded-full bg-[#C9A96A] px-8 text-sm font-bold uppercase tracking-widest text-black transition-transform hover:scale-105 hover:bg-[#C9A96A]/90"
-              >
-                <TrackedLink href="/apply-for-access" event="hero_cta_click" eventParams={{ location: "hero" }}>
-                  Start Your Journey <ArrowRight className="h-4 w-4" />
-                </TrackedLink>
-              </Button>
-              <Button
-                asChild
-                variant="outline"
-                className="h-14 rounded-full border-white/20 px-8 text-sm font-bold uppercase tracking-widest text-white transition-transform hover:scale-105 hover:bg-white/5 hover:text-white"
-              >
-                <Link href="/transformation-stories">
-                  <Play className="h-4 w-4" /> Watch Video
-                </Link>
-              </Button>
-            </div>
-
-            <div className="mt-10 flex items-center gap-4">
-              <div className="flex -space-x-3">
-                {[0, 1, 2, 3].map((i) => (
-                  <div
-                    key={i}
-                    className="flex h-9 w-9 items-center justify-center rounded-full border-2 border-black bg-[#1a1a1a] text-[#C9A96A] ring-1 ring-[#C9A96A]/40"
-                  >
-                    <User className="h-4 w-4" />
-                  </div>
-                ))}
+              <div className="mt-6 flex flex-col gap-4 sm:flex-row">
+                <Button
+                  asChild
+                  className="h-14 rounded-full bg-[#C9A96A] px-8 text-sm font-bold uppercase tracking-widest text-black transition-transform hover:scale-105 hover:bg-[#C9A96A]/90"
+                >
+                  <TrackedLink href="/apply-for-access" event="hero_cta_click" eventParams={{ location: "hero" }}>
+                    Start Your Journey <ArrowRight className="h-4 w-4" />
+                  </TrackedLink>
+                </Button>
+                <Button
+                  asChild
+                  variant="outline"
+                  className="h-14 rounded-full border-white/20 px-8 text-sm font-bold uppercase tracking-widest text-white transition-transform hover:scale-105 hover:bg-white/5 hover:text-white"
+                >
+                  <Link href="/transformation-stories">
+                    <Play className="h-4 w-4" /> Watch Video
+                  </Link>
+                </Button>
               </div>
-              <span className="text-sm font-semibold text-gray-400">500+ Transformations</span>
-            </div>
-          </div>
 
-          <div className="grid gap-8 lg:grid-cols-[1fr_auto] lg:items-center">
-            <ScrollReveal direction="up">
-              <div className="relative aspect-[3/4] w-full max-w-md overflow-hidden rounded-3xl border border-white/10">
+              <div className="mt-6 flex items-center gap-4">
+                <div className="flex -space-x-3">
+                  {[0, 1, 2, 3].map((i) => (
+                    <div
+                      key={i}
+                      className="flex h-9 w-9 items-center justify-center rounded-full border-2 border-black bg-[#1a1a1a] text-[#C9A96A] ring-1 ring-[#C9A96A]/40"
+                    >
+                      <User className="h-4 w-4" />
+                    </div>
+                  ))}
+                </div>
+                <span className="text-sm font-semibold text-gray-400">500+ Transformations</span>
+              </div>
+            </div>
+
+            <div className="grid gap-6 lg:grid-cols-[1fr_auto] lg:items-center">
+              <div className="relative aspect-[3/4] w-full max-w-sm overflow-hidden rounded-3xl border border-white/10">
                 <Image
                   src="/Aditya-transparent.png"
                   alt="Aditya Mandan, STRENTOR founder, wheelchair user and para powerlifter"
                   fill
-                  sizes="(min-width: 1024px) 440px, 80vw"
+                  sizes="(min-width: 1024px) 380px, 80vw"
                   className="object-cover object-top"
                   priority
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent" />
               </div>
-            </ScrollReveal>
 
-            <ul className="flex flex-row flex-wrap gap-6 lg:flex-col lg:gap-8">
-              {heroBadges.map((badge) => (
-                <li key={badge.label} className="flex items-start gap-3">
-                  <div className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-lg bg-[#C9A96A]/10">
-                    <badge.icon className="h-4 w-4 text-[#C9A96A]" />
-                  </div>
-                  <span className="max-w-[9rem] text-xs font-bold uppercase leading-snug tracking-wide text-gray-300">
-                    {badge.label}
-                  </span>
-                </li>
-              ))}
-            </ul>
-          </div>
-        </div>
-      </section>
+              <ul className="flex flex-row flex-wrap gap-4 lg:flex-col lg:gap-6">
+                {heroBadges.map((badge) => (
+                  <li key={badge.label} className="flex items-start gap-3">
+                    <div className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-lg bg-[#C9A96A]/10">
+                      <badge.icon className="h-4 w-4 text-[#C9A96A]" />
+                    </div>
+                    <span className="max-w-[9rem] text-xs font-bold uppercase leading-snug tracking-wide text-gray-300">
+                      {badge.label}
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>,
+        ]}
+      />
 
       {/* Tagline strip */}
       <section className="border-y border-white/10 bg-black py-6">
