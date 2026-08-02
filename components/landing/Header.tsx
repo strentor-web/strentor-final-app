@@ -6,15 +6,20 @@ import { Menu } from "lucide-react";
 import { useState } from "react";
 import Link from "next/link"
 
+// Order matches the canonical nav sequence from the brand mockup
+// (Home, About, Programs, Coaching, Transformation, Resources, Contact),
+// with the remaining real pages slotted in after their closest match.
 const navLinks = [
   { href: "/", label: "Home" },
-  { href: "/the-strentor-method", label: "The STRENTOR Method" },
-  { href: "/programs", label: "Programs" },
-  { href: "/transformation-stories", label: "Transformation Stories" },
   { href: "/about", label: "About" },
+  { href: "/programs", label: "Programs" },
+  { href: "/coaching", label: "Coaching" },
+  { href: "/the-strentor-method", label: "The STRENTOR Method" },
+  { href: "/transformation-stories", label: "Transformation Stories" },
   { href: "/resources", label: "Resources" },
   { href: "/blog", label: "Blog" },
   { href: "/corporate", label: "Corporate Partnerships" },
+  { href: "/contact", label: "Contact" },
 ];
 
 export default function Header() {
@@ -37,7 +42,7 @@ export default function Header() {
           </div>
 
           {/* Desktop Navigation — centered in header */}
-          <nav className="hidden lg:flex absolute left-1/2 -translate-x-1/2 space-x-5 items-center font-semibold">
+          <nav className="hidden xl:flex absolute left-1/2 -translate-x-1/2 space-x-3.5 items-center text-sm font-semibold">
             {navLinks.map((link) => (
               <Link
                 key={link.href}
@@ -52,7 +57,7 @@ export default function Header() {
 
           <div className="flex items-center">
             <button
-              className="lg:hidden focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary rounded-full p-2 -m-2"
+              className="xl:hidden focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary rounded-full p-2 -m-2"
               onClick={() => setIsMenuOpen(!isMenuOpen)}
               aria-label={isMenuOpen ? "Close menu" : "Open menu"}
               aria-expanded={isMenuOpen}
@@ -62,7 +67,7 @@ export default function Header() {
             </button>
             <Button
               asChild
-              className="hidden lg:inline-flex shadow-2xl h-10 rounded-full bg-strentor-red hover:bg-strentor-red/80 text-primary-foreground"
+              className="hidden xl:inline-flex shadow-2xl h-10 rounded-full bg-strentor-red hover:bg-strentor-red/80 text-primary-foreground"
             >
               <Link href="/apply-for-access">Apply for Coaching</Link>
             </Button>
@@ -71,7 +76,7 @@ export default function Header() {
 
         {/* Mobile Navigation */}
         {isMenuOpen && (
-          <nav id="mobile-nav" className="lg:hidden py-4 space-y-4 border-t border-border flex flex-col items-center font-semibold bg-background">
+          <nav id="mobile-nav" className="xl:hidden py-4 space-y-4 border-t border-border flex flex-col items-center font-semibold bg-background">
             {navLinks.map((link) => (
               <Link
                 key={link.href}
