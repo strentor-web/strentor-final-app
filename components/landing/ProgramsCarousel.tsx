@@ -53,7 +53,7 @@ export function ProgramsCarousel({ programs }: { programs: CarouselProgram[] }) 
             href={program.href}
             data-carousel-card
             onClick={() => trackEvent("program_view", { program: program.title, location: "home_carousel" })}
-            className="w-[240px] flex-shrink-0 snap-start sm:w-[260px]"
+            className="group w-[240px] flex-shrink-0 snap-start sm:w-[260px]"
           >
             <HoverLift className="flex h-full flex-col justify-between rounded-2xl border border-white/10 bg-[#101010] p-5 transition-colors hover:border-[#C9A96A]/50">
               <div>

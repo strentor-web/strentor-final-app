@@ -139,12 +139,12 @@ export default function Home() {
 
           <div className="grid gap-8 lg:grid-cols-[1fr_auto] lg:items-center">
             <ScrollReveal direction="up">
-              <div className="relative mx-auto aspect-[3/4] w-full max-w-sm overflow-hidden rounded-3xl border border-white/10">
+              <div className="relative aspect-[3/4] w-full max-w-md overflow-hidden rounded-3xl border border-white/10">
                 <Image
                   src="/Aditya-transparent.png"
                   alt="Aditya Mandan, STRENTOR founder, wheelchair user and para powerlifter"
                   fill
-                  sizes="(min-width: 1024px) 360px, 80vw"
+                  sizes="(min-width: 1024px) 440px, 80vw"
                   className="object-cover object-top"
                   priority
                 />
