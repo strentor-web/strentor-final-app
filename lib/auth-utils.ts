@@ -127,7 +127,6 @@ export function canAccessRoute(
     '/plans': ['CLIENT', 'CORPORATE_EMPLOYEE'],
     '/transformation': ['CLIENT', 'CORPORATE_EMPLOYEE'],
     '/settings': ['CLIENT', 'CORPORATE_EMPLOYEE'],
-    '/pricing': ['CLIENT'],
     '/personal-records': ['CLIENT', 'CORPORATE_EMPLOYEE'],
     '/workout-plan': ['CLIENT', 'CORPORATE_EMPLOYEE'],
     '/dashboard': ['CLIENT', 'CORPORATE_EMPLOYEE'],
@@ -153,7 +152,9 @@ export function canAccessRoute(
   };
 
   for (const [route, allowedRoles] of Object.entries(routeRules)) {
-    if (pathname.startsWith(route)) {
+    // Exact-match or path-segment match only — see the matching guard in
+    // utils/supabase/middleware.ts for why a bare startsWith() is wrong here.
+    if (pathname === route || pathname.startsWith(route + '/')) {
       return allowedRoles.includes(userRole);
     }
   }

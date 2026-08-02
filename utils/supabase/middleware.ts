@@ -64,14 +64,13 @@ export const updateSession = async (request: NextRequest) => {
        '/training',
        '/fitness',
        '/profile',
-       '/workouts', 
+       '/workouts',
        '/admin',
        // Client routes
        '/calculator',
        '/plans',
        '/transformation',
        '/settings',
-       '/pricing',
        '/personal-records',
        '/workout-plan',
        '/dashboard',
@@ -80,8 +79,12 @@ export const updateSession = async (request: NextRequest) => {
        // Corporate admin routes
        '/corporate-admin'
      ];
-     const isProtectedRoute = protectedRoutes.some(route => 
-       pathname.startsWith(route)
+     // Exact-match or path-segment match only — a naive startsWith() here
+     // would also match unrelated public pages that happen to share a
+     // prefix, e.g. "/transformation-stories" starting with "/transformation"
+     // or "/plans-pricing" starting with "/plans".
+     const isProtectedRoute = protectedRoutes.some(route =>
+       pathname === route || pathname.startsWith(route + '/')
      );
      
      // Special protection for password reset page
