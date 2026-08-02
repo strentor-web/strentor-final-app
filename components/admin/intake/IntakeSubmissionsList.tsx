@@ -10,6 +10,19 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 import { Badge } from "@/components/ui/badge"
+import { Button } from "@/components/ui/button"
+import {
+  Dialog,
+  DialogTrigger,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogFooter,
+} from "@/components/ui/dialog"
+import { Textarea } from "@/components/ui/textarea"
+import { Sparkles, Copy } from "lucide-react"
+import { useAction } from "@/hooks/useAction"
+import { draftLeadFollowUp } from "@/actions/admin/lead-follow-up/draft-follow-up.action"
 
 export interface IntakeSubmissionRow {
   id: string
@@ -29,6 +42,55 @@ function reviewLevelVariant(level: string) {
   if (level === "medical_clearance_likely_needed") return "destructive"
   if (level === "strentor_safety_review_needed") return "default"
   return "secondary"
+}
+
+function DraftFollowUpDialog({ submissionId }: { submissionId: string }) {
+  const [open, setOpen] = useState(false)
+  const [draft, setDraft] = useState("")
+
+  const { execute, isLoading } = useAction(draftLeadFollowUp, {
+    onSuccess: (data) => setDraft(data.draft),
+    onError: (error) => toast.error(error),
+  })
+
+  function handleOpen(next: boolean) {
+    setOpen(next)
+    if (next && !draft) execute({ submissionId })
+  }
+
+  async function handleCopy() {
+    await navigator.clipboard.writeText(draft)
+    toast.success("Copied to clipboard.")
+  }
+
+  return (
+    <Dialog open={open} onOpenChange={handleOpen}>
+      <DialogTrigger asChild>
+        <Button type="button" variant="outline" size="sm">
+          <Sparkles className="mr-1.5 h-3.5 w-3.5" /> Draft Follow-Up
+        </Button>
+      </DialogTrigger>
+      <DialogContent className="max-w-lg">
+        <DialogHeader>
+          <DialogTitle>Follow-Up Draft</DialogTitle>
+        </DialogHeader>
+        <Textarea
+          value={isLoading ? "Drafting…" : draft}
+          onChange={(e) => setDraft(e.target.value)}
+          readOnly={isLoading}
+          rows={10}
+        />
+        <DialogFooter>
+          <Button type="button" variant="outline" onClick={() => execute({ submissionId })} disabled={isLoading}>
+            Regenerate
+          </Button>
+          <Button type="button" onClick={handleCopy} disabled={isLoading || !draft}>
+            <Copy className="mr-1.5 h-3.5 w-3.5" /> Copy
+          </Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
+  )
 }
 
 function Row({ submission }: { submission: IntakeSubmissionRow }) {
@@ -68,17 +130,20 @@ function Row({ submission }: { submission: IntakeSubmissionRow }) {
         )}
         <p className="mt-1 text-xs text-muted-foreground">{new Date(submission.createdAt).toLocaleString()}</p>
       </div>
-      <Select value={status} onValueChange={handleChange}>
-        <SelectTrigger className="w-40">
-          <SelectValue />
-        </SelectTrigger>
-        <SelectContent>
-          <SelectItem value="new">New</SelectItem>
-          <SelectItem value="contacted">Contacted</SelectItem>
-          <SelectItem value="converted">Converted</SelectItem>
-          <SelectItem value="closed">Closed</SelectItem>
-        </SelectContent>
-      </Select>
+      <div className="flex items-center gap-2">
+        <DraftFollowUpDialog submissionId={submission.id} />
+        <Select value={status} onValueChange={handleChange}>
+          <SelectTrigger className="w-40">
+            <SelectValue />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="new">New</SelectItem>
+            <SelectItem value="contacted">Contacted</SelectItem>
+            <SelectItem value="converted">Converted</SelectItem>
+            <SelectItem value="closed">Closed</SelectItem>
+          </SelectContent>
+        </Select>
+      </div>
     </div>
   )
 }
