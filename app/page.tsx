@@ -22,6 +22,7 @@ import { HomeHeader } from "@/components/landing/HomeHeader";
 import { HomeFooter } from "@/components/landing/HomeFooter";
 import WhatsAppButton from "@/components/landing/WhatsAppButton";
 import { ProgramsCarousel, type CarouselProgram } from "@/components/landing/ProgramsCarousel";
+import Featured from "@/components/landing/Featured";
 import { Button } from "@/components/ui/button";
 import { ScrollReveal, StaggerGroup } from "@/components/motion/ScrollReveal";
 import { TrackedLink } from "@/components/analytics/TrackedLink";
@@ -288,6 +289,11 @@ export default function Home() {
             </ScrollReveal>
           </div>
         </div>
+      </section>
+
+      {/* Press mentions */}
+      <section className="border-y border-white/10 bg-black py-16">
+        <Featured />
       </section>
 
       {/* Final CTA */}
