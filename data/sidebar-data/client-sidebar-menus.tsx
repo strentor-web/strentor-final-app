@@ -74,14 +74,11 @@ export const clientSidebarMenus: {
     },
     {
       title: "AI Trainer",
-      url: "/programs/ai-coaching",
+      url: "/coach",
       icon: Bot,
       // Live only once the client has an active AI_COACHING subscription —
-      // resolved dynamically in app-sidebar-client.tsx. "Soon" reflects that
-      // the AI trainer backend itself isn't built yet (Phase 2), independent
-      // of subscription status.
+      // resolved dynamically in app-sidebar-client.tsx.
       requiredCategory: "AI_COACHING",
-      badge: "Soon",
     },
     {
       title: "Calculators",

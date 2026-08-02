@@ -1,5 +1,6 @@
 import { getActiveSubscriptions } from "@/actions/subscriptions/get-active-subscriptions.action";
 import { DashboardAuthGate } from "@/components/dashboard/dashboard-auth-gate";
+import { isNextControlFlowError } from "@/utils/next-control-flow-errors";
 
 export default async function DashboardLayout({
   children,
@@ -16,6 +17,7 @@ export default async function DashboardLayout({
       new Set((result.data ?? []).map((sub) => sub.plan.category))
     );
   } catch (error) {
+    if (isNextControlFlowError(error)) throw error;
     console.error("Failed to load active subscription categories:", error);
   }
 
