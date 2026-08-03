@@ -1,6 +1,5 @@
 "use client"
 
-import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import { Menu } from "lucide-react";
 import { useState } from "react";
@@ -72,12 +71,6 @@ export default function Header() {
             >
               Sign In
             </Link>
-            <Button
-              asChild
-              className="hidden xl:inline-flex shadow-2xl h-10 rounded-full bg-strentor-red hover:bg-strentor-red/80 text-primary-foreground"
-            >
-              <Link href="/apply-for-access">Apply for Coaching</Link>
-            </Button>
           </div>
         </div>
 
@@ -96,9 +89,6 @@ export default function Header() {
             <Link href="/sign-in" className="block text-foreground hover:text-primary py-2 transition-colors">
               Sign In
             </Link>
-            <Button asChild className="shadow-2xl h-10 rounded-full bg-strentor-red hover:bg-strentor-red/80 text-primary-foreground">
-              <Link href="/apply-for-access">Apply for Coaching</Link>
-            </Button>
           </nav>
         )}
       </header>
