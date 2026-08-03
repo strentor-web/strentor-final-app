@@ -16,6 +16,7 @@ const navLinks = [
   { href: "/coaching", label: "Coaching" },
   { href: "/transformation-stories", label: "Transformation" },
   { href: "/resources", label: "Resources" },
+  { href: "/sponsor-a-seat", label: "Pay It Forward" },
   { href: "/contact", label: "Contact" },
 ];
 
@@ -60,7 +61,13 @@ export function HomeHeader() {
           })}
         </nav>
 
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-3">
+          <Link
+            href="/sign-in"
+            className="hidden text-xs font-bold uppercase tracking-widest text-gray-300 transition-colors hover:text-white lg:inline-flex"
+          >
+            Sign In
+          </Link>
           <Button
             asChild
             className="hidden h-10 rounded-full bg-[#C9A96A] px-6 text-xs font-bold uppercase tracking-widest text-black hover:bg-[#C9A96A]/90 lg:inline-flex"
@@ -96,6 +103,9 @@ export function HomeHeader() {
               {link.label}
             </Link>
           ))}
+          <Link href="/sign-in" onClick={() => setIsMenuOpen(false)} className="transition-colors hover:text-white">
+            Sign In
+          </Link>
           <Button asChild className="mt-2 h-10 rounded-full bg-[#C9A96A] px-6 text-xs font-bold uppercase tracking-widest text-black hover:bg-[#C9A96A]/90">
             <TrackedLink href="/apply-for-access" event="hero_cta_click" eventParams={{ location: "header_mobile" }}>
               Start Your Journey

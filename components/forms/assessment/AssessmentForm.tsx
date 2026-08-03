@@ -3,21 +3,35 @@
 import { useEffect, useState } from "react"
 import { useRouter } from "next/navigation"
 import { toast } from "sonner"
-import { AlertTriangle } from "lucide-react"
+import { AlertTriangle, CheckCircle2 } from "lucide-react"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Label } from "@/components/ui/label"
+import { Input } from "@/components/ui/input"
 import { Checkbox } from "@/components/ui/checkbox"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { ScrollReveal } from "@/components/motion/ScrollReveal"
+import { DiscoveryCallButton } from "@/components/forms/DiscoveryCallButton"
 import {
   RED_FLAG_OPTIONS,
   RED_FLAG_NONE_VALUE,
   SCORED_QUESTIONS,
+  scoreAssessment,
+  PATHWAY_DESTINATION,
+  PATHWAY_LABELS,
+  type ScoringResult,
 } from "@/utils/assessment/scoring"
 import { SAFETY_ACK_KEY } from "@/utils/assessment/constants"
 
-export function AssessmentForm() {
+interface AssessmentFormProps {
+  /** Signed-in users get the existing DB-backed flow (POST /api/assessment/submit,
+   * tied to their profile). Anonymous visitors get scored client-side and their
+   * answers + contact info are saved as a lead via /api/intake/submit instead —
+   * no account required, but the team can still follow up. */
+  isAuthenticated: boolean
+}
+
+export function AssessmentForm({ isAuthenticated }: AssessmentFormProps) {
   const router = useRouter()
   const [safetyAcked, setSafetyAcked] = useState<boolean | null>(null)
   const [safetyAckChecked, setSafetyAckChecked] = useState(false)
@@ -26,6 +40,13 @@ export function AssessmentForm() {
   const [corporateInterest, setCorporateInterest] = useState(false)
   const [eliteInterest, setEliteInterest] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const [anonResult, setAnonResult] = useState<ScoringResult | null>(null)
+
+  const [fullName, setFullName] = useState("")
+  const [email, setEmail] = useState("")
+  const [phone, setPhone] = useState("")
+  const [city, setCity] = useState("")
+  const [country, setCountry] = useState("")
 
   useEffect(() => {
     const acked = typeof window !== "undefined" && window.sessionStorage.getItem(SAFETY_ACK_KEY) === "1"
@@ -51,11 +72,61 @@ export function AssessmentForm() {
 
   const allScoredAnswered = SCORED_QUESTIONS.every((q) => scored[q.key])
   const redFlagsAnswered = redFlags.length > 0
-  const canSubmit = allScoredAnswered && redFlagsAnswered && !isSubmitting
+  const contactComplete = isAuthenticated || (fullName.trim() && email.trim() && phone.trim() && city.trim() && country.trim())
+  const canSubmit = allScoredAnswered && redFlagsAnswered && !!contactComplete && !isSubmitting
 
   async function handleSubmit() {
     if (!canSubmit) return
     setIsSubmitting(true)
+
+    if (!isAuthenticated) {
+      try {
+        const result = scoreAssessment({ scored, redFlags, corporateInterest, eliteInterest })
+
+        const answerLines = SCORED_QUESTIONS.map((q) => {
+          const chosen = q.options.find((o) => o.value === scored[q.key])
+          return `${q.label} ${chosen?.label ?? ""}`
+        })
+        const redFlagLabels = redFlags
+          .filter((v) => v !== RED_FLAG_NONE_VALUE)
+          .map((v) => RED_FLAG_OPTIONS.find((o) => o.value === v)?.label || v)
+
+        const response = await fetch("/api/intake/submit", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            pathway: "personal",
+            contact: { fullName, email, phone, city, country },
+            general: {
+              message: [
+                "Readiness Assessment responses:",
+                ...answerLines,
+                `Safety flags: ${redFlagLabels.length > 0 ? redFlagLabels.join(", ") : "None"}`,
+                `Corporate wellness interest: ${corporateInterest ? "Yes" : "No"}`,
+                `Elite Mentorship interest: ${eliteInterest ? "Yes" : "No"}`,
+                `Computed pathway: ${PATHWAY_LABELS[result.pathway]} (score ${result.totalScore})`,
+              ].join("\n"),
+            },
+            sourcePage: "/assessment",
+            consent: true,
+            submittedAt: new Date().toISOString(),
+          }),
+        })
+
+        if (!response.ok) {
+          toast.error("Something went wrong. Please try again.")
+          return
+        }
+
+        setAnonResult(result)
+      } catch {
+        toast.error("Network error. Please try again.")
+      } finally {
+        setIsSubmitting(false)
+      }
+      return
+    }
+
     try {
       const response = await fetch("/api/assessment/submit", {
         method: "POST",
@@ -147,6 +218,50 @@ export function AssessmentForm() {
     )
   }
 
+  if (anonResult) {
+    const destination = PATHWAY_DESTINATION[anonResult.pathway]
+    return (
+      <div>
+        {anonResult.redFlagExists && (
+          <div className="mb-8 flex items-start gap-3 rounded-lg border border-destructive/30 bg-destructive/5 p-4">
+            <AlertTriangle className="mt-0.5 h-5 w-5 flex-shrink-0 text-destructive" />
+            <p className="text-sm text-destructive">
+              Pause this activity. Your response suggests professional guidance or coach review may
+              be needed before continuing. A coach will follow up directly.
+            </p>
+          </div>
+        )}
+        <div className="text-center">
+          <span className="inline-flex h-14 w-14 items-center justify-center rounded-full bg-[#C9A96A]/10">
+            <CheckCircle2 className="h-7 w-7 text-[#C9A96A]" />
+          </span>
+          <p className="mt-4 text-sm font-semibold uppercase tracking-widest text-[#C9A96A]">
+            Your Recommended Pathway
+          </p>
+          <h2 className="mt-2 text-3xl font-bold font-display text-card-foreground">
+            {PATHWAY_LABELS[anonResult.pathway]}
+          </h2>
+          <p className="mx-auto mt-4 max-w-lg text-muted-foreground">{anonResult.reason}</p>
+          <p className="mt-2 text-xs text-muted-foreground">
+            We&apos;ve saved your answers — a STRENTOR coach will follow up. Your pathway is a
+            starting guide, not a medical clearance.
+          </p>
+
+          <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
+            <Button asChild className="h-12 rounded-full bg-[#C9A96A] px-8 hover:bg-[#C9A96A]/90">
+              <Link href={destination.href}>{destination.label}</Link>
+            </Button>
+            {!anonResult.automaticProgressionAllowed && (
+              <DiscoveryCallButton className="h-12 rounded-full border-[#C9A96A] px-8 text-[#C9A96A] hover:bg-[#C9A96A]/10">
+                Book a Discovery Call
+              </DiscoveryCallButton>
+            )}
+          </div>
+        </div>
+      </div>
+    )
+  }
+
   return (
     <div className="space-y-10">
       <div className="flex items-center gap-2 text-sm font-semibold text-muted-foreground">
@@ -154,6 +269,40 @@ export function AssessmentForm() {
         <span>·</span>
         <span>Readiness Assessment</span>
       </div>
+
+      {!isAuthenticated && (
+        <div className="space-y-4 rounded-lg border border-border bg-muted/30 p-4">
+          <Label className="text-base font-semibold text-card-foreground">
+            Where should we send your result?
+          </Label>
+          <p className="text-sm text-muted-foreground">
+            No account needed — just enough to save your result and have a coach follow up.
+          </p>
+          <div className="grid gap-3 sm:grid-cols-2">
+            <div>
+              <Label htmlFor="fullName">Full Name</Label>
+              <Input id="fullName" value={fullName} onChange={(e) => setFullName(e.target.value)} required />
+            </div>
+            <div>
+              <Label htmlFor="email">Email</Label>
+              <Input id="email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
+            </div>
+            <div>
+              <Label htmlFor="phone">Phone</Label>
+              <Input id="phone" value={phone} onChange={(e) => setPhone(e.target.value)} required />
+            </div>
+            <div>
+              <Label htmlFor="city">City</Label>
+              <Input id="city" value={city} onChange={(e) => setCity(e.target.value)} required />
+            </div>
+            <div>
+              <Label htmlFor="country">Country</Label>
+              <Input id="country" value={country} onChange={(e) => setCountry(e.target.value)} required />
+            </div>
+          </div>
+        </div>
+      )}
+
       {SCORED_QUESTIONS.map((question) => (
         <div key={question.key}>
           <Label className="text-base font-semibold text-card-foreground">{question.label}</Label>

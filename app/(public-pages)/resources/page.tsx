@@ -9,12 +9,6 @@ import {
   Activity,
   Rocket,
   Stethoscope,
-  ShieldCheck,
-  BookOpen,
-  Target,
-  LineChart,
-  Apple,
-  HandHeart,
 } from "lucide-react";
 import Link from "next/link";
 
@@ -58,54 +52,6 @@ const resources: Resource[] = [
       "A one-on-one conversation with our team to review your goals, physical context, and current constraints, and to recommend which STRENTOR program — if any — is the right starting point for you.",
     ctaLabel: "Request a Fit Assessment",
     href: "/contact?type=personal",
-  },
-  {
-    icon: BookOpen,
-    title: "Training Readiness Guide",
-    description:
-      "A practical guide to what \"ready to train\" actually means for wheelchair users and people managing chronic health conditions — covering baseline conditioning, prior activity, and realistic starting points.",
-    ctaLabel: "Request the Guide",
-    href: "/contact?type=personal",
-  },
-  {
-    icon: ShieldCheck,
-    title: "Safety Review Guide",
-    description:
-      "An overview of the safety considerations STRENTOR coaches build into every program — from movement selection to load progression — so you know what to expect before your first session.",
-    ctaLabel: "Request the Guide",
-    href: "/contact?type=personal",
-  },
-  {
-    icon: Target,
-    title: "Goal-Setting Workbook",
-    description:
-      "A structured worksheet for turning a general intention — \"get stronger,\" \"move more confidently\" — into specific, trackable training goals a coach can actually build a program around.",
-    ctaLabel: "Request the Workbook",
-    href: "/contact?type=personal",
-  },
-  {
-    icon: LineChart,
-    title: "Progress Tracker",
-    description:
-      "A simple template for logging training sessions, effort, and milestones over time, so progress is visible in weeks and months — not just felt in the moment.",
-    ctaLabel: "Request the Tracker",
-    href: "/contact?type=personal",
-  },
-  {
-    icon: Apple,
-    title: "Nutrition Context Checklist",
-    description:
-      "A short checklist covering the nutrition and hydration factors most relevant to adaptive strength training, framed as context for your coach rather than a prescriptive diet plan.",
-    ctaLabel: "Request the Checklist",
-    href: "/contact?type=personal",
-  },
-  {
-    icon: HandHeart,
-    title: "Pay It Forward",
-    description:
-      "Learn how STRENTOR's Pay It Forward program extends coaching access to individuals who could not otherwise afford it, and how you can contribute or apply.",
-    ctaLabel: "Learn More",
-    href: "/sponsor-a-seat",
   },
 ];
 
@@ -178,7 +124,7 @@ export default function ResourcesPage() {
 
       {/* Resources grid */}
       <section className="container mx-auto px-4 py-16">
-        <div className="mx-auto grid max-w-6xl gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="mx-auto grid max-w-5xl gap-6 sm:grid-cols-2 lg:grid-cols-4">
           {resources.map((resource) => (
             <div
               key={resource.title}

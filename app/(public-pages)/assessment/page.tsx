@@ -1,8 +1,6 @@
-import Link from "next/link"
 import type { Metadata } from "next"
 import Header from "@/components/landing/Header"
 import Footer from "@/components/landing/Footer"
-import { Button } from "@/components/ui/button"
 import { AssessmentForm } from "@/components/forms/assessment/AssessmentForm"
 import { createClient } from "@/utils/supabase/server"
 
@@ -38,26 +36,7 @@ export default async function AssessmentPage() {
 
       <section className="container mx-auto px-4 py-16 md:py-20">
         <div className="mx-auto max-w-2xl rounded-2xl border border-border bg-card p-8 shadow-sm">
-          {user ? (
-            <AssessmentForm />
-          ) : (
-            <div className="text-center">
-              <h2 className="text-xl font-bold text-card-foreground">
-                Create a free account to take the assessment
-              </h2>
-              <p className="mt-2 text-sm text-muted-foreground">
-                Your results are saved to your account so a coach can review them if needed.
-              </p>
-              <div className="mt-6 flex flex-col justify-center gap-3 sm:flex-row">
-                <Button asChild className="h-12 rounded-full bg-[#C9A96A] px-8 hover:bg-[#C9A96A]/90">
-                  <Link href="/sign-up">Create Free Account</Link>
-                </Button>
-                <Button asChild variant="outline" className="h-12 rounded-full border-[#C9A96A] px-8 text-[#C9A96A] hover:bg-[#C9A96A]/10">
-                  <Link href="/sign-in">Sign In</Link>
-                </Button>
-              </div>
-            </div>
-          )}
+          <AssessmentForm isAuthenticated={!!user} />
         </div>
       </section>
 

@@ -14,11 +14,12 @@ const navLinks = [
   { href: "/about", label: "About" },
   { href: "/programs", label: "Programs" },
   { href: "/coaching", label: "Coaching" },
-  { href: "/the-strentor-method", label: "The STRENTOR Method" },
-  { href: "/transformation-stories", label: "Transformation Stories" },
+  { href: "/the-strentor-method", label: "Method" },
+  { href: "/transformation-stories", label: "Stories" },
   { href: "/resources", label: "Resources" },
   { href: "/blog", label: "Blog" },
-  { href: "/corporate", label: "Corporate Partnerships" },
+  { href: "/sponsor-a-seat", label: "Pay It Forward" },
+  { href: "/corporate", label: "Corporate" },
   { href: "/contact", label: "Contact" },
 ];
 
@@ -42,7 +43,7 @@ export default function Header() {
           </div>
 
           {/* Desktop Navigation — centered in header */}
-          <nav className="hidden xl:flex absolute left-1/2 -translate-x-1/2 space-x-3.5 items-center text-sm font-semibold">
+          <nav className="hidden xl:flex absolute left-1/2 -translate-x-1/2 space-x-2.5 items-center text-xs font-semibold">
             {navLinks.map((link) => (
               <Link
                 key={link.href}
@@ -55,7 +56,7 @@ export default function Header() {
             ))}
           </nav>
 
-          <div className="flex items-center">
+          <div className="flex items-center gap-3">
             <button
               className="xl:hidden focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary rounded-full p-2 -m-2"
               onClick={() => setIsMenuOpen(!isMenuOpen)}
@@ -65,6 +66,12 @@ export default function Header() {
             >
               <Menu size={24} />
             </button>
+            <Link
+              href="/sign-in"
+              className="hidden text-xs font-semibold text-foreground hover:text-primary transition-colors xl:inline-flex"
+            >
+              Sign In
+            </Link>
             <Button
               asChild
               className="hidden xl:inline-flex shadow-2xl h-10 rounded-full bg-strentor-red hover:bg-strentor-red/80 text-primary-foreground"
@@ -86,6 +93,9 @@ export default function Header() {
                 {link.label}
               </Link>
             ))}
+            <Link href="/sign-in" className="block text-foreground hover:text-primary py-2 transition-colors">
+              Sign In
+            </Link>
             <Button asChild className="shadow-2xl h-10 rounded-full bg-strentor-red hover:bg-strentor-red/80 text-primary-foreground">
               <Link href="/apply-for-access">Apply for Coaching</Link>
             </Button>
