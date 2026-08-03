@@ -113,25 +113,6 @@ model safety_flags {
   @@schema("public")
 }
 
-// AI Trainer chat history (AI_COACHING subscription only). Every message
-// passes through utils/ai-trainer/redFlagInterceptor.ts before it ever
-// reaches the model — intercepted messages are stored with
-// red_flag_intercepted = true and never sent to the LLM; a safety_flags
-// row is created alongside so the same admin queue used by every other
-// tracker picks it up.
-model ai_coach_messages {
-  id                    String        @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  user_id               String        @db.Uuid
-  role                  String
-  content               String
-  red_flag_intercepted  Boolean       @default(false)
-  created_at            DateTime      @default(now())
-  users_profile         users_profile @relation(fields: [user_id], references: [id], onDelete: Cascade, map: "AiCoachMessage_userId_fkey")
-
-  @@index([user_id, created_at], map: "AiCoachMessage_userId_createdAt_idx")
-  @@schema("public")
-}
-
 // A trainer's raw session notes plus an AI-structured summary generated
 // from them (utils/ai/anthropicClient.ts). Internal to the trainer/admin
 // side — never shown to the client.
@@ -745,7 +726,6 @@ model users_profile {
   safety_flags_as_user                 safety_flags[]            @relation("SafetyFlagUser")
   safety_flags_assigned                safety_flags[]            @relation("SafetyFlagAssignedTo")
   pain_fatigue_logs                    pain_fatigue_logs[]
-  ai_coach_messages                    ai_coach_messages[]
   trainer_session_notes_as_client      trainer_session_notes[]  @relation("TrainerSessionNoteClient")
   trainer_session_notes_as_trainer     trainer_session_notes[]  @relation("TrainerSessionNoteTrainer")
   weekly_checkins                      weekly_checkins[]

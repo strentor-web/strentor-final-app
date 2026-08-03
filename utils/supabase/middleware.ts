@@ -76,7 +76,6 @@ export const updateSession = async (request: NextRequest) => {
        '/dashboard',
        '/company-workshops',
        '/refer',
-       '/coach',
        // Corporate admin routes
        '/corporate-admin'
      ];
