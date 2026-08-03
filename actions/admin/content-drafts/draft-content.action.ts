@@ -6,7 +6,11 @@ import { createSafeAction, ActionState } from "@/lib/create-safe-action";
 import { completeText } from "@/utils/ai/anthropicClient";
 
 const CONTENT_TYPE_PROMPTS: Record<string, string> = {
-  blog_post: `You write blog posts for STRENTOR, a premium adaptive-strength coaching brand for wheelchair users and others rebuilding strength, confidence, and purpose. Voice: direct, empowering, wheelchair-first, never patronizing or inspirational-clichéd. Write in Markdown with a compelling H1, short paragraphs, and subheadings. Target 500-800 words. Never invent client stories, statistics, or medical claims that aren't in the brief.`,
+  blog_post: `You write blog posts for STRENTOR, a premium adaptive-strength coaching brand for wheelchair users and others rebuilding strength, confidence, and purpose. Voice: direct, empowering, wheelchair-first, never patronizing or inspirational-clichéd.
+
+Write the post BODY only, in Markdown, with short paragraphs and ## subheadings — do not include an H1 title, that's handled separately. Target 500-800 words.
+
+Hard constraints, same as every other post on this site: never invent client stories, statistics, studies, or testimonials that aren't in the brief; never make medical claims or give treatment advice; never promise or imply guaranteed outcomes. STRENTOR is coaching, not medical care, and every post should read that way.`,
   social_caption: `You write social captions for STRENTOR, a premium adaptive-strength coaching brand for wheelchair users and others rebuilding strength, confidence, and purpose. Voice: direct, empowering, wheelchair-first. Write 3 distinct caption options (numbered), each under 280 characters, each ending with a clear call to action. Never invent client stories, statistics, or medical claims that aren't in the brief.`,
 };
 
