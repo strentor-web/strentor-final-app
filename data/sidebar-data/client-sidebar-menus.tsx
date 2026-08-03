@@ -13,7 +13,6 @@ import {
   LineChart,
   HeartPulse,
   ClipboardCheck,
-  Bot,
   Building2,
   Gift,
 
@@ -28,7 +27,7 @@ export interface ClientNavItem {
   disabled?: boolean;
   badge?: string;
   /** Gates this item on an active SubscriptionCategory (see prisma schema). */
-  requiredCategory?: "FITNESS" | "ALL_IN_ONE" | "AI_COACHING";
+  requiredCategory?: "FITNESS" | "ALL_IN_ONE";
   /** Restricts this item to specific roles. Omit to show for all dashboard users. */
   roles?: UserRole[];
 }
@@ -71,18 +70,6 @@ export const clientSidebarMenus: {
       title: "Weekly Reflection",
       url: "/check-in",
       icon: ClipboardCheck,
-    },
-    {
-      title: "AI Trainer",
-      url: "/programs/ai-coaching",
-      icon: Bot,
-      // Live only once the client has an active AI_COACHING subscription —
-      // resolved dynamically in app-sidebar-client.tsx. "Soon" reflects that
-      // the AI trainer backend itself isn't built yet, independent of
-      // subscription status — pulled from /coach for now, see
-      // utils/ai-trainer/ for the safety scaffolding it'll be built on.
-      requiredCategory: "AI_COACHING",
-      badge: "Soon",
     },
     {
       title: "Calculators",

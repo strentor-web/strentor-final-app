@@ -7,9 +7,9 @@ export default async function DashboardLayout({
 }: {
   children: React.ReactNode;
 }) {
-  // Drives category-gated nav items (e.g. AI Trainer). Defensively caught —
-  // a failure here must degrade to "no active categories", not crash every
-  // page in the client dashboard.
+  // Drives category-gated nav items. Defensively caught — a failure here
+  // must degrade to "no active categories", not crash every page in the
+  // client dashboard.
   let activeSubscriptionCategories: string[] = [];
   try {
     const result = await getActiveSubscriptions({});

@@ -16,7 +16,6 @@ import {
   Crown,
   Sparkles,
   Rocket,
-  Bot,
   Building2,
   ArrowRight,
 } from "lucide-react"
@@ -62,13 +61,6 @@ const programs = [
     description: "A low-commitment introduction to adaptive strength training — exercise plan, video feedback, and daily tracking.",
     cta: "Get the Starter Kit",
     href: "/programs/starter-kit",
-  },
-  {
-    icon: Bot,
-    title: "AI Coaching",
-    description: "Structured, tech-assisted coaching for clients who want a lower-commitment starting point.",
-    cta: "Explore AI Coaching",
-    href: "/programs/ai-coaching",
   },
   {
     icon: Building2,

@@ -25,8 +25,7 @@ import { clientSidebarMenus } from "@/data/sidebar-data/client-sidebar-menus";
 import { useAuth } from "@/hooks/useAuth";
 
 // ALL_IN_ONE is a bundle that also grants FITNESS access (mirrors
-// lib/auth-utils.ts's hasActiveSubscription). It does not currently grant
-// AI_COACHING — that category has no bundling rule yet.
+// lib/auth-utils.ts's hasActiveSubscription).
 function hasCategoryAccess(activeSubscriptionCategories: string[], required: string): boolean {
   if (activeSubscriptionCategories.includes(required)) return true;
   if (required === "FITNESS" && activeSubscriptionCategories.includes("ALL_IN_ONE")) return true;
@@ -43,8 +42,8 @@ type AppSidebarProps = React.ComponentProps<typeof Sidebar> & {
  * Main application sidebar with navigation sections for the dashboard.
  * Includes app logo/header, main navigation, workspace selection,
  * secondary links, and user profile. Nav items with a `requiredCategory`
- * (e.g. AI Trainer) are enabled only once the client has an active
- * subscription in that category.
+ * are enabled only once the client has an active subscription in that
+ * category.
  */
 export function AppSidebar({ activeSubscriptionCategories = [], ...props }: AppSidebarProps) {
   const { open } = useSidebar();
