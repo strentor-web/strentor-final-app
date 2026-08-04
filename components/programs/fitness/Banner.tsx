@@ -2,11 +2,12 @@
 
 import React from 'react';
 import { Button } from "@/components/ui/button";
+import { ScrollReveal } from "@/components/motion/ScrollReveal";
 
 const FitnessBanner = () => {
   return (
     <section className="relative min-h-[300px] w-full overflow-hidden bg-black">
-      <div className="container mx-auto px-4 py-24 text-center">
+      <ScrollReveal className="container mx-auto px-4 py-24 text-center">
         <div className="space-y-4">
           <h2 className="text-4xl text-white font-bold font-display tracking-tighter sm:text-5xl md:text-6xl lg:text-7xl">
             Ready to Transform Your <span className="text-[#C9A96A]">Fitness Journey</span>?
@@ -15,7 +16,7 @@ const FitnessBanner = () => {
             Join our specialized fitness program designed for individuals with unique challenges and conditions.
           </p>
           <div className="mx-auto max-w-sm space-y-4">
-            <Button 
+            <Button
               className="w-full py-7 bg-[#C9A96A] hover:bg-[#C9A96A]/90"
               onClick={() => window.open("https://calendly.com/strentor/strentor-services", "_blank")}
             >
@@ -26,7 +27,7 @@ const FitnessBanner = () => {
             </p>
           </div>
         </div>
-      </div>
+      </ScrollReveal>
     </section>
   );
 };

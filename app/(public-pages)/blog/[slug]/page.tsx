@@ -80,9 +80,9 @@ export default async function BlogPostPage({ params }: PageProps) {
             <p className="mt-4 text-lg text-muted-foreground">{post.excerpt}</p>
           </ScrollReveal>
 
-          <ScrollReveal delay={0.1} className="prose prose-invert prose-headings:font-display prose-a:text-[#C9A96A] mt-10 max-w-none">
+          <div className="prose prose-invert prose-headings:font-display prose-a:text-[#C9A96A] mt-10 max-w-none">
             <ReactMarkdown remarkPlugins={[remarkGfm]}>{post.content}</ReactMarkdown>
-          </ScrollReveal>
+          </div>
 
           <ScrollReveal className="mt-16 rounded-2xl border border-[#C9A96A]/30 bg-card p-8 text-center">
             <h2 className="text-xl font-bold text-card-foreground">Ready to build a plan around your goals?</h2>

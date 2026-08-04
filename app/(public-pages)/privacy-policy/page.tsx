@@ -1,6 +1,7 @@
 import Header from "@/components/landing/Header";
 import Footer from "@/components/landing/Footer";
 import type { Metadata } from 'next';
+import { ScrollReveal } from "@/components/motion/ScrollReveal";
 
 export const metadata: Metadata = {
   title: "Privacy Policy",
@@ -18,21 +19,23 @@ export default function PrivacyPolicy() {
   return (
     <div className="min-h-screen bg-background">
       <Header />
-      
+
+      <div className="relative bg-black py-16 md:py-20">
+        <div className="absolute inset-0 bg-gradient-to-br from-[#C9A96A]/10 via-black to-black" />
+        <ScrollReveal direction="none" className="container relative mx-auto px-4 text-center">
+          <span className="text-sm font-bold uppercase tracking-widest text-[#C9A96A]">Legal</span>
+          <h1 className="mt-4 text-4xl font-bold font-display text-white sm:text-5xl">
+            Privacy Policy
+          </h1>
+        </ScrollReveal>
+      </div>
+
       <div className="container mx-auto px-4 py-16">
         <div className="max-w-4xl mx-auto">
-          {/* Header Section */}
-          <div className="text-center mb-12">
-            <h1 className="text-4xl md:text-5xl font-bold text-strentor-red mb-4">
-              Privacy Policy
-            </h1>
-           
-          </div>
-
           {/* Content Section */}
           <div className="prose prose-lg max-w-none">
             <div className="bg-card rounded-xl shadow-lg p-8 space-y-8">
-              
+
               {/* Section 1 */}
               <section>
                 <h2 className="text-2xl font-bold text-foreground mb-4">1. Introduction</h2>

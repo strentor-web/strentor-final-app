@@ -3,6 +3,8 @@
 import Link from "next/link"
 import { ArrowRight } from "lucide-react"
 import { Button } from "@/components/ui/button"
+import { ScrollReveal } from "@/components/motion/ScrollReveal"
+import { HoverLift } from "@/components/motion/HoverLift"
 
 const successStories = [
   {
@@ -19,14 +21,14 @@ export default function SuccessStories() {
   return (
     <section className="py-20">
       <div className="container mx-auto px-4">
-        <div className="text-center mb-16">
+        <ScrollReveal className="text-center mb-16">
           <h2 className="text-4xl md:text-5xl font-bold font-display mb-4">
             Built Around <span className="text-[#C9A96A]">Real Conditions</span>
           </h2>
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
             Coaching designed around your specific situation, not a generic template. Here&apos;s what that looks like.
           </p>
-        </div>
+        </ScrollReveal>
 
         <div className="max-w-7xl mx-auto">
           <div className="grid grid-cols-1 md:px-[33.333%]">
@@ -56,9 +58,11 @@ export default function SuccessStories() {
               )
 
               return (
-                <div key={index} className={cardClassName}>
-                  {cardContent}
-                </div>
+                <ScrollReveal key={index} as="div">
+                  <HoverLift tilt={false} className={cardClassName}>
+                    {cardContent}
+                  </HoverLift>
+                </ScrollReveal>
               )
             })}
           </div>

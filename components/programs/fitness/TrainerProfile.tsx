@@ -3,23 +3,24 @@
 import React from 'react';
 import Image from 'next/image';
 import { Star } from 'lucide-react';
+import { ScrollReveal } from '@/components/motion/ScrollReveal';
 
 const TrainerProfile = () => {
   return (
     <section className="container mx-auto px-4 py-20">
       {/* Headline Section */}
-      <div className="text-center mb-16">
+      <ScrollReveal className="text-center mb-16">
         <h2 className="text-4xl md:text-5xl font-bold font-display mb-4">
           Meet Your <span className="text-[#C9A96A]">Champion</span> Coach
         </h2>
         <p className="text-xl text-muted-foreground max-w-4xl mx-auto">
           From breaking barriers as a para powerlifter to transforming lives through fitness
         </p>
-      </div>
+      </ScrollReveal>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
         {/* Left Content */}
-        <div className="space-y-8">
+        <ScrollReveal direction="left" className="space-y-8">
           <div>
             <h2 className="text-5xl font-bold mb-4">Aditya Mandan</h2>
             <div className="inline-block bg-primary px-4 py-2 rounded-full">
@@ -67,10 +68,10 @@ const TrainerProfile = () => {
               ))}
             </div>
           </div>
-        </div>
+        </ScrollReveal>
 
         {/* Right Image */}
-        <div className="relative h-[600px] w-full">
+        <ScrollReveal direction="right" delay={0.1} className="relative h-[600px] w-full">
           <Image
             src="/Aditya-transparent.png"
             alt="Aditya Mandan - Fitness and Nutrition Coach"
@@ -78,7 +79,7 @@ const TrainerProfile = () => {
             className="object-cover object-top rounded-lg"
             priority
           />
-        </div>
+        </ScrollReveal>
       </div>
     </section>
   );

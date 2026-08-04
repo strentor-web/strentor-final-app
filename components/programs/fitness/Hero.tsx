@@ -3,6 +3,7 @@
 import { Button } from "@/components/ui/button"
 import Image from "next/image"
 import { Award, Target, TrendingUp } from "lucide-react"
+import { ScrollReveal, StaggerGroup } from "@/components/motion/ScrollReveal"
 
 const features = [
   {
@@ -41,39 +42,44 @@ export default function FitnessHero() {
         {/* Hero Content */}
         <div className="absolute inset-0 flex items-center justify-center">
           <div className="max-w-[800px] text-center px-4 py-8 md:py-0">
-            <h1 className="text-4xl sm:text-5xl md:text-7xl font-bold font-display text-white mb-6 leading-tight">
-              Transform Your Limits Into 
-              <span className="text-[#C9A96A]"> Strength</span>
-            </h1>
-            <p className="text-lg sm:text-xl md:text-2xl text-gray-200 mb-8 max-w-[600px] mx-auto">
-              Adaptive strength and nutrition coaching for wheelchair users with spina bifida, CKD, chronic health realities, or long-term physical challenges.
-            </p>
-            
+            <ScrollReveal delay={0.1} scale={0.96}>
+              <h1 className="text-4xl sm:text-5xl md:text-7xl font-bold font-display text-white mb-6 leading-tight">
+                Transform Your Limits Into
+                <span className="text-[#C9A96A]"> Strength</span>
+              </h1>
+            </ScrollReveal>
+            <ScrollReveal delay={0.2}>
+              <p className="text-lg sm:text-xl md:text-2xl text-gray-200 mb-8 max-w-[600px] mx-auto">
+                Adaptive strength and nutrition coaching for wheelchair users with spina bifida, CKD, chronic health realities, or long-term physical challenges.
+              </p>
+            </ScrollReveal>
+
             {/* Feature Points as Badges */}
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8 md:mb-12 w-full max-w-[900px] mx-auto">
+            <StaggerGroup className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8 md:mb-12 w-full max-w-[900px] mx-auto">
               {features.map((feature, index) => (
-                <div
-                  key={index}
-                  className="flex items-center gap-3 bg-card/90 backdrop-blur-sm rounded-lg px-4 sm:px-6 py-3 shadow-lg transform hover:scale-105 transition-all w-full"
-                >
-                  <div 
-                    className="flex-shrink-0 w-8 sm:w-10 h-8 sm:h-10 rounded-full flex items-center justify-center"
-                    style={{ backgroundColor: feature.color }}
-                  >
-                    <feature.icon className="w-5 h-5 sm:w-6 sm:h-6 text-strentor-black" />
+                <ScrollReveal key={index} as="div">
+                  <div className="flex items-center gap-3 bg-card/90 backdrop-blur-sm rounded-lg px-4 sm:px-6 py-3 shadow-lg transform hover:scale-105 transition-all w-full">
+                    <div
+                      className="flex-shrink-0 w-8 sm:w-10 h-8 sm:h-10 rounded-full flex items-center justify-center"
+                      style={{ backgroundColor: feature.color }}
+                    >
+                      <feature.icon className="w-5 h-5 sm:w-6 sm:h-6 text-strentor-black" />
+                    </div>
+                    <span className="text-sm sm:text-base font-bold text-card-foreground flex-1 text-left">{feature.text}</span>
                   </div>
-                  <span className="text-sm sm:text-base font-bold text-card-foreground flex-1 text-left">{feature.text}</span>
-                </div>
+                </ScrollReveal>
               ))}
-            </div>
-            
+            </StaggerGroup>
+
             {/* CTA Button */}
-            <Button 
-              className="bg-[#C9A96A] hover:bg-[#C9A96A]/90 text-primary-foreground rounded-full px-6 sm:px-8 py-4 sm:py-6"
-              onClick={() => window.open("https://calendly.com/strentor/strentor-services", "_blank")}
-            >
-              Start Your Fitness Journey
-            </Button>
+            <ScrollReveal delay={0.3}>
+              <Button
+                className="bg-[#C9A96A] hover:bg-[#C9A96A]/90 text-primary-foreground rounded-full px-6 sm:px-8 py-4 sm:py-6"
+                onClick={() => window.open("https://calendly.com/strentor/strentor-services", "_blank")}
+              >
+                Start Your Fitness Journey
+              </Button>
+            </ScrollReveal>
           </div>
         </div>
       </div>

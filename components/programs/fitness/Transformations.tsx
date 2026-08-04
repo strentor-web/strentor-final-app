@@ -2,6 +2,7 @@
 
 import { HeartPulse, Scale, Sparkles, LucideIcon } from 'lucide-react'
 import Image from 'next/image'
+import { ScrollReveal, StaggerGroup } from '@/components/motion/ScrollReveal'
 
 interface TransformationItem {
   title: string;
@@ -57,56 +58,55 @@ export default function Transformations() {
   return (
     <section className="py-20 bg-muted">
       <div className="container mx-auto px-4">
-        <div className="text-center mb-16">
+        <ScrollReveal className="text-center mb-16">
           <h2 className="text-4xl md:text-5xl font-bold font-display mb-4">
             Your <span className="text-[#C9A96A]">Journey</span> to Transformation
           </h2>
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
             Five major transformations you&apos;ll experience on your fitness journey with us.
           </p>
-        </div>
+        </ScrollReveal>
 
-        <div className="max-w-5xl mx-auto space-y-4">
+        <StaggerGroup className="max-w-5xl mx-auto space-y-4">
           {transformations.map((item, index) => (
-            <div 
-              key={index}
-              className="flex rounded-xl bg-card shadow-md hover:shadow-lg transition-all duration-300 overflow-hidden"
-            >
-              <div 
-                className="w-24 flex items-center justify-center p-4"
-                style={{ backgroundColor: item.lightColor }}
-              >
-                {item.isCustomIcon ? (
-                  <div 
-                    className="w-8 h-8 relative"
-                    style={{ color: item.color }}
-                  >
-                    <Image
-                      src={item.iconPath!}
-                      alt={item.title}
-                      width={32}
-                      height={32}
-                      className="object-contain"
+            <ScrollReveal key={index} as="div">
+              <div className="flex rounded-xl bg-card shadow-md hover:shadow-lg transition-all duration-300 overflow-hidden">
+                <div
+                  className="w-24 flex items-center justify-center p-4"
+                  style={{ backgroundColor: item.lightColor }}
+                >
+                  {item.isCustomIcon ? (
+                    <div
+                      className="w-8 h-8 relative"
+                      style={{ color: item.color }}
+                    >
+                      <Image
+                        src={item.iconPath!}
+                        alt={item.title}
+                        width={32}
+                        height={32}
+                        className="object-contain"
+                      />
+                    </div>
+                  ) : (
+                    item.icon && <item.icon
+                      className="w-8 h-8"
+                      style={{ color: item.color }}
                     />
-                  </div>
-                ) : (
-                  item.icon && <item.icon 
-                    className="w-8 h-8"
-                    style={{ color: item.color }}
-                  />
-                )}
+                  )}
+                </div>
+                <div className="flex-1 p-4">
+                  <h3 className="text-lg font-bold text-foreground">
+                    {item.title}
+                  </h3>
+                  <p className="text-muted-foreground text-sm mt-1">
+                    {item.description}
+                  </p>
+                </div>
               </div>
-              <div className="flex-1 p-4">
-                <h3 className="text-lg font-bold text-foreground">
-                  {item.title}
-                </h3>
-                <p className="text-muted-foreground text-sm mt-1">
-                  {item.description}
-                </p>
-              </div>
-            </div>
+            </ScrollReveal>
           ))}
-        </div>
+        </StaggerGroup>
       </div>
     </section>
   )

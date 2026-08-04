@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from "react"
 import { Quote } from "lucide-react"
+import { ScrollReveal } from "@/components/motion/ScrollReveal"
 
 interface TestimonialCardProps {
   quote: string;
@@ -85,9 +86,11 @@ export default function FitnessTestimonials() {
   return (
     <section className="py-20 bg-background">
       <div className="max-w-7xl mx-auto px-4">
-        <h2 className="text-4xl md:text-5xl font-bold font-display mb-12 text-center">
-          Real Stories of <span className="text-[#C9A96A]">Transformation</span>
-        </h2>
+        <ScrollReveal>
+          <h2 className="text-4xl md:text-5xl font-bold font-display mb-12 text-center">
+            Real Stories of <span className="text-[#C9A96A]">Transformation</span>
+          </h2>
+        </ScrollReveal>
 
         <div className="relative w-full overflow-hidden">
           {/* Fade effect overlays */}
