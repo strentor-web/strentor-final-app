@@ -2,6 +2,8 @@ import { Metadata } from "next"
 import { validateServerRole } from "@/lib/server-role-validation"
 import prisma from "@/utils/prisma/prismaClient"
 import { SEGMENT_LABELS } from "@/utils/pppPricing"
+import { DashboardPageHeader } from "@/components/dashboard/DashboardPageHeader"
+import { ScrollReveal, StaggerGroup } from "@/components/motion/ScrollReveal"
 
 export const metadata: Metadata = {
   title: "Pricing Signals - Admin - Strentor",
@@ -62,39 +64,41 @@ export default async function PricingSignalsPage() {
 
   return (
     <div className="container space-y-8 py-8">
-      <div>
-        <h1 className="text-4xl font-bold tracking-tight">Pricing Signals</h1>
-        <p className="mt-1 text-xl text-muted-foreground">
-          Statistical conversion signals computed from real checkout attempts — not a machine-learning model, and
-          nothing here changes a price automatically. Review flagged buckets and, if you agree, create a
-          corresponding override on the Pricing Overrides page yourself.
-        </p>
-        <div className="mt-4 rounded-xl border border-[#C9A96A]/40 bg-[#C9A96A]/5 p-4 text-sm text-muted-foreground">
-          <strong className="text-foreground">How to read this:</strong> a bucket needs at least {MIN_SAMPLE_SIZE}{" "}
-          checkout attempts before it's flagged at all — below that, the conversion rate is too noisy to mean
-          anything. "Underperforming" means converting at less than {Math.round(UNDERPERFORM_THRESHOLD * 100)}% of
-          the overall rate (a candidate for a lower price, or investigating a non-price friction point).
-          "Outperforming" means converting at more than {Math.round(OUTPERFORM_THRESHOLD * 100)}% of the overall
-          rate (a candidate for testing a higher price — this segment/provider combo may be under-priced relative
-          to demand).
-        </div>
-      </div>
+      <DashboardPageHeader
+        title="Pricing Signals"
+        description="Statistical conversion signals computed from real checkout attempts — not a machine-learning model, and nothing here changes a price automatically. Review flagged buckets and, if you agree, create a corresponding override on the Pricing Overrides page yourself."
+      />
+      <ScrollReveal delay={0.08} className="rounded-xl border border-[#C9A96A]/40 bg-[#C9A96A]/5 p-4 text-sm text-muted-foreground">
+        <strong className="text-foreground">How to read this:</strong> a bucket needs at least {MIN_SAMPLE_SIZE}{" "}
+        checkout attempts before it's flagged at all — below that, the conversion rate is too noisy to mean
+        anything. "Underperforming" means converting at less than {Math.round(UNDERPERFORM_THRESHOLD * 100)}% of
+        the overall rate (a candidate for a lower price, or investigating a non-price friction point).
+        "Outperforming" means converting at more than {Math.round(OUTPERFORM_THRESHOLD * 100)}% of the overall
+        rate (a candidate for testing a higher price — this segment/provider combo may be under-priced relative
+        to demand).
+      </ScrollReveal>
 
-      <div className="grid grid-cols-2 gap-4 sm:grid-cols-3">
-        <div className="rounded-xl border border-border bg-card p-5">
-          <p className="text-sm font-medium text-muted-foreground">Overall Conversion Rate</p>
-          <p className="mt-1 text-2xl font-bold text-foreground">{(overallRate * 100).toFixed(1)}%</p>
-          <p className="mt-1 text-xs text-muted-foreground">{totalPaid} paid / {totalAttempts} attempts</p>
-        </div>
-        <div className="rounded-xl border border-border bg-card p-5">
-          <p className="text-sm font-medium text-muted-foreground">Buckets With Enough Data</p>
-          <p className="mt-1 text-2xl font-bold text-foreground">{rows.filter((r) => r.signal !== "insufficient_data").length} / {rows.length}</p>
-        </div>
-        <div className="rounded-xl border border-border bg-card p-5">
-          <p className="text-sm font-medium text-muted-foreground">Flagged for Review</p>
-          <p className="mt-1 text-2xl font-bold text-foreground">{flagged.length}</p>
-        </div>
-      </div>
+      <StaggerGroup className="grid grid-cols-2 gap-4 sm:grid-cols-3">
+        <ScrollReveal>
+          <div className="rounded-xl border border-border bg-card p-5">
+            <p className="text-sm font-medium text-muted-foreground">Overall Conversion Rate</p>
+            <p className="mt-1 text-2xl font-bold text-foreground">{(overallRate * 100).toFixed(1)}%</p>
+            <p className="mt-1 text-xs text-muted-foreground">{totalPaid} paid / {totalAttempts} attempts</p>
+          </div>
+        </ScrollReveal>
+        <ScrollReveal delay={0.06}>
+          <div className="rounded-xl border border-border bg-card p-5">
+            <p className="text-sm font-medium text-muted-foreground">Buckets With Enough Data</p>
+            <p className="mt-1 text-2xl font-bold text-foreground">{rows.filter((r) => r.signal !== "insufficient_data").length} / {rows.length}</p>
+          </div>
+        </ScrollReveal>
+        <ScrollReveal delay={0.12}>
+          <div className="rounded-xl border border-border bg-card p-5">
+            <p className="text-sm font-medium text-muted-foreground">Flagged for Review</p>
+            <p className="mt-1 text-2xl font-bold text-foreground">{flagged.length}</p>
+          </div>
+        </ScrollReveal>
+      </StaggerGroup>
 
       <div className="overflow-x-auto rounded-xl border border-border">
         <table className="w-full text-left text-sm">

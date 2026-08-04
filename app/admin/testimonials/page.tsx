@@ -2,6 +2,7 @@ import { Metadata } from "next"
 import { validateServerRole } from "@/lib/server-role-validation"
 import prisma from "@/utils/prisma/prismaClient"
 import { TestimonialsApprovalList, type TestimonialRow } from "@/components/admin/testimonials/TestimonialsApprovalList"
+import { DashboardPageHeader } from "@/components/dashboard/DashboardPageHeader"
 
 export const metadata: Metadata = {
   title: "Testimonials - Admin - Strentor",
@@ -34,10 +35,10 @@ export default async function AdminTestimonialsPage() {
 
   return (
     <div className="container py-8 space-y-6">
-      <div>
-        <h1 className="text-4xl font-bold tracking-tight">Testimonials</h1>
-        <p className="text-xl text-muted-foreground mt-1">Approve stories to feature on the public site.</p>
-      </div>
+      <DashboardPageHeader
+        title="Testimonials"
+        description="Approve stories to feature on the public site."
+      />
       <TestimonialsApprovalList testimonials={rows} />
     </div>
   )

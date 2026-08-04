@@ -2,7 +2,8 @@ import { getProfileDetails } from "@/actions/profile/get-profile-details.action"
 import { redirect } from "next/navigation";
 import { IdealWeightCalculator } from "@/components/calculator/ideal-weight/IdealWeightCalculator";
 import { validateServerRole } from "@/lib/server-role-validation";
- 
+import { ScrollReveal } from "@/components/motion/ScrollReveal";
+
 
 export default async function IdealWeightPage() {
 
@@ -50,20 +51,22 @@ export default async function IdealWeightPage() {
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="max-w-4xl mx-auto">
-        <div className="mb-8">
+        <ScrollReveal className="mb-8">
           <h1 className="text-3xl font-bold text-foreground mb-2">
             Ideal Weight Calculator
           </h1>
           <p className="text-muted-foreground">
             Calculate your ideal weight using the Miller formula
           </p>
-        </div>
+        </ScrollReveal>
 
-        <IdealWeightCalculator 
-          height={height} 
-          gender={gender} 
-          currentWeight={weight}
-        />
+        <ScrollReveal delay={0.08}>
+          <IdealWeightCalculator
+            height={height}
+            gender={gender}
+            currentWeight={weight}
+          />
+        </ScrollReveal>
       </div>
     </div>
   );

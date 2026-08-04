@@ -1,6 +1,8 @@
 import { Metadata } from "next";
 import { validateServerRole } from "@/lib/server-role-validation";
 import { RefundConsole } from "@/components/admin/payments/RefundConsole";
+import { DashboardPageHeader } from "@/components/dashboard/DashboardPageHeader";
+import { ScrollReveal } from "@/components/motion/ScrollReveal";
 
 export const metadata: Metadata = {
   title: "Refunds - Admin - Strentor",
@@ -13,13 +15,13 @@ export default async function AdminRefundsPage() {
 
   return (
     <div className="container space-y-6 py-8">
-      <div>
-        <h1 className="text-4xl font-bold tracking-tight">Refunds</h1>
-        <p className="mt-2 text-muted-foreground">
-          Search a customer by email, then issue a refund through Razorpay or PayPal directly.
-        </p>
-      </div>
-      <RefundConsole />
+      <DashboardPageHeader
+        title="Refunds"
+        description="Search a customer by email, then issue a refund through Razorpay or PayPal directly."
+      />
+      <ScrollReveal>
+        <RefundConsole />
+      </ScrollReveal>
     </div>
   );
 }

@@ -3,6 +3,7 @@ import { redirect } from "next/navigation";
 import { BMRCalculator } from "@/components/calculator/bmr/BMRCalculator";
 import { validateServerRole } from "@/lib/server-role-validation";
 import { Metadata } from "next";
+import { ScrollReveal } from "@/components/motion/ScrollReveal";
 
 export const metadata: Metadata = {
   title: "BMR Calculator - Strentor",
@@ -54,22 +55,24 @@ export default async function BMRCalculatorPage() {
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="max-w-4xl mx-auto">
-        <div className="mb-8">
+        <ScrollReveal className="mb-8">
           <h1 className="text-3xl font-bold text-foreground mb-2">
             BMR Calculator
           </h1>
           <p className="text-muted-foreground">
             Calculate your Basal Metabolic Rate using the Mifflin-St Jeor equation
           </p>
-        </div>
+        </ScrollReveal>
 
-        <BMRCalculator 
-          height={height} 
-          gender={gender} 
-          weight={weight}
-          age={age}
-          activityLevel={activity_level}
-        />
+        <ScrollReveal delay={0.08}>
+          <BMRCalculator
+            height={height}
+            gender={gender}
+            weight={weight}
+            age={age}
+            activityLevel={activity_level}
+          />
+        </ScrollReveal>
       </div>
     </div>
   );

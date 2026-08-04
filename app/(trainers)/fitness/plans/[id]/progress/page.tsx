@@ -3,6 +3,7 @@ import WeekColumnSelection from "@/components/workout-summary/WeekColumnSelectio
 // import PRDebugPanel from "@/components/workout-summary/PRDebugPanel";
 import { validateServerRole } from "@/lib/server-role-validation";
 import { Metadata } from "next";
+import { ScrollReveal } from "@/components/motion/ScrollReveal";
 
 export const metadata: Metadata = {
   title: "Workout Plan Progress - Strentor",
@@ -48,7 +49,7 @@ export default async function TrainerWorkoutPlanSummaryPage({
   return (
     <div className="container mx-auto py-8 space-y-6">
       {/* Page Header with Client Information */}
-      <div className="border-b pb-6">
+      <ScrollReveal className="border-b pb-6">
         <div className="flex items-center justify-between mb-4">
           <div>
             <h1 className="text-3xl font-bold tracking-tight">{workoutPlan.title}</h1>
@@ -71,7 +72,7 @@ export default async function TrainerWorkoutPlanSummaryPage({
           <span>•</span>
           <span>Current Week: {workoutPlan.progress.currentWeek}</span>
         </div>
-      </div>
+      </ScrollReveal>
 
       {/* Analytics Section - Same components as client view */}
       <WeekColumnSelection 

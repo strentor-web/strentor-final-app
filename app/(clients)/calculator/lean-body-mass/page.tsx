@@ -3,6 +3,7 @@ import { redirect } from "next/navigation";
 import { LBMCalculator } from "@/components/calculator/lean-body-mass/LBMCalculator";
 import { createClient } from "@/utils/supabase/server";
 import { validateServerRole } from "@/lib/server-role-validation";
+import { ScrollReveal } from "@/components/motion/ScrollReveal";
 
 
 export default async function LeanBodyMassPage() {
@@ -49,20 +50,22 @@ export default async function LeanBodyMassPage() {
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="max-w-4xl mx-auto">
-        <div className="mb-8">
+        <ScrollReveal className="mb-8">
           <h1 className="text-3xl font-bold text-foreground mb-2">
             Lean Body Mass Calculator
           </h1>
           <p className="text-muted-foreground">
             Calculate your lean body mass using the Boer formula
           </p>
-        </div>
+        </ScrollReveal>
 
-        <LBMCalculator 
-          height={height} 
-          gender={gender} 
-          weight={weight}
-        />
+        <ScrollReveal delay={0.08}>
+          <LBMCalculator
+            height={height}
+            gender={gender}
+            weight={weight}
+          />
+        </ScrollReveal>
       </div>
     </div>
   );

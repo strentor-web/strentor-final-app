@@ -2,6 +2,7 @@ import { Metadata } from "next"
 import { validateServerRole } from "@/lib/server-role-validation"
 import prisma from "@/utils/prisma/prismaClient"
 import { SafetyFlagsTable, type SafetyFlagRow } from "@/components/admin/safety-flags/SafetyFlagsTable"
+import { DashboardPageHeader } from "@/components/dashboard/DashboardPageHeader"
 
 export const metadata: Metadata = {
   title: "Safety Flags - Admin - Strentor",
@@ -35,12 +36,10 @@ export default async function AdminSafetyFlagsPage() {
 
   return (
     <div className="container py-8 space-y-6">
-      <div>
-        <h1 className="text-4xl font-bold tracking-tight">Safety Flags</h1>
-        <p className="text-xl text-muted-foreground mt-1">
-          {openCount} open flag{openCount === 1 ? "" : "s"} awaiting review.
-        </p>
-      </div>
+      <DashboardPageHeader
+        title="Safety Flags"
+        description={`${openCount} open flag${openCount === 1 ? "" : "s"} awaiting review.`}
+      />
       <SafetyFlagsTable flags={rows} />
     </div>
   )

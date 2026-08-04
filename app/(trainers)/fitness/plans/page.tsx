@@ -11,6 +11,7 @@ import PlansTabs from "@/components/workout-plan/plans-tabs";
 import PageHeaderTemplate from "@/components/page-header-template";
 import { validateServerRole } from "@/lib/server-role-validation";
 import { Metadata } from "next";
+import { ScrollReveal } from "@/components/motion/ScrollReveal";
 
 export const metadata: Metadata = {
   title: "Workout Plans - Strentor",
@@ -25,7 +26,9 @@ export default async function PlansPage() {
  
   return (
     <div className="flex-1 w-full flex flex-col gap-8 px-4 md:px-8 py-8 bg-background">
-      <PageHeaderTemplate title="Workout Plans" description="Design personalized training plans for your clients to transform their fitness journey" />
+      <ScrollReveal>
+        <PageHeaderTemplate title="Workout Plans" description="Design personalized training plans for your clients to transform their fitness journey" />
+      </ScrollReveal>
       <PlansTabs />
     </div>
   );

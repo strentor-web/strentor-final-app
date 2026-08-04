@@ -3,6 +3,8 @@ import { validateServerRole } from "@/lib/server-role-validation"
 import prisma from "@/utils/prisma/prismaClient"
 import { AssessmentsQueue, type AssessmentRow } from "@/components/admin/assessments/AssessmentsQueue"
 import { WeeklyCheckinsQueue, type CheckinRow } from "@/components/admin/assessments/WeeklyCheckinsQueue"
+import { DashboardPageHeader } from "@/components/dashboard/DashboardPageHeader"
+import { ScrollReveal } from "@/components/motion/ScrollReveal"
 
 export const metadata: Metadata = {
   title: "Assessments & Check-ins - Admin - Strentor",
@@ -51,18 +53,18 @@ export default async function AdminAssessmentsPage() {
 
   return (
     <div className="container py-8 space-y-10">
-      <div>
-        <h1 className="text-4xl font-bold tracking-tight">Assessments &amp; Check-ins</h1>
-        <p className="text-xl text-muted-foreground mt-1">Review readiness assessments and weekly reflections.</p>
-      </div>
+      <DashboardPageHeader
+        title="Assessments & Check-ins"
+        description="Review readiness assessments and weekly reflections."
+      />
 
       <div>
-        <h2 className="text-2xl font-bold mb-4">Readiness Assessments</h2>
+        <ScrollReveal as="div"><h2 className="text-2xl font-bold mb-4">Readiness Assessments</h2></ScrollReveal>
         <AssessmentsQueue assessments={assessmentRows} />
       </div>
 
       <div>
-        <h2 className="text-2xl font-bold mb-4">Weekly Check-ins</h2>
+        <ScrollReveal as="div"><h2 className="text-2xl font-bold mb-4">Weekly Check-ins</h2></ScrollReveal>
         <WeeklyCheckinsQueue checkins={checkinRows} />
       </div>
     </div>

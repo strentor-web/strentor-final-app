@@ -2,6 +2,8 @@ import { getMaxLiftsData } from "@/actions/client-workout/get-max-lifts.action";
 import { PersonalRecordsClient } from "@/components/personal-records/PersonalRecordsClient";
 import { validateServerRole } from "@/lib/server-role-validation";
 import { Metadata } from "next";
+import { DashboardPageHeader } from "@/components/dashboard/DashboardPageHeader";
+import { ScrollReveal } from "@/components/motion/ScrollReveal";
 
 export const metadata: Metadata = {
   title: "Personal Records - Strentor",
@@ -17,17 +19,17 @@ export default async function PersonalRecords() {
   
   return (
     <div className="flex flex-col gap-6">
-      <div>
-        <h1 className="text-3xl font-bold text-foreground">Personal Records</h1>
-        <p className="text-muted-foreground mt-2">
-          Track your personal records and progress over time
-        </p>
-      </div>
-      
-      <PersonalRecordsClient 
-        uniqueExercises={uniqueExercises}
-        allMaxLifts={allMaxLifts}
+      <DashboardPageHeader
+        title="Personal Records"
+        description="Track your personal records and progress over time"
       />
+
+      <ScrollReveal>
+        <PersonalRecordsClient
+          uniqueExercises={uniqueExercises}
+          allMaxLifts={allMaxLifts}
+        />
+      </ScrollReveal>
     </div>
   );
 }

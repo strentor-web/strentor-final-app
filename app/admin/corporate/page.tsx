@@ -4,6 +4,8 @@ import prisma from "@/utils/prisma/prismaClient"
 import { CorporateInquiriesList, type CorporateInquiryRow } from "@/components/admin/corporate/CorporateInquiriesList"
 import { CorporateGroupsManager, type CorporateGroupRow } from "@/components/admin/corporate/CorporateGroupsManager"
 import { MentorshipApplicationsList, type MentorshipApplicationRow } from "@/components/admin/corporate/MentorshipApplicationsList"
+import { DashboardPageHeader } from "@/components/dashboard/DashboardPageHeader"
+import { ScrollReveal } from "@/components/motion/ScrollReveal"
 
 export const metadata: Metadata = {
   title: "Corporate & Elite Mentorship - Admin - Strentor",
@@ -62,25 +64,23 @@ export default async function AdminCorporatePage() {
 
   return (
     <div className="container py-8 space-y-10">
-      <div>
-        <h1 className="text-4xl font-bold tracking-tight">Corporate &amp; Elite Mentorship</h1>
-        <p className="text-xl text-muted-foreground mt-1">
-          B2B leads, active corporate groups, and Elite Mentorship applications.
-        </p>
-      </div>
+      <DashboardPageHeader
+        title="Corporate & Elite Mentorship"
+        description="B2B leads, active corporate groups, and Elite Mentorship applications."
+      />
 
       <div>
-        <h2 className="text-2xl font-bold mb-4">Corporate Inquiries</h2>
+        <ScrollReveal as="div"><h2 className="text-2xl font-bold mb-4">Corporate Inquiries</h2></ScrollReveal>
         <CorporateInquiriesList inquiries={inquiryRows} />
       </div>
 
       <div>
-        <h2 className="text-2xl font-bold mb-4">Corporate Groups</h2>
+        <ScrollReveal as="div"><h2 className="text-2xl font-bold mb-4">Corporate Groups</h2></ScrollReveal>
         <CorporateGroupsManager initialGroups={groupRows} />
       </div>
 
       <div>
-        <h2 className="text-2xl font-bold mb-4">Elite Mentorship Applications</h2>
+        <ScrollReveal as="div"><h2 className="text-2xl font-bold mb-4">Elite Mentorship Applications</h2></ScrollReveal>
         <MentorshipApplicationsList applications={applicationRows} />
       </div>
     </div>

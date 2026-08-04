@@ -1,6 +1,8 @@
 import { Metadata } from "next"
 import { validateServerRole } from "@/lib/server-role-validation"
 import prisma from "@/utils/prisma/prismaClient"
+import { DashboardPageHeader } from "@/components/dashboard/DashboardPageHeader"
+import { ScrollReveal } from "@/components/motion/ScrollReveal"
 
 export const metadata: Metadata = {
   title: "Checkout & Onboarding Recovery - Admin - Strentor",
@@ -42,15 +44,13 @@ export default async function CheckoutRecoveryPage() {
 
   return (
     <div className="container space-y-10 py-8">
-      <div>
-        <h1 className="text-4xl font-bold tracking-tight">Checkout & Onboarding Recovery</h1>
-        <p className="mt-1 text-xl text-muted-foreground">
-          Every pre-signup checkout attempt and stalled onboarding, so drop-off is visible instead of silent.
-        </p>
-      </div>
+      <DashboardPageHeader
+        title="Checkout & Onboarding Recovery"
+        description="Every pre-signup checkout attempt and stalled onboarding, so drop-off is visible instead of silent."
+      />
 
       <section className="space-y-4">
-        <h2 className="text-2xl font-bold">Checkout Attempts</h2>
+        <ScrollReveal as="div"><h2 className="text-2xl font-bold">Checkout Attempts</h2></ScrollReveal>
         <div className="overflow-x-auto rounded-xl border border-border">
           <table className="w-full text-left text-sm">
             <thead className="bg-muted/50">
@@ -108,10 +108,12 @@ export default async function CheckoutRecoveryPage() {
       </section>
 
       <section className="space-y-4">
-        <h2 className="text-2xl font-bold">Stalled Onboarding</h2>
-        <p className="text-sm text-muted-foreground">
-          Accounts that were created but haven't finished the onboarding profile yet.
-        </p>
+        <ScrollReveal as="div">
+          <h2 className="text-2xl font-bold">Stalled Onboarding</h2>
+          <p className="text-sm text-muted-foreground">
+            Accounts that were created but haven't finished the onboarding profile yet.
+          </p>
+        </ScrollReveal>
         <div className="overflow-x-auto rounded-xl border border-border">
           <table className="w-full text-left text-sm">
             <thead className="bg-muted/50">

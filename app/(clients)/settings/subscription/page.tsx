@@ -6,6 +6,7 @@ import { SettingsContent } from "@/components/settings/settings-content";
 import { validateServerRole } from "@/lib/server-role-validation";
 import { createClient } from "@/utils/supabase/server";
 import { Metadata } from "next";
+import { ScrollReveal } from "@/components/motion/ScrollReveal";
 
 export const metadata: Metadata = {
   title: "Subscription Settings - Strentor",
@@ -44,7 +45,7 @@ export default async function SettingsSubscriptionPage() {
   return (
     <div className="flex-1 w-full flex flex-col gap-8 px-4 md:px-8 py-8">
       {/* Header Section */}
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+      <ScrollReveal className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
         <div className="flex items-center gap-4">
           <Avatar className="h-16 w-16">
             <AvatarImage src={user.user_metadata?.avatar_url} alt={user.user_metadata?.full_name || user.email} />
@@ -60,20 +61,22 @@ export default async function SettingsSubscriptionPage() {
             <Button className="bg-strentor-red text-primary-foreground hover:bg-strentor-red/80" type="submit">Logout</Button>
           </form>
         </div>
-      </div>
+      </ScrollReveal>
 
       {/* Settings Content */}
-      <Card>
-        <CardHeader>
-          <CardTitle>Settings</CardTitle>
-          <CardDescription>
-            Manage your personal information, preferences, and subscriptions
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <SettingsContent user={user} />
-        </CardContent>
-      </Card>
+      <ScrollReveal delay={0.08}>
+        <Card>
+          <CardHeader>
+            <CardTitle>Settings</CardTitle>
+            <CardDescription>
+              Manage your personal information, preferences, and subscriptions
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <SettingsContent user={user} />
+          </CardContent>
+        </Card>
+      </ScrollReveal>
     </div>
   );
 }

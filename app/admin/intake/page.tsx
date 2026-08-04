@@ -2,6 +2,7 @@ import { Metadata } from "next"
 import { validateServerRole } from "@/lib/server-role-validation"
 import prisma from "@/utils/prisma/prismaClient"
 import { IntakeSubmissionsList, type IntakeSubmissionRow } from "@/components/admin/intake/IntakeSubmissionsList"
+import { DashboardPageHeader } from "@/components/dashboard/DashboardPageHeader"
 
 export const metadata: Metadata = {
   title: "Intake Submissions - Admin - Strentor",
@@ -33,12 +34,10 @@ export default async function AdminIntakePage() {
 
   return (
     <div className="container py-8 space-y-6">
-      <div>
-        <h1 className="text-4xl font-bold tracking-tight">Intake Submissions</h1>
-        <p className="text-xl text-muted-foreground mt-1">
-          Every application, regardless of whether the notification email was delivered.
-        </p>
-      </div>
+      <DashboardPageHeader
+        title="Intake Submissions"
+        description="Every application, regardless of whether the notification email was delivered."
+      />
       <IntakeSubmissionsList submissions={rows} />
     </div>
   )

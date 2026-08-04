@@ -4,6 +4,8 @@ import { Activity, Scale, Target, Zap, TrendingUp, Heart, Dumbbell, CalculatorIc
 import Link from "next/link";
 import { validateServerRole } from "@/lib/server-role-validation";
 import { Metadata } from "next";
+import { ScrollReveal, StaggerGroup } from "@/components/motion/ScrollReveal";
+import { HoverLift } from "@/components/motion/HoverLift";
 
 export const metadata: Metadata = {
   title: "Fitness Calculators - Strentor",
@@ -63,33 +65,37 @@ export default async function Calculator() {
 
   return (
     <div className="flex-1 w-full flex flex-col gap-8 px-4 md:px-8 py-8 bg-background">
-      <PageHeaderTemplate 
-        title="Fitness Calculators" 
-        description="Choose from our comprehensive collection of fitness and health calculators to track your progress and optimize your training" 
-      />
-      
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <ScrollReveal>
+        <PageHeaderTemplate
+          title="Fitness Calculators"
+          description="Choose from our comprehensive collection of fitness and health calculators to track your progress and optimize your training"
+        />
+      </ScrollReveal>
+
+      <StaggerGroup className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {calculators.map((calculator) => {
-          const IconComponent = calculator.icon;
           return (
-            <Link key={calculator.href} href={calculator.href}>
-              <Card className="hover:shadow-lg transition-shadow cursor-pointer group">
-                <CardHeader className="pb-3">
-                  <div className="flex items-center gap-3">
-                    {/* <IconComponent className={`w-6 h-6 ${calculator.color}`} /> */}
-                    <CardTitle className="text-lg text-strentor-blue">{calculator.title}</CardTitle>
-                  </div>
-                </CardHeader>
-                <CardContent>
-                  <CardDescription className="text-sm text-muted-foreground">
-                    {calculator.description}
-                  </CardDescription>
-                </CardContent>
-              </Card>
-            </Link>
+            <ScrollReveal key={calculator.href}>
+              <HoverLift tilt={false}>
+                <Link href={calculator.href}>
+                  <Card className="hover:shadow-lg transition-shadow cursor-pointer group">
+                    <CardHeader className="pb-3">
+                      <div className="flex items-center gap-3">
+                        <CardTitle className="text-lg text-strentor-blue">{calculator.title}</CardTitle>
+                      </div>
+                    </CardHeader>
+                    <CardContent>
+                      <CardDescription className="text-sm text-muted-foreground">
+                        {calculator.description}
+                      </CardDescription>
+                    </CardContent>
+                  </Card>
+                </Link>
+              </HoverLift>
+            </ScrollReveal>
           );
         })}
-      </div>
+      </StaggerGroup>
     </div>
   );
 }

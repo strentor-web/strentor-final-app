@@ -3,6 +3,7 @@ import BMICalculator from "@/components/calculator/bmi/BMICalculator";
 import { getWeightHeight } from "@/actions/body-measurement-metrics/get-weight-height.action";
 import { validateServerRole } from "@/lib/server-role-validation";
 import { Metadata } from "next";
+import { ScrollReveal } from "@/components/motion/ScrollReveal";
 
 // Force dynamic rendering since this page uses cookies for authentication
 export const dynamic = 'force-dynamic';
@@ -27,11 +28,15 @@ export default async function BMICalculatorPage() {
 
   return (
     <div className="flex-1 w-full flex flex-col gap-8 px-4 md:px-8 py-8 bg-background">
-      <PageHeaderTemplate 
-        title="BMI Calculator" 
-        description="Calculate your Body Mass Index (BMI) to assess your weight status and health risks" 
-      />
-      <BMICalculator initialWeight={weight || 0} initialHeight={height || 0} />
+      <ScrollReveal>
+        <PageHeaderTemplate
+          title="BMI Calculator"
+          description="Calculate your Body Mass Index (BMI) to assess your weight status and health risks"
+        />
+      </ScrollReveal>
+      <ScrollReveal delay={0.08}>
+        <BMICalculator initialWeight={weight || 0} initialHeight={height || 0} />
+      </ScrollReveal>
     </div>
   );
 }

@@ -2,6 +2,7 @@ import { Metadata } from "next"
 import { validateServerRole } from "@/lib/server-role-validation"
 import prisma from "@/utils/prisma/prismaClient"
 import { PricingOverridesManager, type OverrideRow } from "@/components/admin/pricing/PricingOverridesManager"
+import { DashboardPageHeader } from "@/components/dashboard/DashboardPageHeader"
 
 export const metadata: Metadata = {
   title: "Pricing Overrides - Admin - Strentor",
@@ -36,14 +37,10 @@ export default async function AdminPricingPage() {
 
   return (
     <div className="container space-y-6 py-8">
-      <div>
-        <h1 className="text-4xl font-bold tracking-tight">Pricing Overrides</h1>
-        <p className="mt-1 text-xl text-muted-foreground">
-          Correct, exclude, or run a time-bounded promotion for a specific country, city, or customer segment —
-          on top of the static PPP tier table. Every real charge (Razorpay + PayPal, recurring + Lifetime) checks
-          here before falling back to the static formula.
-        </p>
-      </div>
+      <DashboardPageHeader
+        title="Pricing Overrides"
+        description="Correct, exclude, or run a time-bounded promotion for a specific country, city, or customer segment — on top of the static PPP tier table. Every real charge (Razorpay + PayPal, recurring + Lifetime) checks here before falling back to the static formula."
+      />
 
       <PricingOverridesManager initialOverrides={rows} />
     </div>

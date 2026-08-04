@@ -3,6 +3,8 @@ import { validateServerRole } from "@/lib/server-role-validation"
 import prisma from "@/utils/prisma/prismaClient"
 import { PainFatigueForm } from "@/components/tracker/PainFatigueForm"
 import { TrackerHistory } from "@/components/tracker/TrackerHistory"
+import { DashboardPageHeader } from "@/components/dashboard/DashboardPageHeader"
+import { ScrollReveal } from "@/components/motion/ScrollReveal"
 
 export const metadata: Metadata = {
   title: "Body Check Tracker - Strentor",
@@ -31,12 +33,10 @@ export default async function TrackerPage() {
 
   return (
     <div className="container py-8 space-y-8">
-      <div>
-        <h1 className="text-4xl font-bold tracking-tight">Body Check Tracker</h1>
-        <p className="text-xl text-muted-foreground mt-1">
-          Check in with your body before or after training.
-        </p>
-      </div>
+      <DashboardPageHeader
+        title="Body Check Tracker"
+        description="Check in with your body before or after training."
+      />
 
       <div className="rounded-lg border border-destructive/30 bg-destructive/5 p-4 text-sm text-destructive">
         Pause and seek medical help for chest pain, severe breathlessness, fainting, new
@@ -44,12 +44,14 @@ export default async function TrackerPage() {
         symptom your care team treats as urgent.
       </div>
 
-      <PainFatigueForm />
+      <ScrollReveal>
+        <PainFatigueForm />
+      </ScrollReveal>
 
-      <div className="border rounded-lg p-6 shadow-sm">
+      <ScrollReveal delay={0.08} className="border rounded-lg p-6 shadow-sm">
         <h2 className="text-2xl font-bold mb-6">Recent Body Checks</h2>
         <TrackerHistory logs={serializedLogs} />
-      </div>
+      </ScrollReveal>
     </div>
   )
 }

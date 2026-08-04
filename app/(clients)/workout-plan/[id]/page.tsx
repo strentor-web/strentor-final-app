@@ -3,6 +3,7 @@ import WorkoutPageHeader from "@/components/client-workout-page/workout-page-hea
 import WorkoutPlanViewer from "@/components/client-workout-page/workout-plan-viewer";
 import { validateServerRole } from "@/lib/server-role-validation";
 import { Metadata } from "next";
+import { ScrollReveal } from "@/components/motion/ScrollReveal";
 
 // Remove force-static since we need dynamic auth checking
 // export const revalidate = 86400; // 24 hours static caching  
@@ -31,16 +32,18 @@ export default async function WorkoutPlanPage({ params }: { params: Promise<{ id
 
   return (
     <div className="space-y-6">
-      <WorkoutPageHeader
-        planId={workoutPlan.id}
-        title={workoutPlan.title}
-        description={workoutPlan.description}
-        category={workoutPlan.category}
-        startDate={workoutPlan.startDate}
-        endDate={workoutPlan.endDate}
-        durationWeeks={workoutPlan.durationWeeks}
-        progress={workoutPlan.progress}
-      />
+      <ScrollReveal>
+        <WorkoutPageHeader
+          planId={workoutPlan.id}
+          title={workoutPlan.title}
+          description={workoutPlan.description}
+          category={workoutPlan.category}
+          startDate={workoutPlan.startDate}
+          endDate={workoutPlan.endDate}
+          durationWeeks={workoutPlan.durationWeeks}
+          progress={workoutPlan.progress}
+        />
+      </ScrollReveal>
       <WorkoutPlanViewer plan={workoutPlan} />
     </div>
   );

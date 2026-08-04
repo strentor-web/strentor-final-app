@@ -2,6 +2,7 @@ import { getClientWorkoutPlanFull } from "@/actions/client-workout/client-full-w
 import WeekColumnSelection from "@/components/workout-summary/WeekColumnSelection";
 import { validateServerRole } from "@/lib/server-role-validation";
 import { Metadata } from "next";
+import { ScrollReveal } from "@/components/motion/ScrollReveal";
 // import PRDebugPanel from "@/components/workout-summary/PRDebugPanel";
 
 export const metadata: Metadata = {
@@ -43,7 +44,7 @@ export default async function WorkoutPlanSummaryPage({
   return (
     <div className="container mx-auto py-8 space-y-6">
       {/* Page Header */}
-      <div className="border-b pb-6">
+      <ScrollReveal className="border-b pb-6">
         <h1 className="text-3xl font-bold tracking-tight">{workoutPlan.title}</h1>
         <p className="text-muted-foreground mt-2">
           {workoutPlan.description || "Track your progress and analyze your performance"}
@@ -55,7 +56,7 @@ export default async function WorkoutPlanSummaryPage({
           <span>•</span>
           <span>Progress: {Math.round(workoutPlan.progress.progressPercentage)}%</span>
         </div>
-      </div>
+      </ScrollReveal>
 
       {/* Analytics Section */}
       <WeekColumnSelection 

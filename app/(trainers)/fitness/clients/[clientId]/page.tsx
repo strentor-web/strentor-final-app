@@ -7,6 +7,7 @@ import { Metadata } from "next";
 import { getFitnessClientSummary } from "@/actions/trainer-clients/fitness/get-fitness-client-summary.action";
 import { ClientProfileClient } from "@/components/trainer/ClientProfileClient";
 import { TrainerSessionNotes } from "@/components/trainer/TrainerSessionNotes";
+import { ScrollReveal } from "@/components/motion/ScrollReveal";
 
 export const metadata: Metadata = {
   title: "Client Profile - Strentor",
@@ -56,7 +57,7 @@ export default async function ClientProfilePage({ params }: ClientProfilePagePro
 
   return (
     <div className="space-y-6">
-      <div className="flex-col items-center gap-4">
+      <ScrollReveal className="flex-col items-center gap-4">
         <Link href="/training/clients">
           <Button variant="ghost" className="text-strentor-red" size="sm">
             <ArrowLeft className="mr-2 h-4 w-4" />
@@ -64,7 +65,7 @@ export default async function ClientProfilePage({ params }: ClientProfilePagePro
           </Button>
         </Link>
         <h1 className="text-3xl p-6 font-bold">Client Profile</h1>
-      </div>
+      </ScrollReveal>
 
       <ClientProfileClient
         profile={clientSummary.profile}

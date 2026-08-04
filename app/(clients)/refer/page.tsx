@@ -3,6 +3,8 @@ import { getOrCreateReferralCode } from "@/lib/referral"
 import prisma from "@/utils/prisma/prismaClient"
 import { ReferralDashboard, type ReferralRow } from "@/components/refer/ReferralDashboard"
 import { Metadata } from "next"
+import { DashboardPageHeader } from "@/components/dashboard/DashboardPageHeader"
+import { ScrollReveal } from "@/components/motion/ScrollReveal"
 
 export const metadata: Metadata = {
   title: "Refer a Friend - Strentor",
@@ -31,18 +33,18 @@ export default async function ReferPage() {
 
   return (
     <div className="flex flex-col gap-6">
-      <div>
-        <h1 className="text-3xl font-bold text-foreground">Refer a Friend</h1>
-        <p className="mt-2 text-muted-foreground">
-          Earn ₹2,000 for every friend you refer who becomes a STRENTOR client.
-        </p>
-      </div>
-
-      <ReferralDashboard
-        referralLink={`${siteUrl}/apply-for-access?ref=${referralCode}`}
-        initialUpiId={profile?.payout_upi_id || ""}
-        referrals={rows}
+      <DashboardPageHeader
+        title="Refer a Friend"
+        description="Earn ₹2,000 for every friend you refer who becomes a STRENTOR client."
       />
+
+      <ScrollReveal>
+        <ReferralDashboard
+          referralLink={`${siteUrl}/apply-for-access?ref=${referralCode}`}
+          initialUpiId={profile?.payout_upi_id || ""}
+          referrals={rows}
+        />
+      </ScrollReveal>
     </div>
   )
 }

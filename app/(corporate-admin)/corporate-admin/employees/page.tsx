@@ -2,6 +2,7 @@ import { requireCorporateAdminGroup } from "@/lib/corporate-admin";
 import prisma from "@/utils/prisma/prismaClient";
 import { InviteEmployeeButton } from "@/components/corporate-admin/InviteEmployeeButton";
 import { Metadata } from "next";
+import { ScrollReveal } from "@/components/motion/ScrollReveal";
 
 export const metadata: Metadata = {
   title: "Employees - Corporate Dashboard - Strentor",
@@ -22,7 +23,7 @@ export default async function CorporateEmployeesPage() {
 
   return (
     <div className="flex flex-col gap-6">
-      <div className="flex flex-wrap items-start justify-between gap-4">
+      <ScrollReveal className="flex flex-wrap items-start justify-between gap-4">
         <div>
           <h1 className="text-3xl font-bold text-foreground">Employees</h1>
           <p className="mt-2 text-muted-foreground">
@@ -32,7 +33,7 @@ export default async function CorporateEmployeesPage() {
           </p>
         </div>
         <InviteEmployeeButton />
-      </div>
+      </ScrollReveal>
 
       {employees.length === 0 && (
         <div className="rounded-lg border border-border bg-card p-6 text-sm text-muted-foreground">

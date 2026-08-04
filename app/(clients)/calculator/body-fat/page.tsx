@@ -5,6 +5,7 @@ import { getProfileDetails } from "@/actions/profile/get-profile-details.action"
 import { Gender } from "@prisma/client";
 import { validateServerRole } from "@/lib/server-role-validation";
 import { isNextControlFlowError } from "@/utils/next-control-flow-errors";
+import { ScrollReveal } from "@/components/motion/ScrollReveal";
 
 // Force dynamic rendering since this page uses cookies for authentication
 export const dynamic = 'force-dynamic';
@@ -63,10 +64,12 @@ export default async function BodyFatCalculatorPage() {
 
     return (
       <div className="flex-1 w-full flex flex-col gap-8 px-4 md:px-8 py-8 bg-background">
-        <PageHeaderTemplate 
-          title="Body Fat Calculator" 
-          description="Calculate your body fat percentage using the Navy formula for accurate body composition assessment" 
-        />
+        <ScrollReveal>
+          <PageHeaderTemplate
+            title="Body Fat Calculator"
+            description="Calculate your body fat percentage using the Navy formula for accurate body composition assessment"
+          />
+        </ScrollReveal>
         <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-6">
           <h3 className="text-lg font-medium text-yellow-800 mb-4">Profile Information Required</h3>
           <p className="text-yellow-700 mb-4">
@@ -96,15 +99,19 @@ export default async function BodyFatCalculatorPage() {
 
   return (
     <div className="flex-1 w-full flex flex-col gap-8 px-4 md:px-8 py-8 bg-background">
-      <PageHeaderTemplate 
-        title="Body Fat Calculator" 
-        description="Calculate your body fat percentage using the Navy formula for accurate body composition assessment" 
-      />
-      <BodyFatCalculator 
-        initialHeight={height} 
-        initialGender={gender}
-        initialMeasurements={measurements}
-      />
+      <ScrollReveal>
+        <PageHeaderTemplate
+          title="Body Fat Calculator"
+          description="Calculate your body fat percentage using the Navy formula for accurate body composition assessment"
+        />
+      </ScrollReveal>
+      <ScrollReveal delay={0.08}>
+        <BodyFatCalculator
+          initialHeight={height}
+          initialGender={gender}
+          initialMeasurements={measurements}
+        />
+      </ScrollReveal>
     </div>
   );
 } 

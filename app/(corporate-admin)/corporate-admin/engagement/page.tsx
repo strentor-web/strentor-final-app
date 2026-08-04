@@ -1,6 +1,8 @@
 import { requireCorporateAdminGroup } from "@/lib/corporate-admin";
 import prisma from "@/utils/prisma/prismaClient";
 import { Metadata } from "next";
+import { DashboardPageHeader } from "@/components/dashboard/DashboardPageHeader";
+import { ScrollReveal, StaggerGroup } from "@/components/motion/ScrollReveal";
 
 export const metadata: Metadata = {
   title: "Engagement - Corporate Dashboard - Strentor",
@@ -40,30 +42,32 @@ export default async function CorporateEngagementPage() {
 
   return (
     <div className="flex flex-col gap-6">
-      <div>
-        <h1 className="text-3xl font-bold text-foreground">Engagement</h1>
-        <p className="mt-2 text-muted-foreground">
-          Aggregate activity across {corporateGroup.company_name}'s employees over the last {WINDOW_DAYS} days.
-          This is participation data only — individual health information stays private to each employee and
-          their coach.
-        </p>
-      </div>
+      <DashboardPageHeader
+        title="Engagement"
+        description={`Aggregate activity across ${corporateGroup.company_name}'s employees over the last ${WINDOW_DAYS} days. This is participation data only — individual health information stays private to each employee and their coach.`}
+      />
 
-      <div className="grid gap-4 sm:grid-cols-3">
-        <div className="rounded-lg border border-border bg-card p-6">
-          <p className="text-sm text-muted-foreground">Active employees</p>
-          <p className="mt-2 text-3xl font-bold text-card-foreground">{activeCount}</p>
-          <p className="mt-1 text-xs text-muted-foreground">of {employeeIds.length} invited</p>
-        </div>
-        <div className="rounded-lg border border-border bg-card p-6">
-          <p className="text-sm text-muted-foreground">Workouts logged</p>
-          <p className="mt-2 text-3xl font-bold text-card-foreground">{workoutsLogged}</p>
-        </div>
-        <div className="rounded-lg border border-border bg-card p-6">
-          <p className="text-sm text-muted-foreground">Weekly check-ins completed</p>
-          <p className="mt-2 text-3xl font-bold text-card-foreground">{checkinsCompleted}</p>
-        </div>
-      </div>
+      <StaggerGroup className="grid gap-4 sm:grid-cols-3">
+        <ScrollReveal>
+          <div className="rounded-lg border border-border bg-card p-6">
+            <p className="text-sm text-muted-foreground">Active employees</p>
+            <p className="mt-2 text-3xl font-bold text-card-foreground">{activeCount}</p>
+            <p className="mt-1 text-xs text-muted-foreground">of {employeeIds.length} invited</p>
+          </div>
+        </ScrollReveal>
+        <ScrollReveal delay={0.06}>
+          <div className="rounded-lg border border-border bg-card p-6">
+            <p className="text-sm text-muted-foreground">Workouts logged</p>
+            <p className="mt-2 text-3xl font-bold text-card-foreground">{workoutsLogged}</p>
+          </div>
+        </ScrollReveal>
+        <ScrollReveal delay={0.12}>
+          <div className="rounded-lg border border-border bg-card p-6">
+            <p className="text-sm text-muted-foreground">Weekly check-ins completed</p>
+            <p className="mt-2 text-3xl font-bold text-card-foreground">{checkinsCompleted}</p>
+          </div>
+        </ScrollReveal>
+      </StaggerGroup>
 
       {employeeIds.length === 0 && (
         <div className="rounded-lg border border-border bg-card p-6 text-sm text-muted-foreground">

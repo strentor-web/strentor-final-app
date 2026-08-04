@@ -2,6 +2,7 @@ import { Metadata } from "next"
 import { validateServerRole } from "@/lib/server-role-validation"
 import prisma from "@/utils/prisma/prismaClient"
 import { ReferralsList, type ReferralAdminRow } from "@/components/admin/referrals/ReferralsList"
+import { DashboardPageHeader } from "@/components/dashboard/DashboardPageHeader"
 
 export const metadata: Metadata = {
   title: "Referrals - Admin - Strentor",
@@ -32,13 +33,10 @@ export default async function AdminReferralsPage() {
 
   return (
     <div className="container py-8 space-y-6">
-      <div>
-        <h1 className="text-4xl font-bold tracking-tight">Referrals</h1>
-        <p className="text-xl text-muted-foreground mt-1">
-          Mark a referral "Converted" once the referred person becomes a paying client, then "Paid" once you've
-          sent the cashback.
-        </p>
-      </div>
+      <DashboardPageHeader
+        title="Referrals"
+        description={'Mark a referral "Converted" once the referred person becomes a paying client, then "Paid" once you\'ve sent the cashback.'}
+      />
       <ReferralsList referrals={rows} />
     </div>
   )

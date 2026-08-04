@@ -1,6 +1,7 @@
 import { requireCorporateAdminGroup } from "@/lib/corporate-admin";
 import prisma from "@/utils/prisma/prismaClient";
 import { Metadata } from "next";
+import { DashboardPageHeader } from "@/components/dashboard/DashboardPageHeader";
 
 export const metadata: Metadata = {
   title: "Billing - Corporate Dashboard - Strentor",
@@ -33,12 +34,10 @@ export default async function CorporateBillingPage() {
 
   return (
     <div className="flex flex-col gap-6">
-      <div>
-        <h1 className="text-3xl font-bold text-foreground">Billing</h1>
-        <p className="mt-2 text-muted-foreground">
-          {corporateGroup.plan_type ? `${corporateGroup.plan_type} plan` : "Corporate account"} — {corporateGroup.company_name}
-        </p>
-      </div>
+      <DashboardPageHeader
+        title="Billing"
+        description={`${corporateGroup.plan_type ? `${corporateGroup.plan_type} plan` : "Corporate account"} — ${corporateGroup.company_name}`}
+      />
 
       {invoices.length === 0 && (
         <div className="rounded-lg border border-border bg-card p-6 text-sm text-muted-foreground">

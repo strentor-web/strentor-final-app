@@ -3,6 +3,7 @@ import { redirect } from "next/navigation";
 import { MacroCalculator } from "@/components/calculator/macro-split/MacroCalculator";
 import { validateServerRole } from "@/lib/server-role-validation";
 import { Metadata } from "next";
+import { ScrollReveal } from "@/components/motion/ScrollReveal";
 
 export const metadata: Metadata = {
   title: "Macro Split Calculator - Strentor",
@@ -54,22 +55,24 @@ export default async function MacroSplitPage() {
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="max-w-4xl mx-auto">
-        <div className="mb-8">
+        <ScrollReveal className="mb-8">
           <h1 className="text-3xl font-bold text-foreground mb-2">
             Macro Split Calculator
           </h1>
           <p className="text-muted-foreground">
             Calculate your optimal macronutrient distribution based on your fitness goals
           </p>
-        </div>
+        </ScrollReveal>
 
-        <MacroCalculator 
-          height={height} 
-          gender={gender} 
-          weight={weight}
-          age={age}
-          activityLevel={activity_level}
-        />
+        <ScrollReveal delay={0.08}>
+          <MacroCalculator
+            height={height}
+            gender={gender}
+            weight={weight}
+            age={age}
+            activityLevel={activity_level}
+          />
+        </ScrollReveal>
       </div>
     </div>
   );

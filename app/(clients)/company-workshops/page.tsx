@@ -2,6 +2,8 @@ import { validateServerRole } from "@/lib/server-role-validation";
 import prisma from "@/utils/prisma/prismaClient";
 import { partnerPricingOptions } from "@/config/partnerPricing";
 import { Metadata } from "next";
+import { DashboardPageHeader } from "@/components/dashboard/DashboardPageHeader";
+import { ScrollReveal, StaggerGroup } from "@/components/motion/ScrollReveal";
 
 export const metadata: Metadata = {
   title: "Company Workshops - Strentor",
@@ -41,14 +43,14 @@ export default async function CompanyWorkshopsPage() {
 
   return (
     <div className="flex flex-col gap-6">
-      <div>
-        <h1 className="text-3xl font-bold text-foreground">Company Workshops</h1>
-        <p className="mt-2 text-muted-foreground">
-          {profile?.corporate_group?.company_name
+      <DashboardPageHeader
+        title="Company Workshops"
+        description={
+          profile?.corporate_group?.company_name
             ? `Workshops and programs booked for ${profile.corporate_group.company_name}.`
-            : "Workshops and programs your organization has booked with STRENTOR."}
-        </p>
-      </div>
+            : "Workshops and programs your organization has booked with STRENTOR."
+        }
+      />
 
       {!profile?.corporate_group_id && (
         <div className="rounded-lg border border-border bg-card p-6 text-sm text-muted-foreground">
@@ -64,22 +66,24 @@ export default async function CompanyWorkshopsPage() {
       )}
 
       {bookings.length > 0 && (
-        <div className="grid gap-4">
+        <StaggerGroup className="grid gap-4">
           {bookings.map((booking) => (
-            <div key={booking.id} className="rounded-lg border border-border bg-card p-6">
-              <div className="flex flex-wrap items-start justify-between gap-2">
-                <h2 className="text-lg font-semibold text-card-foreground">
-                  {resolveOptionLabel(booking.program_option)}
-                </h2>
-                <span className="rounded-full border border-border px-3 py-1 text-xs font-medium text-muted-foreground">
-                  {STATUS_LABELS[booking.status] || booking.status}
-                </span>
+            <ScrollReveal key={booking.id} as="div">
+              <div className="rounded-lg border border-border bg-card p-6">
+                <div className="flex flex-wrap items-start justify-between gap-2">
+                  <h2 className="text-lg font-semibold text-card-foreground">
+                    {resolveOptionLabel(booking.program_option)}
+                  </h2>
+                  <span className="rounded-full border border-border px-3 py-1 text-xs font-medium text-muted-foreground">
+                    {STATUS_LABELS[booking.status] || booking.status}
+                  </span>
+                </div>
+                <p className="mt-2 text-sm text-muted-foreground">{formatDate(booking.scheduled_date)}</p>
+                {booking.notes && <p className="mt-3 text-sm text-card-foreground">{booking.notes}</p>}
               </div>
-              <p className="mt-2 text-sm text-muted-foreground">{formatDate(booking.scheduled_date)}</p>
-              {booking.notes && <p className="mt-3 text-sm text-card-foreground">{booking.notes}</p>}
-            </div>
+            </ScrollReveal>
           ))}
-        </div>
+        </StaggerGroup>
       )}
     </div>
   );

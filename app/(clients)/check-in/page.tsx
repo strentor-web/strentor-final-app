@@ -2,6 +2,8 @@ import { Metadata } from "next"
 import { validateServerRole } from "@/lib/server-role-validation"
 import prisma from "@/utils/prisma/prismaClient"
 import { WeeklyCheckinForm } from "@/components/tracker/WeeklyCheckinForm"
+import { DashboardPageHeader } from "@/components/dashboard/DashboardPageHeader"
+import { ScrollReveal } from "@/components/motion/ScrollReveal"
 
 export const metadata: Metadata = {
   title: "Weekly Reflection - Strentor",
@@ -27,14 +29,14 @@ export default async function CheckInPage() {
 
   return (
     <div className="container py-8 space-y-8">
-      <div>
-        <h1 className="text-4xl font-bold tracking-tight">Weekly Reflection</h1>
-        <p className="text-xl text-muted-foreground mt-1">
-          A few minutes to reflect on your week and flag anything a coach should know.
-        </p>
-      </div>
+      <DashboardPageHeader
+        title="Weekly Reflection"
+        description="A few minutes to reflect on your week and flag anything a coach should know."
+      />
 
-      <WeeklyCheckinForm alreadyCompleted={!!existing} />
+      <ScrollReveal>
+        <WeeklyCheckinForm alreadyCompleted={!!existing} />
+      </ScrollReveal>
     </div>
   )
 }

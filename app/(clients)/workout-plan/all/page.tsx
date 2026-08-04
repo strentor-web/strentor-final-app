@@ -3,6 +3,7 @@ import { WorkoutPlansClient } from "@/components/workout-plans/WorkoutPlansClien
 import { getClientWorkoutPlans } from "@/actions/client-workout/get-all-workout-plans-for-client";
 import { validateServerRole } from "@/lib/server-role-validation";
 import { Metadata } from "next";
+import { ScrollReveal } from "@/components/motion/ScrollReveal";
 
 export const metadata: Metadata = {
   title: "All Workout Plans - Strentor",
@@ -25,11 +26,13 @@ export default async function AllWorkoutPlans() {
 
   return (
     <div className="flex-1 w-full flex flex-col gap-8 px-4 md:px-8 py-8 bg-background">
-      <PageHeaderTemplate 
-        title="All Workout Plans" 
-        description="View and manage all your workout plans" 
-      />
-      
+      <ScrollReveal>
+        <PageHeaderTemplate
+          title="All Workout Plans"
+          description="View and manage all your workout plans"
+        />
+      </ScrollReveal>
+
       <WorkoutPlansClient initialPlans={initialPlans} />
     </div>
   );
