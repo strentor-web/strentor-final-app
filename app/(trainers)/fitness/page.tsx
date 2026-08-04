@@ -8,6 +8,8 @@ import { NewlyAssignedClientsCard } from "@/components/dashboard/NewlyAssignedCl
 import Link from "next/link";
 import { validateServerRole } from "@/lib/server-role-validation";
 import { Metadata } from "next";
+import { DashboardPageHeader } from "@/components/dashboard/DashboardPageHeader";
+import { ScrollReveal, StaggerGroup } from "@/components/motion/ScrollReveal";
 
 export const metadata: Metadata = {
   title: "Fitness Trainer Dashboard - Strentor",
@@ -49,40 +51,41 @@ export default async function TrainerDashboard() {
 
   return (
     <div className="space-y-8">
-      <div className="flex justify-between items-center">
-        <h2 className="text-3xl font-bold">Trainer Dashboard</h2>
-      </div>
+      <DashboardPageHeader title="Trainer Dashboard" />
 
-      <div className="grid gap-4 md:grid-cols-3">
+      <StaggerGroup className="grid gap-4 md:grid-cols-3">
         {stats.map((stat) => (
-          <Card key={stat.title}>
-            <CardContent className="p-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm font-medium text-muted-foreground">
-                    {stat.title}
-                  </p>
-                  <h3 className="text-2xl font-bold">{stat.value}</h3>
+          <ScrollReveal key={stat.title}>
+            <Card interactive>
+              <CardContent className="p-6">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm font-medium text-muted-foreground">
+                      {stat.title}
+                    </p>
+                    <h3 className="text-2xl font-bold">{stat.value}</h3>
+                  </div>
+                  <stat.icon className="h-8 w-8 text-muted-foreground" />
                 </div>
-                <stat.icon className="h-8 w-8 text-muted-foreground" />
-              </div>
-              <p
-                className={`text-sm mt-2 ${
-                  stat.changeType === "positive"
-                    ? "text-green-500"
-                    : stat.changeType === "negative"
-                    ? "text-red-500"
-                    : "text-muted-foreground"
-                }`}
-              >
-                {stat.change}
-              </p>
-            </CardContent>
-          </Card>
+                <p
+                  className={`text-sm mt-2 ${
+                    stat.changeType === "positive"
+                      ? "text-green-500"
+                      : stat.changeType === "negative"
+                      ? "text-red-500"
+                      : "text-muted-foreground"
+                  }`}
+                >
+                  {stat.change}
+                </p>
+              </CardContent>
+            </Card>
+          </ScrollReveal>
         ))}
-      </div>
+      </StaggerGroup>
 
-      <div className="grid gap-4 md:grid-cols-2">
+      <StaggerGroup className="grid gap-4 md:grid-cols-2">
+        <ScrollReveal>
         <Card>
           <CardContent className="p-6">
             <div className="flex justify-between items-center mb-4">
@@ -143,7 +146,9 @@ export default async function TrainerDashboard() {
             )}
           </CardContent>
         </Card>
+        </ScrollReveal>
 
+        <ScrollReveal delay={0.08}>
         <Card>
           <CardContent className="p-6">
             <div className="flex justify-between items-center mb-4">
@@ -184,8 +189,10 @@ export default async function TrainerDashboard() {
             )}
           </CardContent>
         </Card>
+        </ScrollReveal>
 
         {/* Ongoing Plans Card */}
+        <ScrollReveal delay={0.16}>
         <Card>
           <CardContent className="p-6">
             <div className="flex justify-between items-center mb-4">
@@ -249,12 +256,16 @@ export default async function TrainerDashboard() {
             )}
           </CardContent>
         </Card>
-      </div>
+        </ScrollReveal>
+      </StaggerGroup>
 
       {/* Newly Assigned Clients Card */}
-      <NewlyAssignedClientsCard clients={dashboardData.newlyAssignedClients} />
+      <ScrollReveal>
+        <NewlyAssignedClientsCard clients={dashboardData.newlyAssignedClients} />
+      </ScrollReveal>
 
       {/* Recent Client PRs Card */}
+      <ScrollReveal>
       <Card>
         <CardContent className="p-6">
           <div className="flex justify-between items-center mb-6">
@@ -331,6 +342,7 @@ export default async function TrainerDashboard() {
           )}
         </CardContent>
       </Card>
+      </ScrollReveal>
     </div>
   );
-} 
+}

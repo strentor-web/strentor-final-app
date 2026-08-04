@@ -2,6 +2,8 @@ import { Metadata } from "next"
 import { validateServerRole } from "@/lib/server-role-validation"
 import prisma from "@/utils/prisma/prismaClient"
 import { TIER_LABELS, SEGMENT_LABELS, PppTier } from "@/utils/pppPricing"
+import { DashboardPageHeader } from "@/components/dashboard/DashboardPageHeader"
+import { ScrollReveal } from "@/components/motion/ScrollReveal"
 
 export const metadata: Metadata = {
   title: "Pricing Analytics - Admin - Strentor",
@@ -111,15 +113,12 @@ export default async function PricingAnalyticsPage() {
 
   return (
     <div className="container space-y-10 py-8">
-      <div>
-        <h1 className="text-4xl font-bold tracking-tight">Pricing Analytics</h1>
-        <p className="mt-1 text-xl text-muted-foreground">
-          Computed directly from real checkout attempts, Lifetime purchases, and active subscriptions — not a
-          projection or an external analytics tool.
-        </p>
-      </div>
+      <DashboardPageHeader
+        title="Pricing Analytics"
+        description="Computed directly from real checkout attempts, Lifetime purchases, and active subscriptions — not a projection or an external analytics tool."
+      />
 
-      <section className="space-y-4">
+      <ScrollReveal as="section" className="space-y-4">
         <h2 className="text-2xl font-bold">Checkout Funnel</h2>
         <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
           <StatCard label="Total Attempts" value={totalAttempts.toLocaleString()} />
@@ -145,9 +144,9 @@ export default async function PricingAnalyticsPage() {
             </tbody>
           </table>
         </div>
-      </section>
+      </ScrollReveal>
 
-      <section className="space-y-4">
+      <ScrollReveal as="section" className="space-y-4">
         <h2 className="text-2xl font-bold">Revenue</h2>
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
           <div className="rounded-xl border border-border bg-card p-5">
@@ -176,9 +175,9 @@ export default async function PricingAnalyticsPage() {
             </p>
           </div>
         </div>
-      </section>
+      </ScrollReveal>
 
-      <section className="space-y-4">
+      <ScrollReveal as="section" className="space-y-4">
         <h2 className="text-2xl font-bold">By Payment Provider</h2>
         <div className="overflow-x-auto rounded-xl border border-border">
           <table className="w-full text-left text-sm">
@@ -205,9 +204,9 @@ export default async function PricingAnalyticsPage() {
             </tbody>
           </table>
         </div>
-      </section>
+      </ScrollReveal>
 
-      <section className="space-y-4">
+      <ScrollReveal as="section" className="space-y-4">
         <h2 className="text-2xl font-bold">By Pricing Tier (active subscriptions)</h2>
         <div className="overflow-x-auto rounded-xl border border-border">
           <table className="w-full text-left text-sm">
@@ -232,9 +231,9 @@ export default async function PricingAnalyticsPage() {
             </tbody>
           </table>
         </div>
-      </section>
+      </ScrollReveal>
 
-      <section className="space-y-4">
+      <ScrollReveal as="section" className="space-y-4">
         <h2 className="text-2xl font-bold">By Customer Segment</h2>
         <div className="overflow-x-auto rounded-xl border border-border">
           <table className="w-full text-left text-sm">
@@ -260,9 +259,9 @@ export default async function PricingAnalyticsPage() {
           rather than starting a checkout attempt, so this undercounts real interest — worth tracking separately
           (e.g. a form-submission counter) if sponsorship volume matters to you.
         </p>
-      </section>
+      </ScrollReveal>
 
-      <section className="space-y-4">
+      <ScrollReveal as="section" className="space-y-4">
         <h2 className="text-2xl font-bold">Pricing Changes (Audit Log)</h2>
         <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
           {(["CREATE", "UPDATE", "DELETE", "ROLLBACK"] as const).map((action) => (
@@ -273,7 +272,7 @@ export default async function PricingAnalyticsPage() {
           Every pricing change here is a manual admin action — there is no AI system autonomously changing prices
           in this app; see the Pricing Signals page for statistical, human-reviewed recommendations only.
         </p>
-      </section>
+      </ScrollReveal>
     </div>
   )
 }

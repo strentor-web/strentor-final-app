@@ -29,6 +29,8 @@ import { CommandCenter } from "@/components/dashboard/CommandCenter";
 import { Suspense } from "react";
 import { validateServerRole } from "@/lib/server-role-validation";
 import prisma from "@/utils/prisma/prismaClient";
+import { DashboardPageHeader } from "@/components/dashboard/DashboardPageHeader";
+import { ScrollReveal } from "@/components/motion/ScrollReveal";
 
 function startOfWeek(date: Date): string {
   const d = new Date(Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate()));
@@ -96,16 +98,10 @@ export default async function DashboardPage() {
   return (
     <div className="container py-8 space-y-8">
       {/* Header Section */}
-      <div className="flex justify-between items-center mb-8">
-        <div>
-          <h1 className="text-4xl font-bold tracking-tight">
-            Welcome back, {user.user_metadata.full_name}!
-          </h1>
-          <p className="text-xl text-muted-foreground mt-1">
-            Let&apos;s crush today&apos;s goals! 👊
-          </p>
-        </div>
-      </div>
+      <DashboardPageHeader
+        title={`Welcome back, ${user.user_metadata.full_name}!`}
+        description="Let's crush today's goals! 👊"
+      />
 
       {/* Command Center */}
       <CommandCenter
@@ -115,86 +111,90 @@ export default async function DashboardPage() {
       />
 
       {/* Subscription Status */}
-      <div className="grid grid-cols-1 gap-6 mb-8">
+      <ScrollReveal className="grid grid-cols-1 gap-6 mb-8">
         {hasActiveSubscriptions ? (
           <ActiveSubscriptionCard subscriptions={activeSubscriptions} />
         ) : (
           <NoSubscriptionCard />
         )}
-      </div>
+      </ScrollReveal>
 
       {/* Progress Cards */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         {hasWorkoutPlan ? (
-          <div className="md:col-span-2 border rounded-lg p-6">
-            <h2 className="text-2xl font-bold mb-4">Workout Plan Progress</h2>
+          <ScrollReveal as="div" className="md:col-span-2">
+            <div className="border rounded-lg p-6">
+              <h2 className="text-2xl font-bold mb-4">Workout Plan Progress</h2>
 
-            <div className="grid grid-cols-3 gap-3 mb-4">
-              <div className="rounded-lg bg-primary/5 border border-primary/10 p-3 text-center">
-                <p className="text-2xl font-bold text-primary">
-                  {workoutPlan.progress.currentWeek}
-                  <span className="text-sm font-medium text-muted-foreground">/{workoutPlan.progress.totalWeeks}</span>
-                </p>
-                <p className="text-xs text-muted-foreground mt-1">Current Week</p>
+              <div className="grid grid-cols-3 gap-3 mb-4">
+                <div className="rounded-lg bg-primary/5 border border-primary/10 p-3 text-center">
+                  <p className="text-2xl font-bold text-primary">
+                    {workoutPlan.progress.currentWeek}
+                    <span className="text-sm font-medium text-muted-foreground">/{workoutPlan.progress.totalWeeks}</span>
+                  </p>
+                  <p className="text-xs text-muted-foreground mt-1">Current Week</p>
+                </div>
+                <div className="rounded-lg bg-primary/5 border border-primary/10 p-3 text-center">
+                  <p className="text-2xl font-bold text-primary">{workoutPlan.progress.daysRemaining}</p>
+                  <p className="text-xs text-muted-foreground mt-1">Days Left</p>
+                </div>
+                <div className="rounded-lg bg-primary/5 border border-primary/10 p-3 text-center">
+                  <p className="text-2xl font-bold text-primary">{workoutPlan.progress.progressPercentage}%</p>
+                  <p className="text-xs text-muted-foreground mt-1">Complete</p>
+                </div>
               </div>
-              <div className="rounded-lg bg-primary/5 border border-primary/10 p-3 text-center">
-                <p className="text-2xl font-bold text-primary">{workoutPlan.progress.daysRemaining}</p>
-                <p className="text-xs text-muted-foreground mt-1">Days Left</p>
-              </div>
-              <div className="rounded-lg bg-primary/5 border border-primary/10 p-3 text-center">
-                <p className="text-2xl font-bold text-primary">{workoutPlan.progress.progressPercentage}%</p>
-                <p className="text-xs text-muted-foreground mt-1">Complete</p>
-              </div>
+
+              <Progress value={workoutPlan.progress.progressPercentage} className="h-2" />
             </div>
-
-            <Progress value={workoutPlan.progress.progressPercentage} className="h-2" />
-          </div>
+          </ScrollReveal>
         ) : (
           <NoWorkoutPlanCard />
         )}
 
-        <div className="border rounded-lg p-6">
-          <h2 className="text-2xl font-bold mb-4">Quick Actions</h2>
-          <div className="space-y-3">
-            <Button
-              className="w-full h-12 px-6 rounded-full bg-strentor-red hover:bg-strentor-red/80 transition-all transform hover:scale-105"
-              asChild
-            >
-              <Link href="/settings">
-                <User className="mr-2 h-5 w-5" />
-                Update Profile
-              </Link>
-            </Button>
+        <ScrollReveal delay={0.08} as="div">
+          <div className="border rounded-lg p-6">
+            <h2 className="text-2xl font-bold mb-4">Quick Actions</h2>
+            <div className="space-y-3">
+              <Button
+                className="w-full h-12 px-6 rounded-full bg-strentor-red hover:bg-strentor-red/80 transition-all transform hover:scale-105"
+                asChild
+              >
+                <Link href="/settings">
+                  <User className="mr-2 h-5 w-5" />
+                  Update Profile
+                </Link>
+              </Button>
 
-            <Button
-              className="w-full h-12 px-6 rounded-full bg-strentor-red hover:bg-strentor-red/80 transition-all transform hover:scale-105"
-              asChild
-            >
-              <Link href="/plans">
-                <Dumbbell className="mr-2 h-5 w-5" />
-                Check All Plans
-              </Link>
-            </Button>
+              <Button
+                className="w-full h-12 px-6 rounded-full bg-strentor-red hover:bg-strentor-red/80 transition-all transform hover:scale-105"
+                asChild
+              >
+                <Link href="/plans">
+                  <Dumbbell className="mr-2 h-5 w-5" />
+                  Check All Plans
+                </Link>
+              </Button>
+            </div>
           </div>
-        </div>
+        </ScrollReveal>
       </div>
 
       {/* Upcoming Workouts Section - Full width below */}
       {hasWorkoutPlan && (
-        <div className="border rounded-lg p-6 shadow-sm">
+        <ScrollReveal className="border rounded-lg p-6 shadow-sm">
           <Suspense fallback={<UpcomingWorkoutsLoading />}>
             <UpcomingWorkouts
               planId={workoutPlan.id}
               week={workoutPlan.progress.currentWeek}
             />
           </Suspense>
-        </div>
+        </ScrollReveal>
       )}
 
       {/* Recent PRs and Exercise Progress Carousel Section - Side by side */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Recent PRs Section - Left Side */}
-        <div className="border rounded-lg p-6 shadow-sm">
+        <ScrollReveal className="border rounded-lg p-6 shadow-sm">
           <div className="flex justify-between items-center mb-6">
             <h2 className="text-2xl font-bold">Recent Personal Records</h2>
             <Button asChild variant="outline" size="sm">
@@ -269,17 +269,21 @@ export default async function DashboardPage() {
               description="Complete workouts to start tracking your progress!"
             />
           )}
-        </div>
+        </ScrollReveal>
 
         {/* Exercise Progress Carousel - Right Side */}
-        <ExercisePRCarousel 
-          uniqueExercises={uniqueExercises}
-          allMaxLifts={allMaxLifts}
-        />
+        <ScrollReveal delay={0.08}>
+          <ExercisePRCarousel
+            uniqueExercises={uniqueExercises}
+            allMaxLifts={allMaxLifts}
+          />
+        </ScrollReveal>
       </div>
 
       {/* Progress Graphs */}
-      <ProgressGraphs weightLogs={weightLogs} />
+      <ScrollReveal>
+        <ProgressGraphs weightLogs={weightLogs} />
+      </ScrollReveal>
     </div>
   );
 }
