@@ -132,24 +132,30 @@ export default function ProgramsPage() {
       <div className="relative bg-black py-24 md:py-32">
         <div className="absolute inset-0 bg-gradient-to-br from-[#C9A96A]/10 via-black to-black" />
         <div className="container relative mx-auto px-4 text-center">
-          <span className="text-sm font-bold uppercase tracking-widest text-[#C9A96A]">
-            Programs
-          </span>
-          <h1 className="mt-4 text-4xl font-bold font-display text-white sm:text-5xl md:text-6xl">
-            Coaching matched to your <span className="text-[#C9A96A]">goals and readiness</span>
-          </h1>
-          <p className="mx-auto mt-6 max-w-2xl text-lg text-gray-300 md:text-xl">
-            STRENTOR runs several coaching programs, each built for a different level of support
-            and commitment. The right fit for you is recommended after the Performance Assessment
-            — but here is what exists today.
-          </p>
-          <div className="mt-8">
+          <ScrollReveal direction="none">
+            <span className="text-sm font-bold uppercase tracking-widest text-[#C9A96A]">
+              Programs
+            </span>
+          </ScrollReveal>
+          <ScrollReveal delay={0.1} scale={0.96}>
+            <h1 className="mt-4 text-4xl font-bold font-display text-white sm:text-5xl md:text-6xl">
+              Coaching matched to your <span className="text-[#C9A96A]">goals and readiness</span>
+            </h1>
+          </ScrollReveal>
+          <ScrollReveal delay={0.2}>
+            <p className="mx-auto mt-6 max-w-2xl text-lg text-gray-300 md:text-xl">
+              STRENTOR runs several coaching programs, each built for a different level of support
+              and commitment. The right fit for you is recommended after the Performance Assessment
+              — but here is what exists today.
+            </p>
+          </ScrollReveal>
+          <ScrollReveal delay={0.3} className="mt-8">
             <Button asChild className="h-14 rounded-full bg-[#C9A96A] px-8 hover:bg-[#C9A96A]/90">
               <Link href="/apply-for-access">
                 Take the Performance Assessment
               </Link>
             </Button>
-          </div>
+          </ScrollReveal>
         </div>
       </div>
 

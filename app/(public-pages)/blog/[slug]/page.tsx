@@ -7,6 +7,7 @@ import Header from "@/components/landing/Header"
 import Footer from "@/components/landing/Footer"
 import { Button } from "@/components/ui/button"
 import { getPublishedPostBySlug, getPublishedPosts } from "@/lib/blog"
+import { ScrollReveal } from "@/components/motion/ScrollReveal"
 
 const siteUrl = "https://www.strentor.com"
 
@@ -69,19 +70,21 @@ export default async function BlogPostPage({ params }: PageProps) {
 
       <article className="container mx-auto px-4 py-16 md:py-24">
         <div className="mx-auto max-w-2xl">
-          <p className="text-xs font-semibold uppercase tracking-widest text-[#C9A96A]">
-            {formatDate(post.publishedAt)}
-          </p>
-          <h1 className="mt-3 text-3xl font-bold font-display text-foreground sm:text-4xl md:text-5xl">
-            {post.title}
-          </h1>
-          <p className="mt-4 text-lg text-muted-foreground">{post.excerpt}</p>
+          <ScrollReveal>
+            <p className="text-xs font-semibold uppercase tracking-widest text-[#C9A96A]">
+              {formatDate(post.publishedAt)}
+            </p>
+            <h1 className="mt-3 text-3xl font-bold font-display text-foreground sm:text-4xl md:text-5xl">
+              {post.title}
+            </h1>
+            <p className="mt-4 text-lg text-muted-foreground">{post.excerpt}</p>
+          </ScrollReveal>
 
-          <div className="prose prose-invert prose-headings:font-display prose-a:text-[#C9A96A] mt-10 max-w-none">
+          <ScrollReveal delay={0.1} className="prose prose-invert prose-headings:font-display prose-a:text-[#C9A96A] mt-10 max-w-none">
             <ReactMarkdown remarkPlugins={[remarkGfm]}>{post.content}</ReactMarkdown>
-          </div>
+          </ScrollReveal>
 
-          <div className="mt-16 rounded-2xl border border-[#C9A96A]/30 bg-card p-8 text-center">
+          <ScrollReveal className="mt-16 rounded-2xl border border-[#C9A96A]/30 bg-card p-8 text-center">
             <h2 className="text-xl font-bold text-card-foreground">Ready to build a plan around your goals?</h2>
             <p className="mt-2 text-muted-foreground">
               Start with the Performance Assessment — no diagnosis assumptions, no generic templates.
@@ -96,7 +99,7 @@ export default async function BlogPostPage({ params }: PageProps) {
                 </Button>
               )}
             </div>
-          </div>
+          </ScrollReveal>
 
           <div className="mt-8">
             <Link href="/blog" className="text-sm text-muted-foreground hover:text-[#C9A96A]">

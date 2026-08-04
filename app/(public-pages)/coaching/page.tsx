@@ -23,6 +23,8 @@ import {
   Users,
 } from "lucide-react"
 import Link from "next/link"
+import { ScrollReveal, StaggerGroup } from "@/components/motion/ScrollReveal"
+import { HoverLift } from "@/components/motion/HoverLift"
 
 const includes = [
   {
@@ -201,31 +203,37 @@ export default function CoachingPage() {
       <div className="relative bg-black py-24 md:py-32">
         <div className="absolute inset-0 bg-gradient-to-br from-[#C9A96A]/10 via-black to-black" />
         <div className="container relative mx-auto px-4 text-center">
-          <span className="text-sm font-bold uppercase tracking-widest text-[#C9A96A]">
-            Adaptive Strength Coaching
-          </span>
-          <h1 className="mt-4 text-4xl font-bold font-display text-white sm:text-5xl md:text-6xl">
-            Strength Coaching For <span className="text-[#C9A96A]">Real Bodies</span>, Real Limits, Real Goals
-          </h1>
-          <p className="mx-auto mt-6 max-w-2xl text-lg text-gray-300 md:text-xl">
-            One-on-one adaptive coaching for wheelchair users and people managing chronic health
-            conditions — programmed around your body and your health context, so confidence and
-            discipline build alongside strength, without compromising safety.
-          </p>
-          <div className="mt-8">
+          <ScrollReveal direction="none">
+            <span className="text-sm font-bold uppercase tracking-widest text-[#C9A96A]">
+              Adaptive Strength Coaching
+            </span>
+          </ScrollReveal>
+          <ScrollReveal delay={0.1} scale={0.96}>
+            <h1 className="mt-4 text-4xl font-bold font-display text-white sm:text-5xl md:text-6xl">
+              Strength Coaching For <span className="text-[#C9A96A]">Real Bodies</span>, Real Limits, Real Goals
+            </h1>
+          </ScrollReveal>
+          <ScrollReveal delay={0.2}>
+            <p className="mx-auto mt-6 max-w-2xl text-lg text-gray-300 md:text-xl">
+              One-on-one adaptive coaching for wheelchair users and people managing chronic health
+              conditions — programmed around your body and your health context, so confidence and
+              discipline build alongside strength, without compromising safety.
+            </p>
+          </ScrollReveal>
+          <ScrollReveal delay={0.3} className="mt-8">
             <Button
               asChild
               className="h-14 rounded-full bg-[#C9A96A] px-8 hover:bg-[#C9A96A]/90"
             >
               <Link href="/contact?type=personal">Book Fit Assessment</Link>
             </Button>
-          </div>
+          </ScrollReveal>
         </div>
       </div>
 
       {/* What adaptive coaching includes */}
       <section className="container mx-auto px-4 py-16">
-        <div className="mx-auto max-w-3xl text-center">
+        <ScrollReveal className="mx-auto max-w-3xl text-center">
           <h2 className="text-3xl font-bold font-display text-foreground sm:text-4xl">
             What Adaptive Coaching Includes
           </h2>
@@ -233,50 +241,51 @@ export default function CoachingPage() {
             Every element of the program is built around one idea: strength training that
             respects your body as it is today, and progresses it deliberately from there.
           </p>
-        </div>
-        <div className="mx-auto mt-12 grid max-w-5xl gap-6 sm:grid-cols-2">
+        </ScrollReveal>
+        <StaggerGroup className="mx-auto mt-12 grid max-w-5xl gap-6 sm:grid-cols-2">
           {includes.map((item) => (
-            <div
-              key={item.title}
-              className="flex gap-4 rounded-xl border border-border bg-card p-6 shadow-sm"
-            >
-              <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-[#C9A96A]">
-                <item.icon className="h-5 w-5 text-strentor-black" />
-              </div>
-              <div>
-                <h3 className="text-lg font-bold text-card-foreground">{item.title}</h3>
-                <p className="mt-1 text-muted-foreground">{item.description}</p>
-              </div>
-            </div>
+            <ScrollReveal key={item.title}>
+              <HoverLift className="flex h-full gap-4 rounded-xl border border-border bg-card p-6 shadow-sm transition-colors hover:border-[#C9A96A]/40">
+                <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-[#C9A96A]">
+                  <item.icon className="h-5 w-5 text-strentor-black" />
+                </div>
+                <div>
+                  <h3 className="text-lg font-bold text-card-foreground">{item.title}</h3>
+                  <p className="mt-1 text-muted-foreground">{item.description}</p>
+                </div>
+              </HoverLift>
+            </ScrollReveal>
           ))}
-        </div>
+        </StaggerGroup>
       </section>
 
       {/* Training focus areas */}
       <section className="bg-muted/30 py-16">
         <div className="container mx-auto px-4">
-          <div className="mx-auto max-w-3xl text-center">
+          <ScrollReveal className="mx-auto max-w-3xl text-center">
             <h2 className="text-3xl font-bold font-display text-foreground sm:text-4xl">
               Training Focus Areas
             </h2>
             <p className="mt-4 text-lg font-medium text-muted-foreground">
               Where your program draws its foundation, before it's shaped around your specific goal.
             </p>
-          </div>
-          <div className="mx-auto mt-10 grid max-w-4xl gap-4 sm:grid-cols-2">
+          </ScrollReveal>
+          <StaggerGroup className="mx-auto mt-10 grid max-w-4xl gap-4 sm:grid-cols-2">
             {focusAreas.map((area) => (
-              <div key={area} className="flex items-start gap-3 rounded-lg bg-card p-4 shadow-sm">
-                <Check className="mt-1 h-5 w-5 flex-shrink-0 text-[#C9A96A]" />
-                <span className="font-medium text-card-foreground">{area}</span>
-              </div>
+              <ScrollReveal key={area} as="div">
+                <div className="flex items-start gap-3 rounded-lg bg-card p-4 shadow-sm">
+                  <Check className="mt-1 h-5 w-5 flex-shrink-0 text-[#C9A96A]" />
+                  <span className="font-medium text-card-foreground">{area}</span>
+                </div>
+              </ScrollReveal>
             ))}
-          </div>
+          </StaggerGroup>
         </div>
       </section>
 
       {/* Who coaching is suitable for */}
       <section className="container mx-auto px-4 py-16">
-        <div className="mx-auto max-w-3xl text-center">
+        <ScrollReveal className="mx-auto max-w-3xl text-center">
           <h2 className="text-3xl font-bold font-display text-foreground sm:text-4xl">
             Who Coaching Is Suitable For
           </h2>
@@ -284,42 +293,43 @@ export default function CoachingPage() {
             STRENTOR coaching is built for people navigating real physical circumstances — not as
             a modification of standard fitness, but as its own starting point.
           </p>
-        </div>
-        <div className="mx-auto mt-12 grid max-w-5xl gap-6 sm:grid-cols-2">
+        </ScrollReveal>
+        <StaggerGroup className="mx-auto mt-12 grid max-w-5xl gap-6 sm:grid-cols-2">
           {suitableFor.map((item) => (
-            <div
-              key={item.title}
-              className="rounded-xl border border-border bg-card p-6 shadow-sm"
-            >
-              <h3 className="text-lg font-bold text-card-foreground">{item.title}</h3>
-              <p className="mt-2 text-muted-foreground">{item.description}</p>
-            </div>
+            <ScrollReveal key={item.title}>
+              <HoverLift className="h-full rounded-xl border border-border bg-card p-6 shadow-sm transition-colors hover:border-[#C9A96A]/40">
+                <h3 className="text-lg font-bold text-card-foreground">{item.title}</h3>
+                <p className="mt-2 text-muted-foreground">{item.description}</p>
+              </HoverLift>
+            </ScrollReveal>
           ))}
-        </div>
+        </StaggerGroup>
       </section>
 
       {/* Health-respecting principles */}
       <section className="bg-black py-16 text-white">
         <div className="container mx-auto px-4">
-          <div className="mx-auto max-w-3xl text-center">
+          <ScrollReveal className="mx-auto max-w-3xl text-center">
             <h2 className="text-3xl font-bold font-display sm:text-4xl">
               Health-Respecting <span className="text-[#C9A96A]">Coaching Principles</span>
             </h2>
-          </div>
-          <div className="mx-auto mt-10 max-w-3xl space-y-4">
+          </ScrollReveal>
+          <StaggerGroup className="mx-auto mt-10 max-w-3xl space-y-4">
             {principles.map((principle) => (
-              <div key={principle} className="flex items-start gap-3 rounded-lg bg-white/5 p-4">
-                <Check className="mt-1 h-5 w-5 flex-shrink-0 text-[#C9A96A]" />
-                <span className="font-medium text-gray-200">{principle}</span>
-              </div>
+              <ScrollReveal key={principle} as="div">
+                <div className="flex items-start gap-3 rounded-lg bg-white/5 p-4">
+                  <Check className="mt-1 h-5 w-5 flex-shrink-0 text-[#C9A96A]" />
+                  <span className="font-medium text-gray-200">{principle}</span>
+                </div>
+              </ScrollReveal>
             ))}
-          </div>
+          </StaggerGroup>
         </div>
       </section>
 
       {/* Safety before intensity */}
       <section className="container mx-auto px-4 py-16">
-        <div className="mx-auto flex max-w-3xl flex-col items-center gap-4 text-center">
+        <ScrollReveal className="mx-auto flex max-w-3xl flex-col items-center gap-4 text-center">
           <ShieldAlert className="h-10 w-10 text-[#C9A96A]" />
           <h2 className="text-3xl font-bold font-display text-foreground sm:text-4xl">
             Safety Before Intensity
@@ -330,34 +340,36 @@ export default function CoachingPage() {
             fatigue, or how your body is responding that week, it gets scaled back — no exceptions,
             no pushing through. Progress that costs your health isn't progress.
           </p>
-        </div>
+        </ScrollReveal>
       </section>
 
       {/* Coaching process */}
       <section className="bg-muted/30 py-16">
         <div className="container mx-auto px-4">
-          <div className="mx-auto max-w-3xl text-center">
+          <ScrollReveal className="mx-auto max-w-3xl text-center">
             <h2 className="text-3xl font-bold font-display text-foreground sm:text-4xl">
               How Coaching Works
             </h2>
-          </div>
-          <div className="mx-auto mt-12 max-w-3xl space-y-6">
+          </ScrollReveal>
+          <StaggerGroup className="mx-auto mt-12 max-w-3xl space-y-6">
             {process.map((item) => (
-              <div key={item.step} className="flex gap-5 rounded-xl border border-border bg-card p-6 shadow-sm">
-                <span className="text-2xl font-bold text-[#C9A96A]">{item.step}</span>
-                <div>
-                  <h3 className="text-lg font-bold text-card-foreground">{item.title}</h3>
-                  <p className="mt-1 text-muted-foreground">{item.description}</p>
+              <ScrollReveal key={item.step} as="div">
+                <div className="flex gap-5 rounded-xl border border-border bg-card p-6 shadow-sm">
+                  <span className="text-2xl font-bold text-[#C9A96A]">{item.step}</span>
+                  <div>
+                    <h3 className="text-lg font-bold text-card-foreground">{item.title}</h3>
+                    <p className="mt-1 text-muted-foreground">{item.description}</p>
+                  </div>
                 </div>
-              </div>
+              </ScrollReveal>
             ))}
-          </div>
+          </StaggerGroup>
         </div>
       </section>
 
       {/* Expected outcomes */}
       <section className="container mx-auto px-4 py-16">
-        <div className="mx-auto max-w-3xl text-center">
+        <ScrollReveal className="mx-auto max-w-3xl text-center">
           <Users className="mx-auto h-10 w-10 text-[#C9A96A]" />
           <h2 className="mt-4 text-3xl font-bold font-display text-foreground sm:text-4xl">
             Expected Outcomes
@@ -374,12 +386,12 @@ export default function CoachingPage() {
               guarantees is a structured, honest, and safety-first process behind every session.
             </p>
           </div>
-        </div>
+        </ScrollReveal>
       </section>
 
       {/* What STRENTOR does not provide */}
       <section className="container mx-auto px-4 pb-16">
-        <div className="mx-auto flex max-w-3xl gap-4 rounded-xl border border-[#C9A96A]/30 bg-[#C9A96A]/5 p-6">
+        <ScrollReveal className="mx-auto flex max-w-3xl gap-4 rounded-xl border border-[#C9A96A]/30 bg-[#C9A96A]/5 p-6">
           <ShieldAlert className="h-6 w-6 flex-shrink-0 text-[#C9A96A]" />
           <div className="text-sm text-muted-foreground">
             <p className="font-bold text-foreground">What STRENTOR does not provide:</p>
@@ -393,15 +405,17 @@ export default function CoachingPage() {
               training program.
             </p>
           </div>
-        </div>
+        </ScrollReveal>
       </section>
 
       {/* FAQ */}
       <section className="container mx-auto px-4 py-16 text-center">
-        <h2 className="mb-8 text-3xl font-bold font-display text-[#C9A96A] sm:text-4xl">
-          Frequently Asked Questions
-        </h2>
-        <div className="mx-auto max-w-3xl">
+        <ScrollReveal>
+          <h2 className="mb-8 text-3xl font-bold font-display text-[#C9A96A] sm:text-4xl">
+            Frequently Asked Questions
+          </h2>
+        </ScrollReveal>
+        <ScrollReveal delay={0.1} className="mx-auto max-w-3xl">
           <Accordion type="single" collapsible className="w-full">
             {faqs.map((faq, index) => (
               <AccordionItem key={index} value={`item-${index}`}>
@@ -414,12 +428,12 @@ export default function CoachingPage() {
               </AccordionItem>
             ))}
           </Accordion>
-        </div>
+        </ScrollReveal>
       </section>
 
       {/* Final CTA */}
       <section className="bg-black py-20">
-        <div className="container mx-auto px-4 text-center">
+        <ScrollReveal className="container mx-auto px-4 text-center">
           <h2 className="text-3xl font-bold font-display text-white sm:text-4xl">
             Start With A <span className="text-[#C9A96A]">Fit Assessment</span>
           </h2>
@@ -438,7 +452,7 @@ export default function CoachingPage() {
               </Link>
             </Button>
           </div>
-        </div>
+        </ScrollReveal>
       </section>
 
       <Footer />

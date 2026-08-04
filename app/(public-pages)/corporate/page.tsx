@@ -27,6 +27,8 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { TrackedLink } from "@/components/analytics/TrackedLink";
+import { ScrollReveal, StaggerGroup } from "@/components/motion/ScrollReveal";
+import { HoverLift } from "@/components/motion/HoverLift";
 
 const designedForOrganizations = [
   {
@@ -279,19 +281,25 @@ export default function CorporatePage() {
       <div className="relative bg-black py-24 md:py-32">
         <div className="absolute inset-0 bg-gradient-to-br from-[#C9A96A]/10 via-black to-black" />
         <div className="container relative mx-auto px-4 text-center">
-          <span className="text-sm font-bold uppercase tracking-widest text-[#C9A96A]">
-            Corporate & CSR Partnerships
-          </span>
-          <h1 className="mt-4 text-4xl font-bold font-display text-white sm:text-5xl md:text-6xl">
-            Adaptive strength programs for{" "}
-            <span className="text-[#C9A96A]">inclusive workplaces and communities</span>
-          </h1>
-          <p className="mx-auto mt-6 max-w-2xl text-lg text-gray-300 md:text-xl">
-            STRENTOR helps organizations move beyond awareness activities and build practical,
-            dignity-first transformation programs — focused on strength, confidence, discipline,
-            resilience, participation, and measurable human impact.
-          </p>
-          <div className="mt-8 flex flex-col items-center justify-center gap-4 sm:flex-row">
+          <ScrollReveal direction="none">
+            <span className="text-sm font-bold uppercase tracking-widest text-[#C9A96A]">
+              Corporate & CSR Partnerships
+            </span>
+          </ScrollReveal>
+          <ScrollReveal delay={0.1} scale={0.96}>
+            <h1 className="mt-4 text-4xl font-bold font-display text-white sm:text-5xl md:text-6xl">
+              Adaptive strength programs for{" "}
+              <span className="text-[#C9A96A]">inclusive workplaces and communities</span>
+            </h1>
+          </ScrollReveal>
+          <ScrollReveal delay={0.2}>
+            <p className="mx-auto mt-6 max-w-2xl text-lg text-gray-300 md:text-xl">
+              STRENTOR helps organizations move beyond awareness activities and build practical,
+              dignity-first transformation programs — focused on strength, confidence, discipline,
+              resilience, participation, and measurable human impact.
+            </p>
+          </ScrollReveal>
+          <ScrollReveal delay={0.3} className="mt-8 flex flex-col items-center justify-center gap-4 sm:flex-row">
             <Button size="lg" className="w-full rounded-full bg-[#C9A96A] hover:bg-[#C9A96A]/90 sm:w-auto" asChild>
               <TrackedLink href="/contact?type=corporate" event="corporate_enquiry_intent" eventParams={{ location: "hero" }}>
                 Discuss a Partnership
@@ -306,72 +314,60 @@ export default function CorporatePage() {
             >
               <Link href="/coaching">View Coaching</Link>
             </Button>
-          </div>
+          </ScrollReveal>
         </div>
       </div>
 
       {/* What the partnership creates */}
       <section className="container mx-auto max-w-3xl px-4 py-16 text-center">
-        <h2 className="text-3xl font-bold font-display text-foreground sm:text-4xl">
-          What the Partnership Creates
-        </h2>
+        <ScrollReveal>
+          <h2 className="text-3xl font-bold font-display text-foreground sm:text-4xl">
+            What the Partnership Creates
+          </h2>
+        </ScrollReveal>
         <div className="mt-6 space-y-4 text-left text-lg font-medium text-muted-foreground">
-          <p>
-            Most corporate disability initiatives stop at awareness — a workshop, a poster
-            campaign, a single event marking a day on the calendar. STRENTOR partnerships are
-            built differently: they produce an actual, trackable transformation program for real
-            participants, run by a coach who understands adaptive training from the inside.
-          </p>
-          <p>
-            Every partnership is anchored by Aditya Mandan, a national-level para powerlifter and
-            the founder of STRENTOR, who designs and oversees the program personally. That means
-            your organization isn&apos;t buying a generic wellness vendor package — you&apos;re
-            partnering with a specialist whose own training and coaching methodology were built
-            around the exact population your program is meant to serve.
-          </p>
-          <p>
-            The result is a program that gives participants something concrete — structured
-            coaching, measurable progress, and a genuine sense of capability — while giving your
-            organization something it can point to with confidence in a CSR report, a board
-            update, or an internal comms piece.
-          </p>
-          <p>
-            STRENTOR is deliberately not positioned as a charity initiative or an inspirational
-            campaign. Participants are treated as athletes working toward specific, trackable
-            goals — strength benchmarks, training consistency, functional independence — and the
-            program is run with the same rigor and structure as any premium coaching engagement.
-          </p>
+          {[
+            "Most corporate disability initiatives stop at awareness — a workshop, a poster campaign, a single event marking a day on the calendar. STRENTOR partnerships are built differently: they produce an actual, trackable transformation program for real participants, run by a coach who understands adaptive training from the inside.",
+            "Every partnership is anchored by Aditya Mandan, a national-level para powerlifter and the founder of STRENTOR, who designs and oversees the program personally. That means your organization isn't buying a generic wellness vendor package — you're partnering with a specialist whose own training and coaching methodology were built around the exact population your program is meant to serve.",
+            "The result is a program that gives participants something concrete — structured coaching, measurable progress, and a genuine sense of capability — while giving your organization something it can point to with confidence in a CSR report, a board update, or an internal comms piece.",
+            "STRENTOR is deliberately not positioned as a charity initiative or an inspirational campaign. Participants are treated as athletes working toward specific, trackable goals — strength benchmarks, training consistency, functional independence — and the program is run with the same rigor and structure as any premium coaching engagement.",
+          ].map((paragraph, index) => (
+            <ScrollReveal key={index} delay={index * 0.05} as="div">
+              <p>{paragraph}</p>
+            </ScrollReveal>
+          ))}
         </div>
       </section>
 
       {/* Designed for - two balanced columns */}
       <section className="bg-muted/30 py-16">
         <div className="container mx-auto px-4">
-          <h2 className="mb-10 text-center text-3xl font-bold font-display text-foreground sm:text-4xl">
-            Designed For
-          </h2>
+          <ScrollReveal>
+            <h2 className="mb-10 text-center text-3xl font-bold font-display text-foreground sm:text-4xl">
+              Designed For
+            </h2>
+          </ScrollReveal>
           <div className="mx-auto grid max-w-5xl gap-8 md:grid-cols-2">
             {/* Left column: who it's for */}
             <div>
               <h3 className="mb-4 text-sm font-bold uppercase tracking-widest text-[#C9A96A]">
                 Who We Partner With
               </h3>
-              <div className="space-y-4">
+              <StaggerGroup className="space-y-4">
                 {designedForOrganizations.map((item) => (
-                  <div
-                    key={item.title}
-                    className="flex gap-4 rounded-xl border border-border bg-card p-6 shadow-sm"
-                  >
-                    <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-[#C9A96A]">
-                      <item.icon className="h-5 w-5 text-strentor-black" />
-                    </div>
-                    <div>
-                      <h4 className="text-lg font-bold text-card-foreground">{item.title}</h4>
-                      <p className="mt-1 text-muted-foreground">{item.description}</p>
-                    </div>
-                  </div>
+                  <ScrollReveal key={item.title} as="div">
+                    <HoverLift className="flex gap-4 rounded-xl border border-border bg-card p-6 shadow-sm transition-colors hover:border-[#C9A96A]/40">
+                      <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-[#C9A96A]">
+                        <item.icon className="h-5 w-5 text-strentor-black" />
+                      </div>
+                      <div>
+                        <h4 className="text-lg font-bold text-card-foreground">{item.title}</h4>
+                        <p className="mt-1 text-muted-foreground">{item.description}</p>
+                      </div>
+                    </HoverLift>
+                  </ScrollReveal>
                 ))}
-              </div>
+              </StaggerGroup>
             </div>
 
             {/* Right column: what it delivers */}
@@ -379,22 +375,21 @@ export default function CorporatePage() {
               <h3 className="mb-4 text-sm font-bold uppercase tracking-widest text-[#C9A96A]">
                 What Every Partnership Includes
               </h3>
-              <div className="space-y-4">
+              <StaggerGroup className="space-y-4">
                 {designedForOutcomes.map((item) => (
-                  <div
-                    key={item.title}
-                    className="flex gap-4 rounded-xl border border-border bg-card p-6 shadow-sm"
-                  >
-                    <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-[#C9A96A]">
-                      <item.icon className="h-5 w-5 text-strentor-black" />
-                    </div>
-                    <div>
-                      <h4 className="text-lg font-bold text-card-foreground">{item.title}</h4>
-                      <p className="mt-1 text-muted-foreground">{item.description}</p>
-                    </div>
-                  </div>
+                  <ScrollReveal key={item.title} as="div">
+                    <HoverLift className="flex gap-4 rounded-xl border border-border bg-card p-6 shadow-sm transition-colors hover:border-[#C9A96A]/40">
+                      <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-[#C9A96A]">
+                        <item.icon className="h-5 w-5 text-strentor-black" />
+                      </div>
+                      <div>
+                        <h4 className="text-lg font-bold text-card-foreground">{item.title}</h4>
+                        <p className="mt-1 text-muted-foreground">{item.description}</p>
+                      </div>
+                    </HoverLift>
+                  </ScrollReveal>
                 ))}
-              </div>
+              </StaggerGroup>
             </div>
           </div>
         </div>
@@ -402,147 +397,167 @@ export default function CorporatePage() {
 
       {/* What STRENTOR delivers */}
       <section className="container mx-auto px-4 py-16">
-        <h2 className="mb-4 text-center text-3xl font-bold font-display text-foreground sm:text-4xl">
-          What STRENTOR Delivers
-        </h2>
-        <p className="mx-auto mb-10 max-w-2xl text-center text-muted-foreground">
-          A partnership is not a one-off vendor engagement — it is a working relationship with a
-          coach and a system built to serve your participants for the full length of the program.
-        </p>
-        <div className="mx-auto grid max-w-4xl gap-4 sm:grid-cols-2">
+        <ScrollReveal className="text-center">
+          <h2 className="mb-4 text-3xl font-bold font-display text-foreground sm:text-4xl">
+            What STRENTOR Delivers
+          </h2>
+          <p className="mx-auto mb-10 max-w-2xl text-muted-foreground">
+            A partnership is not a one-off vendor engagement — it is a working relationship with a
+            coach and a system built to serve your participants for the full length of the program.
+          </p>
+        </ScrollReveal>
+        <StaggerGroup className="mx-auto grid max-w-4xl gap-4 sm:grid-cols-2">
           {deliverables.map((item, index) => (
-            <div
-              key={index}
-              className="flex items-start gap-3 rounded-xl border border-border bg-card p-4 shadow-sm"
-            >
-              <div className="mt-0.5 flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full bg-[#C9A96A]">
-                <Check className="h-3.5 w-3.5 text-strentor-black" />
+            <ScrollReveal key={index} as="div">
+              <div className="flex items-start gap-3 rounded-xl border border-border bg-card p-4 shadow-sm">
+                <div className="mt-0.5 flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full bg-[#C9A96A]">
+                  <Check className="h-3.5 w-3.5 text-strentor-black" />
+                </div>
+                <span className="text-sm font-medium text-card-foreground">{item}</span>
               </div>
-              <span className="text-sm font-medium text-card-foreground">{item}</span>
-            </div>
+            </ScrollReveal>
           ))}
-        </div>
+        </StaggerGroup>
       </section>
 
       {/* Corporate impact */}
       <section className="bg-muted/30 py-16">
         <div className="container mx-auto px-4">
-          <h2 className="mb-4 text-center text-3xl font-bold font-display text-foreground sm:text-4xl">
-            Corporate Impact
-          </h2>
-          <p className="mx-auto mb-10 max-w-2xl text-center text-muted-foreground">
-            A well-run partnership creates value on more than one level — for the individuals in
-            the program, for the organization funding it, and for the culture around it.
-          </p>
-          <div className="mx-auto grid max-w-5xl gap-6 sm:grid-cols-2">
+          <ScrollReveal className="text-center">
+            <h2 className="mb-4 text-3xl font-bold font-display text-foreground sm:text-4xl">
+              Corporate Impact
+            </h2>
+            <p className="mx-auto mb-10 max-w-2xl text-muted-foreground">
+              A well-run partnership creates value on more than one level — for the individuals in
+              the program, for the organization funding it, and for the culture around it.
+            </p>
+          </ScrollReveal>
+          <StaggerGroup className="mx-auto grid max-w-5xl gap-6 sm:grid-cols-2">
             {corporateImpact.map((item) => (
-              <div key={item.title} className="rounded-xl border border-border bg-card p-6 shadow-sm">
-                <h3 className="text-lg font-bold text-card-foreground">{item.title}</h3>
-                <p className="mt-2 text-muted-foreground">{item.description}</p>
-              </div>
+              <ScrollReveal key={item.title}>
+                <HoverLift className="h-full rounded-xl border border-border bg-card p-6 shadow-sm transition-colors hover:border-[#C9A96A]/40">
+                  <h3 className="text-lg font-bold text-card-foreground">{item.title}</h3>
+                  <p className="mt-2 text-muted-foreground">{item.description}</p>
+                </HoverLift>
+              </ScrollReveal>
             ))}
-          </div>
+          </StaggerGroup>
         </div>
       </section>
 
       {/* Program outcomes */}
       <section className="container mx-auto max-w-3xl px-4 py-16">
-        <h2 className="mb-4 text-center text-3xl font-bold font-display text-foreground sm:text-4xl">
-          Program Outcomes
-        </h2>
-        <p className="mb-8 text-center text-muted-foreground">
-          Every cycle is designed to end with outcomes your organization can point to, not just
-          activity your organization can describe.
-        </p>
-        <div className="space-y-4">
+        <ScrollReveal className="text-center">
+          <h2 className="mb-4 text-3xl font-bold font-display text-foreground sm:text-4xl">
+            Program Outcomes
+          </h2>
+          <p className="mb-8 text-muted-foreground">
+            Every cycle is designed to end with outcomes your organization can point to, not just
+            activity your organization can describe.
+          </p>
+        </ScrollReveal>
+        <StaggerGroup className="space-y-4">
           {programOutcomes.map((item, index) => (
-            <div key={index} className="flex items-start gap-3">
-              <div className="mt-0.5 flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full bg-[#C9A96A]">
-                <Check className="h-3.5 w-3.5 text-strentor-black" />
+            <ScrollReveal key={index} as="div">
+              <div className="flex items-start gap-3">
+                <div className="mt-0.5 flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full bg-[#C9A96A]">
+                  <Check className="h-3.5 w-3.5 text-strentor-black" />
+                </div>
+                <span className="font-medium text-muted-foreground">{item}</span>
               </div>
-              <span className="font-medium text-muted-foreground">{item}</span>
-            </div>
+            </ScrollReveal>
           ))}
-        </div>
+        </StaggerGroup>
       </section>
 
       {/* Program formats */}
       <section className="bg-muted/30 py-16">
         <div className="container mx-auto px-4">
-          <h2 className="mb-4 text-center text-3xl font-bold font-display text-foreground sm:text-4xl">
-            Program Formats
-          </h2>
-          <p className="mx-auto mb-10 max-w-2xl text-center text-muted-foreground">
-            Partnerships are built modularly — most organizations combine two or three of these
-            formats into a single program.
-          </p>
-          <div className="mx-auto grid max-w-6xl gap-6 sm:grid-cols-2 lg:grid-cols-4">
+          <ScrollReveal className="text-center">
+            <h2 className="mb-4 text-3xl font-bold font-display text-foreground sm:text-4xl">
+              Program Formats
+            </h2>
+            <p className="mx-auto mb-10 max-w-2xl text-muted-foreground">
+              Partnerships are built modularly — most organizations combine two or three of these
+              formats into a single program.
+            </p>
+          </ScrollReveal>
+          <StaggerGroup className="mx-auto grid max-w-6xl gap-6 sm:grid-cols-2 lg:grid-cols-4">
             {programFormats.map((format) => (
-              <div
-                key={format.title}
-                className="flex flex-col gap-3 rounded-xl border border-border bg-card p-6 shadow-sm"
-              >
-                <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[#C9A96A]">
-                  <format.icon className="h-5 w-5 text-strentor-black" />
-                </div>
-                <h3 className="text-base font-bold text-card-foreground">{format.title}</h3>
-                <p className="text-sm text-muted-foreground">{format.description}</p>
-              </div>
+              <ScrollReveal key={format.title}>
+                <HoverLift className="flex h-full flex-col gap-3 rounded-xl border border-border bg-card p-6 shadow-sm transition-colors hover:border-[#C9A96A]/40">
+                  <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[#C9A96A]">
+                    <format.icon className="h-5 w-5 text-strentor-black" />
+                  </div>
+                  <h3 className="text-base font-bold text-card-foreground">{format.title}</h3>
+                  <p className="text-sm text-muted-foreground">{format.description}</p>
+                </HoverLift>
+              </ScrollReveal>
             ))}
-          </div>
+          </StaggerGroup>
         </div>
       </section>
 
       {/* Measurement and reporting */}
       <section className="container mx-auto px-4 py-16">
-        <h2 className="mb-4 text-center text-3xl font-bold font-display text-foreground sm:text-4xl">
-          Measurement & Reporting
-        </h2>
-        <p className="mx-auto mb-10 max-w-2xl text-center text-muted-foreground">
-          Every partnership is tracked from the first session to the final report — not measured
-          only by attendance, but by documented individual and cohort-level progress.
-        </p>
-        <div className="mx-auto max-w-3xl space-y-4">
+        <ScrollReveal className="text-center">
+          <h2 className="mb-4 text-3xl font-bold font-display text-foreground sm:text-4xl">
+            Measurement & Reporting
+          </h2>
+          <p className="mx-auto mb-10 max-w-2xl text-muted-foreground">
+            Every partnership is tracked from the first session to the final report — not measured
+            only by attendance, but by documented individual and cohort-level progress.
+          </p>
+        </ScrollReveal>
+        <StaggerGroup className="mx-auto max-w-3xl space-y-4">
           {measurementPoints.map((point, index) => (
-            <div key={point.title} className="flex gap-4 rounded-xl border border-border bg-card p-5 shadow-sm">
-              <span className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-[#C9A96A]/10 text-sm font-bold text-[#C9A96A]">
-                {index + 1}
-              </span>
-              <div>
-                <h3 className="font-bold text-card-foreground">{point.title}</h3>
-                <p className="mt-1 text-sm text-muted-foreground">{point.description}</p>
+            <ScrollReveal key={point.title} as="div">
+              <div className="flex gap-4 rounded-xl border border-border bg-card p-5 shadow-sm">
+                <span className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-[#C9A96A]/10 text-sm font-bold text-[#C9A96A]">
+                  {index + 1}
+                </span>
+                <div>
+                  <h3 className="font-bold text-card-foreground">{point.title}</h3>
+                  <p className="mt-1 text-sm text-muted-foreground">{point.description}</p>
+                </div>
               </div>
-            </div>
+            </ScrollReveal>
           ))}
-        </div>
+        </StaggerGroup>
       </section>
 
       {/* Partnership process */}
       <section className="bg-muted/30 py-16">
         <div className="container mx-auto px-4">
-          <h2 className="mb-10 text-center text-3xl font-bold font-display text-foreground sm:text-4xl">
-            Partnership Process
-          </h2>
-          <div className="mx-auto grid max-w-5xl gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          <ScrollReveal>
+            <h2 className="mb-10 text-center text-3xl font-bold font-display text-foreground sm:text-4xl">
+              Partnership Process
+            </h2>
+          </ScrollReveal>
+          <StaggerGroup className="mx-auto grid max-w-5xl gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {partnershipProcess.map((item) => (
-              <div key={item.step} className="rounded-xl border border-border bg-card p-6 shadow-sm">
-                <span className="text-3xl font-bold font-display text-[#C9A96A]/40">
-                  {item.step}
-                </span>
-                <h3 className="mt-2 text-lg font-bold text-card-foreground">{item.title}</h3>
-                <p className="mt-1 text-sm text-muted-foreground">{item.description}</p>
-              </div>
+              <ScrollReveal key={item.step}>
+                <HoverLift className="h-full rounded-xl border border-border bg-card p-6 shadow-sm transition-colors hover:border-[#C9A96A]/40">
+                  <span className="text-3xl font-bold font-display text-[#C9A96A]/40">
+                    {item.step}
+                  </span>
+                  <h3 className="mt-2 text-lg font-bold text-card-foreground">{item.title}</h3>
+                  <p className="mt-1 text-sm text-muted-foreground">{item.description}</p>
+                </HoverLift>
+              </ScrollReveal>
             ))}
-          </div>
+          </StaggerGroup>
         </div>
       </section>
 
       {/* FAQ */}
       <section className="container mx-auto px-4 py-16 text-center">
-        <h2 className="mb-8 text-3xl font-bold font-display text-[#C9A96A] sm:text-4xl">
-          Frequently Asked Questions
-        </h2>
-        <div className="mx-auto max-w-3xl">
+        <ScrollReveal>
+          <h2 className="mb-8 text-3xl font-bold font-display text-[#C9A96A] sm:text-4xl">
+            Frequently Asked Questions
+          </h2>
+        </ScrollReveal>
+        <ScrollReveal delay={0.1} className="mx-auto max-w-3xl">
           <Accordion type="single" collapsible className="w-full">
             {faqs.map((faq, index) => (
               <AccordionItem key={index} value={`item-${index}`}>
@@ -555,13 +570,13 @@ export default function CorporatePage() {
               </AccordionItem>
             ))}
           </Accordion>
-        </div>
+        </ScrollReveal>
       </section>
 
       {/* Final CTA */}
       <section className="relative bg-black py-20">
         <div className="absolute inset-0 bg-gradient-to-br from-[#C9A96A]/10 via-black to-black" />
-        <div className="container relative mx-auto px-4 text-center">
+        <ScrollReveal className="container relative mx-auto px-4 text-center">
           <h2 className="text-3xl font-bold font-display text-white sm:text-4xl">
             Ready to build a program that creates{" "}
             <span className="text-[#C9A96A]">real, measurable impact?</span>
@@ -586,7 +601,7 @@ export default function CorporatePage() {
               <Link href="/coaching">View Coaching</Link>
             </Button>
           </div>
-        </div>
+        </ScrollReveal>
       </section>
 
       <Footer />

@@ -7,6 +7,7 @@ import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { BadgeCheck, Minus, Plus } from "lucide-react";
 import Image from "next/image";
+import { ScrollReveal } from "@/components/motion/ScrollReveal";
 import { PricingHeader } from "@/components/subscription/PricingHeader";
 import { useRouter } from "next/navigation";
 import { useCountryTier } from "@/hooks/useCountryTier";
@@ -220,12 +221,12 @@ export default function Pricing() {
         )}
 
         {/* Pricing Cards Grid */}
-        <div className="grid grid-cols-1 max-w-sm mx-auto mt-10">
+        <ScrollReveal className="grid grid-cols-1 max-w-sm mx-auto mt-10">
           {Object.entries(pricingData).map(([category, plan]) => {
             const isAllInOne = category === 'ALL_IN_ONE';
-            
+
             return (
-              <Card 
+              <Card
                 key={category}
                 className={`h-full flex flex-col overflow-hidden rounded-2xl border p-6 shadow bg-background ${getCategoryBorderClass(category)} ${
                   isAllInOne ? 'ring-2 ring-[#C9A96A] bg-gradient-to-br from-[#C9A96A]/10 to-[#EDE0C8]/10' : ''
@@ -317,7 +318,7 @@ export default function Pricing() {
               </Card>
             );
           })}
-        </div>
+        </ScrollReveal>
       </div>
     </div>
   );
