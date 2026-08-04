@@ -29,6 +29,7 @@ export function ExercisesTable({ filters, onFiltersChange, onEditExercise }: Exe
   const [totalCount, setTotalCount] = useState(0);
   const [totalPages, setTotalPages] = useState(0);
   const [loading, setLoading] = useState(true);
+  const [fetchError, setFetchError] = useState<string | null>(null);
   
   const [sorting, setSorting] = useState<SortingState>([
     { id: "name", desc: false },
@@ -59,11 +60,16 @@ export function ExercisesTable({ filters, onFiltersChange, onEditExercise }: Exe
           setExercises(result.data.exercises);
           setTotalCount(result.data.totalCount);
           setTotalPages(result.data.totalPages);
+          setFetchError(null);
         } else {
           console.error("Failed to fetch exercises:", result.error);
+          setExercises([]);
+          setFetchError(result.error || "Failed to fetch exercises.");
         }
       } catch (error) {
         console.error("Error fetching exercises:", error);
+        setExercises([]);
+        setFetchError("Failed to fetch exercises. Please try again.");
       } finally {
         setLoading(false);
       }
@@ -138,7 +144,13 @@ export function ExercisesTable({ filters, onFiltersChange, onEditExercise }: Exe
           ))}
         </TableHeader>
         <TableBody>
-          {table.getRowModel().rows?.length ? (
+          {fetchError ? (
+            <TableRow>
+              <td colSpan={columns.length} className="h-24 text-center text-destructive">
+                {fetchError}
+              </td>
+            </TableRow>
+          ) : table.getRowModel().rows?.length ? (
             table.getRowModel().rows.map((row) => (
               <TableRow key={row.id} data-state={row.getIsSelected() && "selected"}>
                 {row.getVisibleCells().map((cell) => (
