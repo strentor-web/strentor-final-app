@@ -7,6 +7,8 @@ import { UserSignupsChart } from "@/components/admin/user-signups-chart";
 import { validateServerRole } from "@/lib/server-role-validation";
 import { isNextControlFlowError } from "@/utils/next-control-flow-errors";
 import { Metadata } from "next";
+import { DashboardPageHeader } from "@/components/dashboard/DashboardPageHeader";
+import { ScrollReveal, StaggerGroup } from "@/components/motion/ScrollReveal";
 
 export const metadata: Metadata = {
   title: "Admin Dashboard - Strentor",
@@ -64,118 +66,122 @@ export default async function AdminPage() {
 
   return (
     <div className="space-y-8 w-full">
-      <div className="flex items-center">
-        <h2 className="text-3xl font-bold">Admin Dashboard</h2>
-      </div>
+      <DashboardPageHeader title="Admin Dashboard" description="Platform overview and growth metrics" />
 
-      <div className="grid gap-4 md:grid-cols-2">
+      <StaggerGroup className="grid gap-4 md:grid-cols-2">
         {stats.map((stat) => (
-          <Card key={stat.title}>
-            <CardContent className="p-6">
-              <div className="flex items-center">
-                <div className="flex-1">
-                  <p className="text-sm font-medium text-muted-foreground">
-                    {stat.title}
-                  </p>
-                  <h3 className="text-2xl font-bold">{stat.value}</h3>
+          <ScrollReveal key={stat.title}>
+            <Card interactive>
+              <CardContent className="p-6">
+                <div className="flex items-center">
+                  <div className="flex-1">
+                    <p className="text-sm font-medium text-muted-foreground">
+                      {stat.title}
+                    </p>
+                    <h3 className="text-2xl font-bold">{stat.value}</h3>
+                  </div>
+                  <stat.icon className="h-8 w-8 text-muted-foreground flex-shrink-0" />
                 </div>
-                <stat.icon className="h-8 w-8 text-muted-foreground flex-shrink-0" />
+                <div className="flex items-center gap-2 mt-2">
+                  {stat.changeType === "positive" ? (
+                    <ArrowUp className="h-4 w-4 text-green-500" />
+                  ) : stat.changeType === "negative" ? (
+                    <ArrowDown className="h-4 w-4 text-red-500" />
+                  ) : null}
+                  <p
+                    className={`text-sm ${
+                      stat.changeType === "positive"
+                        ? "text-green-500"
+                        : stat.changeType === "negative"
+                        ? "text-red-500"
+                        : "text-muted-foreground"
+                    }`}
+                  >
+                    {stat.change}
+                  </p>
+                </div>
+              </CardContent>
+            </Card>
+          </ScrollReveal>
+        ))}
+      </StaggerGroup>
+
+      {/* Charts Section - User Signups and Recent Sales side by side */}
+      <ScrollReveal className="grid gap-6 md:grid-cols-2">
+        <UserSignupsChart userSignupsData={dashboardData.userSignupsData} />
+        <RecentSalesCard recentSubscriptions={dashboardData.recentSubscriptions} />
+      </ScrollReveal>
+
+      {/* Additional admin-specific content can be added here */}
+      <StaggerGroup className="grid gap-4 md:grid-cols-2">
+        <ScrollReveal>
+          <Card interactive>
+            <CardContent className="p-6">
+              <div className="flex items-center mb-4">
+                <h3 className="text-xl font-semibold">System Overview</h3>
+                <span className="text-sm text-muted-foreground ml-auto">Platform metrics</span>
               </div>
-              <div className="flex items-center gap-2 mt-2">
-                {stat.changeType === "positive" ? (
-                  <ArrowUp className="h-4 w-4 text-green-500" />
-                ) : stat.changeType === "negative" ? (
-                  <ArrowDown className="h-4 w-4 text-red-500" />
-                ) : null}
-                <p
-                  className={`text-sm ${
-                    stat.changeType === "positive"
-                      ? "text-green-500"
-                      : stat.changeType === "negative"
-                      ? "text-red-500"
-                      : "text-muted-foreground"
-                  }`}
-                >
-                  {stat.change}
-                </p>
+              <div className="space-y-4">
+                <div className="flex items-center">
+                  <span className="text-sm text-muted-foreground">Active Subscriptions</span>
+                  <Badge variant="outline" className="ml-auto">{dashboardData.stats.subscribedClients}</Badge>
+                </div>
+                <div className="flex items-center">
+                  <span className="text-sm text-muted-foreground">Total Users</span>
+                  <Badge variant="outline" className="ml-auto">{dashboardData.stats.totalUsers}</Badge>
+                </div>
+                {/* <div className="flex items-center">
+                  <span className="text-sm text-muted-foreground">Monthly Revenue</span>
+                  <Badge variant="outline" className="ml-auto">₹{dashboardData.stats.totalRevenue.toLocaleString()}</Badge>
+                </div> */}
               </div>
             </CardContent>
           </Card>
-        ))}
-      </div>
+        </ScrollReveal>
 
-      {/* Charts Section - User Signups and Recent Sales side by side */}
-      <div className="grid gap-6 md:grid-cols-2">
-        <UserSignupsChart userSignupsData={dashboardData.userSignupsData} />
-        <RecentSalesCard recentSubscriptions={dashboardData.recentSubscriptions} />
-      </div>
-
-      {/* Additional admin-specific content can be added here */}
-      <div className="grid gap-4 md:grid-cols-2">
-        <Card>
-          <CardContent className="p-6">
-            <div className="flex items-center mb-4">
-              <h3 className="text-xl font-semibold">System Overview</h3>
-              <span className="text-sm text-muted-foreground ml-auto">Platform metrics</span>
-            </div>
-            <div className="space-y-4">
-              <div className="flex items-center">
-                <span className="text-sm text-muted-foreground">Active Subscriptions</span>
-                <Badge variant="outline" className="ml-auto">{dashboardData.stats.subscribedClients}</Badge>
+        <ScrollReveal delay={0.08}>
+          <Card interactive>
+            <CardContent className="p-6">
+              <div className="flex items-center mb-4">
+                <h3 className="text-xl font-semibold">Growth Metrics</h3>
+                <span className="text-sm text-muted-foreground ml-auto">Month over month</span>
               </div>
-              <div className="flex items-center">
-                <span className="text-sm text-muted-foreground">Total Users</span>
-                <Badge variant="outline" className="ml-auto">{dashboardData.stats.totalUsers}</Badge>
-              </div>
-              {/* <div className="flex items-center">
-                <span className="text-sm text-muted-foreground">Monthly Revenue</span>
-                <Badge variant="outline" className="ml-auto">₹{dashboardData.stats.totalRevenue.toLocaleString()}</Badge>
-              </div> */}
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardContent className="p-6">
-            <div className="flex items-center mb-4">
-              <h3 className="text-xl font-semibold">Growth Metrics</h3>
-              <span className="text-sm text-muted-foreground ml-auto">Month over month</span>
-            </div>
-            <div className="space-y-4">
-              <div className="flex items-center">
-                <span className="text-sm text-muted-foreground">User Growth</span>
-                <div className="flex items-center gap-2 ml-auto">
-                  {dashboardData.stats.usersChange >= 0 ? (
-                    <ArrowUp className="h-4 w-4 text-green-500" />
-                  ) : (
-                    <ArrowDown className="h-4 w-4 text-red-500" />
-                  )}
-                  <span className={`text-sm font-medium ${
-                    dashboardData.stats.usersChange >= 0 ? "text-green-500" : "text-red-500"
-                  }`}>
-                    {dashboardData.stats.usersChange >= 0 ? '+' : ''}{dashboardData.stats.usersChange}
-                  </span>
+              <div className="space-y-4">
+                <div className="flex items-center">
+                  <span className="text-sm text-muted-foreground">User Growth</span>
+                  <div className="flex items-center gap-2 ml-auto">
+                    {dashboardData.stats.usersChange >= 0 ? (
+                      <ArrowUp className="h-4 w-4 text-green-500" />
+                    ) : (
+                      <ArrowDown className="h-4 w-4 text-red-500" />
+                    )}
+                    <span className={`text-sm font-medium ${
+                      dashboardData.stats.usersChange >= 0 ? "text-green-500" : "text-red-500"
+                    }`}>
+                      {dashboardData.stats.usersChange >= 0 ? '+' : ''}{dashboardData.stats.usersChange}
+                    </span>
+                  </div>
                 </div>
+                {/* <div className="flex items-center">
+                  <span className="text-sm text-muted-foreground">Revenue Growth</span>
+                  <div className="flex items-center gap-2 ml-auto">
+                    {dashboardData.stats.revenueGrowthPercentage >= 0 ? (
+                      <ArrowUp className="h-4 w-4 text-green-500" />
+                    ) : (
+                      <ArrowDown className="h-4 w-4 text-red-500" />
+                    )}
+                    <span className={`text-sm font-medium ${
+                      dashboardData.stats.revenueGrowthPercentage >= 0 ? "text-green-500" : "text-red-500"
+                    }`}>
+                      {dashboardData.stats.revenueGrowthPercentage >= 0 ? '+' : ''}{dashboardData.stats.revenueGrowthPercentage}%
+                    </span>
+                  </div>
+                </div> */}
               </div>
-              {/* <div className="flex items-center">
-                <span className="text-sm text-muted-foreground">Revenue Growth</span>
-                <div className="flex items-center gap-2 ml-auto">
-                  {dashboardData.stats.revenueGrowthPercentage >= 0 ? (
-                    <ArrowUp className="h-4 w-4 text-green-500" />
-                  ) : (
-                    <ArrowDown className="h-4 w-4 text-red-500" />
-                  )}
-                  <span className={`text-sm font-medium ${
-                    dashboardData.stats.revenueGrowthPercentage >= 0 ? "text-green-500" : "text-red-500"
-                  }`}>
-                    {dashboardData.stats.revenueGrowthPercentage >= 0 ? '+' : ''}{dashboardData.stats.revenueGrowthPercentage}%
-                  </span>
-                </div>
-              </div> */}
-            </div>
-          </CardContent>
-        </Card>
-      </div>
+            </CardContent>
+          </Card>
+        </ScrollReveal>
+      </StaggerGroup>
     </div>
   );
 }
