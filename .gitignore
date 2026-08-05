@@ -12,6 +12,10 @@
 /.next/
 /out/
 
+# serwist (regenerated on every `npm run build`, see next.config.js)
+/public/sw.js
+/public/sw.js.map
+
 # production
 /build
 

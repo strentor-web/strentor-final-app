@@ -4,8 +4,9 @@ import "./globals.css";
 import localFont from 'next/font/local';
 import { Playfair_Display } from 'next/font/google';
 import Script from "next/script";
-import { Metadata } from "next";
+import { Metadata, Viewport } from "next";
 import { AnalyticsConsent } from "@/components/consent/AnalyticsConsent";
+import { InstallPrompt } from "@/components/pwa/InstallPrompt";
 
 const siteUrl = "https://www.strentor.com/";
 
@@ -68,9 +69,27 @@ const defaultDescription =
       images: [previewImageUrl],
     },
     icons: {
-      icon: '/favicon.ico',
+      icon: [
+        { url: '/favicon.ico' },
+        { url: '/icons/icon-192x192.png', sizes: '192x192', type: 'image/png' },
+        { url: '/icons/icon-512x512.png', sizes: '512x512', type: 'image/png' },
+      ],
+      apple: [{ url: '/icons/apple-touch-icon.png', sizes: '180x180', type: 'image/png' }],
+    },
+    manifest: '/manifest.webmanifest',
+    appleWebApp: {
+      capable: true,
+      statusBarStyle: 'black-translucent',
+      title: 'STRENTOR',
     },
   }
+
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  viewportFit: 'cover',
+  themeColor: '#0A0A0A',
+}
 
 const organizationJsonLd = {
   "@context": "https://schema.org",
@@ -140,6 +159,7 @@ export default function RootLayout({
           </Providers>
           <Script src="https://checkout.razorpay.com/v1/checkout.js" />
           <AnalyticsConsent />
+          <InstallPrompt />
       </body>
     </html>
   );
