@@ -7,6 +7,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Calculator, Target, Zap, Activity, Scale, User, TrendingUp, TrendingDown, Minus } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { calculateTargets, type FitnessGoal } from "@/utils/nutrition/calculateTargets";
 
 interface MacroCalculatorProps {
   height: number;
@@ -16,126 +17,17 @@ interface MacroCalculatorProps {
   activityLevel: ActivityLevel;
 }
 
-type FitnessGoal = "weight_loss" | "maintenance" | "weight_gain";
-
-interface MacroBreakdown {
-  calories: number;
-  protein: {
-    grams: number;
-    calories: number;
-    percentage: number;
-  };
-  carbs: {
-    grams: number;
-    calories: number;
-    percentage: number;
-  };
-  fats: {
-    grams: number;
-    calories: number;
-    percentage: number;
-  };
-}
-
-export function MacroCalculator({ 
-  height, 
-  gender, 
+export function MacroCalculator({
+  height,
+  gender,
   weight,
   age,
-  activityLevel 
+  activityLevel
 }: MacroCalculatorProps) {
   const [fitnessGoal, setFitnessGoal] = useState<FitnessGoal>("maintenance");
   const [showInfo, setShowInfo] = useState(false);
 
-  // Calculate BMR using Mifflin-St Jeor Equation
-  function calculateBMR(height: number, weight: number, age: number, gender: Gender): number {
-    if (gender === Gender.MALE) {
-      return 10 * weight + 6.25 * height - 5 * age + 5;
-    } else {
-      return 10 * weight + 6.25 * height - 5 * age - 161;
-    }
-  }
-
-  // Activity level multipliers
-  const activityMultipliers = {
-    SEDENTARY: 1.2,
-    LIGHTLY_ACTIVE: 1.375,
-    MODERATELY_ACTIVE: 1.55,
-    VERY_ACTIVE: 1.725,
-    EXTRA_ACTIVE: 1.9
-  };
-
-  // Calculate TDEE (Total Daily Energy Expenditure)
-  function calculateTDEE(bmr: number, activityLevel: ActivityLevel): number {
-    return bmr * activityMultipliers[activityLevel];
-  }
-
-  // Calculate goal-based calories
-  function calculateGoalCalories(tdee: number, goal: FitnessGoal): number {
-    switch (goal) {
-      case "weight_loss":
-        return tdee - 500; // 1 lb per week loss
-      case "weight_gain":
-        return tdee + 500; // 1 lb per week gain
-      case "maintenance":
-      default:
-        return tdee;
-    }
-  }
-
-  // Calculate macro distribution
-  function calculateMacros(calories: number, goal: FitnessGoal): MacroBreakdown {
-    let proteinPercent: number;
-    let carbsPercent: number;
-    let fatsPercent: number;
-
-    switch (goal) {
-      case "weight_loss":
-        proteinPercent = 0.30; // 30%
-        carbsPercent = 0.40;   // 40%
-        fatsPercent = 0.30;    // 30%
-        break;
-      case "weight_gain":
-        proteinPercent = 0.20; // 20%
-        carbsPercent = 0.55;   // 55%
-        fatsPercent = 0.25;    // 25%
-        break;
-      case "maintenance":
-      default:
-        proteinPercent = 0.25; // 25%
-        carbsPercent = 0.45;   // 45%
-        fatsPercent = 0.30;    // 30%
-        break;
-    }
-
-    const proteinCalories = calories * proteinPercent;
-    const carbsCalories = calories * carbsPercent;
-    const fatsCalories = calories * fatsPercent;
-
-    return {
-      calories,
-      protein: {
-        grams: proteinCalories / 4, // 4 calories per gram
-        calories: proteinCalories,
-        percentage: proteinPercent * 100
-      },
-      carbs: {
-        grams: carbsCalories / 4, // 4 calories per gram
-        calories: carbsCalories,
-        percentage: carbsPercent * 100
-      },
-      fats: {
-        grams: fatsCalories / 9, // 9 calories per gram
-        calories: fatsCalories,
-        percentage: fatsPercent * 100
-      }
-    };
-  }
-
-  const bmr = calculateBMR(height, weight, age, gender);
-  const tdee = calculateTDEE(bmr, activityLevel);
-  const goalCalories = calculateGoalCalories(tdee, fitnessGoal);
-  const macros = calculateMacros(goalCalories, fitnessGoal);
+  const { bmr, tdee, macros } = calculateTargets({ height, weight, age, gender, activityLevel, goal: fitnessGoal });
 
   const getActivityLevelName = (level: ActivityLevel): string => {
     switch (level) {

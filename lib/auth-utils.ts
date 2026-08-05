@@ -130,6 +130,7 @@ export function canAccessRoute(
     '/personal-records': ['CLIENT', 'CORPORATE_EMPLOYEE'],
     '/workout-plan': ['CLIENT', 'CORPORATE_EMPLOYEE'],
     '/dashboard': ['CLIENT', 'CORPORATE_EMPLOYEE'],
+    '/nutrition': ['CLIENT', 'CORPORATE_EMPLOYEE'],
     '/refer': ['CLIENT', 'CORPORATE_EMPLOYEE'],
 
     // Company workshops — visible to a corporate account's employees and its admin

@@ -15,6 +15,7 @@ import {
   ClipboardCheck,
   Building2,
   Gift,
+  Apple,
 
 } from "lucide-react";
 import type { UserRole } from "@/types/auth";
@@ -70,6 +71,11 @@ export const clientSidebarMenus: {
       title: "Weekly Reflection",
       url: "/check-in",
       icon: ClipboardCheck,
+    },
+    {
+      title: "Nutrition",
+      url: "/nutrition",
+      icon: Apple,
     },
     {
       title: "Calculators",
