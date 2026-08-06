@@ -42,7 +42,7 @@ export default function Header() {
           </div>
 
           {/* Desktop Navigation — centered in header */}
-          <nav className="hidden xl:flex absolute left-1/2 -translate-x-1/2 space-x-2.5 items-center text-xs font-semibold">
+          <nav className="hidden xl:flex absolute left-1/2 -translate-x-1/2 space-x-2.5 items-center text-xs font-bold">
             {navLinks.map((link) => (
               <Link
                 key={link.href}
@@ -67,7 +67,7 @@ export default function Header() {
             </button>
             <Link
               href="/sign-in"
-              className="hidden text-xs font-semibold text-foreground hover:text-primary transition-colors xl:inline-flex"
+              className="hidden text-xs font-bold text-foreground hover:text-primary transition-colors xl:inline-flex"
             >
               Sign In
             </Link>
@@ -76,7 +76,7 @@ export default function Header() {
 
         {/* Mobile Navigation */}
         {isMenuOpen && (
-          <nav id="mobile-nav" className="xl:hidden py-4 space-y-4 border-t border-border flex flex-col items-center font-semibold bg-background">
+          <nav id="mobile-nav" className="xl:hidden py-4 space-y-4 border-t border-border flex flex-col items-center font-bold bg-background">
             {navLinks.map((link) => (
               <Link
                 key={link.href}

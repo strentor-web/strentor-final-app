@@ -72,7 +72,12 @@ function NewsletterForm() {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="mt-4 flex flex-col gap-2 sm:flex-row">
+    // Stacked at every width, not just below `sm` — the footer grid goes to
+    // 5 columns at `lg` (see HomeFooter below), which narrows this column
+    // to ~200px. A side-by-side input+button doesn't fit there and the
+    // button spills past the container edge; stacking is safe regardless
+    // of how narrow the column gets.
+    <form onSubmit={handleSubmit} className="mt-4 flex flex-col gap-2">
       <input
         type="email"
         required
@@ -80,9 +85,9 @@ function NewsletterForm() {
         onChange={(e) => setEmail(e.target.value)}
         placeholder="Enter your email"
         aria-label="Email address"
-        className="h-10 flex-1 rounded-md border border-white/15 bg-black px-3 text-sm text-white placeholder:text-gray-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C9A96A]"
+        className="h-10 w-full rounded-md border border-white/15 bg-black px-3 text-sm text-white placeholder:text-gray-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C9A96A]"
       />
-      <Button type="submit" className="h-10 rounded-md bg-[#C9A96A] px-5 text-xs font-bold uppercase tracking-widest text-black hover:bg-[#C9A96A]/90">
+      <Button type="submit" className="h-10 w-full rounded-md bg-[#C9A96A] px-5 text-xs font-bold uppercase tracking-widest text-black hover:bg-[#C9A96A]/90">
         Subscribe
       </Button>
     </form>
