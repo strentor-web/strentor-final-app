@@ -10,12 +10,11 @@ import {
   Compass,
   Crown,
   Dumbbell,
-  Globe,
   HeartPulse,
   LineChart,
+  Medal,
   Play,
   Sparkles,
-  User,
   Users,
 } from "lucide-react";
 import { HomeHeader } from "@/components/landing/HomeHeader";
@@ -74,11 +73,12 @@ const whyStrentor = [
   { icon: Compass, label: "Purpose Driven" },
 ];
 
+// Founder-verified results only — no aggregate client stats until STRENTOR
+// has real client data to report.
 const stats = [
-  { icon: Users, value: "500+", label: "Lives Transformed" },
-  { icon: Globe, value: "20+", label: "Countries" },
-  { icon: Sparkles, value: "98%", label: "Client Satisfaction" },
-  { icon: Dumbbell, value: "1000+", label: "Sessions Delivered" },
+  { icon: Medal, value: "10+", label: "Medals — District, State & National" },
+  { icon: Dumbbell, value: "National-Level", label: "Para Powerlifter" },
+  { icon: Award, value: "Certified", label: "Fitness Trainer" },
 ];
 
 export default function Home() {
@@ -156,18 +156,13 @@ export default function Home() {
                 </Button>
               </div>
 
-              <div className="mt-6 flex items-center gap-4">
-                <div className="flex -space-x-3">
-                  {[0, 1, 2, 3].map((i) => (
-                    <div
-                      key={i}
-                      className="flex h-9 w-9 items-center justify-center rounded-full border-2 border-black bg-[#1a1a1a] text-[#C9A96A] ring-1 ring-[#C9A96A]/40"
-                    >
-                      <User className="h-4 w-4" />
-                    </div>
-                  ))}
+              <div className="mt-6 flex items-center gap-3">
+                <div className="flex h-9 w-9 items-center justify-center rounded-full border-2 border-black bg-[#1a1a1a] text-[#C9A96A] ring-1 ring-[#C9A96A]/40">
+                  <Medal className="h-4 w-4" />
                 </div>
-                <span className="text-sm font-semibold text-gray-400">500+ Transformations</span>
+                <span className="text-sm font-semibold text-gray-400">
+                  10+ Medals — National-Level Para Powerlifter
+                </span>
               </div>
             </div>
 
@@ -282,17 +277,17 @@ export default function Home() {
         <div className="container mx-auto px-4">
           <ScrollReveal className="mx-auto max-w-2xl text-center lg:text-left">
             <h2 className="text-3xl font-extrabold text-white sm:text-4xl">
-              Real People. Real Results.
+              Lived Experience. Real Discipline.
               <br />
-              <span className="text-[#C9A96A]">Real Transformations.</span>
+              <span className="text-[#C9A96A]">Real Results.</span>
             </h2>
           </ScrollReveal>
 
           <div className="mt-10 grid gap-8 lg:grid-cols-2 lg:items-center">
-            <StaggerGroup className="grid grid-cols-2 gap-4 sm:grid-cols-4 lg:grid-cols-2">
+            <StaggerGroup className="grid grid-cols-1 gap-4 sm:grid-cols-3 lg:grid-cols-1">
               {stats.map((stat) => (
-                <ScrollReveal key={stat.label} direction="up" className="rounded-2xl border border-white/10 bg-[#101010] p-5 text-center">
-                  <stat.icon className="mx-auto h-6 w-6 text-[#C9A96A]" />
+                <ScrollReveal key={stat.label} direction="up" className="rounded-2xl border border-white/10 bg-[#101010] p-5 text-center lg:text-left">
+                  <stat.icon className="mx-auto h-6 w-6 text-[#C9A96A] lg:mx-0" />
                   <p className="mt-3 text-2xl font-extrabold text-white">{stat.value}</p>
                   <p className="mt-1 text-xs font-bold uppercase tracking-wide text-gray-500">{stat.label}</p>
                 </ScrollReveal>
