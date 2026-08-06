@@ -13,7 +13,6 @@ import {
   HeartPulse,
   LineChart,
   Medal,
-  Play,
   Sparkles,
   Users,
 } from "lucide-react";
@@ -145,15 +144,6 @@ export default function Home() {
                     Start Your Journey <ArrowRight className="h-4 w-4" />
                   </TrackedLink>
                 </Button>
-                <Button
-                  asChild
-                  variant="outline"
-                  className="h-14 rounded-full border-white/20 px-8 text-sm font-bold uppercase tracking-widest text-white transition-transform hover:scale-105 hover:bg-white/5 hover:text-white"
-                >
-                  <Link href="/transformation-stories">
-                    <Play className="h-4 w-4" /> Watch Video
-                  </Link>
-                </Button>
               </div>
 
               <div className="mt-6 flex items-center gap-3">
@@ -283,8 +273,8 @@ export default function Home() {
             </h2>
           </ScrollReveal>
 
-          <div className="mt-10 grid gap-8 lg:grid-cols-2 lg:items-center">
-            <StaggerGroup className="grid grid-cols-1 gap-4 sm:grid-cols-3 lg:grid-cols-1">
+          <div className="mt-10">
+            <StaggerGroup className="grid grid-cols-1 gap-4 sm:grid-cols-3">
               {stats.map((stat) => (
                 <ScrollReveal key={stat.label} direction="up" className="rounded-2xl border border-white/10 bg-[#101010] p-5 text-center lg:text-left">
                   <stat.icon className="mx-auto h-6 w-6 text-[#C9A96A] lg:mx-0" />
@@ -293,28 +283,6 @@ export default function Home() {
                 </ScrollReveal>
               ))}
             </StaggerGroup>
-
-            <ScrollReveal direction="up">
-              <Link
-                href="/transformation-stories"
-                className="group relative block aspect-video overflow-hidden rounded-2xl border border-white/10"
-              >
-                <Image
-                  src="/Aditya-transparent.png"
-                  alt="Watch STRENTOR client transformation stories"
-                  fill
-                  sizes="(min-width: 1024px) 480px, 90vw"
-                  className="object-cover object-top opacity-70 transition-opacity group-hover:opacity-90"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black via-black/30 to-transparent" />
-                <div className="absolute inset-0 flex flex-col items-center justify-center gap-3">
-                  <span className="flex h-16 w-16 items-center justify-center rounded-full bg-[#C9A96A] text-black transition-transform group-hover:scale-110">
-                    <Play className="h-6 w-6" />
-                  </span>
-                  <span className="text-xs font-bold uppercase tracking-widest text-white">Watch Their Stories</span>
-                </div>
-              </Link>
-            </ScrollReveal>
           </div>
         </div>
       </section>
