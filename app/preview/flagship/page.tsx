@@ -7,6 +7,9 @@ import { StatsCounter } from "@/components/landing/flagship/StatsCounter";
 import { FounderStory } from "@/components/landing/flagship/FounderStory";
 import { TestimonialsCarousel } from "@/components/landing/flagship/TestimonialsCarousel";
 import { KnowledgeHub } from "@/components/landing/flagship/KnowledgeHub";
+import { FaqPreview } from "@/components/landing/flagship/FaqPreview";
+import { FinalCta } from "@/components/landing/flagship/FinalCta";
+import { HomeFooter } from "@/components/landing/HomeFooter";
 
 export default function FlagshipPreviewPage() {
   return (
@@ -20,6 +23,9 @@ export default function FlagshipPreviewPage() {
       <FounderStory />
       <TestimonialsCarousel />
       <KnowledgeHub />
+      <FaqPreview />
+      <FinalCta />
+      <HomeFooter />
     </main>
   );
 }
