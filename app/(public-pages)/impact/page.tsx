@@ -148,26 +148,35 @@ export default function ImpactPage() {
         </StaggerGroup>
       </section>
 
-      {/* Case studies in progress */}
+      {/* Case studies */}
       <section className="bg-black py-16">
         <div className="container mx-auto px-4">
           <ScrollReveal>
             <div className="mx-auto flex max-w-3xl flex-col items-center gap-4 rounded-2xl border border-[#C9A96A]/30 bg-[#C9A96A]/5 p-8 text-center">
               <FlaskConical className="h-8 w-8 flex-shrink-0 text-[#C9A96A]" />
               <h2 className="text-2xl font-bold font-display text-white sm:text-3xl">
-                Case Studies in Progress
+                Case Studies
               </h2>
               <p className="text-gray-300">
-                STRENTOR is currently building its first specific wheelchair-user case
-                studies. Detailed stories will be published as they complete the
-                program.
+                Starting point, coaching approach, and where each person is now —
+                including the founder&apos;s own story. More are published as clients
+                complete their programs.
               </p>
-              <Button
-                asChild
-                className="mt-2 h-12 rounded-full bg-[#C9A96A] px-8 transition-transform hover:scale-105 hover:bg-[#C9A96A]/90"
-              >
-                <Link href="/sponsor-a-seat">Sponsor a Seat</Link>
-              </Button>
+              <div className="mt-2 flex flex-wrap justify-center gap-3">
+                <Button
+                  asChild
+                  className="h-12 rounded-full bg-[#C9A96A] px-8 transition-transform hover:scale-105 hover:bg-[#C9A96A]/90"
+                >
+                  <Link href="/transformation-stories">Read the Case Studies</Link>
+                </Button>
+                <Button
+                  asChild
+                  variant="outline"
+                  className="h-12 rounded-full border-white/20 px-8 text-white hover:bg-white/5 hover:text-white"
+                >
+                  <Link href="/sponsor-a-seat">Sponsor a Seat</Link>
+                </Button>
+              </div>
             </div>
           </ScrollReveal>
         </div>

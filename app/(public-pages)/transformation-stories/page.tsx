@@ -2,8 +2,9 @@ import Link from "next/link"
 import Header from "@/components/landing/Header"
 import Footer from "@/components/landing/Footer"
 import { Button } from "@/components/ui/button"
-import { Quote } from "lucide-react"
+import { ArrowRight, Quote } from "lucide-react"
 import { testimonials as staticTestimonials } from "@/data/testimonials"
+import { getPublishedCaseStudies } from "@/lib/caseStudies"
 import { ScrollReveal, StaggerGroup } from "@/components/motion/ScrollReveal"
 import { HoverLift } from "@/components/motion/HoverLift"
 import prisma from "@/utils/prisma/prismaClient"
@@ -50,6 +51,7 @@ async function getStories(): Promise<StoryCard[]> {
 
 export default async function TransformationStoriesPage() {
   const stories = await getStories()
+  const caseStudies = getPublishedCaseStudies()
 
   return (
     <div className="min-h-screen bg-background">
@@ -78,6 +80,44 @@ export default async function TransformationStoriesPage() {
         </div>
       </div>
 
+      {/* Case studies — starting point, coaching approach, and where each
+          person is now. More detail than a testimonial quote, so these get
+          their own cards linking to a full page rather than being folded
+          into the quote grid below. */}
+      {caseStudies.length > 0 && (
+        <section className="container mx-auto px-4 py-16 md:py-24">
+          <ScrollReveal className="mx-auto max-w-2xl text-center">
+            <span className="text-sm font-bold uppercase tracking-widest text-[#C9A96A]">Case Studies</span>
+            <h2 className="mt-3 text-3xl font-bold font-display text-foreground sm:text-4xl">
+              Starting point. Approach. Where they are now.
+            </h2>
+          </ScrollReveal>
+
+          <StaggerGroup className="mx-auto mt-12 grid max-w-5xl gap-6 sm:grid-cols-2">
+            {caseStudies.map((study) => (
+              <ScrollReveal key={study.slug}>
+                <HoverLift tilt={false} className="h-full">
+                  <Link
+                    href={`/transformation-stories/${study.slug}`}
+                    className="flex h-full flex-col gap-3 rounded-2xl border border-border bg-card p-8 transition-colors hover:border-[#C9A96A]"
+                  >
+                    <span className="text-xs font-semibold uppercase tracking-widest text-[#C9A96A]">
+                      {study.role === "Founder" ? "Founder Story" : "Client Story"}
+                    </span>
+                    <h3 className="text-xl font-bold text-card-foreground">{study.name}</h3>
+                    <p className="text-xs font-medium text-muted-foreground">{study.condition}</p>
+                    <p className="flex-1 text-sm text-muted-foreground">{study.excerpt}</p>
+                    <span className="flex items-center gap-2 text-sm font-semibold text-[#C9A96A]">
+                      Read the full story <ArrowRight className="h-4 w-4" />
+                    </span>
+                  </Link>
+                </HoverLift>
+              </ScrollReveal>
+            ))}
+          </StaggerGroup>
+        </section>
+      )}
+
       {/* Testimonial cards */}
       <section className="container mx-auto px-4 py-16 md:py-24">
         <StaggerGroup className="mx-auto grid max-w-5xl gap-6 sm:grid-cols-2 lg:grid-cols-3">
@@ -105,13 +145,10 @@ export default async function TransformationStoriesPage() {
             Have a story of your own?
           </p>
           <p className="mt-2 text-muted-foreground">
-            Detailed transformation stories — starting point, goals, coaching
-            approach, and progress — are coming soon as more clients complete
-            their programs. In the meantime,{" "}
             <Link href="/transformation-stories/share" className="font-semibold text-[#C9A96A] hover:underline">
-              share yours here
-            </Link>
-            .
+              Share it here
+            </Link>{" "}
+            — it'll appear on this page.
           </p>
         </ScrollReveal>
       </section>
