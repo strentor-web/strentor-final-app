@@ -1,6 +1,7 @@
 import { Metadata } from "next";
 import { validateServerRole } from "@/lib/server-role-validation";
 import { ContentDraftForm } from "@/components/admin/content/ContentDraftForm";
+import { SyncCaseStudyTestimonialsButton } from "@/components/admin/content/SyncCaseStudyTestimonialsButton";
 import { DashboardPageHeader } from "@/components/dashboard/DashboardPageHeader";
 import { ScrollReveal } from "@/components/motion/ScrollReveal";
 
@@ -21,6 +22,9 @@ export default async function AdminContentDraftsPage() {
       />
       <ScrollReveal>
         <ContentDraftForm />
+      </ScrollReveal>
+      <ScrollReveal>
+        <SyncCaseStudyTestimonialsButton />
       </ScrollReveal>
     </div>
   );

@@ -2,11 +2,13 @@
 
 import { useState } from "react"
 import { toast } from "sonner"
+import { ChevronDown } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Label } from "@/components/ui/label"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Checkbox } from "@/components/ui/checkbox"
+import { Collapsible, CollapsibleTrigger, CollapsibleContent } from "@/components/ui/collapsible"
 
 export function SiteTestimonialForm() {
   const [name, setName] = useState("")
@@ -18,8 +20,25 @@ export function SiteTestimonialForm() {
   const [website, setWebsite] = useState("")
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [submitted, setSubmitted] = useState(false)
+  const [caseStudyPublished, setCaseStudyPublished] = useState(false)
 
-  const canSubmit = name.trim().length > 0 && testimonial.trim().length >= 20 && consent && !isSubmitting
+  // Optional, additive: a full case study page, generated from these
+  // answers and auto-published — separate from the base testimonial,
+  // which always publishes regardless of whether this section is used.
+  const [wantsCaseStudy, setWantsCaseStudy] = useState(false)
+  const [condition, setCondition] = useState("")
+  const [startingPoint, setStartingPoint] = useState("")
+  const [approach, setApproach] = useState("")
+  const [progress, setProgress] = useState("")
+  const [caseStudyConsent, setCaseStudyConsent] = useState(false)
+
+  const hasCaseStudyContent = !!(startingPoint.trim() || approach.trim() || progress.trim() || condition.trim())
+  const canSubmit =
+    name.trim().length > 0 &&
+    testimonial.trim().length >= 20 &&
+    consent &&
+    !isSubmitting &&
+    (!hasCaseStudyContent || caseStudyConsent)
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
@@ -36,6 +55,11 @@ export function SiteTestimonialForm() {
           consent: true,
           sourcePage: "/transformation-stories/share",
           website,
+          condition: condition.trim() || undefined,
+          startingPoint: startingPoint.trim() || undefined,
+          approach: approach.trim() || undefined,
+          progress: progress.trim() || undefined,
+          caseStudyConsent: hasCaseStudyContent ? caseStudyConsent : undefined,
         }),
       })
 
@@ -48,6 +72,8 @@ export function SiteTestimonialForm() {
         return
       }
 
+      const result = await response.json().catch(() => null)
+      setCaseStudyPublished(!!result?.caseStudy?.published)
       setSubmitted(true)
     } catch {
       toast.error("Network error. Please try again.")
@@ -63,6 +89,11 @@ export function SiteTestimonialForm() {
         <p className="mt-2 text-muted-foreground">
           It's published on the Transformation Stories page right now.
         </p>
+        {caseStudyPublished && (
+          <p className="mt-2 text-muted-foreground">
+            Your full case study page has also been published — it'll appear on the site within a few minutes.
+          </p>
+        )}
       </div>
     )
   }
@@ -113,6 +144,90 @@ export function SiteTestimonialForm() {
         />
         <p className="mt-1 text-xs text-muted-foreground">{testimonial.length}/2000</p>
       </div>
+
+      <Collapsible open={wantsCaseStudy} onOpenChange={setWantsCaseStudy}>
+        <CollapsibleTrigger asChild>
+          <button
+            type="button"
+            className="flex w-full items-center justify-between rounded-xl border border-border px-4 py-3 text-left text-sm font-semibold text-card-foreground hover:border-[#C9A96A]/50"
+          >
+            Want to share more for a full case study page?
+            <ChevronDown
+              className={`h-4 w-4 shrink-0 text-muted-foreground transition-transform ${wantsCaseStudy ? "rotate-180" : ""}`}
+            />
+          </button>
+        </CollapsibleTrigger>
+        <CollapsibleContent className="mt-4 space-y-4 rounded-xl border border-dashed border-border p-4">
+          <p className="text-xs text-muted-foreground">
+            This publishes a separate, longer page with your starting point, how coaching went, and
+            where you are now — in addition to the quote above, not instead of it.
+          </p>
+
+          <div>
+            <Label htmlFor="cs-condition" className="text-sm font-semibold text-card-foreground">
+              Condition <span className="font-normal text-muted-foreground">(optional, shown on the page)</span>
+            </Label>
+            <Input
+              id="cs-condition"
+              value={condition}
+              onChange={(e) => setCondition(e.target.value)}
+              placeholder="e.g. Spina Bifida, wears an AFO"
+              className="mt-2"
+              maxLength={200}
+            />
+          </div>
+
+          <div>
+            <Label htmlFor="cs-starting" className="text-sm font-semibold text-card-foreground">
+              What was your starting point?
+            </Label>
+            <Textarea
+              id="cs-starting"
+              value={startingPoint}
+              onChange={(e) => setStartingPoint(e.target.value)}
+              placeholder="Before training with STRENTOR..."
+              className="mt-2 min-h-24"
+              maxLength={2000}
+            />
+          </div>
+
+          <div>
+            <Label htmlFor="cs-approach" className="text-sm font-semibold text-card-foreground">
+              What was the coaching like?
+            </Label>
+            <Textarea
+              id="cs-approach"
+              value={approach}
+              onChange={(e) => setApproach(e.target.value)}
+              placeholder="How training was built around you..."
+              className="mt-2 min-h-24"
+              maxLength={2000}
+            />
+          </div>
+
+          <div>
+            <Label htmlFor="cs-progress" className="text-sm font-semibold text-card-foreground">
+              Where are you now?
+            </Label>
+            <Textarea
+              id="cs-progress"
+              value={progress}
+              onChange={(e) => setProgress(e.target.value)}
+              placeholder="What's changed, what you can do now..."
+              className="mt-2 min-h-24"
+              maxLength={2000}
+            />
+          </div>
+
+          <label className="flex items-start gap-3 text-sm cursor-pointer">
+            <Checkbox checked={caseStudyConsent} onCheckedChange={(v) => setCaseStudyConsent(v === true)} />
+            <span className="text-card-foreground">
+              I also consent to STRENTOR publishing a full case study page with these details, publicly
+              and immediately.
+            </span>
+          </label>
+        </CollapsibleContent>
+      </Collapsible>
 
       {/* Honeypot — invisible to real visitors, hidden with off-screen
           positioning rather than display:none (some bots skip hidden

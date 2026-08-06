@@ -24,12 +24,6 @@ interface StoryCard {
 }
 
 async function getStories(): Promise<StoryCard[]> {
-  const fromStatic: StoryCard[] = staticTestimonials.map((t) => ({
-    key: t.author,
-    quote: t.quote,
-    author: t.author,
-  }))
-
   // Published directly by visitors via /transformation-stories/share — see
   // that page and prisma/schema.prisma's site_testimonials model comment
   // for why these publish immediately rather than going through review.
@@ -37,6 +31,7 @@ async function getStories(): Promise<StoryCard[]> {
   // studies, and the rest of the page don't depend on the database at all,
   // so a DB outage here shouldn't 500 the whole page — it should just mean
   // the live-submitted stories are temporarily missing.
+  let fromSubmissions: StoryCard[] = []
   try {
     const submitted = await prisma.site_testimonials.findMany({
       where: { is_published: true },
@@ -44,18 +39,32 @@ async function getStories(): Promise<StoryCard[]> {
       take: 60,
     })
 
-    const fromSubmissions: StoryCard[] = submitted.map((t) => ({
+    fromSubmissions = submitted.map((t) => ({
       key: t.id,
       quote: t.testimonial_text,
       author: t.name_display,
       context: t.context ?? undefined,
     }))
-
-    return [...fromSubmissions, ...fromStatic]
   } catch (error) {
     console.error("Failed to load submitted testimonials, falling back to static list:", error)
-    return fromStatic
   }
+
+  // The admin "sync case study testimonials" action (see
+  // actions/admin/sync-case-study-testimonials.action.ts) copies case-study
+  // quotes into the database — once that's run for a given person, drop
+  // their entry from the hardcoded static array so they don't show twice.
+  // data/testimonials.ts itself is untouched; this filter is local to this
+  // page's merge only.
+  const submittedAuthors = new Set(fromSubmissions.map((s) => s.author.toLowerCase()))
+  const fromStatic: StoryCard[] = staticTestimonials
+    .filter((t) => !submittedAuthors.has(t.author.toLowerCase()))
+    .map((t) => ({
+      key: t.author,
+      quote: t.quote,
+      author: t.author,
+    }))
+
+  return [...fromSubmissions, ...fromStatic]
 }
 
 export default async function TransformationStoriesPage() {
