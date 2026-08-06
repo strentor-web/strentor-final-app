@@ -33,20 +33,29 @@ async function getStories(): Promise<StoryCard[]> {
   // Published directly by visitors via /transformation-stories/share — see
   // that page and prisma/schema.prisma's site_testimonials model comment
   // for why these publish immediately rather than going through review.
-  const submitted = await prisma.site_testimonials.findMany({
-    where: { is_published: true },
-    orderBy: { created_at: "desc" },
-    take: 60,
-  })
+  // This query is wrapped defensively: the static testimonials, the case
+  // studies, and the rest of the page don't depend on the database at all,
+  // so a DB outage here shouldn't 500 the whole page — it should just mean
+  // the live-submitted stories are temporarily missing.
+  try {
+    const submitted = await prisma.site_testimonials.findMany({
+      where: { is_published: true },
+      orderBy: { created_at: "desc" },
+      take: 60,
+    })
 
-  const fromSubmissions: StoryCard[] = submitted.map((t) => ({
-    key: t.id,
-    quote: t.testimonial_text,
-    author: t.name_display,
-    context: t.context ?? undefined,
-  }))
+    const fromSubmissions: StoryCard[] = submitted.map((t) => ({
+      key: t.id,
+      quote: t.testimonial_text,
+      author: t.name_display,
+      context: t.context ?? undefined,
+    }))
 
-  return [...fromSubmissions, ...fromStatic]
+    return [...fromSubmissions, ...fromStatic]
+  } catch (error) {
+    console.error("Failed to load submitted testimonials, falling back to static list:", error)
+    return fromStatic
+  }
 }
 
 export default async function TransformationStoriesPage() {
