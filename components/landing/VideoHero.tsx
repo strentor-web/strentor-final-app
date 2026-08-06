@@ -25,16 +25,6 @@ const NAV_LINKS = [
   { label: "About", href: "/about" },
 ];
 
-// Real, verifiable facts only — no fabricated stats and no "AI Powered"
-// framing (the AI Coaching program and all its marketing copy were
-// deliberately removed from this site; reintroducing that language here
-// would contradict that decision).
-const STAT_CAPSULES = [
-  { value: "Founder-Led", label: "National-Level Para Powerlifter" },
-  { value: "1:1", label: "Elite Mentorship" },
-  { value: "12-Week", label: "Flagship Transformation" },
-];
-
 export function VideoHero() {
   return (
     <div className={`relative min-h-screen w-full overflow-hidden bg-black ${inter.className}`}>
@@ -82,100 +72,59 @@ export function VideoHero() {
             className="hidden rounded-xl px-7 py-3 text-sm font-medium text-black transition hover:brightness-110 sm:block"
             style={{ background: GOLD }}
           >
-            Start Your Journey
+            Apply for Coaching
           </Link>
         </nav>
 
-        {/* Hero content, pinned to bottom of viewport */}
+        {/* Hero content, pinned to bottom of viewport. Deliberately minimal
+            text per this brief — headline, one line of subhead, two CTAs,
+            nothing else competing for attention. */}
         <div className="flex flex-1 flex-col justify-end pb-14 lg:pb-20">
-          <div className="lg:grid lg:grid-cols-2 lg:items-end">
-            <div>
-              <AnimatedHeading
-                text={"BREAK.\nBUILD.\nBECOME."}
-                initialDelay={250}
-                charDelay={30}
-                charDuration={550}
-                className="mb-6 text-5xl font-normal leading-[1.02] text-[#FAFAFA] md:text-6xl lg:text-7xl xl:text-8xl"
-                as="h1"
-              />
-              {/* Tailwind can't express this exact letter-spacing cleanly. */}
-              <style jsx>{`
-                h1 {
-                  letter-spacing: -0.05em;
-                }
-              `}</style>
+          <div className="max-w-3xl">
+            <AnimatedHeading
+              text={"Build Strength\nBeyond Limits."}
+              initialDelay={250}
+              charDelay={30}
+              charDuration={550}
+              className="mb-6 text-5xl font-normal leading-[1.02] text-[#FAFAFA] md:text-6xl lg:text-7xl xl:text-8xl"
+              as="h1"
+            />
+            {/* Tailwind can't express this exact letter-spacing cleanly. */}
+            <style jsx>{`
+              h1 {
+                letter-spacing: -0.05em;
+              }
+            `}</style>
 
-              <FadeIn delay={900} duration={1000}>
-                <p className="mb-6 max-w-xl text-lg leading-relaxed text-[#D9D9D9] md:text-xl">
-                  Adaptive strength coaching engineered for wheelchair users who refuse to let
-                  circumstance define their future. Train smarter. Build resilience. Become
-                  unstoppable.
-                </p>
-              </FadeIn>
+            <FadeIn delay={900} duration={1000}>
+              <p className="mb-8 max-w-xl text-lg leading-relaxed text-[#D9D9D9] md:text-xl">
+                Premium adaptive coaching helping wheelchair users become stronger — physically,
+                mentally, and emotionally.
+              </p>
+            </FadeIn>
 
-              <FadeIn delay={1300} duration={1000}>
-                <div className="flex flex-wrap gap-4">
-                  <Link
-                    href="/apply-for-access"
-                    className="rounded-xl px-9 py-4 font-semibold text-black transition hover:brightness-110"
-                    style={{ background: GOLD }}
-                  >
-                    Book Your Assessment
-                  </Link>
-                  <Link
-                    href="/programs"
-                    className="liquid-glass rounded-xl px-9 py-4 font-medium text-white transition hover:bg-[#D4AF37] hover:text-black"
-                    style={{ borderColor: `${GOLD}4D` }}
-                  >
-                    Explore Programs
-                  </Link>
-                </div>
-              </FadeIn>
-            </div>
-
-            {/* Right column: premium tag card + floating stat capsules */}
-            <div className="mt-10 flex flex-col items-start gap-6 lg:mt-0 lg:items-end">
-              <FadeIn delay={1500} duration={1000}>
-                <div className="liquid-glass rounded-2xl px-8 py-5" style={{ borderColor: `${GOLD}33` }}>
-                  <p
-                    className="text-xs uppercase tracking-[0.35em]"
-                    style={{ color: GOLD }}
-                  >
-                    Transformation
-                  </p>
-                  <p className="mt-2 text-3xl font-light leading-tight text-white">
-                    Strength.
-                    <br />
-                    Resilience.
-                    <br />
-                    Freedom.
-                  </p>
-                </div>
-              </FadeIn>
-
-              <FadeIn delay={1700} duration={1000} className="w-full">
-                <div className="flex flex-wrap justify-start gap-3 lg:justify-end">
-                  {STAT_CAPSULES.map((stat, i) => (
-                    <div
-                      key={stat.label}
-                      className="liquid-glass rounded-full px-5 py-3"
-                      style={{
-                        borderColor: `${GOLD}26`,
-                        animation: `float-capsule 6s ease-in-out infinite`,
-                        animationDelay: `${i * 0.4}s`,
-                      }}
-                    >
-                      <p className="text-sm font-semibold text-white">{stat.value}</p>
-                      <p className="text-xs text-gray-400">{stat.label}</p>
-                    </div>
-                  ))}
-                </div>
-              </FadeIn>
-            </div>
+            <FadeIn delay={1300} duration={1000}>
+              <div className="flex flex-wrap gap-4">
+                <Link
+                  href="/apply-for-access"
+                  className="rounded-xl px-9 py-4 font-semibold text-black transition hover:brightness-110"
+                  style={{ background: GOLD }}
+                >
+                  Apply for Coaching
+                </Link>
+                <Link
+                  href="/transformation-stories"
+                  className="liquid-glass rounded-xl px-9 py-4 font-medium text-white transition hover:bg-[#D4AF37] hover:text-black"
+                  style={{ borderColor: `${GOLD}4D` }}
+                >
+                  Watch Transformations
+                </Link>
+              </div>
+            </FadeIn>
           </div>
 
           {/* Scroll indicator */}
-          <FadeIn delay={2000} duration={1000}>
+          <FadeIn delay={1800} duration={1000}>
             <div className="mt-10 flex flex-col items-center gap-2 lg:absolute lg:bottom-8 lg:left-1/2 lg:mt-0 lg:-translate-x-1/2">
               <span className="text-xs tracking-[0.3em] text-white/50">SCROLL</span>
               <span
