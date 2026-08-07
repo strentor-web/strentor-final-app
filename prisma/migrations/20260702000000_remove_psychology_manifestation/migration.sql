@@ -75,9 +75,55 @@ BEGIN
   EXECUTE format('CREATE TYPE "public"."SubscriptionCategory_new" AS ENUM (%s)', new_values);
 END $$;
 
+-- Two RLS policies on workout_day_videos reference trainer_clients.category
+-- directly, which blocks ALTER COLUMN ... TYPE outright (Postgres won't let
+-- you change a column's type while a policy depends on it). Drop them
+-- immediately before the type change and recreate them, identically,
+-- immediately after — both within this same transaction, so there's no
+-- window where the table is unprotected even under concurrent access.
+DROP POLICY "Trainers can update assigned client workout videos" ON "public"."workout_day_videos";
+DROP POLICY "Trainers can view assigned client workout videos" ON "public"."workout_day_videos";
+
 ALTER TABLE "public"."subscription_plans" ALTER COLUMN "category" TYPE "public"."SubscriptionCategory_new" USING ("category"::text::"public"."SubscriptionCategory_new");
 ALTER TABLE "public"."trainer_clients" ALTER COLUMN "category" TYPE "public"."SubscriptionCategory_new" USING ("category"::text::"public"."SubscriptionCategory_new");
 DROP TYPE "public"."SubscriptionCategory";
 ALTER TYPE "public"."SubscriptionCategory_new" RENAME TO "SubscriptionCategory";
+
+-- Recreated identically to how they were defined before — 'FITNESS' remains
+-- a valid value on the new type, so this cast is unaffected by the enum
+-- rebuild above.
+CREATE POLICY "Trainers can update assigned client workout videos"
+ON "public"."workout_day_videos"
+FOR UPDATE
+TO authenticated
+USING (
+  EXISTS (
+    SELECT 1 FROM trainer_clients
+    WHERE trainer_clients.client_id = workout_day_videos.client_id
+      AND trainer_clients.trainer_id = (SELECT auth.uid())
+      AND trainer_clients.category = 'FITNESS'::"SubscriptionCategory"
+  )
+)
+WITH CHECK (
+  EXISTS (
+    SELECT 1 FROM trainer_clients
+    WHERE trainer_clients.client_id = workout_day_videos.client_id
+      AND trainer_clients.trainer_id = (SELECT auth.uid())
+      AND trainer_clients.category = 'FITNESS'::"SubscriptionCategory"
+  )
+);
+
+CREATE POLICY "Trainers can view assigned client workout videos"
+ON "public"."workout_day_videos"
+FOR SELECT
+TO authenticated
+USING (
+  EXISTS (
+    SELECT 1 FROM trainer_clients
+    WHERE trainer_clients.client_id = workout_day_videos.client_id
+      AND trainer_clients.trainer_id = (SELECT auth.uid())
+      AND trainer_clients.category = 'FITNESS'::"SubscriptionCategory"
+  )
+);
 
 COMMIT;
