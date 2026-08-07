@@ -2,7 +2,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "prisma migrate deploy && prisma generate && next build",
+    "build": "(prisma migrate resolve --rolled-back 20260702000000_remove_psychology_manifestation || true) && prisma migrate deploy && prisma generate && next build",
     "start": "next start",
     "postinstall": "prisma generate",
     "prisma:generate": "prisma generate",
