@@ -18,3 +18,4 @@ resolve() {
 
 resolve --rolled-back 20260702000000_remove_psychology_manifestation
 resolve --applied 20260719120000_add_academy_assessment_safety
+resolve --applied 20260719130000_add_academy_trackers
