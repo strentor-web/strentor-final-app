@@ -4,6 +4,7 @@ import Image from "next/image";
 import { Menu } from "lucide-react";
 import { useState } from "react";
 import Link from "next/link"
+import { Button } from "@/components/ui/button";
 
 // Order matches the canonical nav sequence from the brand mockup
 // (Home, About, Programs, Coaching, Transformation, Resources, Contact),
@@ -41,8 +42,10 @@ export default function Header() {
             </Link>
           </div>
 
-          {/* Desktop Navigation — centered in header */}
-          <nav className="hidden xl:flex absolute left-1/2 -translate-x-1/2 space-x-2.5 items-center text-xs font-bold">
+          {/* Desktop Navigation — centered in header. Text is sized a step
+              below the 32px logo mark (text-sm vs. the icon's visual
+              weight) rather than matching it. */}
+          <nav className="hidden xl:flex absolute left-1/2 -translate-x-1/2 space-x-6 items-center text-sm font-bold">
             {navLinks.map((link) => (
               <Link
                 key={link.href}
@@ -65,12 +68,14 @@ export default function Header() {
             >
               <Menu size={24} />
             </button>
-            <Link
-              href="/sign-in"
-              className="hidden text-xs font-bold text-foreground hover:text-primary transition-colors xl:inline-flex"
+            <Button
+              asChild
+              variant="outline"
+              size="sm"
+              className="hidden xl:inline-flex"
             >
-              Sign In
-            </Link>
+              <Link href="/sign-in">Sign In</Link>
+            </Button>
           </div>
         </div>
 
@@ -86,9 +91,9 @@ export default function Header() {
                 {link.label}
               </Link>
             ))}
-            <Link href="/sign-in" className="block text-foreground hover:text-primary py-2 transition-colors">
-              Sign In
-            </Link>
+            <Button asChild variant="outline" size="sm">
+              <Link href="/sign-in">Sign In</Link>
+            </Button>
           </nav>
         )}
       </header>
