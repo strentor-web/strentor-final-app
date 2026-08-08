@@ -16,6 +16,7 @@ import {
   Building2,
   Gift,
   Apple,
+  Users,
 
 } from "lucide-react";
 import type { UserRole } from "@/types/auth";
@@ -87,6 +88,11 @@ export const clientSidebarMenus: {
       url: "/company-workshops",
       icon: Building2,
       roles: ["CORPORATE_EMPLOYEE"],
+    },
+    {
+      title: "Community",
+      url: "/community/feed",
+      icon: Users,
     },
     {
       title: "Refer a Friend",

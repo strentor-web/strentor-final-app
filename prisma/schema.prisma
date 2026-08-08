@@ -18,18 +18,25 @@ datasource db {
 // for the admin queue. Corporate submissions also get a specialized row
 // in corporate_inquiries; this table is the universal fallback.
 model intake_submissions {
-  id           String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  pathway      String
-  full_name    String
-  email        String
-  phone        String
-  city         String?
-  country      String?
-  review_level String   @default("standard_fit_review")
-  status       String   @default("new")
-  source_page  String?
-  payload      Json
-  created_at   DateTime @default(now())
+  id                  String                @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  pathway             String
+  full_name           String
+  email               String
+  phone               String
+  city                String?
+  country              String?
+  review_level        String                @default("standard_fit_review")
+  status              String                @default("new")
+  source_page         String?
+  payload             Json
+  created_at          DateTime              @default(now())
+  // Lets an automated follow-up email be unsubscribed from without an
+  // account — see app/api/unsubscribe/route.ts.
+  unsubscribe_token   String                @unique @default(dbgenerated("gen_random_uuid()"))
+  // Per-lead override: admin is handling this one manually, so the
+  // sequence cron should skip it — separate from a global unsubscribe.
+  sequence_paused     Boolean               @default(false)
+  lead_followup_sends lead_followup_sends[]
 
   @@index([pathway], map: "IntakeSubmission_pathway_idx")
   @@index([status], map: "IntakeSubmission_status_idx")
@@ -781,6 +788,9 @@ model users_profile {
   workout_plans_as_client              workout_plans[]           @relation("ClientWorkoutPlans")
   workout_plans_as_trainer             workout_plans[]           @relation("TrainerWorkoutPlans")
   workout_day_videos                   workout_day_videos[] // NEW: One-to-many relationship for workout videos
+  community_posts                      community_posts[]         @relation("CommunityPostAuthor")
+  community_comments                   community_comments[]      @relation("CommunityCommentAuthor")
+  webinar_registrations                webinar_registrations[]
 
   @@index([corporate_group_id], map: "UsersProfile_corporateGroupId_idx")
   @@schema("public")
@@ -931,6 +941,115 @@ model workout_day_videos {
 
   @@unique([workout_day_id]) // Only one video per workout day
   @@index([client_id], map: "WorkoutDayVideo_clientId_idx")
+  @@schema("public")
+}
+
+model community_posts {
+  id            String                 @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  author_id     String                 @db.Uuid
+  body          String
+  status        CommunityContentStatus @default(PUBLISHED)
+  hidden_reason String?
+  created_at    DateTime               @default(now())
+  updated_at    DateTime               @updatedAt
+  author        users_profile          @relation("CommunityPostAuthor", fields: [author_id], references: [id], onDelete: Cascade, map: "CommunityPost_authorId_fkey")
+  comments      community_comments[]
+
+  @@index([status, created_at], map: "CommunityPost_status_createdAt_idx")
+  @@schema("public")
+}
+
+model community_comments {
+  id         String                 @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  post_id    String                 @db.Uuid
+  author_id  String                 @db.Uuid
+  body       String
+  status     CommunityContentStatus @default(PUBLISHED)
+  created_at DateTime               @default(now())
+  post       community_posts        @relation(fields: [post_id], references: [id], onDelete: Cascade, map: "CommunityComment_postId_fkey")
+  author     users_profile          @relation("CommunityCommentAuthor", fields: [author_id], references: [id], onDelete: Cascade, map: "CommunityComment_authorId_fkey")
+
+  @@index([post_id, created_at], map: "CommunityComment_postId_createdAt_idx")
+  @@schema("public")
+}
+
+model webinars {
+  id               String                   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  title            String
+  description      String?
+  host_name        String?
+  platform         WebinarPlatform          @default(YOUTUBE_LIVE)
+  join_url         String
+  starts_at        DateTime
+  duration_minutes Int?
+  capacity         Int?
+  status           WebinarStatus            @default(DRAFT)
+  created_by_id    String?                  @db.Uuid
+  created_at       DateTime                 @default(now())
+  registrations    webinar_registrations[]
+
+  @@index([status, starts_at], map: "Webinar_status_startsAt_idx")
+  @@schema("public")
+}
+
+model webinar_registrations {
+  id                   String             @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  webinar_id           String             @db.Uuid
+  user_id              String?            @db.Uuid
+  full_name            String
+  email                String
+  phone                String?
+  source_page          String?
+  status               RegistrationStatus @default(REGISTERED)
+  attended             Boolean?
+  reminder_24h_sent_at DateTime?
+  reminder_1h_sent_at  DateTime?
+  created_at           DateTime           @default(now())
+  webinar              webinars           @relation(fields: [webinar_id], references: [id], onDelete: Cascade, map: "WebinarRegistration_webinarId_fkey")
+  users_profile        users_profile?     @relation(fields: [user_id], references: [id], onDelete: SetNull, map: "WebinarRegistration_userId_fkey")
+
+  @@unique([webinar_id, email], map: "WebinarRegistration_webinarId_email_key")
+  @@index([webinar_id], map: "WebinarRegistration_webinarId_idx")
+  @@schema("public")
+}
+
+model lead_followup_templates {
+  id            String                 @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  pathway       String?
+  step_number   Int
+  delay_days    Int
+  subject       String
+  body          String
+  is_active     Boolean                @default(true)
+  created_by_id String?                @db.Uuid
+  created_at    DateTime               @default(now())
+  updated_at    DateTime               @updatedAt
+  sends         lead_followup_sends[]
+
+  @@index([pathway, step_number], map: "LeadFollowupTemplate_pathway_step_idx")
+  @@schema("public")
+}
+
+model lead_followup_sends {
+  id            String                  @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  submission_id String                  @db.Uuid
+  template_id   String                  @db.Uuid
+  sent_at       DateTime                @default(now())
+  status        String                  @default("sent")
+  error_message String?
+  submission    intake_submissions      @relation(fields: [submission_id], references: [id], onDelete: Cascade, map: "LeadFollowupSend_submissionId_fkey")
+  template      lead_followup_templates @relation(fields: [template_id], references: [id], onDelete: Cascade, map: "LeadFollowupSend_templateId_fkey")
+
+  @@unique([submission_id, template_id], map: "LeadFollowupSend_submissionId_templateId_key")
+  @@schema("public")
+}
+
+model email_suppressions {
+  email      String   @id
+  reason     String   @default("unsubscribed")
+  source     String?
+  created_at DateTime @default(now())
+
   @@schema("public")
 }
 
@@ -1154,6 +1273,37 @@ enum TestimonialStatus {
   PENDING
   APPROVED
   REJECTED
+
+  @@schema("public")
+}
+
+enum CommunityContentStatus {
+  PUBLISHED
+  HIDDEN
+
+  @@schema("public")
+}
+
+enum WebinarPlatform {
+  YOUTUBE_LIVE
+  ZOOM
+  OTHER
+
+  @@schema("public")
+}
+
+enum WebinarStatus {
+  DRAFT
+  PUBLISHED
+  CANCELLED
+  COMPLETED
+
+  @@schema("public")
+}
+
+enum RegistrationStatus {
+  REGISTERED
+  CANCELLED
 
   @@schema("public")
 }

@@ -112,3 +112,132 @@ export async function sendIntakeNotification({ to, cc, subject, html, replyTo }:
     html,
   });
 }
+
+interface WebinarRegistrationConfirmationParams {
+  to: string;
+  name: string;
+  webinarTitle: string;
+  startsAt: Date;
+  joinUrl: string;
+}
+
+function formatWebinarTime(startsAt: Date) {
+  return startsAt.toLocaleString("en-IN", {
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+    hour: "numeric",
+    minute: "2-digit",
+    timeZone: "Asia/Kolkata",
+    timeZoneName: "short",
+  });
+}
+
+export async function sendWebinarRegistrationConfirmation({
+  to,
+  name,
+  webinarTitle,
+  startsAt,
+  joinUrl,
+}: WebinarRegistrationConfirmationParams) {
+  if (!resendClient) {
+    console.error("RESEND_API_KEY is not configured; skipping webinar registration confirmation email.");
+    return { skipped: true };
+  }
+
+  const subject = `You're registered: ${webinarTitle}`;
+  const html = `
+    <div style="font-family: Arial, sans-serif; max-width: 480px; margin: 0 auto; color: #111;">
+      <h2 style="color: #C9A96A;">You're registered!</h2>
+      <p>Hi ${name},</p>
+      <p>
+        You're confirmed for <strong>${webinarTitle}</strong> on
+        <strong>${formatWebinarTime(startsAt)}</strong>.
+      </p>
+      <p>We'll email you a reminder before it starts. You can join using the link below at the scheduled time.</p>
+      <p style="margin: 24px 0;">
+        <a href="${joinUrl}" style="background: #C9A96A; color: #000; padding: 12px 24px; border-radius: 999px; text-decoration: none; font-weight: bold;">
+          Join Link
+        </a>
+      </p>
+      <p style="color: #666; font-size: 14px;">— The Strentor Team</p>
+    </div>
+  `;
+
+  return sendOrThrow({ from: FROM_EMAIL, to, subject, html });
+}
+
+interface LeadFollowUpEmailParams {
+  to: string;
+  subject: string;
+  bodyHtml: string;
+  unsubscribeToken: string;
+}
+
+// The unsubscribe footer is built in here, not left to each caller to
+// remember — every automated lead follow-up email must carry it. See
+// app/api/unsubscribe/route.ts for the endpoint this links to.
+export async function sendLeadFollowUpEmail({ to, subject, bodyHtml, unsubscribeToken }: LeadFollowUpEmailParams) {
+  if (!resendClient) {
+    console.error("RESEND_API_KEY is not configured; skipping lead follow-up email.");
+    return { skipped: true };
+  }
+
+  const unsubscribeUrl = `${SITE_URL}/api/unsubscribe?token=${unsubscribeToken}`;
+
+  const html = `
+    <div style="font-family: Arial, sans-serif; max-width: 480px; margin: 0 auto; color: #111;">
+      ${bodyHtml}
+      <p style="margin-top: 32px; color: #999; font-size: 12px; border-top: 1px solid #eee; padding-top: 12px;">
+        You're receiving this because you enquired with STRENTOR.
+        <a href="${unsubscribeUrl}" style="color: #999;">Unsubscribe from follow-up emails</a>.
+      </p>
+    </div>
+  `;
+
+  return sendOrThrow({ from: FROM_EMAIL, to, subject, html });
+}
+
+interface WebinarReminderParams {
+  to: string;
+  name: string;
+  webinarTitle: string;
+  startsAt: Date;
+  joinUrl: string;
+  hoursUntil: 24 | 1;
+}
+
+export async function sendWebinarReminder({
+  to,
+  name,
+  webinarTitle,
+  startsAt,
+  joinUrl,
+  hoursUntil,
+}: WebinarReminderParams) {
+  if (!resendClient) {
+    console.error("RESEND_API_KEY is not configured; skipping webinar reminder email.");
+    return { skipped: true };
+  }
+
+  const whenLabel = hoursUntil === 24 ? "tomorrow" : "in about an hour";
+  const subject = `Reminder: ${webinarTitle} starts ${whenLabel}`;
+  const html = `
+    <div style="font-family: Arial, sans-serif; max-width: 480px; margin: 0 auto; color: #111;">
+      <h2 style="color: #C9A96A;">${webinarTitle} starts ${whenLabel}</h2>
+      <p>Hi ${name},</p>
+      <p>
+        Just a reminder that <strong>${webinarTitle}</strong> starts
+        <strong>${formatWebinarTime(startsAt)}</strong>.
+      </p>
+      <p style="margin: 24px 0;">
+        <a href="${joinUrl}" style="background: #C9A96A; color: #000; padding: 12px 24px; border-radius: 999px; text-decoration: none; font-weight: bold;">
+          Join Now
+        </a>
+      </p>
+      <p style="color: #666; font-size: 14px;">— The Strentor Team</p>
+    </div>
+  `;
+
+  return sendOrThrow({ from: FROM_EMAIL, to, subject, html });
+}
