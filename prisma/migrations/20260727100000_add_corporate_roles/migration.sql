@@ -13,10 +13,18 @@ ALTER TYPE "Role" ADD VALUE IF NOT EXISTS 'CORPORATE_EMPLOYEE';
 
 ALTER TABLE "public"."users_profile" ADD COLUMN IF NOT EXISTS "corporate_group_id" UUID;
 
-ALTER TABLE "public"."users_profile"
-  ADD CONSTRAINT "UsersProfile_corporateGroupId_fkey"
-  FOREIGN KEY ("corporate_group_id") REFERENCES "public"."corporate_groups"("id")
-  ON DELETE SET NULL ON UPDATE CASCADE;
+-- Guarded (unlike the rest of this file's IF NOT EXISTS statements,
+-- Postgres has no ADD CONSTRAINT IF NOT EXISTS) since this FK was already
+-- added directly against production ahead of this migration ever running.
+DO $$
+BEGIN
+  ALTER TABLE "public"."users_profile"
+    ADD CONSTRAINT "UsersProfile_corporateGroupId_fkey"
+    FOREIGN KEY ("corporate_group_id") REFERENCES "public"."corporate_groups"("id")
+    ON DELETE SET NULL ON UPDATE CASCADE;
+EXCEPTION
+  WHEN duplicate_object THEN NULL;
+END $$;
 
 CREATE INDEX IF NOT EXISTS "UsersProfile_corporateGroupId_idx" ON "public"."users_profile"("corporate_group_id");
 
