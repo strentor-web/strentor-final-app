@@ -16,7 +16,6 @@ export default async function AdminIntakePage() {
   const submissions = await prisma.intake_submissions.findMany({
     orderBy: [{ status: "asc" }, { created_at: "desc" }],
     take: 200,
-    include: { _count: { select: { lead_followup_sends: true } } },
   })
 
   const rows: IntakeSubmissionRow[] = submissions.map((s) => ({
@@ -31,8 +30,6 @@ export default async function AdminIntakePage() {
     status: s.status,
     sourcePage: s.source_page,
     createdAt: s.created_at.toISOString(),
-    followUpsSent: s._count.lead_followup_sends,
-    sequencePaused: s.sequence_paused,
   }))
 
   return (

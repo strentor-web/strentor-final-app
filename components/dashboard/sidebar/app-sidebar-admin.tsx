@@ -4,7 +4,7 @@
 import * as React from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { ChevronDown, Users, Shield, LayoutDashboard, Settings, GraduationCap, AlertTriangle, Inbox, UserSearch, DollarSign, BarChart3, Gift, Undo2, PenSquare, MessagesSquare, Video, Mail } from "lucide-react";
+import { ChevronDown, Users, Shield, LayoutDashboard, Settings, GraduationCap, AlertTriangle, Inbox, UserSearch, DollarSign, BarChart3, Gift, Undo2, PenSquare } from "lucide-react";
 import Image from "next/image";
 
 // Internal components
@@ -52,12 +52,6 @@ const adminNavItems = [
     title: "Intake Submissions",
     url: "/admin/intake",
     icon: Inbox,
-    isActive: false,
-  },
-  {
-    title: "Follow-Up Templates",
-    url: "/admin/lead-follow-up/templates",
-    icon: Mail,
     isActive: false,
   },
   {
@@ -124,18 +118,6 @@ const adminNavItems = [
     title: "Content Drafts",
     url: "/admin/content",
     icon: PenSquare,
-    isActive: false,
-  },
-  {
-    title: "Community",
-    url: "/admin/community",
-    icon: MessagesSquare,
-    isActive: false,
-  },
-  {
-    title: "Webinars",
-    url: "/admin/webinars",
-    icon: Video,
     isActive: false,
   },
   {

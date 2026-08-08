@@ -20,10 +20,9 @@ import {
   DialogFooter,
 } from "@/components/ui/dialog"
 import { Textarea } from "@/components/ui/textarea"
-import { Sparkles, Copy, Mail } from "lucide-react"
+import { Sparkles, Copy } from "lucide-react"
 import { useAction } from "@/hooks/useAction"
 import { draftLeadFollowUp } from "@/actions/admin/lead-follow-up/draft-follow-up.action"
-import { toggleSequencePause } from "@/actions/admin/lead-follow-up/toggle-sequence-pause.action"
 
 export interface IntakeSubmissionRow {
   id: string
@@ -37,8 +36,6 @@ export interface IntakeSubmissionRow {
   status: string
   sourcePage: string | null
   createdAt: string
-  followUpsSent: number
-  sequencePaused: boolean
 }
 
 function reviewLevelVariant(level: string) {
@@ -96,27 +93,6 @@ function DraftFollowUpDialog({ submissionId }: { submissionId: string }) {
   )
 }
 
-function SequencePauseToggle({ submission }: { submission: IntakeSubmissionRow }) {
-  const [paused, setPaused] = useState(submission.sequencePaused)
-
-  const { execute, isLoading } = useAction(toggleSequencePause, {
-    onError: (error) => toast.error(error),
-  })
-
-  function toggle() {
-    const next = !paused
-    setPaused(next)
-    execute({ submissionId: submission.id, paused: next })
-  }
-
-  return (
-    <Button type="button" variant="outline" size="sm" onClick={toggle} disabled={isLoading}>
-      <Mail className="mr-1.5 h-3.5 w-3.5" />
-      {paused ? "Resume follow-ups" : "Pause follow-ups"}
-    </Button>
-  )
-}
-
 function Row({ submission }: { submission: IntakeSubmissionRow }) {
   const [status, setStatus] = useState(submission.status)
 
@@ -143,12 +119,6 @@ function Row({ submission }: { submission: IntakeSubmissionRow }) {
           <Badge variant={reviewLevelVariant(submission.reviewLevel) as "destructive" | "default" | "secondary"}>
             {submission.reviewLevel.replace(/_/g, " ")}
           </Badge>
-          {submission.followUpsSent > 0 && (
-            <Badge variant="secondary">
-              {submission.followUpsSent} follow-up{submission.followUpsSent === 1 ? "" : "s"} sent
-            </Badge>
-          )}
-          {submission.sequencePaused && <Badge variant="outline">Follow-ups paused</Badge>}
         </div>
         <p className="text-sm text-muted-foreground">
           {submission.email} • {submission.phone}
@@ -161,7 +131,6 @@ function Row({ submission }: { submission: IntakeSubmissionRow }) {
         <p className="mt-1 text-xs text-muted-foreground">{new Date(submission.createdAt).toLocaleString()}</p>
       </div>
       <div className="flex items-center gap-2">
-        <SequencePauseToggle submission={submission} />
         <DraftFollowUpDialog submissionId={submission.id} />
         <Select value={status} onValueChange={handleChange}>
           <SelectTrigger className="w-40">

@@ -17,7 +17,6 @@ const navLinks = [
   { href: "/transformation-stories", label: "Stories" },
   { href: "/resources", label: "Resources" },
   { href: "/blog", label: "Blog" },
-  { href: "/webinars", label: "Webinars" },
   { href: "/sponsor-a-seat", label: "Pay It Forward" },
   { href: "/corporate", label: "Corporate" },
   { href: "/contact", label: "Contact" },
