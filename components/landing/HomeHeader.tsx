@@ -5,6 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
 import { Menu, X } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
 const navLinks = [
@@ -60,12 +61,14 @@ export function HomeHeader() {
         </nav>
 
         <div className="flex items-center gap-3">
-          <Link
-            href="/sign-in"
-            className="hidden text-xs font-bold uppercase tracking-widest text-gray-300 transition-colors hover:text-white lg:inline-flex"
+          <Button
+            asChild
+            variant="outline"
+            size="sm"
+            className="hidden border-white/20 bg-transparent text-xs uppercase tracking-widest text-gray-300 hover:border-white/40 hover:bg-white/10 hover:text-white lg:inline-flex"
           >
-            Sign In
-          </Link>
+            <Link href="/sign-in">Sign In</Link>
+          </Button>
           <button
             className="rounded-full p-2 text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C9A96A] lg:hidden"
             onClick={() => setIsMenuOpen((v) => !v)}
@@ -93,9 +96,16 @@ export function HomeHeader() {
               {link.label}
             </Link>
           ))}
-          <Link href="/sign-in" onClick={() => setIsMenuOpen(false)} className="transition-colors hover:text-white">
-            Sign In
-          </Link>
+          <Button
+            asChild
+            variant="outline"
+            size="sm"
+            className="border-white/20 bg-transparent text-xs uppercase tracking-widest text-gray-300 hover:border-white/40 hover:bg-white/10 hover:text-white"
+          >
+            <Link href="/sign-in" onClick={() => setIsMenuOpen(false)}>
+              Sign In
+            </Link>
+          </Button>
         </nav>
       )}
     </header>
