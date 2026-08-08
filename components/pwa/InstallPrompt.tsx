@@ -11,12 +11,25 @@ interface BeforeInstallPromptEvent extends Event {
 
 const DISMISSED_KEY = "strentor-install-prompt-dismissed";
 
+// True when the site is already running as the installed app rather than
+// in a regular browser tab — standalone display-mode covers Chrome/Edge/
+// Android, navigator.standalone covers iOS Safari (which has no
+// display-mode support and never fires beforeinstallprompt anyway).
+function isRunningInstalled(): boolean {
+  if (typeof window === "undefined") return false;
+  return (
+    window.matchMedia?.("(display-mode: standalone)").matches ||
+    (window.navigator as Navigator & { standalone?: boolean }).standalone === true
+  );
+}
+
 export function InstallPrompt() {
   const [deferredPrompt, setDeferredPrompt] = useState<BeforeInstallPromptEvent | null>(null);
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
     if (typeof window === "undefined") return;
+    if (isRunningInstalled()) return;
     if (window.sessionStorage.getItem(DISMISSED_KEY)) return;
 
     function handler(e: Event) {
