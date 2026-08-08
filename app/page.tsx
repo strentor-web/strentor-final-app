@@ -4,7 +4,6 @@ import Link from "next/link";
 import {
   Accessibility,
   Apple,
-  ArrowRight,
   Award,
   Brain,
   Compass,
@@ -141,7 +140,7 @@ export default function Home() {
                   className="h-14 rounded-full bg-[#C9A96A] px-8 text-sm font-bold uppercase tracking-widest text-black transition-transform hover:scale-105 hover:bg-[#C9A96A]/90"
                 >
                   <TrackedLink href="/apply-for-access" event="hero_cta_click" eventParams={{ location: "hero" }}>
-                    Start Your Journey <ArrowRight className="h-4 w-4" />
+                    Start Your Journey
                   </TrackedLink>
                 </Button>
               </div>
@@ -214,7 +213,7 @@ export default function Home() {
               className="h-12 rounded-full bg-[#C9A96A] px-7 text-xs font-bold uppercase tracking-widest text-black hover:bg-[#C9A96A]/90"
             >
               <Link href="/programs">
-                Explore All Programs <ArrowRight className="h-4 w-4" />
+                Explore All Programs
               </Link>
             </Button>
           </div>
@@ -255,7 +254,7 @@ export default function Home() {
 
             <Button asChild className="mt-8 h-12 rounded-full bg-[#C9A96A] px-7 text-xs font-bold uppercase tracking-widest text-black hover:bg-[#C9A96A]/90">
               <Link href="/about">
-                Learn More About Us <ArrowRight className="h-4 w-4" />
+                Learn More About Us
               </Link>
             </Button>
           </ScrollReveal>
@@ -309,7 +308,7 @@ export default function Home() {
               className="mt-8 h-14 rounded-full bg-[#C9A96A] px-8 text-sm font-bold uppercase tracking-widest text-black transition-transform hover:scale-105 hover:bg-[#C9A96A]/90"
             >
               <TrackedLink href="/apply-for-access" event="hero_cta_click" eventParams={{ location: "final_cta" }}>
-                Start Your Journey <ArrowRight className="h-4 w-4" />
+                Start Your Journey
               </TrackedLink>
             </Button>
           </ScrollReveal>

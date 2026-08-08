@@ -5,8 +5,6 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
 import { Menu, X } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { TrackedLink } from "@/components/analytics/TrackedLink";
 import { cn } from "@/lib/utils";
 
 const navLinks = [
@@ -68,14 +66,6 @@ export function HomeHeader() {
           >
             Sign In
           </Link>
-          <Button
-            asChild
-            className="hidden h-10 rounded-full bg-[#C9A96A] px-6 text-xs font-bold uppercase tracking-widest text-black hover:bg-[#C9A96A]/90 lg:inline-flex"
-          >
-            <TrackedLink href="/apply-for-access" event="hero_cta_click" eventParams={{ location: "header" }}>
-              Start Your Journey
-            </TrackedLink>
-          </Button>
           <button
             className="rounded-full p-2 text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C9A96A] lg:hidden"
             onClick={() => setIsMenuOpen((v) => !v)}
@@ -106,11 +96,6 @@ export function HomeHeader() {
           <Link href="/sign-in" onClick={() => setIsMenuOpen(false)} className="transition-colors hover:text-white">
             Sign In
           </Link>
-          <Button asChild className="mt-2 h-10 rounded-full bg-[#C9A96A] px-6 text-xs font-bold uppercase tracking-widest text-black hover:bg-[#C9A96A]/90">
-            <TrackedLink href="/apply-for-access" event="hero_cta_click" eventParams={{ location: "header_mobile" }}>
-              Start Your Journey
-            </TrackedLink>
-          </Button>
         </nav>
       )}
     </header>
