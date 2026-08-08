@@ -19,3 +19,7 @@ resolve() {
 resolve --rolled-back 20260702000000_remove_psychology_manifestation
 resolve --applied 20260719120000_add_academy_assessment_safety
 resolve --applied 20260719130000_add_academy_trackers
+resolve --applied 20260719140000_add_academy_coaching_testimonials
+resolve --applied 20260719150000_add_academy_corporate_mentorship
+resolve --applied 20260730120000_add_promo_codes_and_tax_fields
+resolve --applied 20260802121500_add_trainer_session_notes
