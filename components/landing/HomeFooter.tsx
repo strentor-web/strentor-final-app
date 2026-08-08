@@ -13,7 +13,6 @@ const programLinks = [
   { href: "/programs/elite-mentorship", label: "Elite Mentorship" },
   { href: "/programs/flagship-transformation", label: "Flagship Transformation" },
   { href: "/programs/fitness-training", label: "Strength & Performance Coaching" },
-  { href: "/programs/membership", label: "Strength Circle" },
   { href: "/programs/starter-kit", label: "7-Day Starter Kit" },
   { href: "/corporate", label: "Corporate Programs" },
 ];

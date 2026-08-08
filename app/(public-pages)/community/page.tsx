@@ -14,6 +14,10 @@ import {
   Send,
   Video,
   BookOpen,
+  Sparkles,
+  ClipboardList,
+  UserCheck,
+  Crown,
 } from "lucide-react"
 import { ScrollReveal, StaggerGroup } from "@/components/motion/ScrollReveal"
 import { HoverLift } from "@/components/motion/HoverLift"
@@ -73,6 +77,34 @@ const spaces = [
     cta: "Explore Now",
     href: "#",
     external: false,
+  },
+]
+
+// Strength Circle is STRENTOR's paid recurring membership (real pricing
+// lives in config/regionalPlans.ts, checkout via /programs/membership) —
+// it belongs here as the community's ongoing-membership offer, not listed
+// as a standalone "program" alongside Elite Mentorship, Flagship
+// Transformation, etc.
+const membershipTiers = [
+  {
+    icon: Sparkles,
+    title: "Community",
+    description: "Education, community and group support — the entry point to Strength Circle.",
+  },
+  {
+    icon: ClipboardList,
+    title: "Guided",
+    description: "Structured programs, trackers, and group coaching to keep you consistent.",
+  },
+  {
+    icon: UserCheck,
+    title: "Personalised",
+    description: "Individual plan review and periodic one-to-one coaching within your membership.",
+  },
+  {
+    icon: Crown,
+    title: "Elite",
+    description: "High-touch mentorship-level access, for members who want the most support.",
   },
 ]
 
@@ -166,6 +198,48 @@ export default function CommunityPage() {
             </ScrollReveal>
           ))}
         </StaggerGroup>
+      </section>
+
+      {/* Strength Circle — the paid membership */}
+      <section className="bg-muted/30 py-16">
+        <div className="container mx-auto px-4">
+          <ScrollReveal className="mx-auto mb-12 max-w-2xl text-center">
+            <h2 className="text-3xl font-bold font-display text-foreground sm:text-4xl">
+              Strength <span className="text-[#C9A96A]">Circle</span>
+            </h2>
+            <p className="mt-4 text-lg text-muted-foreground">
+              STRENTOR&apos;s recurring membership for ongoing coaching, community and
+              accountability — whether you&apos;re just starting out or continuing after a
+              flagship program. Organized into four tiers so you can start where you are and
+              move up as your needs change.
+            </p>
+          </ScrollReveal>
+          <StaggerGroup className="mx-auto grid max-w-5xl gap-6 sm:grid-cols-2 lg:grid-cols-4">
+            {membershipTiers.map((tier, index) => (
+              <ScrollReveal key={index}>
+                <HoverLift className="h-full">
+                  <div className="flex h-full flex-col items-center gap-4 rounded-2xl border border-border bg-card p-6 text-center shadow-sm">
+                    <div className="flex h-14 w-14 flex-shrink-0 items-center justify-center rounded-full bg-[#C9A96A]">
+                      <tier.icon className="h-6 w-6 text-strentor-black" />
+                    </div>
+                    <div>
+                      <h3 className="text-lg font-bold text-card-foreground">{tier.title}</h3>
+                      <p className="mt-1 text-muted-foreground">{tier.description}</p>
+                    </div>
+                  </div>
+                </HoverLift>
+              </ScrollReveal>
+            ))}
+          </StaggerGroup>
+          <ScrollReveal className="mt-10 text-center">
+            <Button
+              asChild
+              className="h-12 rounded-full bg-[#C9A96A] px-7 transition-transform hover:scale-105 hover:bg-[#C9A96A]/90"
+            >
+              <Link href="/programs/membership">Explore Strength Circle</Link>
+            </Button>
+          </ScrollReveal>
+        </div>
       </section>
 
       {/* Share Your Story */}

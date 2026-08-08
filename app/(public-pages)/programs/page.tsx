@@ -49,13 +49,6 @@ const programs = [
     href: "/programs/fitness-training",
   },
   {
-    icon: Users,
-    title: "Strength Circle",
-    description: "Education, community, and group support — structured coaching for clients who prefer a group environment.",
-    cta: "Join the Strength Circle",
-    href: "/programs/membership",
-  },
-  {
     icon: Rocket,
     title: "7-Day Starter Kit",
     description: "A low-commitment introduction to adaptive strength training — exercise plan, video feedback, and daily tracking.",
