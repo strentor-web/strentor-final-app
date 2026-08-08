@@ -6,12 +6,16 @@ import { useState, type FormEvent } from "react";
 import { Facebook, Instagram, Linkedin, Youtube, Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
+// Mirrors the real, single-source-of-truth program list in
+// app/(public-pages)/programs/page.tsx — every link goes to an actual
+// program page, not a generic category label.
 const programLinks = [
-  { href: "/coaching", label: "1:1 Coaching" },
-  { href: "/programs/online-wheelchair-strength-training", label: "Adaptive Strength" },
-  { href: "/the-strentor-method", label: "Mindset & Resilience" },
-  { href: "/coaching", label: "Nutrition Guidance" },
-  { href: "/coaching", label: "Tracking & Feedback" },
+  { href: "/programs/elite-mentorship", label: "Elite Mentorship" },
+  { href: "/programs/flagship-transformation", label: "Flagship Transformation" },
+  { href: "/programs/fitness-training", label: "Strength & Performance Coaching" },
+  { href: "/programs/membership", label: "Strength Circle" },
+  { href: "/programs/starter-kit", label: "7-Day Starter Kit" },
+  { href: "/corporate", label: "Corporate Programs" },
 ];
 
 const resourceLinks = [
